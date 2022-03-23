@@ -41,7 +41,8 @@ class QueueService(
                         .map { transformUserToUserExpensesDTO(it, q) },
                     trackExpenses = q.trackExpenses!!,
                     isActive = isActive,
-                    isAdmin = q.creator?.id == userId
+                    isAdmin = q.creator?.id == userId,
+                    link = q.link!!
                 )
             }
 
