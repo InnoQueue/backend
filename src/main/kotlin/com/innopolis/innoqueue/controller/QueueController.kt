@@ -1,8 +1,8 @@
 package com.innopolis.innoqueue.controller
 
-import com.innopolis.innoqueue.controller.dto.TaskDTO
+import com.innopolis.innoqueue.dto.NewQueueDTO
+import com.innopolis.innoqueue.dto.QueueDTO
 import com.innopolis.innoqueue.dto.QueuesListDTO
-import com.innopolis.innoqueue.dto.ToDoTaskDTO
 import com.innopolis.innoqueue.service.QueueService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -23,10 +23,8 @@ class QueueController(private val service: QueueService) {
     @GetMapping
     fun getQueues(@RequestHeader("user-token") token: Long): QueuesListDTO = service.getQueues(token)
 
-//    @PostMapping
-//    @ResponseStatus(HttpStatus.OK)
-//    fun createQueue(@RequestHeader("user-token") token: Long, @RequestBody task: TaskDTO) =
-//        service.createQueue(token, task.taskId, task.expenses)
-
-
+    @PostMapping
+    @ResponseStatus(HttpStatus.OK)
+    fun createQueue(@RequestHeader("user-token") token: Long, @RequestBody queue: NewQueueDTO): QueueDTO =
+        service.createQueue(token, queue)
 }
