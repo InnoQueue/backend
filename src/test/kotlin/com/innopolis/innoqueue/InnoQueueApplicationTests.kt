@@ -1,4 +1,4 @@
-package com.innopolis.innoqueue.InnoQueue
+package com.innopolis.innoqueue
 
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest
