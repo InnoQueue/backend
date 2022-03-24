@@ -27,8 +27,8 @@ class ToDoTaskService(
                 )
             }
             .toList()
-        //tasks.partition {  }
-        return tasks
+        val (importantTasks, otherTasks) = tasks.partition { it.isImportant!! }
+        return importantTasks.sortedBy { it.name!! } + otherTasks.sortedBy { it.name!! }
     }
 
     fun completeTask(token: String, taskId: Long, expenses: Int?) {

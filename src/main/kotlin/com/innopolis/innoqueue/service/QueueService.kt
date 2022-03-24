@@ -22,8 +22,8 @@ class QueueService(
         val user = userService.getUserByToken(token)
         val (activeQueue, frozenQueue) = user.queues.partition { it.isActive!! }
         return QueuesListDTO(
-            transformUserQueueToQueueDTO(activeQueue, true, user.id!!),
-            transformUserQueueToQueueDTO(frozenQueue, false, user.id!!)
+            transformUserQueueToQueueDTO(activeQueue, true, user.id!!).sortedBy { it.queueName },
+            transformUserQueueToQueueDTO(frozenQueue, false, user.id!!).sortedBy { it.queueName }
         )
     }
 
@@ -87,10 +87,21 @@ class QueueService(
     fun freezeUnFreezeQueue(token: String, queueId: Long, status: Boolean) {
         val user = userService.getUserByToken(token)
         val userQueue = getUserQueueByQueueId(user, queueId)
-        // TODO You can't freeze queue if it's your turn
-        userQueue.isActive = status
-        userQueueRepository.save(userQueue)
-        //TODO notify about freezing
+        when (status) {
+            true -> {
+                userQueue.isActive = true
+                userQueueRepository.save(userQueue)
+                //TODO notify about unfreezing
+            }
+            false -> {
+                // You can't freeze queue if it's your turn
+                if (userQueue.queue?.currentUser?.id != user.id) {
+                    userQueue.isActive = false
+                    userQueueRepository.save(userQueue)
+                    //TODO notify about freezing
+                }
+            }
+        }
     }
 
     fun deleteQueue(token: String, queueId: Long) {
