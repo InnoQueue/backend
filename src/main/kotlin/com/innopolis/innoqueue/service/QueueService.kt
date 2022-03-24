@@ -113,6 +113,7 @@ class QueueService(
         if (user.queues.none { it.queue?.link == queue.link }) {
             val userQueue = createUserQueueEntity(user, queueEntity)
             userQueueRepository.save(userQueue)
+            // TODO notify others that user joined
         }
     }
 
