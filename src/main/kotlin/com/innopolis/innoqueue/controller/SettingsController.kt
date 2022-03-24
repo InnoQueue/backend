@@ -14,10 +14,6 @@ class SettingsController(private val service: SettingsService) {
     fun handleNotFound(e: NoSuchElementException): ResponseEntity<String> =
         ResponseEntity(e.message, HttpStatus.NOT_FOUND)
 
-    @ExceptionHandler(IllegalArgumentException::class)
-    fun handleBadRequest(e: IllegalArgumentException): ResponseEntity<String> =
-        ResponseEntity(e.message, HttpStatus.BAD_REQUEST)
-
     @GetMapping
     fun getSettings(@RequestHeader("user-token") token: Long): SettingsDTO = service.getSettings(token)
 

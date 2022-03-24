@@ -1,6 +1,7 @@
 package com.innopolis.innoqueue.model
 
 import java.time.Instant
+import java.time.LocalDateTime
 import javax.persistence.*
 
 @Entity
@@ -19,5 +20,8 @@ open class UserNotification {
     open var message: String? = null
 
     @Column(name = "date", nullable = false)
-    open var date: Instant? = null
+    open var date: LocalDateTime? = null
+
+    @Column(name = "is_read", nullable = false)
+    open var isRead: Boolean? = null
 }
