@@ -16,7 +16,7 @@ class ToDoTaskService(
 ) {
     fun getTasks(token: String): List<ToDoTaskDTO> {
         val user = userService.getUserByToken(token)
-        return user.tasks
+        val tasks = user.tasks
             .map { queue ->
                 ToDoTaskDTO(
                     queue.id,
@@ -27,6 +27,8 @@ class ToDoTaskService(
                 )
             }
             .toList()
+        //tasks.partition {  }
+        return tasks
     }
 
     fun completeTask(token: String, taskId: Long, expenses: Int?) {

@@ -87,6 +87,7 @@ class QueueService(
     fun freezeUnFreezeQueue(token: String, queueId: Long, status: Boolean) {
         val user = userService.getUserByToken(token)
         val userQueue = getUserQueueByQueueId(user, queueId)
+        // TODO You can't freeze queue if it's your turn
         userQueue.isActive = status
         userQueueRepository.save(userQueue)
         //TODO notify about freezing
