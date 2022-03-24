@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service
 @Service
 class ToDoTaskService(
     private val userService: UserService,
+    private val queueService: QueueService,
     private val userQueueRepository: UserQueueRepository,
     private val queueRepository: QueueRepository
 ) {
@@ -30,7 +31,7 @@ class ToDoTaskService(
 
     fun completeTask(token: Long, taskId: Long, expenses: Int?) {
         val user = userService.getUserByToken(token)
-        val queue = getUserQueueByQueueId(user, taskId)
+        val queue = queueService.getUserQueueByQueueId(user, taskId)
         // If user is not next in this queue
         if (user.tasks.none { task -> task.id == taskId }) {
             addProgress(queue, expenses)
@@ -50,18 +51,13 @@ class ToDoTaskService(
 
     fun skipTask(token: Long, taskId: Long) {
         val user = userService.getUserByToken(token)
-        val queue = getUserQueueByQueueId(user, taskId)
+        val queue = queueService.getUserQueueByQueueId(user, taskId)
         // User can skip a task if it's his turn
         if (user.tasks.firstOrNull { task -> task.id == taskId } != null) {
             queue.skips = queue.skips?.plus(1)
             userQueueRepository.save(queue)
             assignNextUser(queue)
         }
-    }
-
-    private fun getUserQueueByQueueId(user: User, queueId: Long): UserQueue {
-        return user.queues.firstOrNull { task -> task.queue?.id == queueId }
-            ?: throw IllegalArgumentException("User does not belong to such queue: $queueId")
     }
 
     private fun getUsersInQueue(queue: UserQueue): Pair<List<User?>, Int?> {

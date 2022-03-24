@@ -1,5 +1,6 @@
 package com.innopolis.innoqueue.controller
 
+import com.innopolis.innoqueue.dto.EditQueueDTO
 import com.innopolis.innoqueue.dto.NewQueueDTO
 import com.innopolis.innoqueue.dto.QueueDTO
 import com.innopolis.innoqueue.dto.QueuesListDTO
@@ -27,4 +28,24 @@ class QueueController(private val service: QueueService) {
     @ResponseStatus(HttpStatus.OK)
     fun createQueue(@RequestHeader("user-token") token: Long, @RequestBody queue: NewQueueDTO): QueueDTO =
         service.createQueue(token, queue)
+
+    @PatchMapping
+    @ResponseStatus(HttpStatus.OK)
+    fun editQueue(@RequestHeader("user-token") token: Long, @RequestBody queue: EditQueueDTO): QueueDTO =
+        service.editQueue(token, queue)
+
+    @DeleteMapping("/freeze/{queueId}")
+    @ResponseStatus(HttpStatus.OK)
+    fun freezeQueue(@RequestHeader("user-token") token: Long, @PathVariable queueId: Long) =
+        service.freezeUnFreezeQueue(token, queueId, false)
+
+    @PostMapping("/unfreeze/{queueId}")
+    @ResponseStatus(HttpStatus.OK)
+    fun unfreezeQueue(@RequestHeader("user-token") token: Long, @PathVariable queueId: Long) =
+        service.freezeUnFreezeQueue(token, queueId, true)
+
+    @DeleteMapping("/{queueId}")
+    @ResponseStatus(HttpStatus.OK)
+    fun deleteQueue(@RequestHeader("user-token") token: Long, @PathVariable queueId: Long) =
+        service.deleteQueue(token, queueId)
 }

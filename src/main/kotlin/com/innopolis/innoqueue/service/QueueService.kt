@@ -1,14 +1,12 @@
 package com.innopolis.innoqueue.service
 
-import com.innopolis.innoqueue.dto.NewQueueDTO
-import com.innopolis.innoqueue.dto.QueueDTO
-import com.innopolis.innoqueue.dto.QueuesListDTO
-import com.innopolis.innoqueue.dto.UserExpensesDTO
+import com.innopolis.innoqueue.dto.*
 import com.innopolis.innoqueue.model.Queue
 import com.innopolis.innoqueue.model.User
 import com.innopolis.innoqueue.model.UserQueue
 import com.innopolis.innoqueue.repository.QueueRepository
 import com.innopolis.innoqueue.repository.UserQueueRepository
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 
@@ -64,7 +62,8 @@ class QueueService(
             }
 
     private fun transformUserToUserExpensesDTO(user: User?, queue: Queue): UserExpensesDTO = UserExpensesDTO(
-        user?.name!!,
+        user?.id!!,
+        user.name!!,
         queue.userQueues.firstOrNull { it.user?.id == user.id }?.expenses
     )
 
@@ -104,5 +103,64 @@ class QueueService(
         userQueueEntity.isImportant = false
         userQueueEntity.dateJoined = LocalDateTime.now()
         return userQueueRepository.save(userQueueEntity)
+    }
+
+    fun editQueue(token: Long, editQueue: EditQueueDTO): QueueDTO {
+        val user = userService.getUserByToken(token)
+        val userQueue = getUserQueueByQueueId(user, editQueue.queueId)
+        if (userQueue.queue?.creator?.id != user.id) {
+            throw IllegalArgumentException("User is not an admin in this queue: ${editQueue.queueId}")
+        }
+        val queueEntity = queueRepository.findByIdOrNull(editQueue.queueId)
+            ?: throw NoSuchElementException("Queue does not exist. ID: ${editQueue.queueId}")
+        queueEntity.name = editQueue.name
+        queueEntity.color = editQueue.color
+        queueEntity.trackExpenses = editQueue.trackExpenses
+        val updatedQueue = queueRepository.save(queueEntity)
+        val userToDelete = userQueueRepository
+            .findAll()
+            .filter { it.queue?.id == updatedQueue.id }
+            .filter { it.user?.id !in editQueue.participants }
+            .filter { it.user?.id != user.id }
+        userQueueRepository.deleteAll(userToDelete)
+
+        return QueueDTO(
+            updatedQueue.id!!,
+            updatedQueue.name!!,
+            updatedQueue.color!!,
+            transformUserToUserExpensesDTO(updatedQueue.currentUser, updatedQueue),
+            userQueueRepository
+                .findAll()
+                .filter { it.queue?.id == updatedQueue.id }
+                .map { transformUserToUserExpensesDTO(it.user, updatedQueue) },
+            updatedQueue.trackExpenses!!,
+            updatedQueue.userQueues.firstOrNull { it.user?.id == user.id }?.isActive!!,
+            true,
+            updatedQueue.link!!
+        )
+    }
+
+    fun getUserQueueByQueueId(user: User, queueId: Long): UserQueue {
+        return user.queues.firstOrNull { task -> task.queue?.id == queueId }
+            ?: throw IllegalArgumentException("User does not belong to such queue: $queueId")
+    }
+
+    fun freezeUnFreezeQueue(token: Long, queueId: Long, status: Boolean) {
+        val user = userService.getUserByToken(token)
+        val userQueue = getUserQueueByQueueId(user, queueId)
+        userQueue.isActive = status
+        userQueueRepository.save(userQueue)
+    }
+
+    fun deleteQueue(token: Long, queueId: Long) {
+        val user = userService.getUserByToken(token)
+        val userQueue = getUserQueueByQueueId(user, queueId)
+        if (userQueue.queue?.creator?.id == user.id) {
+            val participants = userQueue.queue?.userQueues!!
+            userQueueRepository.deleteAll(participants)
+            queueRepository.delete(userQueue.queue!!)
+        } else {
+            userQueueRepository.delete(userQueue)
+        }
     }
 }
