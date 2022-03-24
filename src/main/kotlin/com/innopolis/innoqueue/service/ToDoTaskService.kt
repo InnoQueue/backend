@@ -5,18 +5,16 @@ import com.innopolis.innoqueue.model.User
 import com.innopolis.innoqueue.model.UserQueue
 import com.innopolis.innoqueue.repository.QueueRepository
 import com.innopolis.innoqueue.repository.UserQueueRepository
-import com.innopolis.innoqueue.repository.UserRepository
 import org.springframework.stereotype.Service
 
 @Service
 class ToDoTaskService(
-    private val userRepository: UserRepository,
+    private val userService: UserService,
     private val userQueueRepository: UserQueueRepository,
     private val queueRepository: QueueRepository
 ) {
     fun getTasks(token: Long): List<ToDoTaskDTO> {
-        val user = userRepository.findAll().firstOrNull { user -> user.token == token }
-            ?: throw java.util.NoSuchElementException("No such user with token: $token")
+        val user = userService.getUserByToken(token)
         return user.tasks
             .map { queue ->
                 ToDoTaskDTO(
@@ -31,10 +29,8 @@ class ToDoTaskService(
     }
 
     fun completeTask(token: Long, taskId: Long, expenses: Int?) {
-        val user = userRepository.findAll().firstOrNull { user -> user.token == token }
-            ?: throw NoSuchElementException("No such user with token: $token")
-        val queue = user.queues.firstOrNull { task -> task.queue?.id == taskId }
-            ?: throw IllegalArgumentException("User does not belong to such queue: $taskId")
+        val user = userService.getUserByToken(token)
+        val queue = getUserQueueByQueueId(user, taskId)
         // If user is not next in this queue
         if (user.tasks.none { task -> task.id == taskId }) {
             addProgress(queue, expenses)
@@ -53,16 +49,19 @@ class ToDoTaskService(
     }
 
     fun skipTask(token: Long, taskId: Long) {
-        val user = userRepository.findAll().firstOrNull { user -> user.token == token }
-            ?: throw NoSuchElementException("No such user with token: $token")
-        val queue = user.queues.firstOrNull { task -> task.queue?.id == taskId }
-            ?: throw IllegalArgumentException("User does not belong to such queue: $taskId")
+        val user = userService.getUserByToken(token)
+        val queue = getUserQueueByQueueId(user, taskId)
         // User can skip a task if it's his turn
         if (user.tasks.firstOrNull { task -> task.id == taskId } != null) {
             queue.skips = queue.skips?.plus(1)
             userQueueRepository.save(queue)
             assignNextUser(queue)
         }
+    }
+
+    private fun getUserQueueByQueueId(user: User, queueId: Long): UserQueue {
+        return user.queues.firstOrNull { task -> task.queue?.id == queueId }
+            ?: throw IllegalArgumentException("User does not belong to such queue: $queueId")
     }
 
     private fun getUsersInQueue(queue: UserQueue): Pair<List<User?>, Int?> {
@@ -115,8 +114,6 @@ class ToDoTaskService(
                     break
                 }
             }
-
-
         }
     }
 }

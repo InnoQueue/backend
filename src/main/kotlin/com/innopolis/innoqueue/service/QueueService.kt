@@ -9,19 +9,17 @@ import com.innopolis.innoqueue.model.User
 import com.innopolis.innoqueue.model.UserQueue
 import com.innopolis.innoqueue.repository.QueueRepository
 import com.innopolis.innoqueue.repository.UserQueueRepository
-import com.innopolis.innoqueue.repository.UserRepository
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 
 @Service
 class QueueService(
-    private val userRepository: UserRepository,
+    private val userService: UserService,
     private val userQueueRepository: UserQueueRepository,
     private val queueRepository: QueueRepository
 ) {
     fun getQueues(token: Long): QueuesListDTO {
-        val user = userRepository.findAll().firstOrNull { user -> user.token == token }
-            ?: throw java.util.NoSuchElementException("No such user with token: $token")
+        val user = userService.getUserByToken(token)
         val (activeQueue, frozenQueue) = user.queues.partition { it.isActive!! }
         return QueuesListDTO(
             transformUserQueueToQueueDTO(activeQueue, true, user.id!!),
@@ -30,8 +28,7 @@ class QueueService(
     }
 
     fun createQueue(token: Long, queue: NewQueueDTO): QueueDTO {
-        val user = userRepository.findAll().firstOrNull { user -> user.token == token }
-            ?: throw java.util.NoSuchElementException("No such user with token: $token")
+        val user = userService.getUserByToken(token)
         val createdQueue = saveQueueEntity(queue, user)
         saveUserQueueEntity(createdQueue, user)
         return QueueDTO(
