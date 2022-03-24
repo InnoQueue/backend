@@ -11,7 +11,7 @@ open class User {
     open var id: Long? = null
 
     @Column(name = "token", nullable = false)
-    open var token: Long? = null
+    open var token: String? = null
 
     @Column(name = "name", nullable = false, length = 64)
     open var name: String? = null

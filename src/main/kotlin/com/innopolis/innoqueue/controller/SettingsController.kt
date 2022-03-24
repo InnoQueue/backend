@@ -15,10 +15,10 @@ class SettingsController(private val service: SettingsService) {
         ResponseEntity(e.message, HttpStatus.NOT_FOUND)
 
     @GetMapping
-    fun getSettings(@RequestHeader("user-token") token: Long): SettingsDTO = service.getSettings(token)
+    fun getSettings(@RequestHeader("user-token") token: String): SettingsDTO = service.getSettings(token)
 
     @PatchMapping
     @ResponseStatus(HttpStatus.OK)
-    fun updateSettings(@RequestHeader("user-token") token: Long, @RequestBody settings: SettingsDTO): SettingsDTO =
+    fun updateSettings(@RequestHeader("user-token") token: String, @RequestBody settings: SettingsDTO): SettingsDTO =
         service.updateSettings(token, settings)
 }

@@ -11,7 +11,7 @@ class SettingsService(
     private val userRepository: UserRepository,
     private val settingsRepository: UserSettingsRepository
 ) {
-    fun getSettings(token: Long): SettingsDTO {
+    fun getSettings(token: String): SettingsDTO {
         val user = userService.getUserByToken(token)
         val settings = user.settings!!
         return SettingsDTO(
@@ -24,7 +24,7 @@ class SettingsService(
         )
     }
 
-    fun updateSettings(token: Long, settings: SettingsDTO): SettingsDTO {
+    fun updateSettings(token: String, settings: SettingsDTO): SettingsDTO {
         val user = userService.getUserByToken(token)
         user.name = settings.userName
         val newSavedUser = userRepository.save(user)

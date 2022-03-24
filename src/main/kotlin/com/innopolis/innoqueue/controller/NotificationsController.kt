@@ -15,6 +15,6 @@ class NotificationsController(private val service: NotificationsService) {
         ResponseEntity(e.message, HttpStatus.NOT_FOUND)
 
     @GetMapping
-    fun getNotifications(@RequestHeader("user-token") token: Long): NotificationsListDTO =
+    fun getNotifications(@RequestHeader("user-token") token: String): NotificationsListDTO =
         service.getNotifications(token)
 }

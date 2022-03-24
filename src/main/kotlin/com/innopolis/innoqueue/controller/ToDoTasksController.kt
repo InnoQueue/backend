@@ -20,15 +20,15 @@ class ToDoTasksController(private val service: ToDoTaskService) {
         ResponseEntity(e.message, HttpStatus.BAD_REQUEST)
 
     @GetMapping
-    fun getTasks(@RequestHeader("user-token") token: Long): List<ToDoTaskDTO> = service.getTasks(token)
+    fun getTasks(@RequestHeader("user-token") token: String): List<ToDoTaskDTO> = service.getTasks(token)
 
     @PostMapping("/done")
     @ResponseStatus(HttpStatus.OK)
-    fun completeTask(@RequestHeader("user-token") token: Long, @RequestBody task: TaskDTO) =
+    fun completeTask(@RequestHeader("user-token") token: String, @RequestBody task: TaskDTO) =
         service.completeTask(token, task.taskId, task.expenses)
 
     @PostMapping("/skip")
     @ResponseStatus(HttpStatus.OK)
-    fun skipTask(@RequestHeader("user-token") token: Long, @RequestBody task: TaskDTO): Unit =
+    fun skipTask(@RequestHeader("user-token") token: String, @RequestBody task: TaskDTO): Unit =
         service.skipTask(token, task.taskId)
 }

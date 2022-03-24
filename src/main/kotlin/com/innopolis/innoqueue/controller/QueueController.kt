@@ -22,30 +22,30 @@ class QueueController(private val service: QueueService) {
         ResponseEntity(e.message, HttpStatus.BAD_REQUEST)
 
     @GetMapping
-    fun getQueues(@RequestHeader("user-token") token: Long): QueuesListDTO = service.getQueues(token)
+    fun getQueues(@RequestHeader("user-token") token: String): QueuesListDTO = service.getQueues(token)
 
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
-    fun createQueue(@RequestHeader("user-token") token: Long, @RequestBody queue: NewQueueDTO): QueueDTO =
+    fun createQueue(@RequestHeader("user-token") token: String, @RequestBody queue: NewQueueDTO): QueueDTO =
         service.createQueue(token, queue)
 
     @PatchMapping
     @ResponseStatus(HttpStatus.OK)
-    fun editQueue(@RequestHeader("user-token") token: Long, @RequestBody queue: EditQueueDTO): QueueDTO =
+    fun editQueue(@RequestHeader("user-token") token: String, @RequestBody queue: EditQueueDTO): QueueDTO =
         service.editQueue(token, queue)
 
     @DeleteMapping("/freeze/{queueId}")
     @ResponseStatus(HttpStatus.OK)
-    fun freezeQueue(@RequestHeader("user-token") token: Long, @PathVariable queueId: Long) =
+    fun freezeQueue(@RequestHeader("user-token") token: String, @PathVariable queueId: Long) =
         service.freezeUnFreezeQueue(token, queueId, false)
 
     @PostMapping("/unfreeze/{queueId}")
     @ResponseStatus(HttpStatus.OK)
-    fun unfreezeQueue(@RequestHeader("user-token") token: Long, @PathVariable queueId: Long) =
+    fun unfreezeQueue(@RequestHeader("user-token") token: String, @PathVariable queueId: Long) =
         service.freezeUnFreezeQueue(token, queueId, true)
 
     @DeleteMapping("/{queueId}")
     @ResponseStatus(HttpStatus.OK)
-    fun deleteQueue(@RequestHeader("user-token") token: Long, @PathVariable queueId: Long) =
+    fun deleteQueue(@RequestHeader("user-token") token: String, @PathVariable queueId: Long) =
         service.deleteQueue(token, queueId)
 }

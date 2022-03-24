@@ -12,7 +12,7 @@ class NotificationsService(
     private val userService: UserService,
     private val notificationsRepository: UserNotificationsRepository,
 ) {
-    fun getNotifications(token: Long): NotificationsListDTO {
+    fun getNotifications(token: String): NotificationsListDTO {
         val user = userService.getUserByToken(token)
         val (allNotifications, unreadNotifications) = user.notifications.partition { it.isRead!! }
         for (notification in unreadNotifications) {

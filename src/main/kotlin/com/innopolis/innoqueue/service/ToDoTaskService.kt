@@ -14,7 +14,7 @@ class ToDoTaskService(
     private val userQueueRepository: UserQueueRepository,
     private val queueRepository: QueueRepository
 ) {
-    fun getTasks(token: Long): List<ToDoTaskDTO> {
+    fun getTasks(token: String): List<ToDoTaskDTO> {
         val user = userService.getUserByToken(token)
         return user.tasks
             .map { queue ->
@@ -29,7 +29,7 @@ class ToDoTaskService(
             .toList()
     }
 
-    fun completeTask(token: Long, taskId: Long, expenses: Int?) {
+    fun completeTask(token: String, taskId: Long, expenses: Int?) {
         val user = userService.getUserByToken(token)
         val queue = queueService.getUserQueueByQueueId(user, taskId)
         // If user is not next in this queue
@@ -49,7 +49,7 @@ class ToDoTaskService(
         }
     }
 
-    fun skipTask(token: Long, taskId: Long) {
+    fun skipTask(token: String, taskId: Long) {
         val user = userService.getUserByToken(token)
         val queue = queueService.getUserQueueByQueueId(user, taskId)
         // User can skip a task if it's his turn
