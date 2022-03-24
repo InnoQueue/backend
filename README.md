@@ -12,7 +12,7 @@ Backend for the **Flutter Project**. To read the full README check [this reposit
     - Emil Khabibullin
 
 ## 📌 About
-- For the FLutter project the Backend REST API was developed.
+- For the Flutter project the Backend REST API was developed.
 - You can read API documentation [here](https://documenter.getpostman.com/view/16213957/UVsSP4ER)
 - The backend is hosted on [Heroku](https://innoqueue.herokuapp.com)
 
