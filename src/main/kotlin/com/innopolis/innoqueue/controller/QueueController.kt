@@ -1,5 +1,6 @@
 package com.innopolis.innoqueue.controller
 
+import com.innopolis.innoqueue.controller.dto.JoinQueueDTO
 import com.innopolis.innoqueue.dto.EditQueueDTO
 import com.innopolis.innoqueue.dto.NewQueueDTO
 import com.innopolis.innoqueue.dto.QueueDTO
@@ -48,4 +49,9 @@ class QueueController(private val service: QueueService) {
     @ResponseStatus(HttpStatus.OK)
     fun deleteQueue(@RequestHeader("user-token") token: String, @PathVariable queueId: Long) =
         service.deleteQueue(token, queueId)
+
+    @PostMapping("/join")
+    @ResponseStatus(HttpStatus.OK)
+    fun joinQueue(@RequestHeader("user-token") token: String, @RequestBody queue: JoinQueueDTO) =
+        service.joinQueue(token, queue)
 }

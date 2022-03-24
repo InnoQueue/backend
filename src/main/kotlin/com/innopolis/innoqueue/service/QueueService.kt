@@ -1,5 +1,6 @@
 package com.innopolis.innoqueue.service
 
+import com.innopolis.innoqueue.controller.dto.JoinQueueDTO
 import com.innopolis.innoqueue.dto.*
 import com.innopolis.innoqueue.model.Queue
 import com.innopolis.innoqueue.model.User
@@ -88,6 +89,7 @@ class QueueService(
         val userQueue = getUserQueueByQueueId(user, queueId)
         userQueue.isActive = status
         userQueueRepository.save(userQueue)
+        //TODO notify about freezing
     }
 
     fun deleteQueue(token: String, queueId: Long) {
@@ -97,8 +99,20 @@ class QueueService(
             val participants = userQueue.queue?.userQueues!!
             userQueueRepository.deleteAll(participants)
             queueRepository.delete(userQueue.queue!!)
+            //TODO notify about deletion
         } else {
             userQueueRepository.delete(userQueue)
+            //TODO notify about leaving
+        }
+    }
+
+    fun joinQueue(token: String, queue: JoinQueueDTO) {
+        val user = userService.getUserByToken(token)
+        val queueEntity = queueRepository.findAll().firstOrNull { it.link == queue.link }
+            ?: throw IllegalArgumentException("The link for queue is invalid: ${queue.link}")
+        if (user.queues.none { it.queue?.link == queue.link }) {
+            val userQueue = createUserQueueEntity(user, queueEntity)
+            userQueueRepository.save(userQueue)
         }
     }
 
@@ -150,14 +164,19 @@ class QueueService(
     }
 
     private fun saveUserQueueEntity(queue: Queue, user: User): UserQueue {
-        val userQueueEntity = UserQueue()
-        userQueueEntity.queue = queue
-        userQueueEntity.user = user
-        userQueueEntity.isActive = true
-        userQueueEntity.skips = 0
-        userQueueEntity.expenses = 0
-        userQueueEntity.isImportant = false
-        userQueueEntity.dateJoined = LocalDateTime.now()
+        val userQueueEntity = createUserQueueEntity(user, queue)
         return userQueueRepository.save(userQueueEntity)
+    }
+
+    private fun createUserQueueEntity(user: User, queue: Queue): UserQueue {
+        val userQueue = UserQueue()
+        userQueue.queue = queue
+        userQueue.user = user
+        userQueue.isActive = true
+        userQueue.skips = 0
+        userQueue.expenses = 0
+        userQueue.isImportant = false
+        userQueue.dateJoined = LocalDateTime.now()
+        return userQueue
     }
 }

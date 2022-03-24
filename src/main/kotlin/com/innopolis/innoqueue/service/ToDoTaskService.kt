@@ -56,6 +56,7 @@ class ToDoTaskService(
         if (user.tasks.firstOrNull { task -> task.id == taskId } != null) {
             queue.skips = queue.skips?.plus(1)
             userQueueRepository.save(queue)
+            //TODO notify about skip
             assignNextUser(queue)
         }
     }
@@ -84,6 +85,7 @@ class ToDoTaskService(
         }
         queue.isImportant = false
         userQueueRepository.save(queue)
+        //TODO notify about complete
     }
 
     private fun assignNextUser(queue: UserQueue) {
@@ -107,6 +109,7 @@ class ToDoTaskService(
                 if (queueToUpdate != null) {
                     queueToUpdate.currentUser = nextUser
                     queueRepository.save(queueToUpdate)
+                    //TODO notify about assigning
                     break
                 }
             }
