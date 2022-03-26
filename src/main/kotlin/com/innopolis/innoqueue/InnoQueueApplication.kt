@@ -19,6 +19,7 @@ fun main(args: Array<String>) {
             } catch (e: Exception) {
 
             }
+            println("Database was reset")
             Thread.sleep(300_000)
         }
     }
