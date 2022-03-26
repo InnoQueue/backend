@@ -8,6 +8,7 @@ import com.innopolis.innoqueue.model.UserQueue
 import com.innopolis.innoqueue.repository.QueueRepository
 import com.innopolis.innoqueue.repository.UserQueueRepository
 import com.innopolis.innoqueue.utility.StringGenerator
+import com.innopolis.innoqueue.utility.UsersQueueLogic
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
@@ -109,14 +110,20 @@ class QueueService(
     fun deleteQueue(token: String, queueId: Long) {
         val user = userService.getUserByToken(token)
         val userQueue = getUserQueueByQueueId(user, queueId)
+        // Delete queue
         if (userQueue.queue?.creator?.id == user.id) {
             val participants = userQueue.queue?.userQueues!!
             userQueueRepository.deleteAll(participants)
             queueRepository.delete(userQueue.queue!!)
             //TODO notify about deletion
-        } else {
+        } // Leave queue
+        else {
             userQueueRepository.delete(userQueue)
             //TODO notify about leaving
+            // If it's your turn, reassign another user
+            if (userQueue.queue?.currentUser?.id == user.id) {
+                UsersQueueLogic.assignNextUser(userQueue, userQueueRepository, queueRepository)
+            }
         }
     }
 
