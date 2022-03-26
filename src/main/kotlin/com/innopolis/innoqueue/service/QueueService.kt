@@ -36,6 +36,7 @@ class QueueService(
             createdQueue.name!!,
             createdQueue.color!!,
             transformUserToUserExpensesDTO(createdQueue.currentUser, createdQueue),
+            isYourTurn = true,
             emptyList(),
             createdQueue.trackExpenses!!,
             isActive = true,
@@ -68,6 +69,7 @@ class QueueService(
             updatedQueue.name!!,
             updatedQueue.color!!,
             transformUserToUserExpensesDTO(updatedQueue.currentUser, updatedQueue),
+            isYourTurn = updatedQueue.currentUser?.id == user.id,
             userQueueRepository
                 .findAll()
                 .filter { it.queue?.id == updatedQueue.id }
@@ -137,6 +139,7 @@ class QueueService(
                     queueName = q.name!!,
                     queueColor = q.color!!,
                     currentUser = transformUserToUserExpensesDTO(q.currentUser, q),
+                    isYourTurn = q.currentUser?.id == userId,
                     participants = q.userQueues
                         .filter { it.user?.id != userId && it.user?.id != q.currentUser?.id }
                         .map { userQueue -> userQueue.user }
@@ -191,5 +194,14 @@ class QueueService(
         userQueue.isImportant = false
         userQueue.dateJoined = LocalDateTime.now()
         return userQueue
+    }
+
+    fun shakeUser(token: String, queueId: Long) {
+        val user = userService.getUserByToken(token)
+        val userQueue = getUserQueueByQueueId(user, queueId)
+        if (userQueue.queue?.currentUser?.id == user.id) {
+            throw IllegalArgumentException("You can't shake yourself!")
+        }
+        // TODO notification, shake user
     }
 }

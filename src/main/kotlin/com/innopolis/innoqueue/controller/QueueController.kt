@@ -54,4 +54,9 @@ class QueueController(private val service: QueueService) {
     @ResponseStatus(HttpStatus.OK)
     fun joinQueue(@RequestHeader("user-token") token: String, @RequestBody queue: JoinQueueDTO) =
         service.joinQueue(token, queue)
+
+    @PostMapping("/shake/{queueId}")
+    @ResponseStatus(HttpStatus.OK)
+    fun shakeUser(@RequestHeader("user-token") token: String, @PathVariable queueId: Long) =
+        service.shakeUser(token, queueId)
 }
