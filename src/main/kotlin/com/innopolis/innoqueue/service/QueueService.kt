@@ -117,10 +117,10 @@ class QueueService(
         // Delete queue
         if (userQueue.queue?.creator?.id == user.id) {
             println("LOG Delete queue")
-            val participants = userQueue.queue?.userQueues!!
-            println("LOG participants: $participants")
-            userQueueRepository.deleteAll(participants)
-            println("LOG participants deleted")
+            //val participants = userQueue.queue?.userQueues!!
+            //println("LOG participants: $participants")
+            //userQueueRepository.deleteAll(participants)
+            //println("LOG participants deleted")
             queueRepository.delete(userQueue.queue!!)
             println("LOG queue deleted")
             //TODO notify about deletion
