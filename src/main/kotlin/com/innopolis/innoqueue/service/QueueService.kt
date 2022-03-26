@@ -22,9 +22,13 @@ class QueueService(
     fun getQueues(token: String): QueuesListDTO {
         val user = userService.getUserByToken(token)
         val (activeQueue, frozenQueue) = user.queues.partition { it.isActive!! }
+        val act = transformUserQueueToQueueDTO(activeQueue, true, user.id!!).sortedBy { it.queueName }
+        val froz = transformUserQueueToQueueDTO(frozenQueue, false, user.id!!).sortedBy { it.queueName }
+        println("LOG active queus $act")
+        println("LOG frozem queus $froz")
         return QueuesListDTO(
-            transformUserQueueToQueueDTO(activeQueue, true, user.id!!).sortedBy { it.queueName },
-            transformUserQueueToQueueDTO(frozenQueue, false, user.id!!).sortedBy { it.queueName }
+            act, froz
+
         )
     }
 
