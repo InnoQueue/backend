@@ -44,7 +44,7 @@ object UsersQueueLogic {
             .filter { it.queue?.id == queue.queue?.id }
             .sortedBy { it.dateJoined }
             .map { it.user }
-        
+
         val currentUserIndex = usersInQueue
             .zip(usersInQueue.indices)
             .firstOrNull { (u, _) -> u?.id == queue.queue?.currentUser?.id }?.second ?: 0
