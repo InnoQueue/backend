@@ -22,13 +22,9 @@ class QueueService(
     fun getQueues(token: String): QueuesListDTO {
         val user = userService.getUserByToken(token)
         val (activeQueue, frozenQueue) = user.queues.partition { it.isActive!! }
-        val act = transformUserQueueToQueueDTO(activeQueue, true, user.id!!).sortedBy { it.queueName }
-        val froz = transformUserQueueToQueueDTO(frozenQueue, false, user.id!!).sortedBy { it.queueName }
-        println("LOG active queus $act")
-        println("LOG frozem queus $froz")
         return QueuesListDTO(
-            act, froz
-
+            transformUserQueueToQueueDTO(activeQueue, true, user.id!!).sortedBy { it.queueName },
+            transformUserQueueToQueueDTO(frozenQueue, false, user.id!!).sortedBy { it.queueName }
         )
     }
 
@@ -116,13 +112,7 @@ class QueueService(
         val userQueue = getUserQueueByQueueId(user, queueId)
         // Delete queue
         if (userQueue.queue?.creator?.id == user.id) {
-            println("LOG Delete queue")
-            //val participants = userQueue.queue?.userQueues!!
-            //println("LOG participants: $participants")
-            //userQueueRepository.deleteAll(participants)
-            //println("LOG participants deleted")
             queueRepository.delete(userQueue.queue!!)
-            println("LOG queue deleted")
             //TODO notify about deletion
         } // Leave queue
         else {
