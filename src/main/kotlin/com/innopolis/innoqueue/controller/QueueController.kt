@@ -35,7 +35,7 @@ class QueueController(private val service: QueueService) {
     fun editQueue(@RequestHeader("user-token") token: String, @RequestBody queue: EditQueueDTO): QueueDTO =
         service.editQueue(token, queue)
 
-    @DeleteMapping("/freeze/{queueId}")
+    @PostMapping("/freeze/{queueId}")
     @ResponseStatus(HttpStatus.OK)
     fun freezeQueue(@RequestHeader("user-token") token: String, @PathVariable queueId: Long) =
         service.freezeUnFreezeQueue(token, queueId, false)

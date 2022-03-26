@@ -131,30 +131,47 @@ class QueueService(
         }
     }
 
-    private fun transformUserQueueToQueueDTO(userQueueList: List<UserQueue>, isActive: Boolean, userId: Long) =
-        userQueueList.map { it.queue }
-            .map { q ->
-                QueueDTO(
-                    queueId = q?.id!!,
-                    queueName = q.name!!,
-                    queueColor = q.color!!,
-                    currentUser = transformUserToUserExpensesDTO(q.currentUser, q),
-                    isYourTurn = q.currentUser?.id == userId,
-                    participants = q.userQueues
-                        .filter { it.user?.id != userId && it.user?.id != q.currentUser?.id }
-                        .map { userQueue -> userQueue.user }
-                        .map { transformUserToUserExpensesDTO(it, q) },
-                    trackExpenses = q.trackExpenses!!,
-                    isActive = isActive,
-                    isAdmin = q.creator?.id == userId,
-                    link = q.link!!
-                )
-            }
+    fun shakeUser(token: String, queueId: Long) {
+        val user = userService.getUserByToken(token)
+        val userQueue = getUserQueueByQueueId(user, queueId)
+        if (userQueue.queue?.currentUser?.id == user.id) {
+            throw IllegalArgumentException("You can't shake yourself!")
+        }
+        // TODO notification, shake user
+    }
+
+    private fun transformUserQueueToQueueDTO(
+        userQueueList: List<UserQueue>,
+        isActive: Boolean,
+        userId: Long
+    ): List<QueueDTO> = userQueueList.map { it.queue }.map { q ->
+        QueueDTO(
+            queueId = q?.id!!,
+            queueName = q.name!!,
+            queueColor = q.color!!,
+            currentUser = transformUserToUserExpensesDTO(q.currentUser, q),
+            isYourTurn = q.currentUser?.id == userId,
+            participants = sortUserExpensesDTOByFrozen(q.userQueues
+                .filter { it.user?.id != userId && it.user?.id != q.currentUser?.id }
+                .map { userQueue -> userQueue.user }
+                .map { transformUserToUserExpensesDTO(it, q) }),
+            trackExpenses = q.trackExpenses!!,
+            isActive = isActive,
+            isAdmin = q.creator?.id == userId,
+            link = q.link!!
+        )
+    }
+
+    private fun sortUserExpensesDTOByFrozen(users: List<UserExpensesDTO>): List<UserExpensesDTO> {
+        val (activeUsers, frozenUsers) = users.partition { it.isActive }
+        return activeUsers.sortedBy { it.userName } + frozenUsers.sortedBy { it.userName }
+    }
 
     private fun transformUserToUserExpensesDTO(user: User?, queue: Queue): UserExpensesDTO = UserExpensesDTO(
         user?.id!!,
         user.name!!,
-        queue.userQueues.firstOrNull { it.user?.id == user.id }?.expenses
+        queue.userQueues.firstOrNull { it.user?.id == user.id }?.expenses,
+        user.queues.firstOrNull { it.queue?.id == queue.id }?.isActive!!
     )
 
     private fun generateLink(): String {
@@ -194,14 +211,5 @@ class QueueService(
         userQueue.isImportant = false
         userQueue.dateJoined = LocalDateTime.now()
         return userQueue
-    }
-
-    fun shakeUser(token: String, queueId: Long) {
-        val user = userService.getUserByToken(token)
-        val userQueue = getUserQueueByQueueId(user, queueId)
-        if (userQueue.queue?.currentUser?.id == user.id) {
-            throw IllegalArgumentException("You can't shake yourself!")
-        }
-        // TODO notification, shake user
     }
 }
