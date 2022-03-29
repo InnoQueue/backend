@@ -19,11 +19,13 @@ class ToDoTaskService(
         val tasks = user.tasks
             .map { queue ->
                 ToDoTaskDTO(
-                    queue.id,
-                    queue.name,
-                    queue.color,
-                    queue.userQueues.firstOrNull { u -> u.user?.id == user.id }?.isImportant,
-                    queue.trackExpenses
+                    // TODO delete this field
+                    taskId = queue.id,
+                    queueId = queue.id,
+                    name = queue.name,
+                    color = queue.color,
+                    isImportant = queue.userQueues.firstOrNull { u -> u.user?.id == user.id }?.isImportant,
+                    trackExpenses = queue.trackExpenses
                 )
             }
             .toList()

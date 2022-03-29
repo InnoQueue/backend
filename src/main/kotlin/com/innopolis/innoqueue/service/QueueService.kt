@@ -40,16 +40,18 @@ class QueueService(
         val createdQueue = saveQueueEntity(queue, user)
         saveUserQueueEntity(createdQueue, user)
         return QueueDTO(
-            createdQueue.id!!,
-            createdQueue.name!!,
-            createdQueue.color!!,
-            transformUserToUserExpensesDTO(createdQueue.currentUser, createdQueue),
+            queueId = createdQueue.id!!,
+            queueName = createdQueue.name!!,
+            queueColor = createdQueue.color!!,
+            // TODO delete this field
+            currentUserDEPRECATED = transformUserToUserExpensesDTO(createdQueue.currentUser, createdQueue),
+            currentUser = transformUserToUserExpensesDTO(createdQueue.currentUser, createdQueue),
             isYourTurn = true,
-            emptyList(),
-            createdQueue.trackExpenses!!,
+            participants = emptyList(),
+            trackExpenses = createdQueue.trackExpenses!!,
             isActive = true,
             isAdmin = true,
-            createdQueue.link!!
+            link = createdQueue.link!!
         )
     }
 
@@ -73,19 +75,21 @@ class QueueService(
         userQueueRepository.deleteAll(userToDelete)
 
         return QueueDTO(
-            updatedQueue.id!!,
-            updatedQueue.name!!,
-            updatedQueue.color!!,
-            transformUserToUserExpensesDTO(updatedQueue.currentUser, updatedQueue),
+            queueId = updatedQueue.id!!,
+            queueName = updatedQueue.name!!,
+            queueColor = updatedQueue.color!!,
+            // TODO delete this field
+            currentUserDEPRECATED = transformUserToUserExpensesDTO(updatedQueue.currentUser, updatedQueue),
+            currentUser = transformUserToUserExpensesDTO(updatedQueue.currentUser, updatedQueue),
             isYourTurn = updatedQueue.currentUser?.id == user.id,
-            userQueueRepository
+            participants = userQueueRepository
                 .findAll()
                 .filter { it.queue?.id == updatedQueue.id }
                 .map { transformUserToUserExpensesDTO(it.user, updatedQueue) },
-            updatedQueue.trackExpenses!!,
-            updatedQueue.userQueues.firstOrNull { it.user?.id == user.id }?.isActive!!,
-            true,
-            updatedQueue.link!!
+            trackExpenses = updatedQueue.trackExpenses!!,
+            isActive = updatedQueue.userQueues.firstOrNull { it.user?.id == user.id }?.isActive!!,
+            isAdmin = true,
+            link = updatedQueue.link!!
         )
     }
 
@@ -162,6 +166,8 @@ class QueueService(
         queueId = queue?.id!!,
         queueName = queue.name!!,
         queueColor = queue.color!!,
+        // TODO delete this field
+        currentUserDEPRECATED = transformUserToUserExpensesDTO(queue.currentUser, queue),
         currentUser = transformUserToUserExpensesDTO(queue.currentUser, queue),
         isYourTurn = queue.currentUser?.id == userId,
         participants = sortUserExpensesDTOByFrozen(queue.userQueues
