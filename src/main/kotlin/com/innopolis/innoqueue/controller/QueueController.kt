@@ -25,6 +25,10 @@ class QueueController(private val service: QueueService) {
     @GetMapping
     fun getQueues(@RequestHeader("user-token") token: String): QueuesListDTO = service.getQueues(token)
 
+    @GetMapping("/{queueId}")
+    fun getQueues(@RequestHeader("user-token") token: String, @PathVariable queueId: Long): QueueDTO =
+        service.getQueueById(token, queueId)
+
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
     fun createQueue(@RequestHeader("user-token") token: String, @RequestBody queue: NewQueueDTO): QueueDTO =

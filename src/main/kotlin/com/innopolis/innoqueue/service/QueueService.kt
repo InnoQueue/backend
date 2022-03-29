@@ -19,13 +19,20 @@ class QueueService(
     private val userQueueRepository: UserQueueRepository,
     private val queueRepository: QueueRepository
 ) {
+    // TODO return only preview without detailed information
     fun getQueues(token: String): QueuesListDTO {
         val user = userService.getUserByToken(token)
         val (activeQueue, frozenQueue) = user.queues.partition { it.isActive!! }
         return QueuesListDTO(
-            transformUserQueueToQueueDTO(activeQueue, true, user.id!!).sortedBy { it.queueName },
-            transformUserQueueToQueueDTO(frozenQueue, false, user.id!!).sortedBy { it.queueName }
+            transformUserQueueListToQueueDTO(activeQueue, true, user.id!!).sortedBy { it.queueName },
+            transformUserQueueListToQueueDTO(frozenQueue, false, user.id!!).sortedBy { it.queueName }
         )
+    }
+
+    fun getQueueById(token: String, queueId: Long): QueueDTO {
+        val user = userService.getUserByToken(token)
+        val userQueue: UserQueue = getUserQueueByQueueId(user, queueId)
+        return transformQueueToDTO(queue = userQueue.queue, isActive = userQueue.isActive!!, userId = user.id!!)
     }
 
     fun createQueue(token: String, queue: NewQueueDTO): QueueDTO {
@@ -83,7 +90,7 @@ class QueueService(
     }
 
     fun getUserQueueByQueueId(user: User, queueId: Long): UserQueue {
-        return user.queues.firstOrNull { task -> task.queue?.id == queueId }
+        return user.queues.firstOrNull { it.queue?.id == queueId }
             ?: throw IllegalArgumentException("User does not belong to such queue: $queueId")
     }
 
@@ -145,27 +152,27 @@ class QueueService(
         // TODO notification, shake user
     }
 
-    private fun transformUserQueueToQueueDTO(
+    private fun transformUserQueueListToQueueDTO(
         userQueueList: List<UserQueue>,
         isActive: Boolean,
         userId: Long
-    ): List<QueueDTO> = userQueueList.map { it.queue }.map { q ->
-        QueueDTO(
-            queueId = q?.id!!,
-            queueName = q.name!!,
-            queueColor = q.color!!,
-            currentUser = transformUserToUserExpensesDTO(q.currentUser, q),
-            isYourTurn = q.currentUser?.id == userId,
-            participants = sortUserExpensesDTOByFrozen(q.userQueues
-                .filter { it.user?.id != userId && it.user?.id != q.currentUser?.id }
-                .map { userQueue -> userQueue.user }
-                .map { transformUserToUserExpensesDTO(it, q) }),
-            trackExpenses = q.trackExpenses!!,
-            isActive = isActive,
-            isAdmin = q.creator?.id == userId,
-            link = q.link!!
-        )
-    }
+    ): List<QueueDTO> = userQueueList.map { it.queue }.map { q -> transformQueueToDTO(q, isActive, userId) }
+
+    private fun transformQueueToDTO(queue: Queue?, isActive: Boolean, userId: Long): QueueDTO = QueueDTO(
+        queueId = queue?.id!!,
+        queueName = queue.name!!,
+        queueColor = queue.color!!,
+        currentUser = transformUserToUserExpensesDTO(queue.currentUser, queue),
+        isYourTurn = queue.currentUser?.id == userId,
+        participants = sortUserExpensesDTOByFrozen(queue.userQueues
+            .filter { it.user?.id != userId && it.user?.id != queue.currentUser?.id }
+            .map { userQueue -> userQueue.user }
+            .map { transformUserToUserExpensesDTO(it, queue) }),
+        trackExpenses = queue.trackExpenses!!,
+        isActive = isActive,
+        isAdmin = queue.creator?.id == userId,
+        link = queue.link!!
+    )
 
     private fun sortUserExpensesDTOByFrozen(users: List<UserExpensesDTO>): List<UserExpensesDTO> {
         val (activeUsers, frozenUsers) = users.partition { it.isActive }
