@@ -13,6 +13,9 @@ WHERE true;
 DELETE FROM public.user
 WHERE true;
 
+DELETE FROM public.queue_pin_code
+WHERE true;
+
 
 INSERT INTO public."user" (user_id, token, name) VALUES (1, '11111', 'Miley Cyrus');
 INSERT INTO public."user" (user_id, token, name) VALUES (2, '2', 'Ivan');

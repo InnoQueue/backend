@@ -24,6 +24,9 @@ interface DatabaseRepository : CrudRepository<Queue, Long> {
                 "DELETE FROM public.user\n" +
                 "WHERE true;\n" +
                 "\n" +
+                "DELETE FROM public.queue_pin_code\n" +
+                "WHERE true;\n" +
+                "\n" +
                 "\n" +
                 "INSERT INTO public.\"user\" (user_id, token, name) VALUES (1, '11111', 'Miley Cyrus');\n" +
                 "INSERT INTO public.\"user\" (user_id, token, name) VALUES (2, '2', 'Ivan');\n" +
