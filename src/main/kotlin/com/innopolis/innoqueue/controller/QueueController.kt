@@ -1,6 +1,6 @@
 package com.innopolis.innoqueue.controller
 
-import com.innopolis.innoqueue.controller.dto.JoinQueueDTO
+import com.innopolis.innoqueue.controller.dto.QueuePinCodeDTO
 import com.innopolis.innoqueue.dto.EditQueueDTO
 import com.innopolis.innoqueue.dto.NewQueueDTO
 import com.innopolis.innoqueue.dto.QueueDTO
@@ -26,8 +26,12 @@ class QueueController(private val service: QueueService) {
     fun getQueues(@RequestHeader("user-token") token: String): QueuesListDTO = service.getQueues(token)
 
     @GetMapping("/{queueId}")
-    fun getQueues(@RequestHeader("user-token") token: String, @PathVariable queueId: Long): QueueDTO =
+    fun getQueueById(@RequestHeader("user-token") token: String, @PathVariable queueId: Long): QueueDTO =
         service.getQueueById(token, queueId)
+
+    @GetMapping("/invite/{queueId}")
+    fun getQueuePinCode(@RequestHeader("user-token") token: String, @PathVariable queueId: Long): QueuePinCodeDTO =
+        service.getQueuePinCode(token, queueId)
 
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
@@ -56,7 +60,7 @@ class QueueController(private val service: QueueService) {
 
     @PostMapping("/join")
     @ResponseStatus(HttpStatus.OK)
-    fun joinQueue(@RequestHeader("user-token") token: String, @RequestBody queue: JoinQueueDTO) =
+    fun joinQueue(@RequestHeader("user-token") token: String, @RequestBody queue: QueuePinCodeDTO) =
         service.joinQueue(token, queue)
 
     @PostMapping("/shake/{queueId}")

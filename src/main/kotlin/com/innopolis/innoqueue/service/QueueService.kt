@@ -1,10 +1,12 @@
 package com.innopolis.innoqueue.service
 
-import com.innopolis.innoqueue.controller.dto.JoinQueueDTO
+import com.innopolis.innoqueue.controller.dto.QueuePinCodeDTO
 import com.innopolis.innoqueue.dto.*
 import com.innopolis.innoqueue.model.Queue
+import com.innopolis.innoqueue.model.QueuePinCode
 import com.innopolis.innoqueue.model.User
 import com.innopolis.innoqueue.model.UserQueue
+import com.innopolis.innoqueue.repository.QueuePinCodeRepository
 import com.innopolis.innoqueue.repository.QueueRepository
 import com.innopolis.innoqueue.repository.UserQueueRepository
 import com.innopolis.innoqueue.utility.StringGenerator
@@ -12,12 +14,14 @@ import com.innopolis.innoqueue.utility.UsersQueueLogic
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
+import kotlin.concurrent.thread
 
 @Service
 class QueueService(
     private val userService: UserService,
     private val userQueueRepository: UserQueueRepository,
-    private val queueRepository: QueueRepository
+    private val queueRepository: QueueRepository,
+    private val queuePinCodeRepository: QueuePinCodeRepository
 ) {
     // TODO return only preview without detailed information
     fun getQueues(token: String): QueuesListDTO {
@@ -33,6 +37,36 @@ class QueueService(
         val user = userService.getUserByToken(token)
         val userQueue: UserQueue = getUserQueueByQueueId(user, queueId)
         return transformQueueToDTO(queue = userQueue.queue, isActive = userQueue.isActive!!, userId = user.id!!)
+    }
+
+    fun getQueuePinCode(token: String, queueId: Long): QueuePinCodeDTO {
+        val user = userService.getUserByToken(token)
+        val userQueue: UserQueue = getUserQueueByQueueId(user, queueId)
+        val queuePinCodes = queuePinCodeRepository.findAll()
+        val queuePinCode = queuePinCodes.firstOrNull { it.queue?.id == queueId }
+        return if (queuePinCode == null) {
+            val pinCode = generateUniquePinCode(queuePinCodes.map { it.pinCode })
+            val newQueuePinCode = QueuePinCode()
+            newQueuePinCode.queue = userQueue.queue
+            newQueuePinCode.pinCode = pinCode
+            val createdQueuePinCode = queuePinCodeRepository.save(newQueuePinCode)
+            thread(start = true) {
+                Thread.sleep(120_000)
+                queuePinCodeRepository.delete(createdQueuePinCode)
+            }
+            QueuePinCodeDTO(pinCode)
+        } else QueuePinCodeDTO(queuePinCode.pinCode!!)
+    }
+
+    private fun generateUniquePinCode(pinCodes: List<String?>): String {
+        while (true) {
+            val newPinCode = (1..4)
+                .map { (0..9).random() }
+                .fold("") { acc: String, i: Int -> acc + i.toString() }
+            if (newPinCode !in pinCodes) {
+                return newPinCode
+            }
+        }
     }
 
     fun createQueue(token: String, queue: NewQueueDTO): QueueDTO {
@@ -136,12 +170,15 @@ class QueueService(
         }
     }
 
-    fun joinQueue(token: String, queue: JoinQueueDTO) {
+    fun joinQueue(token: String, queuePinCodeDTO: QueuePinCodeDTO) {
         val user = userService.getUserByToken(token)
-        val queueEntity = queueRepository.findAll().firstOrNull { it.link == queue.link }
-            ?: throw IllegalArgumentException("The link for queue is invalid: ${queue.link}")
-        if (user.queues.none { it.queue?.link == queue.link }) {
-            val userQueue = createUserQueueEntity(user, queueEntity)
+        val queuePinCode = queuePinCodeRepository.findAll().firstOrNull { it.pinCode == queuePinCodeDTO.pinCode }
+            ?: throw IllegalArgumentException("The pin code for queue is invalid: ${queuePinCodeDTO.pinCode}")
+        if (user.queues.none { it.queue?.id == queuePinCode.queue?.id }) {
+            val queueEntity = queueRepository.findAll().firstOrNull { it.id == queuePinCode.queue?.id }
+                ?: throw IllegalArgumentException("The pin code for queue is invalid: ${queuePinCodeDTO.pinCode}")
+            val userQueue =
+                createUserQueueEntity(user, queueEntity)
             userQueueRepository.save(userQueue)
             // TODO notify others that user joined
         }
