@@ -9,9 +9,6 @@ data class QueueDTO(
     val queueName: String,
     @JsonProperty("color")
     val queueColor: String,
-    // TODO remove this field
-    @JsonProperty("current_user")
-    val currentUserDEPRECATED: UserExpensesDTO,
     @JsonProperty("on_duty")
     val currentUser: UserExpensesDTO,
     @JsonProperty("is_on_duty")

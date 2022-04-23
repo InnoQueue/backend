@@ -77,8 +77,6 @@ class QueueService(
             queueId = createdQueue.id!!,
             queueName = createdQueue.name!!,
             queueColor = createdQueue.color!!,
-            // TODO delete this field
-            currentUserDEPRECATED = transformUserToUserExpensesDTO(createdQueue.currentUser, createdQueue),
             currentUser = transformUserToUserExpensesDTO(createdQueue.currentUser, createdQueue),
             isYourTurn = true,
             participants = emptyList(),
@@ -112,8 +110,6 @@ class QueueService(
             queueId = updatedQueue.id!!,
             queueName = updatedQueue.name!!,
             queueColor = updatedQueue.color!!,
-            // TODO delete this field
-            currentUserDEPRECATED = transformUserToUserExpensesDTO(updatedQueue.currentUser, updatedQueue),
             currentUser = transformUserToUserExpensesDTO(updatedQueue.currentUser, updatedQueue),
             isYourTurn = updatedQueue.currentUser?.id == user.id,
             participants = userQueueRepository
@@ -203,8 +199,6 @@ class QueueService(
         queueId = queue?.id!!,
         queueName = queue.name!!,
         queueColor = queue.color!!,
-        // TODO delete this field
-        currentUserDEPRECATED = transformUserToUserExpensesDTO(queue.currentUser, queue),
         currentUser = transformUserToUserExpensesDTO(queue.currentUser, queue),
         isYourTurn = queue.currentUser?.id == userId,
         participants = sortUserExpensesDTOByFrozen(queue.userQueues
