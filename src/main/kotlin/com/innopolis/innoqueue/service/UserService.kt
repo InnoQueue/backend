@@ -20,7 +20,11 @@ class UserService(
             ?: throw NoSuchElementException("No such user with token: $token")
     }
 
-    fun generateUserToken(): TokenDTO {
+    fun generateUserToken(userName: String): TokenDTO {
+        // TODO remove after demo presentation
+        if (userName == "admin") {
+            return TokenDTO("11111")
+        }
         val existingTokens = userRepository.findAll().map { it.token }
         val generator = StringGenerator(tokenLength)
         while (true) {
@@ -28,7 +32,7 @@ class UserService(
             if (!existingTokens.contains(randomString)) {
                 val newUser = User()
                 newUser.token = randomString
-                newUser.name = "username"
+                newUser.name = userName
                 userRepository.save(newUser)
                 val settings = UserSetting()
                 settings.user = newUser
