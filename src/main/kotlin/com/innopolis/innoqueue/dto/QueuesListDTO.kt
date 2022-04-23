@@ -4,8 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty
 
 data class QueuesListDTO(
     @JsonProperty("active")
-    val activeQueues: List<QueueDTO>,
+    val activeQueues: List<QueueShortDTO>,
 
     @JsonProperty("frozen")
-    val frozenQueues: List<QueueDTO>
+    val frozenQueues: List<QueueShortDTO>
 )

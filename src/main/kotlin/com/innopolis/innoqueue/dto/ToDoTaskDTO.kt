@@ -3,10 +3,6 @@ package com.innopolis.innoqueue.dto
 import com.fasterxml.jackson.annotation.JsonProperty
 
 data class ToDoTaskDTO(
-    // TODO delete this field
-    @JsonProperty("task_id")
-    val taskId: Long?,
-
     @JsonProperty("queue_id")
     val queueId: Long?,
 

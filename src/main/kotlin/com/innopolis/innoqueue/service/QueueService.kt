@@ -23,13 +23,12 @@ class QueueService(
     private val queueRepository: QueueRepository,
     private val queuePinCodeRepository: QueuePinCodeRepository
 ) {
-    // TODO return only preview without detailed information
     fun getQueues(token: String): QueuesListDTO {
         val user = userService.getUserByToken(token)
         val (activeQueue, frozenQueue) = user.queues.partition { it.isActive!! }
         return QueuesListDTO(
-            transformUserQueueListToQueueDTO(activeQueue, true, user.id!!).sortedBy { it.queueName },
-            transformUserQueueListToQueueDTO(frozenQueue, false, user.id!!).sortedBy { it.queueName }
+            transformUserQueueListToQueueShortDTO(activeQueue).sortedBy { it.queueName },
+            transformUserQueueListToQueueShortDTO(frozenQueue).sortedBy { it.queueName }
         )
     }
 
@@ -189,11 +188,17 @@ class QueueService(
         // TODO notification, shake user
     }
 
-    private fun transformUserQueueListToQueueDTO(
-        userQueueList: List<UserQueue>,
-        isActive: Boolean,
-        userId: Long
-    ): List<QueueDTO> = userQueueList.map { it.queue }.map { q -> transformQueueToDTO(q, isActive, userId) }
+    private fun transformUserQueueListToQueueShortDTO(
+        userQueueList: List<UserQueue>
+    ): List<QueueShortDTO> =
+        userQueueList.map { it.queue }.map { q -> transformQueueToQueueShortDTO(q) }
+
+    private fun transformQueueToQueueShortDTO(queue: Queue?): QueueShortDTO =
+        QueueShortDTO(
+            queueId = queue?.id!!,
+            queueName = queue.name!!,
+            queueColor = queue.color!!
+        )
 
     private fun transformQueueToDTO(queue: Queue?, isActive: Boolean, userId: Long): QueueDTO = QueueDTO(
         queueId = queue?.id!!,

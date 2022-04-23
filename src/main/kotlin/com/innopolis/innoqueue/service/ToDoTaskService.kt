@@ -19,8 +19,6 @@ class ToDoTaskService(
         val tasks = user.tasks
             .map { queue ->
                 ToDoTaskDTO(
-                    // TODO delete this field
-                    taskId = queue.id,
                     queueId = queue.id,
                     name = queue.name,
                     color = queue.color,
