@@ -16,8 +16,11 @@ WHERE true;
 DELETE FROM public.queue_pin_code
 WHERE true;
 
+DELETE FROM public.queue_qr_code
+WHERE true;
 
-INSERT INTO public."user" (user_id, token, name) VALUES (1, '11111', 'Miley Cyrus');
+
+INSERT INTO public."user" (user_id, token, name) VALUES (1, '11111', 'admin');
 INSERT INTO public."user" (user_id, token, name) VALUES (2, '2', 'Ivan');
 INSERT INTO public."user" (user_id, token, name) VALUES (5, '5', 'Alice');
 INSERT INTO public."user" (user_id, token, name) VALUES (3, '3', 'Bob');
@@ -36,12 +39,12 @@ INSERT INTO public.user_notifications (notification_id, user_id, message, date, 
 INSERT INTO public.user_notifications (notification_id, user_id, message, date, is_read) VALUES (1, 1, 'Alex joined in queue **Bring Water**', '2022-01-11 19:48:45.000000', true);
 INSERT INTO public.user_notifications (notification_id, user_id, message, date, is_read) VALUES (8, 1, 'Alex completed **Trash**', '2022-01-14 23:48:55.000000', false);
 
-INSERT INTO public.queue (queue_id, name, color, creator_id, track_expenses, link, current_user_id) VALUES (44, 'Bring Water', 'BLUE', 1, false, 'YtAE6PWtb3vRc1Ct', 1);
-INSERT INTO public.queue (queue_id, name, color, creator_id, track_expenses, link, current_user_id) VALUES (40, 'Buy Soap', 'ORANGE', 1, true, 'fjdsldsfdsfds', 1);
-INSERT INTO public.queue (queue_id, name, color, creator_id, track_expenses, link, current_user_id) VALUES (6, 'Buy Toilet Paper', 'RED', 2, true, 'hfjd', 2);
-INSERT INTO public.queue (queue_id, name, color, creator_id, track_expenses, link, current_user_id) VALUES (39, 'Trash', 'YELLOW', 2, false, 'fdsfdsgfdsf', 1);
-INSERT INTO public.queue (queue_id, name, color, creator_id, track_expenses, link, current_user_id) VALUES (34, 'Buy Dishwashing Soap', 'GREEN', 1, true, 'WUIH51ryH5JenLP7', 2);
-INSERT INTO public.queue (queue_id, name, color, creator_id, track_expenses, link, current_user_id) VALUES (46, 'Buy Sponge', 'PURPLE', 1, true, 'fdsfdsfsd', 2);
+INSERT INTO public.queue (queue_id, name, color, creator_id, track_expenses, current_user_id) VALUES (44, 'Bring Water', 'BLUE', 1, false, 1);
+INSERT INTO public.queue (queue_id, name, color, creator_id, track_expenses, current_user_id) VALUES (40, 'Buy Soap', 'ORANGE', 1, true, 1);
+INSERT INTO public.queue (queue_id, name, color, creator_id, track_expenses, current_user_id) VALUES (6, 'Buy Toilet Paper', 'RED', 2, true, 2);
+INSERT INTO public.queue (queue_id, name, color, creator_id, track_expenses, current_user_id) VALUES (39, 'Trash', 'YELLOW', 2, false, 1);
+INSERT INTO public.queue (queue_id, name, color, creator_id, track_expenses, current_user_id) VALUES (34, 'Buy Dishwashing Soap', 'GREEN', 1, true, 2);
+INSERT INTO public.queue (queue_id, name, color, creator_id, track_expenses, current_user_id) VALUES (46, 'Buy Sponge', 'PURPLE', 1, true, 2);
 
 INSERT INTO public.user_queue (user_queue_id, queue_id, user_id, is_active, skips, expenses, is_important, date_joined) VALUES (60, 39, 2, true, 0, 0, false, '2022-03-26 15:37:27.000000');
 INSERT INTO public.user_queue (user_queue_id, queue_id, user_id, is_active, skips, expenses, is_important, date_joined) VALUES (62, 40, 2, true, 0, 0, false, '2022-03-26 15:37:49.000000');
