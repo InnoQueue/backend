@@ -1,4 +1,4 @@
-package com.innopolis.innoqueue.utility
+package com.innopolis.innoqueue.utils
 
 import com.innopolis.innoqueue.model.User
 import com.innopolis.innoqueue.model.UserQueue

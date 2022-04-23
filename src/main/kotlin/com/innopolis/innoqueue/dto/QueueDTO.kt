@@ -21,6 +21,4 @@ data class QueueDTO(
     val isActive: Boolean,
     @JsonProperty("is_admin")
     val isAdmin: Boolean,
-    @JsonProperty("link")
-    val link: String
 )

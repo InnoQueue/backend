@@ -1,16 +1,13 @@
 package com.innopolis.innoqueue.service
 
-import com.innopolis.innoqueue.controller.dto.QueuePinCodeDTO
 import com.innopolis.innoqueue.dto.*
-import com.innopolis.innoqueue.model.Queue
-import com.innopolis.innoqueue.model.QueuePinCode
-import com.innopolis.innoqueue.model.User
-import com.innopolis.innoqueue.model.UserQueue
+import com.innopolis.innoqueue.model.*
 import com.innopolis.innoqueue.repository.QueuePinCodeRepository
+import com.innopolis.innoqueue.repository.QueueQrCodeRepository
 import com.innopolis.innoqueue.repository.QueueRepository
 import com.innopolis.innoqueue.repository.UserQueueRepository
-import com.innopolis.innoqueue.utility.StringGenerator
-import com.innopolis.innoqueue.utility.UsersQueueLogic
+import com.innopolis.innoqueue.utils.StringGenerator
+import com.innopolis.innoqueue.utils.UsersQueueLogic
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
@@ -21,8 +18,14 @@ class QueueService(
     private val userService: UserService,
     private val userQueueRepository: UserQueueRepository,
     private val queueRepository: QueueRepository,
-    private val queuePinCodeRepository: QueuePinCodeRepository
+    private val queuePinCodeRepository: QueuePinCodeRepository,
+    private val queueQrCodeRepository: QueueQrCodeRepository
 ) {
+    private val pinCodeLiveTime: Long = 3_600_000
+    private val pinCodeLength: Int = 6
+    private val qrCodeLiveTime: Long = 24 * 3_600_000
+    private val qrCodeLength: Int = 48
+
     fun getQueues(token: String): QueuesListDTO {
         val user = userService.getUserByToken(token)
         val (activeQueue, frozenQueue) = user.queues.partition { it.isActive!! }
@@ -38,34 +41,12 @@ class QueueService(
         return transformQueueToDTO(queue = userQueue.queue, isActive = userQueue.isActive!!, userId = user.id!!)
     }
 
-    fun getQueuePinCode(token: String, queueId: Long): QueuePinCodeDTO {
+    fun getQueueInviteCode(token: String, queueId: Long): QueueInviteCodeDTO {
         val user = userService.getUserByToken(token)
         val userQueue: UserQueue = getUserQueueByQueueId(user, queueId)
-        val queuePinCodes = queuePinCodeRepository.findAll()
-        val queuePinCode = queuePinCodes.firstOrNull { it.queue?.id == queueId }
-        return if (queuePinCode == null) {
-            val pinCode = generateUniquePinCode(queuePinCodes.map { it.pinCode })
-            val newQueuePinCode = QueuePinCode()
-            newQueuePinCode.queue = userQueue.queue
-            newQueuePinCode.pinCode = pinCode
-            val createdQueuePinCode = queuePinCodeRepository.save(newQueuePinCode)
-            thread(start = true) {
-                Thread.sleep(120_000)
-                queuePinCodeRepository.delete(createdQueuePinCode)
-            }
-            QueuePinCodeDTO(pinCode)
-        } else QueuePinCodeDTO(queuePinCode.pinCode!!)
-    }
-
-    private fun generateUniquePinCode(pinCodes: List<String?>): String {
-        while (true) {
-            val newPinCode = (1..4)
-                .map { (0..9).random() }
-                .fold("") { acc: String, i: Int -> acc + i.toString() }
-            if (newPinCode !in pinCodes) {
-                return newPinCode
-            }
-        }
+        val pinCode = getQueuePinCode(userQueue)
+        val qrCode = getQueueQrCode(userQueue)
+        return QueueInviteCodeDTO(pinCode = pinCode, qrCode = qrCode)
     }
 
     fun createQueue(token: String, queue: NewQueueDTO): QueueDTO {
@@ -81,8 +62,7 @@ class QueueService(
             participants = emptyList(),
             trackExpenses = createdQueue.trackExpenses!!,
             isActive = true,
-            isAdmin = true,
-            link = createdQueue.link!!
+            isAdmin = true
         )
     }
 
@@ -117,8 +97,7 @@ class QueueService(
                 .map { transformUserToUserExpensesDTO(it.user, updatedQueue) },
             trackExpenses = updatedQueue.trackExpenses!!,
             isActive = updatedQueue.userQueues.firstOrNull { it.user?.id == user.id }?.isActive!!,
-            isAdmin = true,
-            link = updatedQueue.link!!
+            isAdmin = true
         )
     }
 
@@ -165,17 +144,45 @@ class QueueService(
         }
     }
 
-    fun joinQueue(token: String, queuePinCodeDTO: QueuePinCodeDTO) {
+    fun joinQueue(token: String, queueInviteCodeDTO: QueueInviteCodeDTO): QueueDTO {
         val user = userService.getUserByToken(token)
-        val queuePinCode = queuePinCodeRepository.findAll().firstOrNull { it.pinCode == queuePinCodeDTO.pinCode }
-            ?: throw IllegalArgumentException("The pin code for queue is invalid: ${queuePinCodeDTO.pinCode}")
-        if (user.queues.none { it.queue?.id == queuePinCode.queue?.id }) {
-            val queueEntity = queueRepository.findAll().firstOrNull { it.id == queuePinCode.queue?.id }
-                ?: throw IllegalArgumentException("The pin code for queue is invalid: ${queuePinCodeDTO.pinCode}")
-            val userQueue =
-                createUserQueueEntity(user, queueEntity)
-            userQueueRepository.save(userQueue)
-            // TODO notify others that user joined
+
+        if (queueInviteCodeDTO.pinCode != null) {
+            val pinCode = queueInviteCodeDTO.pinCode
+            val queuePinCode = queuePinCodeRepository.findAll().firstOrNull { it.pinCode == pinCode }
+                ?: throw IllegalArgumentException("The pin code for queue is invalid: $pinCode")
+            val userQueue = user.queues.firstOrNull { it.queue?.id == queuePinCode.queue?.id }
+            if (userQueue == null) {
+                val queueEntity = queueRepository.findAll().firstOrNull { it.id == queuePinCode.queue?.id }
+                    ?: throw IllegalArgumentException("The pin code for queue is invalid: $pinCode")
+                val newUserQueue = userQueueRepository.save(createUserQueueEntity(user, queueEntity))
+                // TODO notify others that user joined
+                return transformQueueToDTO(
+                    queue = newUserQueue.queue,
+                    isActive = newUserQueue.isActive!!,
+                    userId = user.id!!
+                )
+            }
+            return transformQueueToDTO(queue = userQueue.queue, isActive = userQueue.isActive!!, userId = user.id!!)
+        } else if (queueInviteCodeDTO.qrCode != null) {
+            val qrCode = queueInviteCodeDTO.qrCode
+            val queueQrCode = queueQrCodeRepository.findAll().firstOrNull { it.qrCode == qrCode }
+                ?: throw IllegalArgumentException("The QR code for queue is invalid: $qrCode")
+            val userQueue = user.queues.firstOrNull { it.queue?.id == queueQrCode.queue?.id }
+            if (userQueue == null) {
+                val queueEntity = queueRepository.findAll().firstOrNull { it.id == queueQrCode.queue?.id }
+                    ?: throw IllegalArgumentException("The QR code for queue is invalid: $qrCode")
+                val newUserQueue = userQueueRepository.save(createUserQueueEntity(user, queueEntity))
+                // TODO notify others that user joined
+                return transformQueueToDTO(
+                    queue = newUserQueue.queue,
+                    isActive = newUserQueue.isActive!!,
+                    userId = user.id!!
+                )
+            }
+            return transformQueueToDTO(queue = userQueue.queue, isActive = userQueue.isActive!!, userId = user.id!!)
+        } else {
+            throw IllegalArgumentException("Provide qr_code or pin_code!")
         }
     }
 
@@ -212,8 +219,7 @@ class QueueService(
             .map { transformUserToUserExpensesDTO(it, queue) }),
         trackExpenses = queue.trackExpenses!!,
         isActive = isActive,
-        isAdmin = queue.creator?.id == userId,
-        link = queue.link!!
+        isAdmin = queue.creator?.id == userId
     )
 
     private fun sortUserExpensesDTOByFrozen(users: List<UserExpensesDTO>): List<UserExpensesDTO> {
@@ -228,24 +234,12 @@ class QueueService(
         user.queues.firstOrNull { it.queue?.id == queue.id }?.isActive!!
     )
 
-    private fun generateLink(): String {
-        val queuesLinks = queueRepository.findAll().map { it.link }
-        val generator = StringGenerator(16)
-        while (true) {
-            val randomString = generator.generateString()
-            if (!queuesLinks.contains(randomString)) {
-                return randomString
-            }
-        }
-    }
-
     private fun saveQueueEntity(queue: NewQueueDTO, user: User): Queue {
         val queueEntity = Queue()
         queueEntity.name = queue.name
         queueEntity.color = queue.color
         queueEntity.creator = user
         queueEntity.trackExpenses = queue.trackExpenses
-        queueEntity.link = generateLink()
         queueEntity.currentUser = user
         return queueRepository.save(queueEntity)
     }
@@ -265,5 +259,60 @@ class QueueService(
         userQueue.isImportant = false
         userQueue.dateJoined = LocalDateTime.now()
         return userQueue
+    }
+
+    private fun getQueuePinCode(userQueue: UserQueue): String {
+        val queuePinCodes = queuePinCodeRepository.findAll()
+        val queuePinCode = queuePinCodes.firstOrNull { it.queue?.id == userQueue.queue?.id }
+        return if (queuePinCode == null) {
+            val pinCode = generateUniquePinCode(queuePinCodes.map { it.pinCode })
+            val newQueuePinCode = QueuePinCode()
+            newQueuePinCode.queue = userQueue.queue
+            newQueuePinCode.pinCode = pinCode
+            val createdQueuePinCode = queuePinCodeRepository.save(newQueuePinCode)
+            thread(start = true) {
+                Thread.sleep(pinCodeLiveTime)
+                queuePinCodeRepository.delete(createdQueuePinCode)
+            }
+            pinCode
+        } else queuePinCode.pinCode!!
+    }
+
+    private fun getQueueQrCode(userQueue: UserQueue): String {
+        val queueQrCodes = queueQrCodeRepository.findAll()
+        val queueQrCode = queueQrCodes.firstOrNull { it.queue?.id == userQueue.queue?.id }
+        return if (queueQrCode == null) {
+            val qrCode = generateUniqueQRCode(queueQrCodes.map { it.qrCode })
+            val newQueueQrCode = QueueQrCode()
+            newQueueQrCode.queue = userQueue.queue
+            newQueueQrCode.qrCode = qrCode
+            val createdQueueQrCode = queueQrCodeRepository.save(newQueueQrCode)
+            thread(start = true) {
+                Thread.sleep(qrCodeLiveTime)
+                queueQrCodeRepository.delete(createdQueueQrCode)
+            }
+            qrCode
+        } else queueQrCode.qrCode!!
+    }
+
+    private fun generateUniqueQRCode(qrCodes: List<String?>): String {
+        val generator = StringGenerator(qrCodeLength)
+        while (true) {
+            val newQrCode = generator.generateString()
+            if (newQrCode !in qrCodes) {
+                return newQrCode
+            }
+        }
+    }
+
+    private fun generateUniquePinCode(pinCodes: List<String?>): String {
+        while (true) {
+            val newPinCode = (1..pinCodeLength)
+                .map { (0..9).random() }
+                .fold("") { acc: String, i: Int -> acc + i.toString() }
+            if (newPinCode !in pinCodes) {
+                return newPinCode
+            }
+        }
     }
 }

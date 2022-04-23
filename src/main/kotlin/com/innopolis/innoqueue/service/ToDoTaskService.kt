@@ -4,7 +4,7 @@ import com.innopolis.innoqueue.dto.ToDoTaskDTO
 import com.innopolis.innoqueue.model.UserQueue
 import com.innopolis.innoqueue.repository.QueueRepository
 import com.innopolis.innoqueue.repository.UserQueueRepository
-import com.innopolis.innoqueue.utility.UsersQueueLogic
+import com.innopolis.innoqueue.utils.UsersQueueLogic
 import org.springframework.stereotype.Service
 
 @Service

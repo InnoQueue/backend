@@ -23,9 +23,6 @@ open class Queue {
     @Column(name = "track_expenses", nullable = false)
     open var trackExpenses: Boolean? = false
 
-    @Column(name = "link", nullable = false, length = 128)
-    open var link: String? = null
-
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "current_user_id", nullable = false)
     open var currentUser: User? = null

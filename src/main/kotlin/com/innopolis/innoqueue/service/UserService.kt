@@ -5,7 +5,7 @@ import com.innopolis.innoqueue.model.User
 import com.innopolis.innoqueue.model.UserSetting
 import com.innopolis.innoqueue.repository.UserRepository
 import com.innopolis.innoqueue.repository.UserSettingsRepository
-import com.innopolis.innoqueue.utility.StringGenerator
+import com.innopolis.innoqueue.utils.StringGenerator
 import org.springframework.stereotype.Service
 
 @Service
@@ -13,6 +13,8 @@ class UserService(
     private val userRepository: UserRepository,
     private val settingsRepository: UserSettingsRepository,
 ) {
+    private val tokenLength = 16
+
     fun getUserByToken(token: String): User {
         return userRepository.findAll().firstOrNull { user -> user.token == token }
             ?: throw NoSuchElementException("No such user with token: $token")
@@ -20,7 +22,7 @@ class UserService(
 
     fun generateUserToken(): TokenDTO {
         val existingTokens = userRepository.findAll().map { it.token }
-        val generator = StringGenerator(16)
+        val generator = StringGenerator(tokenLength)
         while (true) {
             val randomString = generator.generateString()
             if (!existingTokens.contains(randomString)) {
