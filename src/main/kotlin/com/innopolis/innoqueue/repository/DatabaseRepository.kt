@@ -28,9 +28,6 @@ interface DatabaseRepository : CrudRepository<Queue, Long> {
                 "    name    varchar(64)  not null\n" +
                 ");\n" +
                 "\n" +
-                "alter table \"user\"\n" +
-                "    owner to postgres;\n" +
-                "\n" +
                 "create unique index user_user_id_uindex\n" +
                 "    on \"user\" (user_id);\n" +
                 "\n" +
@@ -52,8 +49,6 @@ interface DatabaseRepository : CrudRepository<Queue, Long> {
                 "    is_read         boolean      not null\n" +
                 ");\n" +
                 "\n" +
-                "alter table user_notifications\n" +
-                "    owner to postgres;\n" +
                 "\n" +
                 "create unique index user_notifications_notification_id_uindex\n" +
                 "    on user_notifications (notification_id);\n" +
@@ -74,9 +69,6 @@ interface DatabaseRepository : CrudRepository<Queue, Long> {
                 "    n4               boolean not null,\n" +
                 "    n5               boolean not null\n" +
                 ");\n" +
-                "\n" +
-                "alter table user_settings\n" +
-                "    owner to postgres;\n" +
                 "\n" +
                 "create unique index user_settings_user_id_uindex\n" +
                 "    on user_settings (user_id);\n" +
@@ -103,9 +95,6 @@ interface DatabaseRepository : CrudRepository<Queue, Long> {
                 "            on update cascade on delete cascade\n" +
                 ");\n" +
                 "\n" +
-                "alter table queue\n" +
-                "    owner to postgres;\n" +
-                "\n" +
                 "create unique index queue_queue_id_uindex\n" +
                 "    on queue (queue_id);\n" +
                 "\n" +
@@ -130,9 +119,6 @@ interface DatabaseRepository : CrudRepository<Queue, Long> {
                 "    date_joined   timestamp not null\n" +
                 ");\n" +
                 "\n" +
-                "alter table user_queue\n" +
-                "    owner to postgres;\n" +
-                "\n" +
                 "create unique index user_queue_user_queue_id_uindex\n" +
                 "    on user_queue (user_queue_id);\n" +
                 "\n" +
@@ -148,9 +134,6 @@ interface DatabaseRepository : CrudRepository<Queue, Long> {
                 "        constraint queue_pin_code_pk\n" +
                 "            primary key\n" +
                 ");\n" +
-                "\n" +
-                "alter table queue_pin_code\n" +
-                "    owner to postgres;\n" +
                 "\n" +
                 "create unique index queue_pin_code_id_uindex\n" +
                 "    on queue_pin_code (id);\n" +
@@ -173,9 +156,6 @@ interface DatabaseRepository : CrudRepository<Queue, Long> {
                 "            on update cascade on delete cascade,\n" +
                 "    qr_code  varchar(64) not null\n" +
                 ");\n" +
-                "\n" +
-                "alter table queue_qr_code\n" +
-                "    owner to postgres;\n" +
                 "\n" +
                 "create unique index queue_qr_code_id_uindex\n" +
                 "    on queue_qr_code (id);\n" +

@@ -17,9 +17,6 @@ create table "user"
     name    varchar(64)  not null
 );
 
-alter table "user"
-    owner to postgres;
-
 create unique index user_user_id_uindex
     on "user" (user_id);
 
@@ -41,8 +38,6 @@ create table user_notifications
     is_read         boolean      not null
 );
 
-alter table user_notifications
-    owner to postgres;
 
 create unique index user_notifications_notification_id_uindex
     on user_notifications (notification_id);
@@ -63,9 +58,6 @@ create table user_settings
     n4               boolean not null,
     n5               boolean not null
 );
-
-alter table user_settings
-    owner to postgres;
 
 create unique index user_settings_user_id_uindex
     on user_settings (user_id);
@@ -92,9 +84,6 @@ create table queue
             on update cascade on delete cascade
 );
 
-alter table queue
-    owner to postgres;
-
 create unique index queue_queue_id_uindex
     on queue (queue_id);
 
@@ -119,9 +108,6 @@ create table user_queue
     date_joined   timestamp not null
 );
 
-alter table user_queue
-    owner to postgres;
-
 create unique index user_queue_user_queue_id_uindex
     on user_queue (user_queue_id);
 
@@ -137,9 +123,6 @@ create table queue_pin_code
         constraint queue_pin_code_pk
             primary key
 );
-
-alter table queue_pin_code
-    owner to postgres;
 
 create unique index queue_pin_code_id_uindex
     on queue_pin_code (id);
@@ -162,9 +145,6 @@ create table queue_qr_code
             on update cascade on delete cascade,
     qr_code  varchar(64) not null
 );
-
-alter table queue_qr_code
-    owner to postgres;
 
 create unique index queue_qr_code_id_uindex
     on queue_qr_code (id);
