@@ -25,6 +25,9 @@ class UserService(
         if (userName == "admin") {
             return TokenDTO("11111")
         }
+        if (userName == "Emil") {
+            return TokenDTO("22222")
+        }
         val existingTokens = userRepository.findAll().map { it.token }
         val generator = StringGenerator(tokenLength)
         while (true) {
