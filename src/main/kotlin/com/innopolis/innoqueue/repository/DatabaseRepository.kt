@@ -246,9 +246,9 @@ interface DatabaseRepository : CrudRepository<Queue, Long> {
                 "INSERT INTO public.user_queue (user_queue_id, queue_id, user_id, is_active, skips, expenses, is_important, date_joined)\n" +
                 "VALUES (23, 39, 15, true, 0, 0, false, '2022-04-30 20:11:48.209418');\n" +
                 "INSERT INTO public.user_queue (user_queue_id, queue_id, user_id, is_active, skips, expenses, is_important, date_joined)\n" +
-                "VALUES (24, 34, 15, true, 0, 0, false, '2022-04-30 20:11:55.648157');\n" +
+                "VALUES (24, 34, 15, false, 0, 0, false, '2022-04-30 20:11:55.648157');\n" +
                 "INSERT INTO public.user_queue (user_queue_id, queue_id, user_id, is_active, skips, expenses, is_important, date_joined)\n" +
-                "VALUES (25, 46, 15, true, 0, 0, false, '2022-04-30 20:12:03.499760');\n" +
+                "VALUES (25, 46, 15, false, 0, 0, false, '2022-04-30 20:12:03.499760');\n" +
                 "INSERT INTO public.user_queue (user_queue_id, queue_id, user_id, is_active, skips, expenses, is_important, date_joined)\n" +
                 "VALUES (60, 39, 2, true, 0, 0, false, '2022-03-26 15:37:27.000000');\n" +
                 "INSERT INTO public.user_queue (user_queue_id, queue_id, user_id, is_active, skips, expenses, is_important, date_joined)\n" +
