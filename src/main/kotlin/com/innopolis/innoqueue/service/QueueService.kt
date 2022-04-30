@@ -198,14 +198,47 @@ class QueueService(
     private fun transformUserQueueListToQueueShortDTO(
         userQueueList: List<UserQueue>
     ): List<QueueShortDTO> =
-        userQueueList.map { it.queue }.map { q -> transformQueueToQueueShortDTO(q) }
+        userQueueList.map { q -> transformQueueToQueueShortDTO(q) }
 
-    private fun transformQueueToQueueShortDTO(queue: Queue?): QueueShortDTO =
-        QueueShortDTO(
+    private fun transformQueueToQueueShortDTO(userQueue: UserQueue): QueueShortDTO {
+        val queue = userQueue.queue
+        return QueueShortDTO(
             queueId = queue?.id!!,
             queueName = queue.name!!,
-            queueColor = queue.color!!
+            queueColor = queue.color!!,
+            hashCode = getHashCode(
+                transformQueueToDTO(
+                    queue = queue,
+                    isActive = userQueue.isActive!!,
+                    userId = userQueue.user?.id!!
+                )
+            )
         )
+    }
+
+    private fun getHashCode(queue: QueueDTO): Int {
+        val hashCodes =
+            mutableListOf(
+                queue.queueId.hashCode(),
+                queue.queueName.hashCode(),
+                queue.queueColor.hashCode(),
+                queue.currentUser.hashCode(),
+                queue.isYourTurn.hashCode(),
+                queue.trackExpenses.hashCode(),
+                queue.isActive.hashCode(),
+                queue.isAdmin.hashCode()
+            )
+        for (p in queue.participants) {
+            hashCodes.add(p.hashCode())
+        }
+
+        var hashCode = 0
+        for (h in hashCodes) {
+            hashCode = (((31 * hashCode) % 100000000) + (h % 100000000)) % 100000000
+        }
+
+        return hashCode
+    }
 
     private fun transformQueueToDTO(queue: Queue?, isActive: Boolean, userId: Long): QueueDTO = QueueDTO(
         queueId = queue?.id!!,

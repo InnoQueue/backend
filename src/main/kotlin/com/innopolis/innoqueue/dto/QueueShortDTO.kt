@@ -8,5 +8,7 @@ class QueueShortDTO(
     @JsonProperty("name")
     val queueName: String,
     @JsonProperty("color")
-    val queueColor: String
+    val queueColor: String,
+    @JsonProperty("hash_code")
+    val hashCode: Int
 )
