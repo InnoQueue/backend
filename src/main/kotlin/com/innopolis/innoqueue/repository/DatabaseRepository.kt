@@ -10,12 +10,19 @@ interface DatabaseRepository : CrudRepository<Queue, Long> {
 
     @Query(
         value = "drop table if exists \"user\" cascade;\n" +
+                "DROP SEQUENCE IF EXISTS user_id_seq;\n" +
                 "drop table if exists user_notifications cascade;\n" +
+                "DROP SEQUENCE IF EXISTS user_notifications_id_seq;\n" +
                 "drop table if exists user_settings cascade;\n" +
+                "DROP SEQUENCE IF EXISTS user_settings_id_seq;\n" +
                 "drop table if exists queue cascade;\n" +
+                "DROP SEQUENCE IF EXISTS queue_id_seq;\n" +
                 "drop table if exists user_queue cascade;\n" +
+                "DROP SEQUENCE IF EXISTS user_queue_id_seq;\n" +
                 "drop table if exists queue_pin_code cascade;\n" +
+                "DROP SEQUENCE IF EXISTS queue_pin_code2_id_seq;\n" +
                 "drop table if exists queue_qr_code cascade;\n" +
+                "DROP SEQUENCE IF EXISTS queue_qr_code2_id_seq;\n" +
                 "\n" +
                 "\n" +
                 "\n" +
@@ -33,6 +40,8 @@ interface DatabaseRepository : CrudRepository<Queue, Long> {
                 "\n" +
                 "create unique index user_token_uindex\n" +
                 "    on \"user\" (token);\n" +
+                "\n" +
+                "CREATE SEQUENCE user_id_seq START WITH 100 INCREMENT BY 1;\n" +
                 "\n" +
                 "\n" +
                 "create table user_notifications\n" +
@@ -52,6 +61,8 @@ interface DatabaseRepository : CrudRepository<Queue, Long> {
                 "\n" +
                 "create unique index user_notifications_notification_id_uindex\n" +
                 "    on user_notifications (notification_id);\n" +
+                "\n" +
+                "CREATE SEQUENCE user_notifications_id_seq START WITH 100 INCREMENT BY 1;\n" +
                 "\n" +
                 "\n" +
                 "create table user_settings\n" +
@@ -76,6 +87,8 @@ interface DatabaseRepository : CrudRepository<Queue, Long> {
                 "create unique index user_settings_user_settings_id_uindex\n" +
                 "    on user_settings (user_settings_id);\n" +
                 "\n" +
+                "CREATE SEQUENCE user_settings_id_seq START WITH 100 INCREMENT BY 1;\n" +
+                "\n" +
                 "\n" +
                 "create table queue\n" +
                 "(\n" +
@@ -97,6 +110,8 @@ interface DatabaseRepository : CrudRepository<Queue, Long> {
                 "\n" +
                 "create unique index queue_queue_id_uindex\n" +
                 "    on queue (queue_id);\n" +
+                "\n" +
+                "CREATE SEQUENCE queue_id_seq START WITH 100 INCREMENT BY 1;\n" +
                 "\n" +
                 "\n" +
                 "create table user_queue\n" +
@@ -122,6 +137,8 @@ interface DatabaseRepository : CrudRepository<Queue, Long> {
                 "create unique index user_queue_user_queue_id_uindex\n" +
                 "    on user_queue (user_queue_id);\n" +
                 "\n" +
+                "CREATE SEQUENCE user_queue_id_seq START WITH 100 INCREMENT BY 1;\n" +
+                "\n" +
                 "\n" +
                 "create table queue_pin_code\n" +
                 "(\n" +
@@ -143,6 +160,8 @@ interface DatabaseRepository : CrudRepository<Queue, Long> {
                 "\n" +
                 "create unique index queue_pin_code_pin_code_uindex\n" +
                 "    on queue_pin_code (pin_code);\n" +
+                "\n" +
+                "CREATE SEQUENCE queue_pin_code2_id_seq START WITH 100 INCREMENT BY 1;\n" +
                 "\n" +
                 "\n" +
                 "create table queue_qr_code\n" +
@@ -166,6 +185,7 @@ interface DatabaseRepository : CrudRepository<Queue, Long> {
                 "create unique index queue_qr_code_qr_code_uindex\n" +
                 "    on queue_qr_code (qr_code);\n" +
                 "\n" +
+                "CREATE SEQUENCE queue_qr_code2_id_seq START WITH 100 INCREMENT BY 1;\n" +
                 "\n" +
                 "\n" +
                 "INSERT INTO public.\"user\" (user_id, token, name)\n" +

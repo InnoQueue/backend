@@ -6,7 +6,8 @@ import javax.persistence.*
 @Table(name = "user_settings")
 open class UserSetting {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(name = "user_settings_generator", sequenceName = "user_settings_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_settings_generator")
     @Column(name = "user_settings_id", nullable = false)
     open var id: Long? = null
 

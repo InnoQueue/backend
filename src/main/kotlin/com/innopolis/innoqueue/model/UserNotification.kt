@@ -7,7 +7,8 @@ import javax.persistence.*
 @Table(name = "user_notifications")
 open class UserNotification {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(name = "user_notifications_generator", sequenceName = "user_notifications_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_notifications_generator")
     @Column(name = "notification_id", nullable = false)
     open var id: Long? = null
 

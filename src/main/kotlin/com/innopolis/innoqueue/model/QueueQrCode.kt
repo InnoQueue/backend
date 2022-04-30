@@ -6,7 +6,8 @@ import javax.persistence.*
 @Table(name = "queue_qr_code")
 open class QueueQrCode {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(name = "queue_qr_codes_generator", sequenceName = "queue_qr_code2_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "queue_qr_codes_generator")
     @Column(name = "id", nullable = false)
     open var id: Long? = null
 

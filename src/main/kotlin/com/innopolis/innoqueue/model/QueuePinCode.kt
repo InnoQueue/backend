@@ -6,7 +6,8 @@ import javax.persistence.*
 @Table(name = "queue_pin_code")
 open class QueuePinCode {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(name = "queue_pin_codes_generator", sequenceName = "queue_pin_code2_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "queue_pin_codes_generator")
     @Column(name = "id", nullable = false)
     open var id: Long? = null
 

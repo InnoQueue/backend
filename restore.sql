@@ -1,10 +1,17 @@
 drop table if exists "user" cascade;
+DROP SEQUENCE IF EXISTS user_id_seq;
 drop table if exists user_notifications cascade;
+DROP SEQUENCE IF EXISTS user_notifications_id_seq;
 drop table if exists user_settings cascade;
+DROP SEQUENCE IF EXISTS user_settings_id_seq;
 drop table if exists queue cascade;
+DROP SEQUENCE IF EXISTS queue_id_seq;
 drop table if exists user_queue cascade;
+DROP SEQUENCE IF EXISTS user_queue_id_seq;
 drop table if exists queue_pin_code cascade;
+DROP SEQUENCE IF EXISTS queue_pin_code2_id_seq;
 drop table if exists queue_qr_code cascade;
+DROP SEQUENCE IF EXISTS queue_qr_code2_id_seq;
 
 
 
@@ -22,6 +29,8 @@ create unique index user_user_id_uindex
 
 create unique index user_token_uindex
     on "user" (token);
+
+CREATE SEQUENCE user_id_seq START WITH 100 INCREMENT BY 1;
 
 
 create table user_notifications
@@ -41,6 +50,8 @@ create table user_notifications
 
 create unique index user_notifications_notification_id_uindex
     on user_notifications (notification_id);
+
+CREATE SEQUENCE user_notifications_id_seq START WITH 100 INCREMENT BY 1;
 
 
 create table user_settings
@@ -65,6 +76,8 @@ create unique index user_settings_user_id_uindex
 create unique index user_settings_user_settings_id_uindex
     on user_settings (user_settings_id);
 
+CREATE SEQUENCE user_settings_id_seq START WITH 100 INCREMENT BY 1;
+
 
 create table queue
 (
@@ -86,6 +99,8 @@ create table queue
 
 create unique index queue_queue_id_uindex
     on queue (queue_id);
+
+CREATE SEQUENCE queue_id_seq START WITH 100 INCREMENT BY 1;
 
 
 create table user_queue
@@ -111,6 +126,8 @@ create table user_queue
 create unique index user_queue_user_queue_id_uindex
     on user_queue (user_queue_id);
 
+CREATE SEQUENCE user_queue_id_seq START WITH 100 INCREMENT BY 1;
+
 
 create table queue_pin_code
 (
@@ -132,6 +149,8 @@ create unique index queue_pin_code_queue_id_uindex
 
 create unique index queue_pin_code_pin_code_uindex
     on queue_pin_code (pin_code);
+
+CREATE SEQUENCE queue_pin_code2_id_seq START WITH 100 INCREMENT BY 1;
 
 
 create table queue_qr_code
@@ -155,6 +174,7 @@ create unique index queue_qr_code_queue_id_uindex
 create unique index queue_qr_code_qr_code_uindex
     on queue_qr_code (qr_code);
 
+CREATE SEQUENCE queue_qr_code2_id_seq START WITH 100 INCREMENT BY 1;
 
 
 INSERT INTO public."user" (user_id, token, name)
