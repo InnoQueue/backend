@@ -26,6 +26,9 @@ class SettingsService(
 
     fun updateSettings(token: String, settings: SettingsDTO): SettingsDTO {
         val user = userService.getUserByToken(token)
+        if (settings.userName.isEmpty()){
+            throw IllegalArgumentException("Username can't be an empty string")
+        }
         user.name = settings.userName
         val newSavedUser = userRepository.save(user)
         val userSettings = newSavedUser.settings!!

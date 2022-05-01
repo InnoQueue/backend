@@ -28,6 +28,9 @@ class UserService(
         if (userName == "Emil") {
             return TokenDTO("22222")
         }
+        if (userName.isEmpty()) {
+            throw IllegalArgumentException("Username can't be an empty string")
+        }
         val existingTokens = userRepository.findAll().map { it.token }
         val generator = StringGenerator(tokenLength)
         while (true) {
