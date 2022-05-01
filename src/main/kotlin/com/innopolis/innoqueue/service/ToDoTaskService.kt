@@ -4,6 +4,7 @@ import com.innopolis.innoqueue.dto.ToDoTaskDTO
 import com.innopolis.innoqueue.model.UserQueue
 import com.innopolis.innoqueue.repository.QueueRepository
 import com.innopolis.innoqueue.repository.UserQueueRepository
+import com.innopolis.innoqueue.utils.NotificationsTypes
 import com.innopolis.innoqueue.utils.UsersQueueLogic
 import org.springframework.stereotype.Service
 
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service
 class ToDoTaskService(
     private val userService: UserService,
     private val queueService: QueueService,
+    private val notificationService: NotificationsService,
     private val userQueueRepository: UserQueueRepository,
     private val queueRepository: QueueRepository
 ) {
@@ -48,7 +50,12 @@ class ToDoTaskService(
             else {
                 saveTaskProgress(queue, expenses)
                 // Assign the next user in a queue
-                UsersQueueLogic.assignNextUser(queue, userQueueRepository, queueRepository)
+                val nextUser = UsersQueueLogic.assignNextUser(queue, userQueueRepository, queueRepository)
+                notificationService.createNotificationMessage(
+                    NotificationsTypes.YOUR_TURN,
+                    nextUser,
+                    queue.queue!!
+                )
             }
         }
     }
@@ -60,8 +67,13 @@ class ToDoTaskService(
         if (user.tasks.firstOrNull { task -> task.id == taskId } != null) {
             queue.skips = queue.skips?.plus(1)
             userQueueRepository.save(queue)
-            //TODO notify about skip
-            UsersQueueLogic.assignNextUser(queue, userQueueRepository, queueRepository)
+            notificationService.createNotificationMessage(NotificationsTypes.SKIPPED, user, queue.queue!!)
+            val nextUser = UsersQueueLogic.assignNextUser(queue, userQueueRepository, queueRepository)
+            notificationService.createNotificationMessage(
+                NotificationsTypes.YOUR_TURN,
+                nextUser,
+                queue.queue!!
+            )
         }
     }
 
@@ -75,7 +87,11 @@ class ToDoTaskService(
             queue.expenses = queue.expenses?.plus(expenses)
         }
         queue.isImportant = false
-        userQueueRepository.save(queue)
-        //TODO notify about complete
+        val savedQueue = userQueueRepository.save(queue)
+        notificationService.createNotificationMessage(
+            NotificationsTypes.COMPLETED,
+            queue.user!!,
+            savedQueue.queue!!
+        )
     }
 }

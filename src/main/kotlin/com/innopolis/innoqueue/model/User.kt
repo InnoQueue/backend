@@ -17,7 +17,7 @@ open class User {
     @Column(name = "name", nullable = false, length = 64)
     open var name: String? = null
 
-    @OneToMany(mappedBy = "user", cascade = [(CascadeType.PERSIST)])
+    @OneToMany(mappedBy = "user")
     open var queues: MutableSet<UserQueue> = mutableSetOf()
 
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "user")
@@ -29,6 +29,6 @@ open class User {
     @OneToMany(mappedBy = "creator")
     open var createdQueues: MutableSet<Queue> = mutableSetOf()
 
-    @OneToMany(mappedBy = "currentUser", cascade = [(CascadeType.PERSIST)])
+    @OneToMany(mappedBy = "currentUser")
     open var tasks: MutableSet<Queue> = mutableSetOf()
 }

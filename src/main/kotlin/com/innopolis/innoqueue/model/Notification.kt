@@ -19,8 +19,8 @@ open class Notification {
     @Column(name = "message_type", nullable = false, length = 32)
     open var messageType: String? = null
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "participant_id")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "participant_id", nullable = false)
     open var participant: User? = null
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

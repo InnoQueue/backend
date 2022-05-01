@@ -11,7 +11,7 @@ object UsersQueueLogic {
         queue: UserQueue,
         userQueueRepository: UserQueueRepository,
         queueRepository: QueueRepository
-    ) {
+    ): User {
         val (usersInQueue, currentUserIndex) = getUsersInQueue(queue, userQueueRepository)
         var index: Int = currentUserIndex!! + 1
         while (true) {
@@ -32,8 +32,7 @@ object UsersQueueLogic {
                 if (queueToUpdate != null) {
                     queueToUpdate.currentUser = nextUser
                     queueRepository.save(queueToUpdate)
-                    //TODO notify about assigning
-                    break
+                    return nextUser
                 }
             }
         }
