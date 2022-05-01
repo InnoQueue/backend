@@ -24,7 +24,7 @@ open class User {
     open var settings: UserSetting? = null
 
     @OneToMany(mappedBy = "user")
-    open var notifications: MutableSet<UserNotification> = mutableSetOf()
+    open var notifications: MutableSet<Notification> = mutableSetOf()
 
     @OneToMany(mappedBy = "creator")
     open var createdQueues: MutableSet<Queue> = mutableSetOf()

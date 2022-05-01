@@ -2,15 +2,15 @@ package com.innopolis.innoqueue.service
 
 import com.innopolis.innoqueue.dto.NotificationDTO
 import com.innopolis.innoqueue.dto.NotificationsListDTO
-import com.innopolis.innoqueue.model.UserNotification
-import com.innopolis.innoqueue.repository.UserNotificationsRepository
+import com.innopolis.innoqueue.model.Notification
+import com.innopolis.innoqueue.repository.NotificationRepository
 import org.springframework.stereotype.Service
 
 @Service
 
 class NotificationsService(
     private val userService: UserService,
-    private val notificationsRepository: UserNotificationsRepository,
+    private val notificationRepository: NotificationRepository,
 ) {
     fun getNotifications(token: String): NotificationsListDTO {
         val user = userService.getUserByToken(token)
@@ -18,13 +18,21 @@ class NotificationsService(
         for (notification in unreadNotifications) {
             notification.isRead = true
         }
-        notificationsRepository.saveAll(unreadNotifications)
+        notificationRepository.saveAll(unreadNotifications)
         return NotificationsListDTO(
             unreadNotifications = mapEntityToDTO(unreadNotifications).sortedBy { n -> n.date },
             allNotifications = mapEntityToDTO(allNotifications).sortedByDescending { n -> n.date }
         )
     }
 
-    private fun mapEntityToDTO(notifications: List<UserNotification>): List<NotificationDTO> =
-        notifications.map { n -> NotificationDTO(n.message!!, n.date!!) }
+    private fun mapEntityToDTO(notifications: List<Notification>): List<NotificationDTO> =
+        notifications.map { n ->
+            NotificationDTO(
+                messageType = n.messageType!!,
+                participantName = n.participant?.name,
+                queueId = n.queue?.id!!,
+                queueName = n.queue?.name!!,
+                date = n.date!!
+            )
+        }
 }
