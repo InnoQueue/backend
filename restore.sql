@@ -231,15 +231,15 @@ VALUES (7, 15, 'SKIPPED', 3, 40, true, '2022-01-12 12:34:25.000000');
 INSERT INTO public.notifications (notification_id, user_id, message_type, participant_id, queue_id, is_read, date)
 VALUES (1, 1, 'JOINED_QUEUE', 5, 44, true, '2022-01-11 19:48:45.000000');
 INSERT INTO public.notifications (notification_id, user_id, message_type, participant_id, queue_id, is_read, date)
-VALUES (6, 1, 'SHOOK', null, 39, false, '2022-01-20 10:01:32.000000');
+VALUES (6, 1, 'SHOOK', 1, 39, false, '2022-01-20 10:01:32.000000');
 INSERT INTO public.notifications (notification_id, user_id, message_type, participant_id, queue_id, is_read, date)
-VALUES (9, 15, 'SHOOK', null, 39, false, '2022-01-20 10:01:32.000000');
+VALUES (9, 15, 'SHOOK', 15, 39, false, '2022-01-20 10:01:32.000000');
 INSERT INTO public.notifications (notification_id, user_id, message_type, participant_id, queue_id, is_read, date)
 VALUES (3, 1, 'SKIPPED', 3, 40, true, '2022-01-12 12:34:25.000000');
 INSERT INTO public.notifications (notification_id, user_id, message_type, participant_id, queue_id, is_read, date)
 VALUES (12, 15, 'COMPLETED', 5, 39, false, '2022-01-14 23:48:55.000000');
 INSERT INTO public.notifications (notification_id, user_id, message_type, participant_id, queue_id, is_read, date)
-VALUES (10, 15, 'YOUR_TURN', null, 39, false, '2022-01-14 23:48:59.000000');
+VALUES (10, 15, 'YOUR_TURN', 15, 39, false, '2022-01-14 23:48:59.000000');
 INSERT INTO public.notifications (notification_id, user_id, message_type, participant_id, queue_id, is_read, date)
 VALUES (8, 15, 'COMPLETED', 2, 44, true, '2022-01-13 11:08:38.000000');
 INSERT INTO public.notifications (notification_id, user_id, message_type, participant_id, queue_id, is_read, date)
@@ -249,7 +249,7 @@ VALUES (2, 1, 'COMPLETED', 2, 44, true, '2022-01-13 11:08:38.000000');
 INSERT INTO public.notifications (notification_id, user_id, message_type, participant_id, queue_id, is_read, date)
 VALUES (5, 1, 'COMPLETED', 5, 39, false, '2022-01-14 23:48:55.000000');
 INSERT INTO public.notifications (notification_id, user_id, message_type, participant_id, queue_id, is_read, date)
-VALUES (4, 1, 'YOUR_TURN', null, 39, false, '2022-01-14 23:48:59.000000');
+VALUES (4, 1, 'YOUR_TURN', 1, 39, false, '2022-01-14 23:48:59.000000');
 
 
 INSERT INTO public.user_queue (user_queue_id, queue_id, user_id, is_active, skips, expenses, is_important, date_joined)

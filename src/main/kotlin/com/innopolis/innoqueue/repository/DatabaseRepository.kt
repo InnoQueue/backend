@@ -242,15 +242,15 @@ interface DatabaseRepository : CrudRepository<Queue, Long> {
                 "INSERT INTO public.notifications (notification_id, user_id, message_type, participant_id, queue_id, is_read, date)\n" +
                 "VALUES (1, 1, 'JOINED_QUEUE', 5, 44, true, '2022-01-11 19:48:45.000000');\n" +
                 "INSERT INTO public.notifications (notification_id, user_id, message_type, participant_id, queue_id, is_read, date)\n" +
-                "VALUES (6, 1, 'SHOOK', null, 39, false, '2022-01-20 10:01:32.000000');\n" +
+                "VALUES (6, 1, 'SHOOK', 1, 39, false, '2022-01-20 10:01:32.000000');\n" +
                 "INSERT INTO public.notifications (notification_id, user_id, message_type, participant_id, queue_id, is_read, date)\n" +
-                "VALUES (9, 15, 'SHOOK', null, 39, false, '2022-01-20 10:01:32.000000');\n" +
+                "VALUES (9, 15, 'SHOOK', 15, 39, false, '2022-01-20 10:01:32.000000');\n" +
                 "INSERT INTO public.notifications (notification_id, user_id, message_type, participant_id, queue_id, is_read, date)\n" +
                 "VALUES (3, 1, 'SKIPPED', 3, 40, true, '2022-01-12 12:34:25.000000');\n" +
                 "INSERT INTO public.notifications (notification_id, user_id, message_type, participant_id, queue_id, is_read, date)\n" +
                 "VALUES (12, 15, 'COMPLETED', 5, 39, false, '2022-01-14 23:48:55.000000');\n" +
                 "INSERT INTO public.notifications (notification_id, user_id, message_type, participant_id, queue_id, is_read, date)\n" +
-                "VALUES (10, 15, 'YOUR_TURN', null, 39, false, '2022-01-14 23:48:59.000000');\n" +
+                "VALUES (10, 15, 'YOUR_TURN', 15, 39, false, '2022-01-14 23:48:59.000000');\n" +
                 "INSERT INTO public.notifications (notification_id, user_id, message_type, participant_id, queue_id, is_read, date)\n" +
                 "VALUES (8, 15, 'COMPLETED', 2, 44, true, '2022-01-13 11:08:38.000000');\n" +
                 "INSERT INTO public.notifications (notification_id, user_id, message_type, participant_id, queue_id, is_read, date)\n" +
@@ -260,7 +260,7 @@ interface DatabaseRepository : CrudRepository<Queue, Long> {
                 "INSERT INTO public.notifications (notification_id, user_id, message_type, participant_id, queue_id, is_read, date)\n" +
                 "VALUES (5, 1, 'COMPLETED', 5, 39, false, '2022-01-14 23:48:55.000000');\n" +
                 "INSERT INTO public.notifications (notification_id, user_id, message_type, participant_id, queue_id, is_read, date)\n" +
-                "VALUES (4, 1, 'YOUR_TURN', null, 39, false, '2022-01-14 23:48:59.000000');\n" +
+                "VALUES (4, 1, 'YOUR_TURN', 1, 39, false, '2022-01-14 23:48:59.000000');\n" +
                 "\n" +
                 "\n" +
                 "INSERT INTO public.user_queue (user_queue_id, queue_id, user_id, is_active, skips, expenses, is_important, date_joined)\n" +
