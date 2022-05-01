@@ -16,5 +16,8 @@ data class ToDoTaskDTO(
     val isImportant: Boolean?,
 
     @JsonProperty("track_expenses")
-    val trackExpenses: Boolean?
+    val trackExpenses: Boolean?,
+
+    @JsonProperty("hash_code")
+    val hashCode: Int
 )

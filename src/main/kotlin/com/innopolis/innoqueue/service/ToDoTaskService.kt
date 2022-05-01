@@ -23,7 +23,8 @@ class ToDoTaskService(
                     name = queue.name,
                     color = queue.color,
                     isImportant = queue.userQueues.firstOrNull { u -> u.user?.id == user.id }?.isImportant,
-                    trackExpenses = queue.trackExpenses
+                    trackExpenses = queue.trackExpenses,
+                    hashCode = queueService.getHashCode(queueService.transformQueueToDTO(queue, true, user.id!!))
                 )
             }
             .toList()

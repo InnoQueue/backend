@@ -16,8 +16,7 @@ class NotificationsService(
         val user = userService.getUserByToken(token)
         val (allNotifications, unreadNotifications) = user.notifications.partition { it.isRead!! }
         for (notification in unreadNotifications) {
-            //todo uncomment
-            //notification.isRead = true
+            notification.isRead = true
         }
         notificationsRepository.saveAll(unreadNotifications)
         return NotificationsListDTO(

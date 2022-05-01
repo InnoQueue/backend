@@ -12,6 +12,7 @@ import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 import kotlin.concurrent.thread
+import kotlin.math.abs
 
 @Service
 class QueueService(
@@ -216,7 +217,7 @@ class QueueService(
         )
     }
 
-    private fun getHashCode(queue: QueueDTO): Int {
+    fun getHashCode(queue: QueueDTO): Int {
         val hashCodes =
             mutableListOf(
                 queue.queueId.hashCode(),
@@ -234,13 +235,13 @@ class QueueService(
 
         var hashCode = 0
         for (h in hashCodes) {
-            hashCode = (((31 * hashCode) % 100000000) + (h % 100000000)) % 100000000
+            hashCode = abs((((31 * hashCode) % 100000000) + (abs(h) % 100000000))) % 100000000
         }
 
         return hashCode
     }
 
-    private fun transformQueueToDTO(queue: Queue?, isActive: Boolean, userId: Long): QueueDTO = QueueDTO(
+    fun transformQueueToDTO(queue: Queue?, isActive: Boolean, userId: Long): QueueDTO = QueueDTO(
         queueId = queue?.id!!,
         queueName = queue.name!!,
         queueColor = queue.color!!,
