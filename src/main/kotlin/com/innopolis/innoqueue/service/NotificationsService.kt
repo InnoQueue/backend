@@ -54,7 +54,7 @@ class NotificationsService(
                     notification.messageType = this.convertToMessageType(notificationType)
                     notification.queue = queue
                     notification.isRead = false
-                    notification.date = LocalDateTime.now()
+                    notification.date = LocalDateTime.now().plusHours(3)
                     notifications.add(notification)
                 }
                 notificationRepository.saveAll(notifications)
