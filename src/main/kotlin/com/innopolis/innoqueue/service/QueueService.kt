@@ -248,7 +248,7 @@ class QueueService(
         currentUser = transformUserToUserExpensesDTO(queue.currentUser, queue),
         isYourTurn = queue.currentUser?.id == userId,
         participants = sortUserExpensesDTOByFrozen(queue.userQueues
-            .filter { it.user?.id != userId && it.user?.id != queue.currentUser?.id }
+            .filter { it.user?.id != queue.currentUser?.id }
             .map { userQueue -> userQueue.user }
             .map { transformUserToUserExpensesDTO(it, queue) }),
         trackExpenses = queue.trackExpenses!!,
