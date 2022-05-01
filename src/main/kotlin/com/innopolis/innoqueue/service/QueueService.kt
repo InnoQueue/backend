@@ -73,6 +73,12 @@ class QueueService(
         if (userQueue.queue?.creator?.id != user.id) {
             throw IllegalArgumentException("User is not an admin in this queue: ${editQueue.queueId}")
         }
+        if (editQueue.name.isEmpty()) {
+            throw IllegalArgumentException("Queue name can't be an empty string")
+        }
+        if (editQueue.color.isEmpty()) {
+            throw IllegalArgumentException("Queue color can't be an empty string")
+        }
         val queueEntity = queueRepository.findByIdOrNull(editQueue.queueId)
             ?: throw NoSuchElementException("Queue does not exist. ID: ${editQueue.queueId}")
         queueEntity.name = editQueue.name
@@ -269,6 +275,12 @@ class QueueService(
     )
 
     private fun saveQueueEntity(queue: NewQueueDTO, user: User): Queue {
+        if (queue.name.isEmpty()) {
+            throw IllegalArgumentException("Queue name can't be an empty string")
+        }
+        if (queue.color.isEmpty()) {
+            throw IllegalArgumentException("Queue color can't be an empty string")
+        }
         val queueEntity = Queue()
         queueEntity.name = queue.name
         queueEntity.color = queue.color
