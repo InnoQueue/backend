@@ -21,4 +21,6 @@ data class QueueDTO(
     val isActive: Boolean,
     @JsonProperty("is_admin")
     val isAdmin: Boolean,
+    @JsonProperty("hash_code")
+    var hashCode: Int
 )

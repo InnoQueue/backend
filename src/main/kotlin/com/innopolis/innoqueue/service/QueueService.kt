@@ -54,7 +54,7 @@ class QueueService(
         val user = userService.getUserByToken(token)
         val createdQueue = saveQueueEntity(queue, user)
         saveUserQueueEntity(createdQueue, user)
-        return QueueDTO(
+        val qDTO = QueueDTO(
             queueId = createdQueue.id!!,
             queueName = createdQueue.name!!,
             queueColor = createdQueue.color!!,
@@ -63,8 +63,11 @@ class QueueService(
             participants = emptyList(),
             trackExpenses = createdQueue.trackExpenses!!,
             isActive = true,
-            isAdmin = true
+            isAdmin = true,
+            hashCode = 0
         )
+        qDTO.hashCode = getHashCode(qDTO)
+        return qDTO
     }
 
     fun editQueue(token: String, editQueue: EditQueueDTO): QueueDTO {
@@ -262,20 +265,25 @@ class QueueService(
         return hashCode
     }
 
-    fun transformQueueToDTO(queue: Queue?, isActive: Boolean, userId: Long): QueueDTO = QueueDTO(
-        queueId = queue?.id!!,
-        queueName = queue.name!!,
-        queueColor = queue.color!!,
-        currentUser = transformUserToUserExpensesDTO(queue.currentUser, queue),
-        isYourTurn = queue.currentUser?.id == userId,
-        participants = sortUserExpensesDTOByFrozen(queue.userQueues
-            .filter { it.user?.id != queue.currentUser?.id }
-            .map { userQueue -> userQueue.user }
-            .map { transformUserToUserExpensesDTO(it, queue) }),
-        trackExpenses = queue.trackExpenses!!,
-        isActive = isActive,
-        isAdmin = queue.creator?.id == userId
-    )
+    fun transformQueueToDTO(queue: Queue?, isActive: Boolean, userId: Long): QueueDTO {
+        val qDTO = QueueDTO(
+            queueId = queue?.id!!,
+            queueName = queue.name!!,
+            queueColor = queue.color!!,
+            currentUser = transformUserToUserExpensesDTO(queue.currentUser, queue),
+            isYourTurn = queue.currentUser?.id == userId,
+            participants = sortUserExpensesDTOByFrozen(queue.userQueues
+                .filter { it.user?.id != queue.currentUser?.id }
+                .map { userQueue -> userQueue.user }
+                .map { transformUserToUserExpensesDTO(it, queue) }),
+            trackExpenses = queue.trackExpenses!!,
+            isActive = isActive,
+            isAdmin = queue.creator?.id == userId,
+            hashCode = 0
+        )
+        qDTO.hashCode = getHashCode(qDTO)
+        return qDTO
+    }
 
     private fun sortUserExpensesDTOByFrozen(users: List<UserExpensesDTO>): List<UserExpensesDTO> {
         val (activeUsers, frozenUsers) = users.partition { it.isActive }
