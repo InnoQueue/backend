@@ -13,7 +13,7 @@ class UserService(
     private val userRepository: UserRepository,
     private val settingsRepository: UserSettingsRepository,
 ) {
-    private val tokenLength = 16
+    private val tokenLength = 64
 
     fun getUserByToken(token: String): User {
         return userRepository.findAll().firstOrNull { user -> user.token == token }
