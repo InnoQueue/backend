@@ -71,7 +71,7 @@ class ToDoTaskService(
     }
 
     private fun saveTaskProgress(queue: UserQueue, expenses: Int?) {
-        if (expenses != null) {
+        if (expenses != null && queue.queue?.trackExpenses == true) {
             queue.expenses = queue.expenses?.plus(expenses)
         }
         queue.isImportant = false
