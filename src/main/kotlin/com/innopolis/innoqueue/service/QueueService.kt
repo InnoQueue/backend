@@ -68,29 +68,50 @@ class QueueService(
     }
 
     fun editQueue(token: String, editQueue: EditQueueDTO): QueueDTO {
+        if (editQueue.queueId == null) {
+            throw IllegalArgumentException("Queue id should be specified")
+        }
         val user = userService.getUserByToken(token)
         val userQueue = getUserQueueByQueueId(user, editQueue.queueId)
         if (userQueue.queue?.creator?.id != user.id) {
             throw IllegalArgumentException("User is not an admin in this queue: ${editQueue.queueId}")
         }
-        if (editQueue.name.isEmpty()) {
-            throw IllegalArgumentException("Queue name can't be an empty string")
-        }
-        if (editQueue.color.isEmpty()) {
-            throw IllegalArgumentException("Queue color can't be an empty string")
-        }
         val queueEntity = queueRepository.findByIdOrNull(editQueue.queueId)
             ?: throw NoSuchElementException("Queue does not exist. ID: ${editQueue.queueId}")
-        queueEntity.name = editQueue.name
-        queueEntity.color = editQueue.color
-        queueEntity.trackExpenses = editQueue.trackExpenses
-        val updatedQueue = queueRepository.save(queueEntity)
-        val userToDelete = userQueueRepository
-            .findAll()
-            .filter { it.queue?.id == updatedQueue.id }
-            .filter { it.user?.id !in editQueue.participants }
-            .filter { it.user?.id != user.id }
-        userQueueRepository.deleteAll(userToDelete)
+
+        var changed = false
+        if (editQueue.name != null) {
+            if (editQueue.name.isEmpty()) {
+                throw IllegalArgumentException("Queue name can't be an empty string")
+            }
+            queueEntity.name = editQueue.name
+            changed = true
+        }
+        if (editQueue.color != null) {
+            if (editQueue.color.isEmpty()) {
+                throw IllegalArgumentException("Queue color can't be an empty string")
+            }
+            queueEntity.color = editQueue.color
+            changed = true
+        }
+        if (editQueue.trackExpenses != null) {
+            queueEntity.trackExpenses = editQueue.trackExpenses
+            changed = true
+        }
+        val updatedQueue = when (changed) {
+            true -> queueRepository.save(queueEntity)
+            false -> queueEntity
+        }
+        if (editQueue.participants != null) {
+            val userToDelete = userQueueRepository
+                .findAll()
+                .filter { it.queue?.id == updatedQueue.id }
+                .filter { it.user?.id !in editQueue.participants }
+                .filter { it.user?.id != user.id }
+            if (userToDelete.isNotEmpty()) {
+                userQueueRepository.deleteAll(userToDelete)
+            }
+        }
 
         return QueueDTO(
             queueId = updatedQueue.id!!,
@@ -101,6 +122,7 @@ class QueueService(
             participants = userQueueRepository
                 .findAll()
                 .filter { it.queue?.id == updatedQueue.id }
+                .filter { it.user?.id != updatedQueue.currentUser?.id }
                 .map { transformUserToUserExpensesDTO(it.user, updatedQueue) },
             trackExpenses = updatedQueue.trackExpenses!!,
             isActive = updatedQueue.userQueues.firstOrNull { it.user?.id == user.id }?.isActive!!,

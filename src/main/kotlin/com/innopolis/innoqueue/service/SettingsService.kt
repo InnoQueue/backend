@@ -1,6 +1,7 @@
 package com.innopolis.innoqueue.service
 
 import com.innopolis.innoqueue.dto.SettingsDTO
+import com.innopolis.innoqueue.model.User
 import com.innopolis.innoqueue.repository.UserRepository
 import com.innopolis.innoqueue.repository.UserSettingsRepository
 import org.springframework.stereotype.Service
@@ -26,18 +27,35 @@ class SettingsService(
 
     fun updateSettings(token: String, settings: SettingsDTO): SettingsDTO {
         val user = userService.getUserByToken(token)
-        if (settings.userName.isEmpty()){
-            throw IllegalArgumentException("Username can't be an empty string")
-        }
-        user.name = settings.userName
-        val newSavedUser = userRepository.save(user)
+        var (newSavedUser, changed) = updateUserNameOrDefault(user, settings)
+
         val userSettings = newSavedUser.settings!!
-        userSettings.n1 = settings.n1
-        userSettings.n2 = settings.n2
-        userSettings.n3 = settings.n3
-        userSettings.n4 = settings.n4
-        userSettings.n5 = settings.n5
-        val updatedSettings = settingsRepository.save(userSettings)
+        if (settings.n1 != null) {
+            userSettings.n1 = settings.n1
+            changed = true
+        }
+        if (settings.n2 != null) {
+            userSettings.n2 = settings.n2
+            changed = true
+        }
+        if (settings.n3 != null) {
+            userSettings.n3 = settings.n3
+            changed = true
+        }
+        if (settings.n4 != null) {
+            userSettings.n4 = settings.n4
+            changed = true
+        }
+        if (settings.n5 != null) {
+            userSettings.n5 = settings.n5
+            changed = true
+        }
+        val updatedSettings = when (changed) {
+            true -> {
+                settingsRepository.save(userSettings)
+            }
+            false -> userSettings
+        }
         return SettingsDTO(
             newSavedUser.name!!,
             updatedSettings.n1!!,
@@ -46,5 +64,17 @@ class SettingsService(
             updatedSettings.n4!!,
             updatedSettings.n5!!
         )
+    }
+
+    private fun updateUserNameOrDefault(user: User, settings: SettingsDTO): Pair<User, Boolean> {
+        return if (settings.userName != null) {
+            if (settings.userName.isEmpty()) {
+                throw IllegalArgumentException("Username can't be an empty string")
+            }
+            user.name = settings.userName
+            userRepository.save(user) to true
+        } else {
+            user to false
+        }
     }
 }

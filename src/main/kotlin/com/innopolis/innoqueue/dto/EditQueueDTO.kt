@@ -4,13 +4,13 @@ import com.fasterxml.jackson.annotation.JsonProperty
 
 data class EditQueueDTO(
     @JsonProperty("id")
-    val queueId: Long,
+    val queueId: Long?,
     @JsonProperty("name")
-    val name: String,
+    val name: String?,
     @JsonProperty("color")
-    val color: String,
+    val color: String?,
     @JsonProperty("track_expenses")
-    val trackExpenses: Boolean,
+    val trackExpenses: Boolean?,
     @JsonProperty("participants")
-    val participants: List<Long>
+    val participants: List<Long>?
 )
