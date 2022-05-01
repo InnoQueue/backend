@@ -253,7 +253,7 @@ VALUES (4, 1, 'YOUR_TURN', null, 39, false, '2022-01-14 23:48:59.000000');
 
 
 INSERT INTO public.user_queue (user_queue_id, queue_id, user_id, is_active, skips, expenses, is_important, date_joined)
-VALUES (19, 44, 15, true, 0, 0, false, '2022-04-30 20:11:05.312758');
+VALUES (19, 44, 15, false, 0, 0, false, '2022-04-30 20:11:05.312758');
 INSERT INTO public.user_queue (user_queue_id, queue_id, user_id, is_active, skips, expenses, is_important, date_joined)
 VALUES (23, 39, 15, true, 0, 0, false, '2022-04-30 20:11:48.209418');
 INSERT INTO public.user_queue (user_queue_id, queue_id, user_id, is_active, skips, expenses, is_important, date_joined)
@@ -285,7 +285,7 @@ VALUES (93, 46, 4, true, 0, 50, false, '2022-03-26 16:07:34.000000');
 INSERT INTO public.user_queue (user_queue_id, queue_id, user_id, is_active, skips, expenses, is_important, date_joined)
 VALUES (76, 34, 4, true, 0, 230, false, '2022-03-26 16:04:22.000000');
 INSERT INTO public.user_queue (user_queue_id, queue_id, user_id, is_active, skips, expenses, is_important, date_joined)
-VALUES (25, 46, 15, false, 0, 40, false, '2022-04-30 20:12:03.499760');
+VALUES (25, 46, 15, true, 0, 40, false, '2022-04-30 20:12:03.499760');
 INSERT INTO public.user_queue (user_queue_id, queue_id, user_id, is_active, skips, expenses, is_important, date_joined)
 VALUES (69, 40, 1, true, 0, 92, false, '2022-03-26 15:58:31.000000');
 INSERT INTO public.user_queue (user_queue_id, queue_id, user_id, is_active, skips, expenses, is_important, date_joined)
@@ -305,7 +305,7 @@ VALUES (77, 34, 5, true, 0, 190, false, '2022-03-26 16:04:23.000000');
 INSERT INTO public.user_queue (user_queue_id, queue_id, user_id, is_active, skips, expenses, is_important, date_joined)
 VALUES (22, 6, 15, true, 0, 123, false, '2022-04-30 20:11:39.530443');
 INSERT INTO public.user_queue (user_queue_id, queue_id, user_id, is_active, skips, expenses, is_important, date_joined)
-VALUES (20, 40, 15, true, 0, 85, false, '2022-04-30 20:11:11.922780');
+VALUES (20, 40, 15, false, 0, 85, false, '2022-04-30 20:11:11.922780');
 INSERT INTO public.user_queue (user_queue_id, queue_id, user_id, is_active, skips, expenses, is_important, date_joined)
 VALUES (71, 6, 3, true, 0, 100, false, '2022-03-26 16:03:28.000000');
 INSERT INTO public.user_queue (user_queue_id, queue_id, user_id, is_active, skips, expenses, is_important, date_joined)
@@ -321,6 +321,6 @@ VALUES (91, 46, 2, true, 0, 35, false, '2022-03-26 16:07:32.000000');
 INSERT INTO public.user_queue (user_queue_id, queue_id, user_id, is_active, skips, expenses, is_important, date_joined)
 VALUES (10, 6, 1, true, 0, 140, false, '2022-03-02 22:36:56.000000');
 INSERT INTO public.user_queue (user_queue_id, queue_id, user_id, is_active, skips, expenses, is_important, date_joined)
-VALUES (24, 34, 15, false, 0, 248, false, '2022-04-30 20:11:55.648157');
+VALUES (24, 34, 15, true, 0, 248, false, '2022-04-30 20:11:55.648157');
 INSERT INTO public.user_queue (user_queue_id, queue_id, user_id, is_active, skips, expenses, is_important, date_joined)
 VALUES (84, 40, 3, true, 0, 80, false, '2022-03-26 16:05:59.000000');

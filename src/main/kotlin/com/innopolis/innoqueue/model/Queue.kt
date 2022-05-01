@@ -28,6 +28,6 @@ open class Queue {
     @JoinColumn(name = "current_user_id", nullable = false)
     open var currentUser: User? = null
 
-    @OneToMany(mappedBy = "queue")
+    @OneToMany(mappedBy = "queue", cascade = [(CascadeType.PERSIST)])
     open var userQueues: MutableSet<UserQueue> = mutableSetOf()
 }

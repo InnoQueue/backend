@@ -79,6 +79,8 @@ class QueueService(
         val queueEntity = queueRepository.findByIdOrNull(editQueue.queueId)
             ?: throw NoSuchElementException("Queue does not exist. ID: ${editQueue.queueId}")
 
+        print(queueEntity.userQueues.size)
+
         var changed = false
         if (editQueue.name != null) {
             if (editQueue.name.isEmpty()) {
@@ -113,21 +115,7 @@ class QueueService(
             }
         }
 
-        return QueueDTO(
-            queueId = updatedQueue.id!!,
-            queueName = updatedQueue.name!!,
-            queueColor = updatedQueue.color!!,
-            currentUser = transformUserToUserExpensesDTO(updatedQueue.currentUser, updatedQueue),
-            isYourTurn = updatedQueue.currentUser?.id == user.id,
-            participants = userQueueRepository
-                .findAll()
-                .filter { it.queue?.id == updatedQueue.id }
-                .filter { it.user?.id != updatedQueue.currentUser?.id }
-                .map { transformUserToUserExpensesDTO(it.user, updatedQueue) },
-            trackExpenses = updatedQueue.trackExpenses!!,
-            isActive = updatedQueue.userQueues.firstOrNull { it.user?.id == user.id }?.isActive!!,
-            isAdmin = true
-        )
+        return getQueueById(token, updatedQueue.id!!)
     }
 
     fun getUserQueueByQueueId(user: User, queueId: Long): UserQueue {
@@ -221,6 +209,11 @@ class QueueService(
         if (userQueue.queue?.currentUser?.id == user.id) {
             throw IllegalArgumentException("You can't shake yourself!")
         }
+
+        val participantQueue = userQueue.queue?.currentUser?.queues?.firstOrNull { it.queue?.id == queueId }
+            ?: throw IllegalArgumentException("The queueId is invalid")
+        participantQueue.isImportant = true
+        userQueueRepository.save(participantQueue)
         // TODO notification, shake user
     }
 

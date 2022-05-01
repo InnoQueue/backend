@@ -264,7 +264,7 @@ interface DatabaseRepository : CrudRepository<Queue, Long> {
                 "\n" +
                 "\n" +
                 "INSERT INTO public.user_queue (user_queue_id, queue_id, user_id, is_active, skips, expenses, is_important, date_joined)\n" +
-                "VALUES (19, 44, 15, true, 0, 0, false, '2022-04-30 20:11:05.312758');\n" +
+                "VALUES (19, 44, 15, false, 0, 0, false, '2022-04-30 20:11:05.312758');\n" +
                 "INSERT INTO public.user_queue (user_queue_id, queue_id, user_id, is_active, skips, expenses, is_important, date_joined)\n" +
                 "VALUES (23, 39, 15, true, 0, 0, false, '2022-04-30 20:11:48.209418');\n" +
                 "INSERT INTO public.user_queue (user_queue_id, queue_id, user_id, is_active, skips, expenses, is_important, date_joined)\n" +
@@ -296,7 +296,7 @@ interface DatabaseRepository : CrudRepository<Queue, Long> {
                 "INSERT INTO public.user_queue (user_queue_id, queue_id, user_id, is_active, skips, expenses, is_important, date_joined)\n" +
                 "VALUES (76, 34, 4, true, 0, 230, false, '2022-03-26 16:04:22.000000');\n" +
                 "INSERT INTO public.user_queue (user_queue_id, queue_id, user_id, is_active, skips, expenses, is_important, date_joined)\n" +
-                "VALUES (25, 46, 15, false, 0, 40, false, '2022-04-30 20:12:03.499760');\n" +
+                "VALUES (25, 46, 15, true, 0, 40, false, '2022-04-30 20:12:03.499760');\n" +
                 "INSERT INTO public.user_queue (user_queue_id, queue_id, user_id, is_active, skips, expenses, is_important, date_joined)\n" +
                 "VALUES (69, 40, 1, true, 0, 92, false, '2022-03-26 15:58:31.000000');\n" +
                 "INSERT INTO public.user_queue (user_queue_id, queue_id, user_id, is_active, skips, expenses, is_important, date_joined)\n" +
@@ -316,7 +316,7 @@ interface DatabaseRepository : CrudRepository<Queue, Long> {
                 "INSERT INTO public.user_queue (user_queue_id, queue_id, user_id, is_active, skips, expenses, is_important, date_joined)\n" +
                 "VALUES (22, 6, 15, true, 0, 123, false, '2022-04-30 20:11:39.530443');\n" +
                 "INSERT INTO public.user_queue (user_queue_id, queue_id, user_id, is_active, skips, expenses, is_important, date_joined)\n" +
-                "VALUES (20, 40, 15, true, 0, 85, false, '2022-04-30 20:11:11.922780');\n" +
+                "VALUES (20, 40, 15, false, 0, 85, false, '2022-04-30 20:11:11.922780');\n" +
                 "INSERT INTO public.user_queue (user_queue_id, queue_id, user_id, is_active, skips, expenses, is_important, date_joined)\n" +
                 "VALUES (71, 6, 3, true, 0, 100, false, '2022-03-26 16:03:28.000000');\n" +
                 "INSERT INTO public.user_queue (user_queue_id, queue_id, user_id, is_active, skips, expenses, is_important, date_joined)\n" +
@@ -332,7 +332,7 @@ interface DatabaseRepository : CrudRepository<Queue, Long> {
                 "INSERT INTO public.user_queue (user_queue_id, queue_id, user_id, is_active, skips, expenses, is_important, date_joined)\n" +
                 "VALUES (10, 6, 1, true, 0, 140, false, '2022-03-02 22:36:56.000000');\n" +
                 "INSERT INTO public.user_queue (user_queue_id, queue_id, user_id, is_active, skips, expenses, is_important, date_joined)\n" +
-                "VALUES (24, 34, 15, false, 0, 248, false, '2022-04-30 20:11:55.648157');\n" +
+                "VALUES (24, 34, 15, true, 0, 248, false, '2022-04-30 20:11:55.648157');\n" +
                 "INSERT INTO public.user_queue (user_queue_id, queue_id, user_id, is_active, skips, expenses, is_important, date_joined)\n" +
                 "VALUES (84, 40, 3, true, 0, 80, false, '2022-03-26 16:05:59.000000');\n",
         nativeQuery = true
