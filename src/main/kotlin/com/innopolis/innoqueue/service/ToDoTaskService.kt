@@ -17,6 +17,7 @@ class ToDoTaskService(
     fun getTasks(token: String): List<ToDoTaskDTO> {
         val user = userService.getUserByToken(token)
         val tasks = user.tasks
+            .filter { queue -> queue.userQueues.size > 1 }
             .map { queue ->
                 ToDoTaskDTO(
                     queueId = queue.id,
