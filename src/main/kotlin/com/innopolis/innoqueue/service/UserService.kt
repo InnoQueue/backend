@@ -25,14 +25,21 @@ class UserService(
         return userRepository.findByIdOrNull(userId)
     }
 
-    fun generateUserToken(userName: String): TokenDTO {
+    fun generateUserToken(userName: String, fcmToken: String): TokenDTO {
         // TODO remove after demo presentation
         if (userName == "admin") {
+            val u = userRepository.findByIdOrNull(1)!!
+            u.fcmToken = fcmToken
+            userRepository.save(u)
             return TokenDTO("11111", 1)
         }
         if (userName == "Emil") {
+            val u = userRepository.findByIdOrNull(15)!!
+            u.fcmToken = fcmToken
+            userRepository.save(u)
             return TokenDTO("22222", 15)
         }
+
         if (userName.isEmpty()) {
             throw IllegalArgumentException("Username can't be an empty string")
         }
@@ -41,15 +48,21 @@ class UserService(
         while (true) {
             val randomString = generator.generateString()
             if (!existingTokens.contains(randomString)) {
-                val newUser = User()
-                newUser.token = randomString
-                newUser.name = userName
-                val savedUser = userRepository.save(newUser)
-                val settings = UserSetting()
-                settings.user = newUser
-                settingsRepository.save(settings)
+                val savedUser = createNewUser(randomString, userName, fcmToken)
                 return TokenDTO(randomString, savedUser.id!!)
             }
         }
+    }
+
+    private fun createNewUser(token: String, userName: String, fcmToken: String): User {
+        val newUser = User()
+        newUser.name = userName
+        newUser.token = token
+        newUser.fcmToken = fcmToken
+        val savedUser = userRepository.save(newUser)
+        val settings = UserSetting()
+        settings.user = newUser
+        settingsRepository.save(settings)
+        return savedUser
     }
 }

@@ -17,6 +17,9 @@ open class User {
     @Column(name = "name", nullable = false, length = 64)
     open var name: String? = null
 
+    @Column(name = "fcm_token", nullable = false, length = 256)
+    open var fcmToken: String? = null
+
     @OneToMany(mappedBy = "user")
     open var queues: MutableSet<UserQueue> = mutableSetOf()
 

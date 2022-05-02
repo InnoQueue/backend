@@ -17,5 +17,5 @@ class UserController(private val service: UserService) {
     @PostMapping("/signup")
     @ResponseStatus(HttpStatus.OK)
     fun generateUserToken(@RequestBody newUserDTO: NewUserDTO): TokenDTO =
-        service.generateUserToken(newUserDTO.userName)
+        service.generateUserToken(newUserDTO.userName, newUserDTO.fcmToken)
 }

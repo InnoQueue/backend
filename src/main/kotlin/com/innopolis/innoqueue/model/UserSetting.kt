@@ -15,18 +15,21 @@ open class UserSetting {
     @JoinColumn(name = "user_id", nullable = false)
     open var user: User? = null
 
-    @Column(name = "n1", nullable = false)
-    open var n1: Boolean? = true
+    @Column(name = "completed", nullable = false)
+    open var completed: Boolean? = true
 
-    @Column(name = "n2", nullable = false)
-    open var n2: Boolean? = true
+    @Column(name = "skipped", nullable = false)
+    open var skipped: Boolean? = true
 
-    @Column(name = "n3", nullable = false)
-    open var n3: Boolean? = true
+    @Column(name = "joined_queue", nullable = false)
+    open var joinedQueue: Boolean? = true
 
-    @Column(name = "n4", nullable = false)
-    open var n4: Boolean? = true
+    @Column(name = "\"freeze\"", nullable = false)
+    open var freeze: Boolean? = true
 
-    @Column(name = "n5", nullable = false)
-    open var n5: Boolean? = true
+    @Column(name = "left_queue", nullable = false)
+    open var leftQueue: Boolean? = true
+
+    @Column(name = "your_turn", nullable = false)
+    open var yourTurn: Boolean? = true
 }

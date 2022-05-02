@@ -5,8 +5,10 @@ import com.innopolis.innoqueue.dto.NotificationsListDTO
 import com.innopolis.innoqueue.model.Notification
 import com.innopolis.innoqueue.model.Queue
 import com.innopolis.innoqueue.model.User
+import com.innopolis.innoqueue.model.UserQueue
 import com.innopolis.innoqueue.repository.NotificationRepository
 import com.innopolis.innoqueue.repository.QueueRepository
+import com.innopolis.innoqueue.utils.MessagePushNotificationCreator
 import com.innopolis.innoqueue.utils.NotificationsTypes
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
@@ -17,6 +19,7 @@ import java.time.ZoneOffset
 
 class NotificationsService(
     private val userService: UserService,
+    private val firebaseMessagingService: FirebaseMessagingNotificationsService,
     private val notificationRepository: NotificationRepository,
     private val queueRepository: QueueRepository,
 ) {
@@ -42,32 +45,118 @@ class NotificationsService(
         participant: User,
         queue: Queue
     ) {
-        when (notificationType) {
-            NotificationsTypes.SHOOK -> {
-                val notification = Notification()
-                notification.user = participant
-                notification.participantId = participant.id!!
-                notification.messageType = this.convertToMessageType(notificationType)
-                notification.queueId = queue.id!!
-                notification.isRead = false
-                notification.date = LocalDateTime.now(ZoneOffset.UTC)
-                notificationRepository.save(notification)
-            }
-            else -> {
-                val notifications = mutableListOf<Notification>()
-                for (userQueue in queue.userQueues) {
-                    val notification = Notification()
-                    notification.user = userQueue.user
-                    notification.participantId = participant.id!!
-                    notification.messageType = this.convertToMessageType(notificationType)
-                    notification.queueId = queue.id!!
-                    notification.isRead = false
-                    notification.date = LocalDateTime.now(ZoneOffset.UTC)
-                    notifications.add(notification)
+        val notifications = prepareNotificationsListToSend(notificationType, participant, queue)
+        notificationRepository.saveAll(notifications)
+        sendNotificationsToFirebase(notifications, notificationType, participant, queue)
+    }
+
+    private fun sendNotificationsToFirebase(
+        notifications: List<Notification>,
+        notificationType: NotificationsTypes,
+        participant: User,
+        queue: Queue
+    ) {
+        for (message in notifications) {
+            val isPersonal = message.user?.id!! == participant.id!!
+            val queueName = queue.name!!
+            val queueId = queue.id!!
+            val participantName = participant.name!!
+            val (title, body) = MessagePushNotificationCreator(
+                notificationType,
+                queueName,
+                isPersonal,
+                participantName
+            ).getTitleAndBodyForMessage()
+            if (title != null && body != null) {
+                val token = message.user?.fcmToken!!
+                try {
+                    val dataMap = HashMap<String, String?>()
+                    dataMap["title"] = title
+                    dataMap["body"] = body
+                    dataMap["queue_id"] = queueId.toString()
+                    dataMap["queue_name"] = queueName
+                    dataMap["participant_name"] = participantName
+                    firebaseMessagingService.sendNotification(title, body, token, dataMap)
+                } catch (_: Exception) {
                 }
-                notificationRepository.saveAll(notifications)
             }
         }
+    }
+
+    private fun prepareNotificationsListToSend(
+        notificationType: NotificationsTypes,
+        participant: User,
+        queue: Queue
+    ): List<Notification> {
+        val messageType = this.convertToMessageType(notificationType)
+        val notifications = mutableListOf<Notification>()
+
+        when (notificationType) {
+            NotificationsTypes.SHOOK -> {
+                val notification = createNotification(participant, participant.id!!, messageType, queue.id!!)
+                notifications.add(notification)
+            }
+            else -> {
+                val participantId = participant.id!!
+                for (userQueue in queue.userQueues) {
+                    if (shouldSendMessage(notificationType, userQueue, participantId)) {
+                        val notification =
+                            createNotification(userQueue.user!!, participantId, messageType, queue.id!!)
+                        notifications.add(notification)
+                    }
+                }
+            }
+        }
+        return notifications
+    }
+
+    private fun shouldSendMessage(
+        notificationType: NotificationsTypes,
+        userQueue: UserQueue,
+        participantId: Long
+    ): Boolean {
+        return if (isRequiredNotification(notificationType)) {
+            true
+        } else {
+            isUserSubscribed(notificationType, userQueue.user!!, participantId)
+        }
+    }
+
+    private fun isUserSubscribed(notificationType: NotificationsTypes, user: User, participantId: Long): Boolean {
+        return if (user.id == participantId) {
+            true
+        } else {
+            val userSetting = user.settings!!
+            when (notificationType) {
+                NotificationsTypes.COMPLETED -> userSetting.completed!!
+                NotificationsTypes.SKIPPED -> userSetting.skipped!!
+                NotificationsTypes.JOINED_QUEUE -> userSetting.joinedQueue!!
+                NotificationsTypes.FROZEN, NotificationsTypes.UNFROZEN -> userSetting.freeze!!
+                NotificationsTypes.LEFT_QUEUE -> userSetting.leftQueue!!
+                NotificationsTypes.YOUR_TURN -> userSetting.yourTurn!!
+                else -> true
+            }
+        }
+    }
+
+    private fun isRequiredNotification(notificationType: NotificationsTypes): Boolean {
+        return when (notificationType) {
+            NotificationsTypes.COMPLETED, NotificationsTypes.SKIPPED,
+            NotificationsTypes.JOINED_QUEUE, NotificationsTypes.FROZEN,
+            NotificationsTypes.UNFROZEN, NotificationsTypes.LEFT_QUEUE, NotificationsTypes.YOUR_TURN -> false
+            else -> true
+        }
+    }
+
+    private fun createNotification(user: User, participantId: Long, messageType: String, queueId: Long): Notification {
+        val notification = Notification()
+        notification.user = user
+        notification.participantId = participantId
+        notification.messageType = messageType
+        notification.queueId = queueId
+        notification.isRead = false
+        notification.date = LocalDateTime.now(ZoneOffset.UTC)
+        return notification
     }
 
     private fun mapEntityToDTO(notifications: List<Notification>): List<NotificationDTO> =

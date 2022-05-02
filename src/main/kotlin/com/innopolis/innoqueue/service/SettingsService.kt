@@ -17,11 +17,12 @@ class SettingsService(
         val settings = user.settings!!
         return SettingsDTO(
             user.name!!,
-            settings.n1!!,
-            settings.n2!!,
-            settings.n3!!,
-            settings.n4!!,
-            settings.n5!!,
+            settings.completed!!,
+            settings.skipped!!,
+            settings.joinedQueue!!,
+            settings.freeze!!,
+            settings.leftQueue!!,
+            settings.yourTurn!!
         )
     }
 
@@ -30,24 +31,28 @@ class SettingsService(
         var (newSavedUser, changed) = updateUserNameOrDefault(user, settings)
 
         val userSettings = newSavedUser.settings!!
-        if (settings.n1 != null) {
-            userSettings.n1 = settings.n1
+        if (settings.completed != null) {
+            userSettings.completed = settings.completed
             changed = true
         }
-        if (settings.n2 != null) {
-            userSettings.n2 = settings.n2
+        if (settings.skipped != null) {
+            userSettings.skipped = settings.skipped
             changed = true
         }
-        if (settings.n3 != null) {
-            userSettings.n3 = settings.n3
+        if (settings.joinedQueue != null) {
+            userSettings.joinedQueue = settings.joinedQueue
             changed = true
         }
-        if (settings.n4 != null) {
-            userSettings.n4 = settings.n4
+        if (settings.freeze != null) {
+            userSettings.freeze = settings.freeze
             changed = true
         }
-        if (settings.n5 != null) {
-            userSettings.n5 = settings.n5
+        if (settings.leftQueue != null) {
+            userSettings.leftQueue = settings.leftQueue
+            changed = true
+        }
+        if (settings.yourTurn != null) {
+            userSettings.yourTurn = settings.yourTurn
             changed = true
         }
         val updatedSettings = when (changed) {
@@ -58,11 +63,12 @@ class SettingsService(
         }
         return SettingsDTO(
             newSavedUser.name!!,
-            updatedSettings.n1!!,
-            updatedSettings.n2!!,
-            updatedSettings.n3!!,
-            updatedSettings.n4!!,
-            updatedSettings.n5!!
+            updatedSettings.completed!!,
+            updatedSettings.skipped!!,
+            updatedSettings.joinedQueue!!,
+            updatedSettings.freeze!!,
+            updatedSettings.leftQueue!!,
+            updatedSettings.yourTurn!!
         )
     }
 

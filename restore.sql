@@ -17,11 +17,12 @@ DROP SEQUENCE IF EXISTS queue_qr_code2_id_seq;
 
 create table "user"
 (
-    user_id bigserial
+    user_id    bigserial
         constraint user_pk
             primary key,
-    token   varchar(128) not null,
-    name    varchar(64)  not null
+    token      varchar(128) not null,
+    name       varchar(64)  not null,
+    fcm_token varchar(256) not null
 );
 
 create unique index user_user_id_uindex
@@ -42,11 +43,12 @@ create table user_settings
         constraint user_id
             references "user"
             on update cascade on delete cascade,
-    n1               boolean not null,
-    n2               boolean not null,
-    n3               boolean not null,
-    n4               boolean not null,
-    n5               boolean not null
+    completed        boolean not null,
+    skipped          boolean not null,
+    joined_queue     boolean not null,
+    "freeze"         boolean not null,
+    left_queue       boolean not null,
+    your_turn        boolean not null
 );
 
 create unique index user_settings_user_id_uindex
@@ -180,32 +182,38 @@ create unique index queue_qr_code_qr_code_uindex
 CREATE SEQUENCE queue_qr_code2_id_seq START WITH 100 INCREMENT BY 1;
 
 
-INSERT INTO public."user" (user_id, token, name)
-VALUES (15, '22222', 'Emil');
-INSERT INTO public."user" (user_id, token, name)
-VALUES (1, '11111', 'admin');
-INSERT INTO public."user" (user_id, token, name)
-VALUES (2, '2', 'Ivan');
-INSERT INTO public."user" (user_id, token, name)
-VALUES (5, '5', 'Alice');
-INSERT INTO public."user" (user_id, token, name)
-VALUES (3, '3', 'Bob');
-INSERT INTO public."user" (user_id, token, name)
-VALUES (4, '4', 'Peter');
+INSERT INTO public."user" (user_id, token, name, fcm_token)
+VALUES (1, '11111', 'admin', 'fsadfdsa');
+INSERT INTO public."user" (user_id, token, name, fcm_token)
+VALUES (2, '2', 'Ivan', 'fdsfa');
+INSERT INTO public."user" (user_id, token, name, fcm_token)
+VALUES (4, '4', 'Peter', 'fsafds');
+INSERT INTO public."user" (user_id, token, name, fcm_token)
+VALUES (15, '22222', 'Emil', 'fdasfda');
+INSERT INTO public."user" (user_id, token, name, fcm_token)
+VALUES (3, '3', 'Bob', 'fdsafds');
+INSERT INTO public."user" (user_id, token, name, fcm_token)
+VALUES (5, '5', 'Alice', 'fsdafd');
 
 
-INSERT INTO public.user_settings (user_settings_id, user_id, n1, n2, n3, n4, n5)
-VALUES (10, 15, true, true, true, true, true);
-INSERT INTO public.user_settings (user_settings_id, user_id, n1, n2, n3, n4, n5)
-VALUES (2, 2, true, true, true, true, true);
-INSERT INTO public.user_settings (user_settings_id, user_id, n1, n2, n3, n4, n5)
-VALUES (3, 3, true, true, true, true, true);
-INSERT INTO public.user_settings (user_settings_id, user_id, n1, n2, n3, n4, n5)
-VALUES (4, 4, true, true, true, true, true);
-INSERT INTO public.user_settings (user_settings_id, user_id, n1, n2, n3, n4, n5)
-VALUES (5, 5, true, true, true, true, true);
-INSERT INTO public.user_settings (user_settings_id, user_id, n1, n2, n3, n4, n5)
-VALUES (1, 1, true, true, true, true, true);
+INSERT INTO public.user_settings (user_settings_id, user_id, completed, skipped, joined_queue, "freeze", left_queue,
+                                  your_turn)
+VALUES (10, 15, true, true, true, true, true, true);
+INSERT INTO public.user_settings (user_settings_id, user_id, completed, skipped, joined_queue, "freeze", left_queue,
+                                  your_turn)
+VALUES (2, 2, true, true, true, true, true, true);
+INSERT INTO public.user_settings (user_settings_id, user_id, completed, skipped, joined_queue, "freeze", left_queue,
+                                  your_turn)
+VALUES (3, 3, true, true, true, true, true, true);
+INSERT INTO public.user_settings (user_settings_id, user_id, completed, skipped, joined_queue, "freeze", left_queue,
+                                  your_turn)
+VALUES (4, 4, true, true, true, true, true, true);
+INSERT INTO public.user_settings (user_settings_id, user_id, completed, skipped, joined_queue, "freeze", left_queue,
+                                  your_turn)
+VALUES (5, 5, true, true, true, true, true, true);
+INSERT INTO public.user_settings (user_settings_id, user_id, completed, skipped, joined_queue, "freeze", left_queue,
+                                  your_turn)
+VALUES (1, 1, true, true, true, true, true, true);
 
 
 INSERT INTO public.queue (queue_id, name, color, creator_id, track_expenses, current_user_id)

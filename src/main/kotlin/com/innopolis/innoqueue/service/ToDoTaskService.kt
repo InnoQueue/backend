@@ -91,9 +91,6 @@ class ToDoTaskService(
     private fun saveTaskProgress(queue: UserQueue, expenses: Double?) {
         if (expenses != null && queue.queue?.trackExpenses == true) {
             val roundedExpenses = String.format("%.2f", expenses).toDouble()
-            println("Log:")
-            println(expenses)
-            println(roundedExpenses)
             queue.expenses = queue.expenses?.plus(roundedExpenses)
         }
         queue.isImportant = false

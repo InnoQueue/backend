@@ -28,11 +28,12 @@ interface DatabaseRepository : CrudRepository<Queue, Long> {
                 "\n" +
                 "create table \"user\"\n" +
                 "(\n" +
-                "    user_id bigserial\n" +
+                "    user_id    bigserial\n" +
                 "        constraint user_pk\n" +
                 "            primary key,\n" +
-                "    token   varchar(128) not null,\n" +
-                "    name    varchar(64)  not null\n" +
+                "    token      varchar(128) not null,\n" +
+                "    name       varchar(64)  not null,\n" +
+                "    fcm_token varchar(256) not null\n" +
                 ");\n" +
                 "\n" +
                 "create unique index user_user_id_uindex\n" +
@@ -53,11 +54,12 @@ interface DatabaseRepository : CrudRepository<Queue, Long> {
                 "        constraint user_id\n" +
                 "            references \"user\"\n" +
                 "            on update cascade on delete cascade,\n" +
-                "    n1               boolean not null,\n" +
-                "    n2               boolean not null,\n" +
-                "    n3               boolean not null,\n" +
-                "    n4               boolean not null,\n" +
-                "    n5               boolean not null\n" +
+                "    completed        boolean not null,\n" +
+                "    skipped          boolean not null,\n" +
+                "    joined_queue     boolean not null,\n" +
+                "    \"freeze\"         boolean not null,\n" +
+                "    left_queue       boolean not null,\n" +
+                "    your_turn        boolean not null\n" +
                 ");\n" +
                 "\n" +
                 "create unique index user_settings_user_id_uindex\n" +
@@ -191,32 +193,38 @@ interface DatabaseRepository : CrudRepository<Queue, Long> {
                 "CREATE SEQUENCE queue_qr_code2_id_seq START WITH 100 INCREMENT BY 1;\n" +
                 "\n" +
                 "\n" +
-                "INSERT INTO public.\"user\" (user_id, token, name)\n" +
-                "VALUES (15, '22222', 'Emil');\n" +
-                "INSERT INTO public.\"user\" (user_id, token, name)\n" +
-                "VALUES (1, '11111', 'admin');\n" +
-                "INSERT INTO public.\"user\" (user_id, token, name)\n" +
-                "VALUES (2, '2', 'Ivan');\n" +
-                "INSERT INTO public.\"user\" (user_id, token, name)\n" +
-                "VALUES (5, '5', 'Alice');\n" +
-                "INSERT INTO public.\"user\" (user_id, token, name)\n" +
-                "VALUES (3, '3', 'Bob');\n" +
-                "INSERT INTO public.\"user\" (user_id, token, name)\n" +
-                "VALUES (4, '4', 'Peter');\n" +
+                "INSERT INTO public.\"user\" (user_id, token, name, fcm_token)\n" +
+                "VALUES (1, '11111', 'admin', 'fsadfdsa');\n" +
+                "INSERT INTO public.\"user\" (user_id, token, name, fcm_token)\n" +
+                "VALUES (2, '2', 'Ivan', 'fdsfa');\n" +
+                "INSERT INTO public.\"user\" (user_id, token, name, fcm_token)\n" +
+                "VALUES (4, '4', 'Peter', 'fsafds');\n" +
+                "INSERT INTO public.\"user\" (user_id, token, name, fcm_token)\n" +
+                "VALUES (15, '22222', 'Emil', 'fdasfda');\n" +
+                "INSERT INTO public.\"user\" (user_id, token, name, fcm_token)\n" +
+                "VALUES (3, '3', 'Bob', 'fdsafds');\n" +
+                "INSERT INTO public.\"user\" (user_id, token, name, fcm_token)\n" +
+                "VALUES (5, '5', 'Alice', 'fsdafd');\n" +
                 "\n" +
                 "\n" +
-                "INSERT INTO public.user_settings (user_settings_id, user_id, n1, n2, n3, n4, n5)\n" +
-                "VALUES (10, 15, true, true, true, true, true);\n" +
-                "INSERT INTO public.user_settings (user_settings_id, user_id, n1, n2, n3, n4, n5)\n" +
-                "VALUES (2, 2, true, true, true, true, true);\n" +
-                "INSERT INTO public.user_settings (user_settings_id, user_id, n1, n2, n3, n4, n5)\n" +
-                "VALUES (3, 3, true, true, true, true, true);\n" +
-                "INSERT INTO public.user_settings (user_settings_id, user_id, n1, n2, n3, n4, n5)\n" +
-                "VALUES (4, 4, true, true, true, true, true);\n" +
-                "INSERT INTO public.user_settings (user_settings_id, user_id, n1, n2, n3, n4, n5)\n" +
-                "VALUES (5, 5, true, true, true, true, true);\n" +
-                "INSERT INTO public.user_settings (user_settings_id, user_id, n1, n2, n3, n4, n5)\n" +
-                "VALUES (1, 1, true, true, true, true, true);\n" +
+                "INSERT INTO public.user_settings (user_settings_id, user_id, completed, skipped, joined_queue, \"freeze\", left_queue,\n" +
+                "                                  your_turn)\n" +
+                "VALUES (10, 15, true, true, true, true, true, true);\n" +
+                "INSERT INTO public.user_settings (user_settings_id, user_id, completed, skipped, joined_queue, \"freeze\", left_queue,\n" +
+                "                                  your_turn)\n" +
+                "VALUES (2, 2, true, true, true, true, true, true);\n" +
+                "INSERT INTO public.user_settings (user_settings_id, user_id, completed, skipped, joined_queue, \"freeze\", left_queue,\n" +
+                "                                  your_turn)\n" +
+                "VALUES (3, 3, true, true, true, true, true, true);\n" +
+                "INSERT INTO public.user_settings (user_settings_id, user_id, completed, skipped, joined_queue, \"freeze\", left_queue,\n" +
+                "                                  your_turn)\n" +
+                "VALUES (4, 4, true, true, true, true, true, true);\n" +
+                "INSERT INTO public.user_settings (user_settings_id, user_id, completed, skipped, joined_queue, \"freeze\", left_queue,\n" +
+                "                                  your_turn)\n" +
+                "VALUES (5, 5, true, true, true, true, true, true);\n" +
+                "INSERT INTO public.user_settings (user_settings_id, user_id, completed, skipped, joined_queue, \"freeze\", left_queue,\n" +
+                "                                  your_turn)\n" +
+                "VALUES (1, 1, true, true, true, true, true, true);\n" +
                 "\n" +
                 "\n" +
                 "INSERT INTO public.queue (queue_id, name, color, creator_id, track_expenses, current_user_id)\n" +
