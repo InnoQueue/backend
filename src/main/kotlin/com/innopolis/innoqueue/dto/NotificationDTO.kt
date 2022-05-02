@@ -6,6 +6,8 @@ import java.time.LocalDateTime
 data class NotificationDTO(
     @JsonProperty("message_type")
     val messageType: String,
+    @JsonProperty("participant_id")
+    val participantId: Long,
     @JsonProperty("participant_name")
     val participantName: String?,
     @JsonProperty("queue_id")

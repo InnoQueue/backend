@@ -1,5 +1,6 @@
 package com.innopolis.innoqueue.model
 
+import java.time.LocalDateTime
 import javax.persistence.*
 
 @Entity
@@ -17,4 +18,7 @@ open class QueueQrCode {
 
     @Column(name = "qr_code", nullable = false, length = 64)
     open var qrCode: String? = null
+
+    @Column(name = "date_created", nullable = false)
+    open var dateCreated: LocalDateTime? = null
 }

@@ -1,5 +1,6 @@
 package com.innopolis.innoqueue.model
 
+import java.time.LocalDateTime
 import javax.persistence.*
 
 @Entity
@@ -17,4 +18,7 @@ open class QueuePinCode {
 
     @Column(name = "pin_code", nullable = false, length = 8)
     open var pinCode: String? = null
+
+    @Column(name = "date_created", nullable = false)
+    open var dateCreated: LocalDateTime? = null
 }

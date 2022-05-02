@@ -2,13 +2,17 @@ package com.innopolis.innoqueue.service
 
 import com.innopolis.innoqueue.dto.*
 import com.innopolis.innoqueue.model.*
-import com.innopolis.innoqueue.repository.*
+import com.innopolis.innoqueue.repository.QueuePinCodeRepository
+import com.innopolis.innoqueue.repository.QueueQrCodeRepository
+import com.innopolis.innoqueue.repository.QueueRepository
+import com.innopolis.innoqueue.repository.UserQueueRepository
 import com.innopolis.innoqueue.utils.NotificationsTypes
 import com.innopolis.innoqueue.utils.StringGenerator
 import com.innopolis.innoqueue.utils.UsersQueueLogic
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
+import java.time.ZoneOffset
 import kotlin.concurrent.thread
 import kotlin.math.abs
 
@@ -17,14 +21,11 @@ class QueueService(
     private val userService: UserService,
     private val notificationService: NotificationsService,
     private val userQueueRepository: UserQueueRepository,
-    private val userRepository: UserRepository,
     private val queueRepository: QueueRepository,
     private val queuePinCodeRepository: QueuePinCodeRepository,
     private val queueQrCodeRepository: QueueQrCodeRepository
 ) {
-    private val pinCodeLiveTime: Long = 3_600_000
     private val pinCodeLength: Int = 6
-    private val qrCodeLiveTime: Long = 24 * 3_600_000
     private val qrCodeLength: Int = 48
 
     fun getQueues(token: String): QueuesListDTO {
@@ -174,7 +175,7 @@ class QueueService(
                 user,
                 userQueue.queue!!
             )
-            userQueueRepository.delete(userQueue)
+            userQueue.skips = 0
             // If it's your turn, reassign another user
             if (userQueue.queue?.currentUser?.id == user.id) {
                 val nextUser = UsersQueueLogic.assignNextUser(userQueue, userQueueRepository, queueRepository)
@@ -184,6 +185,7 @@ class QueueService(
                     userQueue.queue!!
                 )
             }
+            userQueueRepository.delete(userQueue)
         }
     }
 
@@ -367,7 +369,7 @@ class QueueService(
         userQueue.user = user
         userQueue.isActive = true
         userQueue.skips = 0
-        userQueue.expenses = 0
+        userQueue.expenses = 0.0
         userQueue.isImportant = false
         userQueue.dateJoined = LocalDateTime.now()
         return userQueue
@@ -381,11 +383,8 @@ class QueueService(
             val newQueuePinCode = QueuePinCode()
             newQueuePinCode.queue = userQueue.queue
             newQueuePinCode.pinCode = pinCode
-            val createdQueuePinCode = queuePinCodeRepository.save(newQueuePinCode)
-            thread(start = true) {
-                Thread.sleep(pinCodeLiveTime)
-                queuePinCodeRepository.delete(createdQueuePinCode)
-            }
+            newQueuePinCode.dateCreated = LocalDateTime.now(ZoneOffset.UTC)
+            queuePinCodeRepository.save(newQueuePinCode)
             pinCode
         } else queuePinCode.pinCode!!
     }
@@ -398,11 +397,8 @@ class QueueService(
             val newQueueQrCode = QueueQrCode()
             newQueueQrCode.queue = userQueue.queue
             newQueueQrCode.qrCode = qrCode
-            val createdQueueQrCode = queueQrCodeRepository.save(newQueueQrCode)
-            thread(start = true) {
-                Thread.sleep(qrCodeLiveTime)
-                queueQrCodeRepository.delete(createdQueueQrCode)
-            }
+            newQueueQrCode.dateCreated = LocalDateTime.now(ZoneOffset.UTC)
+            queueQrCodeRepository.save(newQueueQrCode)
             qrCode
         } else queueQrCode.qrCode!!
     }

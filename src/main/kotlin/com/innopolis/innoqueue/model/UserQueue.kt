@@ -27,7 +27,7 @@ open class UserQueue {
     open var skips: Int? = null
 
     @Column(name = "expenses", nullable = false)
-    open var expenses: Int? = null
+    open var expenses: Double? = null
 
     @Column(name = "is_important", nullable = false)
     open var isImportant: Boolean? = false

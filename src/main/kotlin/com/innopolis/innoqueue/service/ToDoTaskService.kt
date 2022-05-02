@@ -35,9 +35,15 @@ class ToDoTaskService(
         return importantTasks.sortedBy { it.name!! } + otherTasks.sortedBy { it.name!! }
     }
 
-    fun completeTask(token: String, taskId: Long, expenses: Int?) {
+    fun completeTask(token: String, taskId: Long, expenses: Double?) {
         val user = userService.getUserByToken(token)
         val queue = queueService.getUserQueueByQueueId(user, taskId)
+        // If this queue requires to track expenses it should not be null or negative number
+        if (queue.queue?.trackExpenses!!) {
+            if (expenses == null || expenses < 0){
+                throw IllegalArgumentException("Expenses should be a non negative number")
+            }
+        }
         // If user is not next in this queue
         if (user.tasks.none { task -> task.id == taskId }) {
             addProgress(queue, expenses)
@@ -77,14 +83,18 @@ class ToDoTaskService(
         }
     }
 
-    private fun addProgress(queue: UserQueue, expenses: Int?) {
+    private fun addProgress(queue: UserQueue, expenses: Double?) {
         queue.skips = queue.skips?.minus(1)
         saveTaskProgress(queue, expenses)
     }
 
-    private fun saveTaskProgress(queue: UserQueue, expenses: Int?) {
+    private fun saveTaskProgress(queue: UserQueue, expenses: Double?) {
         if (expenses != null && queue.queue?.trackExpenses == true) {
-            queue.expenses = queue.expenses?.plus(expenses)
+            val roundedExpenses = String.format("%.2f", expenses).toDouble()
+            println("Log:")
+            println(expenses)
+            println(roundedExpenses)
+            queue.expenses = queue.expenses?.plus(roundedExpenses)
         }
         queue.isImportant = false
         val savedQueue = userQueueRepository.save(queue)

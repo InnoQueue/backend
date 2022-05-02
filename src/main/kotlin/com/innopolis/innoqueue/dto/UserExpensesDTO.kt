@@ -8,7 +8,7 @@ data class UserExpensesDTO(
     @JsonProperty("user")
     val userName: String,
     @JsonProperty("expenses")
-    val expenses: Int?,
+    val expenses: Double?,
     @JsonProperty("is_active")
     val isActive: Boolean
 )

@@ -7,5 +7,5 @@ data class TaskDTO(
     val taskId: Long,
 
     @JsonProperty("expenses")
-    val expenses: Int?
+    val expenses: Double?
 )

@@ -6,6 +6,7 @@ import com.innopolis.innoqueue.model.UserSetting
 import com.innopolis.innoqueue.repository.UserRepository
 import com.innopolis.innoqueue.repository.UserSettingsRepository
 import com.innopolis.innoqueue.utils.StringGenerator
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
 @Service
@@ -20,13 +21,17 @@ class UserService(
             ?: throw NoSuchElementException("No such user with token: $token")
     }
 
+    fun getUserById(userId: Long): User? {
+        return userRepository.findByIdOrNull(userId)
+    }
+
     fun generateUserToken(userName: String): TokenDTO {
         // TODO remove after demo presentation
         if (userName == "admin") {
-            return TokenDTO("11111")
+            return TokenDTO("11111", 1)
         }
         if (userName == "Emil") {
-            return TokenDTO("22222")
+            return TokenDTO("22222", 15)
         }
         if (userName.isEmpty()) {
             throw IllegalArgumentException("Username can't be an empty string")
@@ -39,11 +44,11 @@ class UserService(
                 val newUser = User()
                 newUser.token = randomString
                 newUser.name = userName
-                userRepository.save(newUser)
+                val savedUser = userRepository.save(newUser)
                 val settings = UserSetting()
                 settings.user = newUser
                 settingsRepository.save(settings)
-                return TokenDTO(randomString)
+                return TokenDTO(randomString, savedUser.id!!)
             }
         }
     }

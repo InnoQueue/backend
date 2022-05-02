@@ -1,5 +1,6 @@
 package com.innopolis.innoqueue.controller
 
+import com.innopolis.innoqueue.controller.dto.EmptyDTO
 import com.innopolis.innoqueue.service.DatabaseService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -16,5 +17,8 @@ class DatabaseController(private val service: DatabaseService) {
         ResponseEntity("Database is reset by default data", HttpStatus.OK)
 
     @GetMapping("/reset")
-    fun resetDB() = service.resetDB()
+    fun resetDB(): EmptyDTO = service.resetDB()
+
+    @GetMapping("/clear")
+    fun clearCodes(): EmptyDTO = service.clearCodes()
 }

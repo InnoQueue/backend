@@ -26,7 +26,7 @@ class QueueController(private val service: QueueService) {
         service.getQueueById(token, queueId)
 
     @GetMapping("/invite/{queueId}")
-    fun getQueuePinCode(@RequestHeader("user-token") token: String, @PathVariable queueId: Long): QueueInviteCodeDTO =
+    fun getQueueInviteCode(@RequestHeader("user-token") token: String, @PathVariable queueId: Long): QueueInviteCodeDTO =
         service.getQueueInviteCode(token, queueId)
 
     @PostMapping

@@ -103,14 +103,8 @@ interface DatabaseRepository : CrudRepository<Queue, Long> {
                 "            references \"user\"\n" +
                 "            on update cascade on delete cascade,\n" +
                 "    message_type    varchar(32) not null,\n" +
-                "    participant_id  bigint\n" +
-                "        constraint participant_id\n" +
-                "            references \"user\"\n" +
-                "            on update cascade on delete cascade,\n" +
-                "    queue_id        bigint      not null\n" +
-                "        constraint queue_id\n" +
-                "            references queue\n" +
-                "            on update cascade on delete cascade,\n" +
+                "    participant_id  bigint      not null,\n" +
+                "    queue_id        bigint      not null,\n" +
                 "    is_read         boolean     not null,\n" +
                 "    date            timestamp   not null\n" +
                 ");\n" +
@@ -126,19 +120,19 @@ interface DatabaseRepository : CrudRepository<Queue, Long> {
                 "    user_queue_id bigserial\n" +
                 "        constraint user_queue_pk\n" +
                 "            primary key,\n" +
-                "    queue_id      bigint    not null\n" +
+                "    queue_id      bigint           not null\n" +
                 "        constraint queue_id\n" +
                 "            references queue\n" +
                 "            on update cascade on delete cascade,\n" +
-                "    user_id       bigint    not null\n" +
+                "    user_id       bigint           not null\n" +
                 "        constraint user_id\n" +
                 "            references \"user\"\n" +
                 "            on update cascade on delete cascade,\n" +
-                "    is_active     boolean   not null,\n" +
-                "    skips         integer   not null,\n" +
-                "    expenses      integer   not null,\n" +
-                "    is_important  boolean   not null,\n" +
-                "    date_joined   timestamp not null\n" +
+                "    is_active     boolean          not null,\n" +
+                "    skips         integer          not null,\n" +
+                "    expenses      double precision not null,\n" +
+                "    is_important  boolean          not null,\n" +
+                "    date_joined   timestamp        not null\n" +
                 ");\n" +
                 "\n" +
                 "create unique index user_queue_user_queue_id_uindex\n" +
@@ -149,14 +143,15 @@ interface DatabaseRepository : CrudRepository<Queue, Long> {
                 "\n" +
                 "create table queue_pin_code\n" +
                 "(\n" +
-                "    queue_id bigint     not null\n" +
+                "    queue_id     bigint     not null\n" +
                 "        constraint queue_id\n" +
                 "            references queue\n" +
                 "            on update cascade on delete cascade,\n" +
-                "    pin_code varchar(8) not null,\n" +
-                "    id       bigserial\n" +
+                "    pin_code     varchar(8) not null,\n" +
+                "    id           bigserial\n" +
                 "        constraint queue_pin_code_pk\n" +
-                "            primary key\n" +
+                "            primary key,\n" +
+                "    date_created timestamp  not null\n" +
                 ");\n" +
                 "\n" +
                 "create unique index queue_pin_code_id_uindex\n" +
@@ -173,14 +168,15 @@ interface DatabaseRepository : CrudRepository<Queue, Long> {
                 "\n" +
                 "create table queue_qr_code\n" +
                 "(\n" +
-                "    id       bigserial\n" +
+                "    id           bigserial\n" +
                 "        constraint queue_qr_code_pk\n" +
                 "            primary key,\n" +
-                "    queue_id bigint      not null\n" +
+                "    queue_id     bigint      not null\n" +
                 "        constraint queue_id\n" +
                 "            references queue\n" +
                 "            on update cascade on delete cascade,\n" +
-                "    qr_code  varchar(64) not null\n" +
+                "    qr_code      varchar(64) not null,\n" +
+                "    date_created timestamp   not null\n" +
                 ");\n" +
                 "\n" +
                 "create unique index queue_qr_code_id_uindex\n" +
@@ -288,14 +284,6 @@ interface DatabaseRepository : CrudRepository<Queue, Long> {
                 "INSERT INTO public.user_queue (user_queue_id, queue_id, user_id, is_active, skips, expenses, is_important, date_joined)\n" +
                 "VALUES (88, 44, 3, false, 0, 0, false, '2022-03-26 16:06:41.000000');\n" +
                 "INSERT INTO public.user_queue (user_queue_id, queue_id, user_id, is_active, skips, expenses, is_important, date_joined)\n" +
-                "VALUES (85, 40, 4, true, 0, 87, false, '2022-03-26 16:06:00.000000');\n" +
-                "INSERT INTO public.user_queue (user_queue_id, queue_id, user_id, is_active, skips, expenses, is_important, date_joined)\n" +
-                "VALUES (75, 34, 3, true, 0, 201, false, '2022-03-26 16:04:21.000000');\n" +
-                "INSERT INTO public.user_queue (user_queue_id, queue_id, user_id, is_active, skips, expenses, is_important, date_joined)\n" +
-                "VALUES (93, 46, 4, true, 0, 50, false, '2022-03-26 16:07:34.000000');\n" +
-                "INSERT INTO public.user_queue (user_queue_id, queue_id, user_id, is_active, skips, expenses, is_important, date_joined)\n" +
-                "VALUES (76, 34, 4, true, 0, 230, false, '2022-03-26 16:04:22.000000');\n" +
-                "INSERT INTO public.user_queue (user_queue_id, queue_id, user_id, is_active, skips, expenses, is_important, date_joined)\n" +
                 "VALUES (25, 46, 15, true, 0, 40, false, '2022-04-30 20:12:03.499760');\n" +
                 "INSERT INTO public.user_queue (user_queue_id, queue_id, user_id, is_active, skips, expenses, is_important, date_joined)\n" +
                 "VALUES (69, 40, 1, true, 0, 92, false, '2022-03-26 15:58:31.000000');\n" +
@@ -304,37 +292,45 @@ interface DatabaseRepository : CrudRepository<Queue, Long> {
                 "INSERT INTO public.user_queue (user_queue_id, queue_id, user_id, is_active, skips, expenses, is_important, date_joined)\n" +
                 "VALUES (73, 6, 5, true, 0, 120, false, '2022-03-26 16:03:31.000000');\n" +
                 "INSERT INTO public.user_queue (user_queue_id, queue_id, user_id, is_active, skips, expenses, is_important, date_joined)\n" +
-                "VALUES (92, 46, 3, true, 0, 25, false, '2022-03-26 16:07:33.000000');\n" +
-                "INSERT INTO public.user_queue (user_queue_id, queue_id, user_id, is_active, skips, expenses, is_important, date_joined)\n" +
                 "VALUES (72, 6, 4, true, 0, 90, false, '2022-03-26 16:03:29.000000');\n" +
                 "INSERT INTO public.user_queue (user_queue_id, queue_id, user_id, is_active, skips, expenses, is_important, date_joined)\n" +
                 "VALUES (74, 34, 2, true, 0, 210, false, '2022-03-26 16:04:19.000000');\n" +
                 "INSERT INTO public.user_queue (user_queue_id, queue_id, user_id, is_active, skips, expenses, is_important, date_joined)\n" +
-                "VALUES (21, 6, 2, true, 0, 117, false, '2022-03-25 01:32:42.000000');\n" +
-                "INSERT INTO public.user_queue (user_queue_id, queue_id, user_id, is_active, skips, expenses, is_important, date_joined)\n" +
-                "VALUES (77, 34, 5, true, 0, 190, false, '2022-03-26 16:04:23.000000');\n" +
-                "INSERT INTO public.user_queue (user_queue_id, queue_id, user_id, is_active, skips, expenses, is_important, date_joined)\n" +
                 "VALUES (22, 6, 15, true, 0, 123, false, '2022-04-30 20:11:39.530443');\n" +
-                "INSERT INTO public.user_queue (user_queue_id, queue_id, user_id, is_active, skips, expenses, is_important, date_joined)\n" +
-                "VALUES (20, 40, 15, false, 0, 85, false, '2022-04-30 20:11:11.922780');\n" +
                 "INSERT INTO public.user_queue (user_queue_id, queue_id, user_id, is_active, skips, expenses, is_important, date_joined)\n" +
                 "VALUES (71, 6, 3, true, 0, 100, false, '2022-03-26 16:03:28.000000');\n" +
                 "INSERT INTO public.user_queue (user_queue_id, queue_id, user_id, is_active, skips, expenses, is_important, date_joined)\n" +
-                "VALUES (94, 46, 5, true, 0, 42, false, '2022-03-26 16:07:36.000000');\n" +
-                "INSERT INTO public.user_queue (user_queue_id, queue_id, user_id, is_active, skips, expenses, is_important, date_joined)\n" +
-                "VALUES (70, 46, 1, false, 0, 47, false, '2022-03-26 15:58:52.000000');\n" +
-                "INSERT INTO public.user_queue (user_queue_id, queue_id, user_id, is_active, skips, expenses, is_important, date_joined)\n" +
                 "VALUES (62, 40, 2, true, 0, 82, false, '2022-03-26 15:37:49.000000');\n" +
-                "INSERT INTO public.user_queue (user_queue_id, queue_id, user_id, is_active, skips, expenses, is_important, date_joined)\n" +
-                "VALUES (86, 40, 5, true, 0, 90, false, '2022-03-26 16:06:01.000000');\n" +
-                "INSERT INTO public.user_queue (user_queue_id, queue_id, user_id, is_active, skips, expenses, is_important, date_joined)\n" +
-                "VALUES (91, 46, 2, true, 0, 35, false, '2022-03-26 16:07:32.000000');\n" +
-                "INSERT INTO public.user_queue (user_queue_id, queue_id, user_id, is_active, skips, expenses, is_important, date_joined)\n" +
-                "VALUES (10, 6, 1, true, 0, 140, false, '2022-03-02 22:36:56.000000');\n" +
                 "INSERT INTO public.user_queue (user_queue_id, queue_id, user_id, is_active, skips, expenses, is_important, date_joined)\n" +
                 "VALUES (24, 34, 15, true, 0, 248, false, '2022-04-30 20:11:55.648157');\n" +
                 "INSERT INTO public.user_queue (user_queue_id, queue_id, user_id, is_active, skips, expenses, is_important, date_joined)\n" +
-                "VALUES (84, 40, 3, true, 0, 80, false, '2022-03-26 16:05:59.000000');\n",
+                "VALUES (77, 34, 5, true, 0, 190.87, false, '2022-03-26 16:04:23.000000');\n" +
+                "INSERT INTO public.user_queue (user_queue_id, queue_id, user_id, is_active, skips, expenses, is_important, date_joined)\n" +
+                "VALUES (93, 46, 4, true, 0, 50.28, false, '2022-03-26 16:07:34.000000');\n" +
+                "INSERT INTO public.user_queue (user_queue_id, queue_id, user_id, is_active, skips, expenses, is_important, date_joined)\n" +
+                "VALUES (86, 40, 5, true, 0, 90.87, false, '2022-03-26 16:06:01.000000');\n" +
+                "INSERT INTO public.user_queue (user_queue_id, queue_id, user_id, is_active, skips, expenses, is_important, date_joined)\n" +
+                "VALUES (10, 6, 1, true, 0, 140.16, false, '2022-03-02 22:36:56.000000');\n" +
+                "INSERT INTO public.user_queue (user_queue_id, queue_id, user_id, is_active, skips, expenses, is_important, date_joined)\n" +
+                "VALUES (21, 6, 2, true, 0, 117.86, false, '2022-03-25 01:32:42.000000');\n" +
+                "INSERT INTO public.user_queue (user_queue_id, queue_id, user_id, is_active, skips, expenses, is_important, date_joined)\n" +
+                "VALUES (75, 34, 3, true, 0, 201.04, false, '2022-03-26 16:04:21.000000');\n" +
+                "INSERT INTO public.user_queue (user_queue_id, queue_id, user_id, is_active, skips, expenses, is_important, date_joined)\n" +
+                "VALUES (94, 46, 5, true, 0, 42.1, false, '2022-03-26 16:07:36.000000');\n" +
+                "INSERT INTO public.user_queue (user_queue_id, queue_id, user_id, is_active, skips, expenses, is_important, date_joined)\n" +
+                "VALUES (85, 40, 4, true, 0, 87.12, false, '2022-03-26 16:06:00.000000');\n" +
+                "INSERT INTO public.user_queue (user_queue_id, queue_id, user_id, is_active, skips, expenses, is_important, date_joined)\n" +
+                "VALUES (70, 46, 1, false, 0, 47.56, false, '2022-03-26 15:58:52.000000');\n" +
+                "INSERT INTO public.user_queue (user_queue_id, queue_id, user_id, is_active, skips, expenses, is_important, date_joined)\n" +
+                "VALUES (20, 40, 15, false, 0, 85.21, false, '2022-04-30 20:11:11.922780');\n" +
+                "INSERT INTO public.user_queue (user_queue_id, queue_id, user_id, is_active, skips, expenses, is_important, date_joined)\n" +
+                "VALUES (84, 40, 3, true, 0, 80.32, false, '2022-03-26 16:05:59.000000');\n" +
+                "INSERT INTO public.user_queue (user_queue_id, queue_id, user_id, is_active, skips, expenses, is_important, date_joined)\n" +
+                "VALUES (92, 46, 3, true, 0, 25.32, false, '2022-03-26 16:07:33.000000');\n" +
+                "INSERT INTO public.user_queue (user_queue_id, queue_id, user_id, is_active, skips, expenses, is_important, date_joined)\n" +
+                "VALUES (76, 34, 4, true, 0, 230.07, false, '2022-03-26 16:04:22.000000');\n" +
+                "INSERT INTO public.user_queue (user_queue_id, queue_id, user_id, is_active, skips, expenses, is_important, date_joined)\n" +
+                "VALUES (91, 46, 2, true, 0, 35.31, false, '2022-03-26 16:07:32.000000');\n",
         nativeQuery = true
     )
     fun resetDB()

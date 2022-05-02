@@ -4,5 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 
 data class TokenDTO(
     @JsonProperty("token")
-    val token: String
+    val token: String,
+    @JsonProperty("user_id")
+    val userId: Long,
 )
