@@ -36,7 +36,7 @@ class NotificationsService(
         }
         notificationRepository.saveAll(unreadNotifications)
         return NotificationsListDTO(
-            unreadNotifications = mapEntityToDTO(unreadNotifications).sortedBy { n -> n.date },
+            unreadNotifications = mapEntityToDTO(unreadNotifications).sortedByDescending { n -> n.date },
             allNotifications = mapEntityToDTO(allNotifications).sortedByDescending { n -> n.date }
         )
     }
@@ -76,6 +76,9 @@ class NotificationsService(
             if (title != null && body != null) {
                 val token = message.user?.fcmToken!!
                 try {
+                    println("Sending push to user with token $token")
+                    println(title)
+                    println(body)
                     val dataMap = HashMap<String, String?>()
                     dataMap["title"] = title
                     dataMap["body"] = body
@@ -83,7 +86,8 @@ class NotificationsService(
                     dataMap["queue_name"] = queueName
                     dataMap["participant_name"] = participantName
                     firebaseMessagingService.sendNotification(title, body, token, dataMap)
-                } catch (_: Exception) {
+                } catch (e: Exception) {
+                    println(e)
                 }
             }
         }
