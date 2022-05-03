@@ -1,5 +1,6 @@
 package com.innopolis.innoqueue.service
 
+import com.innopolis.innoqueue.controller.dto.NewNotificationDTO
 import com.innopolis.innoqueue.dto.NotificationDTO
 import com.innopolis.innoqueue.dto.NotificationsListDTO
 import com.innopolis.innoqueue.model.Notification
@@ -38,6 +39,11 @@ class NotificationsService(
             unreadNotifications = mapEntityToDTO(unreadNotifications).sortedBy { n -> n.date },
             allNotifications = mapEntityToDTO(allNotifications).sortedByDescending { n -> n.date }
         )
+    }
+
+    fun anyNewNotification(token: String): NewNotificationDTO {
+        val user = userService.getUserByToken(token)
+        return NewNotificationDTO(user.notifications.any { !it.isRead!! })
     }
 
     fun createNotificationMessage(
