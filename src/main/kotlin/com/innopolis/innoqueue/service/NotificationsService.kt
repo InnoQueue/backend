@@ -76,18 +76,16 @@ class NotificationsService(
             if (title != null && body != null) {
                 val token = message.user?.fcmToken!!
                 try {
-                    println("Sending push to user with token $token")
-                    println(title)
-                    println(body)
                     val dataMap = HashMap<String, String?>()
                     dataMap["title"] = title
                     dataMap["body"] = body
                     dataMap["queue_id"] = queueId.toString()
                     dataMap["queue_name"] = queueName
                     dataMap["participant_name"] = participantName
-                    firebaseMessagingService.sendNotification(title, body, token, dataMap)
+                    val res = firebaseMessagingService.sendNotification(title, body, token, dataMap)
+                    println("Firebase result: $res")
                 } catch (e: Exception) {
-                    println(e)
+                    println("Firebase exception: $e")
                 }
             }
         }
