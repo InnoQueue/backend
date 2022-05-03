@@ -2,6 +2,8 @@
 
 > Semester 6, 3rd study-year, Innopolis University.
 
+[![Hits-of-Code](https://hitsofcode.com/github/InnoQueue/Backend?branch=main)](https://hitsofcode.com/github/InnoQueue/Backend/view?branch=main)
+
 Backend for the **Flutter Project**. To read the full README check [this repository](https://github.com/InnoQueue/README)
 
 ## Team
