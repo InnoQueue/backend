@@ -13,7 +13,6 @@ import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 import java.time.ZoneOffset
-import kotlin.concurrent.thread
 import kotlin.math.abs
 
 @Service
@@ -314,10 +313,7 @@ class QueueService(
             queueColor = queue.color!!,
             currentUser = transformUserToUserExpensesDTO(queue.currentUser, queue),
             isYourTurn = queue.currentUser?.id == userId,
-            participants = sortUserExpensesDTOByFrozen(queue.userQueues
-                .filter { it.user?.id != queue.currentUser?.id }
-                .map { userQueue -> userQueue.user }
-                .map { transformUserToUserExpensesDTO(it, queue) }),
+            participants = getParticipants(queue),
             trackExpenses = queue.trackExpenses!!,
             isActive = isActive,
             isAdmin = queue.creator?.id == userId,
@@ -327,9 +323,27 @@ class QueueService(
         return qDTO
     }
 
-    private fun sortUserExpensesDTOByFrozen(users: List<UserExpensesDTO>): List<UserExpensesDTO> {
-        val (activeUsers, frozenUsers) = users.partition { it.isActive }
-        return activeUsers.sortedBy { it.userName } + frozenUsers.sortedBy { it.userName }
+    private fun getParticipants(queue: Queue): List<UserExpensesDTO> {
+        val userQueueParticipants = queue.userQueues.sortedBy { it.dateJoined }
+
+        val currentUserIndex = userQueueParticipants.indexOfFirst { it.user?.id == queue.currentUser?.id }
+        val participantsAfterCurrent =
+            userQueueParticipants.slice((currentUserIndex + 1) until userQueueParticipants.size)
+        val participantsBeforeCurrent = userQueueParticipants.slice(0 until currentUserIndex)
+
+        val participants = mutableListOf<UserQueue>()
+        participants.addAll(participantsAfterCurrent)
+        participants.addAll(participantsBeforeCurrent)
+
+        val (participantsWithAddProgress, participantsWithoutAddProgress) = participants.partition { it.skips!! < 0 }
+
+        val sortedParticipants =
+            participantsWithoutAddProgress + participantsWithAddProgress.sortedByDescending { it.skips }
+
+        val (activeUsers, frozenUsers) = sortedParticipants.partition { it.isActive!! }
+        val participantsResult = activeUsers + frozenUsers
+
+        return participantsResult.map { userQueue -> userQueue.user }.map { transformUserToUserExpensesDTO(it, queue) }
     }
 
     private fun transformUserToUserExpensesDTO(user: User?, queue: Queue): UserExpensesDTO {
