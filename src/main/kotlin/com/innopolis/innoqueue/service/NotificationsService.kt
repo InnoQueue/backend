@@ -1,5 +1,6 @@
 package com.innopolis.innoqueue.service
 
+import com.innopolis.innoqueue.controller.dto.EmptyDTO
 import com.innopolis.innoqueue.controller.dto.NewNotificationDTO
 import com.innopolis.innoqueue.dto.NotificationDTO
 import com.innopolis.innoqueue.dto.NotificationsListDTO
@@ -27,6 +28,7 @@ class NotificationsService(
 
     private val deletedUserName = "Deleted user"
     private val deletedQueueName = "Deleted queue"
+    private val notificationLiveTimeWeeks: Long = 2
 
     fun getNotifications(token: String): NotificationsListDTO {
         val user = userService.getUserByToken(token)
@@ -44,6 +46,22 @@ class NotificationsService(
     fun anyNewNotification(token: String): NewNotificationDTO {
         val user = userService.getUserByToken(token)
         return NewNotificationDTO(user.notifications.any { !it.isRead!! })
+    }
+
+    fun clearOldNotifications(): EmptyDTO {
+
+        val currentTime = LocalDateTime.now(ZoneOffset.UTC)
+
+        val expiredNotifications =
+            notificationRepository.findAll().filter { isNotificationExpired(currentTime, it.date!!) }
+        notificationRepository.deleteAll(expiredNotifications)
+
+        return EmptyDTO("Old notifications were deleted")
+    }
+
+    private fun isNotificationExpired(currentTime: LocalDateTime, date: LocalDateTime): Boolean {
+        val dateExpired = date.plusWeeks(notificationLiveTimeWeeks)
+        return currentTime > dateExpired
     }
 
     fun createNotificationMessage(

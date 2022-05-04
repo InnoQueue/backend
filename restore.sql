@@ -17,11 +17,11 @@ DROP SEQUENCE IF EXISTS queue_qr_code2_id_seq;
 
 create table "user"
 (
-    user_id    bigserial
+    user_id   bigserial
         constraint user_pk
             primary key,
-    token      varchar(128) not null,
-    name       varchar(64)  not null,
+    token     varchar(128) not null,
+    name      varchar(64)  not null,
     fcm_token varchar(256) not null
 );
 
@@ -231,29 +231,29 @@ VALUES (34, 'Buy Dishwashing Soap', 'GREEN', 1, true, 15);
 
 
 INSERT INTO public.notifications (notification_id, user_id, message_type, participant_id, queue_id, is_read, date)
-VALUES (7, 15, 'SKIPPED', 3, 40, true, '2022-01-12 12:34:25.000000');
+VALUES (1, 1, 'JOINED_QUEUE', 5, 44, true, current_timestamp + INTERVAL '- 10 DAY');
 INSERT INTO public.notifications (notification_id, user_id, message_type, participant_id, queue_id, is_read, date)
-VALUES (1, 1, 'JOINED_QUEUE', 5, 44, true, '2022-01-11 19:48:45.000000');
+VALUES (2, 15, 'JOINED_QUEUE', 5, 44, true, current_timestamp + INTERVAL '- 10 DAY 1 hour');
 INSERT INTO public.notifications (notification_id, user_id, message_type, participant_id, queue_id, is_read, date)
-VALUES (6, 1, 'SHOOK', 1, 39, false, '2022-01-20 10:01:32.000000');
+VALUES (3, 1, 'SKIPPED', 3, 40, true, current_timestamp + INTERVAL '- 9 DAY');
 INSERT INTO public.notifications (notification_id, user_id, message_type, participant_id, queue_id, is_read, date)
-VALUES (9, 15, 'SHOOK', 15, 39, false, '2022-01-20 10:01:32.000000');
+VALUES (4, 15, 'SKIPPED', 3, 40, true, current_timestamp + INTERVAL '- 9 DAY 1 hour');
 INSERT INTO public.notifications (notification_id, user_id, message_type, participant_id, queue_id, is_read, date)
-VALUES (3, 1, 'SKIPPED', 3, 40, true, '2022-01-12 12:34:25.000000');
+VALUES (5, 1, 'COMPLETED', 2, 44, true, current_timestamp + INTERVAL '- 8 DAY');
 INSERT INTO public.notifications (notification_id, user_id, message_type, participant_id, queue_id, is_read, date)
-VALUES (12, 15, 'COMPLETED', 5, 39, false, '2022-01-14 23:48:55.000000');
+VALUES (6, 15, 'COMPLETED', 2, 44, true, current_timestamp + INTERVAL '- 8 DAY 1 hour');
 INSERT INTO public.notifications (notification_id, user_id, message_type, participant_id, queue_id, is_read, date)
-VALUES (10, 15, 'YOUR_TURN', 15, 39, false, '2022-01-14 23:48:59.000000');
+VALUES (7, 1, 'COMPLETED', 5, 39, false, current_timestamp + INTERVAL '- 7 DAY');
 INSERT INTO public.notifications (notification_id, user_id, message_type, participant_id, queue_id, is_read, date)
-VALUES (8, 15, 'COMPLETED', 2, 44, true, '2022-01-13 11:08:38.000000');
+VALUES (8, 15, 'COMPLETED', 5, 39, false, current_timestamp + INTERVAL '- 7 DAY 1 hour');
 INSERT INTO public.notifications (notification_id, user_id, message_type, participant_id, queue_id, is_read, date)
-VALUES (11, 15, 'JOINED_QUEUE', 5, 44, true, '2022-01-11 19:48:45.000000');
+VALUES (9, 1, 'YOUR_TURN', 1, 39, false, current_timestamp + INTERVAL '- 7 DAY 2 hour');
 INSERT INTO public.notifications (notification_id, user_id, message_type, participant_id, queue_id, is_read, date)
-VALUES (2, 1, 'COMPLETED', 2, 44, true, '2022-01-13 11:08:38.000000');
+VALUES (10, 15, 'YOUR_TURN', 15, 39, false, current_timestamp + INTERVAL '- 7 DAY 3 hour');
 INSERT INTO public.notifications (notification_id, user_id, message_type, participant_id, queue_id, is_read, date)
-VALUES (5, 1, 'COMPLETED', 5, 39, false, '2022-01-14 23:48:55.000000');
+VALUES (11, 15, 'SHOOK', 15, 39, false, current_timestamp + INTERVAL '- 1 DAY');
 INSERT INTO public.notifications (notification_id, user_id, message_type, participant_id, queue_id, is_read, date)
-VALUES (4, 1, 'YOUR_TURN', 1, 39, false, '2022-01-14 23:48:59.000000');
+VALUES (12, 1, 'SHOOK', 1, 39, false, current_timestamp + INTERVAL '- 1 DAY 1 hour');
 
 
 INSERT INTO public.user_queue (user_queue_id, queue_id, user_id, is_active, skips, expenses, is_important, date_joined)

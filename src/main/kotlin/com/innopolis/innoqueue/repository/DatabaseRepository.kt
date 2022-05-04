@@ -28,11 +28,11 @@ interface DatabaseRepository : CrudRepository<Queue, Long> {
                 "\n" +
                 "create table \"user\"\n" +
                 "(\n" +
-                "    user_id    bigserial\n" +
+                "    user_id   bigserial\n" +
                 "        constraint user_pk\n" +
                 "            primary key,\n" +
-                "    token      varchar(128) not null,\n" +
-                "    name       varchar(64)  not null,\n" +
+                "    token     varchar(128) not null,\n" +
+                "    name      varchar(64)  not null,\n" +
                 "    fcm_token varchar(256) not null\n" +
                 ");\n" +
                 "\n" +
@@ -242,29 +242,29 @@ interface DatabaseRepository : CrudRepository<Queue, Long> {
                 "\n" +
                 "\n" +
                 "INSERT INTO public.notifications (notification_id, user_id, message_type, participant_id, queue_id, is_read, date)\n" +
-                "VALUES (7, 15, 'SKIPPED', 3, 40, true, '2022-01-12 12:34:25.000000');\n" +
+                "VALUES (1, 1, 'JOINED_QUEUE', 5, 44, true, current_timestamp + INTERVAL '- 10 DAY');\n" +
                 "INSERT INTO public.notifications (notification_id, user_id, message_type, participant_id, queue_id, is_read, date)\n" +
-                "VALUES (1, 1, 'JOINED_QUEUE', 5, 44, true, '2022-01-11 19:48:45.000000');\n" +
+                "VALUES (2, 15, 'JOINED_QUEUE', 5, 44, true, current_timestamp + INTERVAL '- 10 DAY 1 hour');\n" +
                 "INSERT INTO public.notifications (notification_id, user_id, message_type, participant_id, queue_id, is_read, date)\n" +
-                "VALUES (6, 1, 'SHOOK', 1, 39, false, '2022-01-20 10:01:32.000000');\n" +
+                "VALUES (3, 1, 'SKIPPED', 3, 40, true, current_timestamp + INTERVAL '- 9 DAY');\n" +
                 "INSERT INTO public.notifications (notification_id, user_id, message_type, participant_id, queue_id, is_read, date)\n" +
-                "VALUES (9, 15, 'SHOOK', 15, 39, false, '2022-01-20 10:01:32.000000');\n" +
+                "VALUES (4, 15, 'SKIPPED', 3, 40, true, current_timestamp + INTERVAL '- 9 DAY 1 hour');\n" +
                 "INSERT INTO public.notifications (notification_id, user_id, message_type, participant_id, queue_id, is_read, date)\n" +
-                "VALUES (3, 1, 'SKIPPED', 3, 40, true, '2022-01-12 12:34:25.000000');\n" +
+                "VALUES (5, 1, 'COMPLETED', 2, 44, true, current_timestamp + INTERVAL '- 8 DAY');\n" +
                 "INSERT INTO public.notifications (notification_id, user_id, message_type, participant_id, queue_id, is_read, date)\n" +
-                "VALUES (12, 15, 'COMPLETED', 5, 39, false, '2022-01-14 23:48:55.000000');\n" +
+                "VALUES (6, 15, 'COMPLETED', 2, 44, true, current_timestamp + INTERVAL '- 8 DAY 1 hour');\n" +
                 "INSERT INTO public.notifications (notification_id, user_id, message_type, participant_id, queue_id, is_read, date)\n" +
-                "VALUES (10, 15, 'YOUR_TURN', 15, 39, false, '2022-01-14 23:48:59.000000');\n" +
+                "VALUES (7, 1, 'COMPLETED', 5, 39, false, current_timestamp + INTERVAL '- 7 DAY');\n" +
                 "INSERT INTO public.notifications (notification_id, user_id, message_type, participant_id, queue_id, is_read, date)\n" +
-                "VALUES (8, 15, 'COMPLETED', 2, 44, true, '2022-01-13 11:08:38.000000');\n" +
+                "VALUES (8, 15, 'COMPLETED', 5, 39, false, current_timestamp + INTERVAL '- 7 DAY 1 hour');\n" +
                 "INSERT INTO public.notifications (notification_id, user_id, message_type, participant_id, queue_id, is_read, date)\n" +
-                "VALUES (11, 15, 'JOINED_QUEUE', 5, 44, true, '2022-01-11 19:48:45.000000');\n" +
+                "VALUES (9, 1, 'YOUR_TURN', 1, 39, false, current_timestamp + INTERVAL '- 7 DAY 2 hour');\n" +
                 "INSERT INTO public.notifications (notification_id, user_id, message_type, participant_id, queue_id, is_read, date)\n" +
-                "VALUES (2, 1, 'COMPLETED', 2, 44, true, '2022-01-13 11:08:38.000000');\n" +
+                "VALUES (10, 15, 'YOUR_TURN', 15, 39, false, current_timestamp + INTERVAL '- 7 DAY 3 hour');\n" +
                 "INSERT INTO public.notifications (notification_id, user_id, message_type, participant_id, queue_id, is_read, date)\n" +
-                "VALUES (5, 1, 'COMPLETED', 5, 39, false, '2022-01-14 23:48:55.000000');\n" +
+                "VALUES (11, 15, 'SHOOK', 15, 39, false, current_timestamp + INTERVAL '- 1 DAY');\n" +
                 "INSERT INTO public.notifications (notification_id, user_id, message_type, participant_id, queue_id, is_read, date)\n" +
-                "VALUES (4, 1, 'YOUR_TURN', 1, 39, false, '2022-01-14 23:48:59.000000');\n" +
+                "VALUES (12, 1, 'SHOOK', 1, 39, false, current_timestamp + INTERVAL '- 1 DAY 1 hour');\n" +
                 "\n" +
                 "\n" +
                 "INSERT INTO public.user_queue (user_queue_id, queue_id, user_id, is_active, skips, expenses, is_important, date_joined)\n" +
