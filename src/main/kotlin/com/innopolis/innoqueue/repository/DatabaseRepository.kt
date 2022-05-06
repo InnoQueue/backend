@@ -114,6 +114,9 @@ interface DatabaseRepository : CrudRepository<Queue, Long> {
                 "create unique index notifications_notification_id_uindex\n" +
                 "    on notifications (notification_id);\n" +
                 "\n" +
+                "create index notifications_date__index\n" +
+                "    on notifications (date);\n" +
+                "\n" +
                 "CREATE SEQUENCE notifications_id_seq START WITH 100 INCREMENT BY 1;\n" +
                 "\n" +
                 "\n" +
@@ -140,6 +143,9 @@ interface DatabaseRepository : CrudRepository<Queue, Long> {
                 "create unique index user_queue_user_queue_id_uindex\n" +
                 "    on user_queue (user_queue_id);\n" +
                 "\n" +
+                "create index user_queue_date_joined__index\n" +
+                "    on user_queue (date_joined);\n" +
+                "\n" +
                 "CREATE SEQUENCE user_queue_id_seq START WITH 100 INCREMENT BY 1;\n" +
                 "\n" +
                 "\n" +
@@ -164,6 +170,9 @@ interface DatabaseRepository : CrudRepository<Queue, Long> {
                 "\n" +
                 "create unique index queue_pin_code_pin_code_uindex\n" +
                 "    on queue_pin_code (pin_code);\n" +
+                "\n" +
+                "create index queue_pin_code_date_created__index\n" +
+                "    on queue_pin_code (date_created);\n" +
                 "\n" +
                 "CREATE SEQUENCE queue_pin_code2_id_seq START WITH 100 INCREMENT BY 1;\n" +
                 "\n" +
@@ -190,21 +199,25 @@ interface DatabaseRepository : CrudRepository<Queue, Long> {
                 "create unique index queue_qr_code_qr_code_uindex\n" +
                 "    on queue_qr_code (qr_code);\n" +
                 "\n" +
+                "create index queue_qr_code_date_created__index\n" +
+                "    on queue_qr_code (date_created);\n" +
+                "\n" +
+                "\n" +
                 "CREATE SEQUENCE queue_qr_code2_id_seq START WITH 100 INCREMENT BY 1;\n" +
                 "\n" +
                 "\n" +
                 "INSERT INTO public.\"user\" (user_id, token, name, fcm_token)\n" +
-                "VALUES (1, '11111', 'admin', 'fsadfdsa');\n" +
+                "VALUES (4, '4', 'Peter', '3');\n" +
                 "INSERT INTO public.\"user\" (user_id, token, name, fcm_token)\n" +
-                "VALUES (2, '2', 'Ivan', 'fdsfa');\n" +
+                "VALUES (3, '3', 'Bob', '5');\n" +
                 "INSERT INTO public.\"user\" (user_id, token, name, fcm_token)\n" +
-                "VALUES (4, '4', 'Peter', 'fsafds');\n" +
+                "VALUES (5, '5', 'Alice', '6');\n" +
                 "INSERT INTO public.\"user\" (user_id, token, name, fcm_token)\n" +
-                "VALUES (15, '22222', 'Emil', 'fdasfda');\n" +
+                "VALUES (15, '22222', 'Emil', '22222');\n" +
                 "INSERT INTO public.\"user\" (user_id, token, name, fcm_token)\n" +
-                "VALUES (3, '3', 'Bob', 'fdsafds');\n" +
+                "VALUES (2, '2', 'Ivan', '2');\n" +
                 "INSERT INTO public.\"user\" (user_id, token, name, fcm_token)\n" +
-                "VALUES (5, '5', 'Alice', 'fsdafd');\n" +
+                "VALUES (1, '11111', 'admin', '11111');\n" +
                 "\n" +
                 "\n" +
                 "INSERT INTO public.user_settings (user_settings_id, user_id, completed, skipped, joined_queue, \"freeze\", left_queue,\n" +

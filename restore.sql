@@ -103,6 +103,9 @@ create table notifications
 create unique index notifications_notification_id_uindex
     on notifications (notification_id);
 
+create index notifications_date__index
+    on notifications (date);
+
 CREATE SEQUENCE notifications_id_seq START WITH 100 INCREMENT BY 1;
 
 
@@ -129,6 +132,9 @@ create table user_queue
 create unique index user_queue_user_queue_id_uindex
     on user_queue (user_queue_id);
 
+create index user_queue_date_joined__index
+    on user_queue (date_joined);
+
 CREATE SEQUENCE user_queue_id_seq START WITH 100 INCREMENT BY 1;
 
 
@@ -153,6 +159,9 @@ create unique index queue_pin_code_queue_id_uindex
 
 create unique index queue_pin_code_pin_code_uindex
     on queue_pin_code (pin_code);
+
+create index queue_pin_code_date_created__index
+    on queue_pin_code (date_created);
 
 CREATE SEQUENCE queue_pin_code2_id_seq START WITH 100 INCREMENT BY 1;
 
@@ -179,21 +188,25 @@ create unique index queue_qr_code_queue_id_uindex
 create unique index queue_qr_code_qr_code_uindex
     on queue_qr_code (qr_code);
 
+create index queue_qr_code_date_created__index
+    on queue_qr_code (date_created);
+
+
 CREATE SEQUENCE queue_qr_code2_id_seq START WITH 100 INCREMENT BY 1;
 
 
 INSERT INTO public."user" (user_id, token, name, fcm_token)
-VALUES (1, '11111', 'admin', 'fsadfdsa');
+VALUES (4, '4', 'Peter', '3');
 INSERT INTO public."user" (user_id, token, name, fcm_token)
-VALUES (2, '2', 'Ivan', 'fdsfa');
+VALUES (3, '3', 'Bob', '5');
 INSERT INTO public."user" (user_id, token, name, fcm_token)
-VALUES (4, '4', 'Peter', 'fsafds');
+VALUES (5, '5', 'Alice', '6');
 INSERT INTO public."user" (user_id, token, name, fcm_token)
-VALUES (15, '22222', 'Emil', 'fdasfda');
+VALUES (15, '22222', 'Emil', '22222');
 INSERT INTO public."user" (user_id, token, name, fcm_token)
-VALUES (3, '3', 'Bob', 'fdsafds');
+VALUES (2, '2', 'Ivan', '2');
 INSERT INTO public."user" (user_id, token, name, fcm_token)
-VALUES (5, '5', 'Alice', 'fsdafd');
+VALUES (1, '11111', 'admin', '11111');
 
 
 INSERT INTO public.user_settings (user_settings_id, user_id, completed, skipped, joined_queue, "freeze", left_queue,
