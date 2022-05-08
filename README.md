@@ -16,6 +16,8 @@ Backend for the **Flutter Project**. To read the full README check [this reposit
 - You can read [API documentation](https://documenter.getpostman.com/view/16213957/UVsSP4ER)
 - The backend is hosted on [Heroku](https://innoqueue.herokuapp.com)
 
+> Features on which we are working on can be found in [issues](https://github.com/InnoQueue/Backend/issues)
+
 ## 📊 Other repositories
 - README about this project [in this repository](https://github.com/InnoQueue/README)
 - The Flutter project itself is [in this repository](https://github.com/InnoQueue/Mobile)
