@@ -6,12 +6,10 @@
 
 Backend for the **Flutter Project**. To read the full README check [this repository](https://github.com/InnoQueue/README)
 
-## Team
-- **name**: Haskell
-- **team members**:
-    - Timur Nugaev
-    - Roman Soldatov
-    - Emil Khabibullin
+## **Haskell** team
+- Timur Nugaev
+- Emil Khabibullin
+- Roman Soldatov
 
 ## 📌 About
 - For the Flutter project the Backend REST API was developed.
