@@ -46,18 +46,6 @@ fun main(args: Array<String>) {
     thread(start = true) {
         Thread.sleep(startupDelay)
         while (true) {
-            val db = context.getBean("databaseController") as DatabaseController
-            try {
-                db.clearCodes()
-            } catch (_: Exception) {
-            }
-            println("Expired invite codes were deleted")
-            Thread.sleep(clearInviteCodesTimeMillis)
-        }
-    }
-    thread(start = true) {
-        Thread.sleep(startupDelay)
-        while (true) {
             val notificationsController = context.getBean("notificationsController") as NotificationsController
             try {
                 notificationsController.clearOldNotifications()
