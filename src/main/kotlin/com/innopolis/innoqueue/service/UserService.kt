@@ -29,10 +29,10 @@ class UserService(
         // TODO remove after demo presentation
         val reservedUsers: List<Triple<String, Long, String>> = listOf(
             Triple("admin", 1, "11111"),
-            Triple("Emil", 2, "22222"),
-            Triple("Roman", 3, "33333"),
-            Triple("Timur", 4, "44444"),
-            Triple("Ivan", 5, "55555")
+//            Triple("Emil", 2, "22222"),
+//            Triple("Roman", 3, "33333"),
+//            Triple("Timur", 4, "44444"),
+//            Triple("Ivan", 5, "55555")
         )
         for (r in reservedUsers) {
             val (n, i, t) = r
