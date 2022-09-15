@@ -12,7 +12,10 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping
 class DatabaseController(private val service: DatabaseService) {
+
+    // TODO remove handleNotFound method and handle exceptions in an appropriate way
     @ExceptionHandler(Exception::class)
+    @Suppress("UnusedPrivateMember")
     fun handleNotFound(e: Exception): ResponseEntity<String> =
         ResponseEntity("Database is reset by default data", HttpStatus.OK)
 

@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
+@Suppress("TooManyFunctions")
 @RestController
 @RequestMapping("/queues")
 class QueueController(private val service: QueueService) {
@@ -26,7 +27,10 @@ class QueueController(private val service: QueueService) {
         service.getQueueById(token, queueId)
 
     @GetMapping("/invite/{queueId}")
-    fun getQueueInviteCode(@RequestHeader("user-token") token: String, @PathVariable queueId: Long): QueueInviteCodeDTO =
+    fun getQueueInviteCode(
+        @RequestHeader("user-token") token: String,
+        @PathVariable queueId: Long
+    ): QueueInviteCodeDTO =
         service.getQueueInviteCode(token, queueId)
 
     @PostMapping

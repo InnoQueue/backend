@@ -15,6 +15,10 @@ import java.time.LocalDateTime
 import java.time.ZoneOffset
 import kotlin.math.abs
 
+private const val PIN_CODE_LENGTH: Int = 6
+private const val QR_CODE_LENGTH: Int = 48
+
+@Suppress("TooManyFunctions")
 @Service
 class QueueService(
     private val userService: UserService,
@@ -24,9 +28,6 @@ class QueueService(
     private val queuePinCodeRepository: QueuePinCodeRepository,
     private val queueQrCodeRepository: QueueQrCodeRepository
 ) {
-    private val pinCodeLength: Int = 6
-    private val qrCodeLength: Int = 48
-
     fun getQueues(token: String): QueuesListDTO {
         val user = userService.getUserByToken(token)
         val (activeQueue, frozenQueue) = user.queues.partition { it.isActive!! }
@@ -70,6 +71,7 @@ class QueueService(
         return qDTO
     }
 
+    @Suppress("ThrowsCount")
     fun editQueue(token: String, editQueue: EditQueueDTO): QueueDTO {
         if (editQueue.queueId == null) {
             throw IllegalArgumentException("Queue id should be specified")
@@ -139,6 +141,7 @@ class QueueService(
                     )
                 }
             }
+
             false -> {
                 if (userQueue.isActive!!) {
                     // You can't freeze queue if it's your turn
@@ -188,6 +191,7 @@ class QueueService(
         }
     }
 
+    @Suppress("ThrowsCount", "ReturnCount")
     fun joinQueue(token: String, queueInviteCodeDTO: QueueInviteCodeDTO): QueueDTO {
         val user = userService.getUserByToken(token)
 
@@ -282,6 +286,7 @@ class QueueService(
         )
     }
 
+    @Suppress("MagicNumber")
     fun getHashCode(queue: QueueDTO): Int {
         val hashCodes =
             mutableListOf(
@@ -418,7 +423,7 @@ class QueueService(
     }
 
     private fun generateUniqueQRCode(qrCodes: List<String?>): String {
-        val generator = StringGenerator(qrCodeLength)
+        val generator = StringGenerator(QR_CODE_LENGTH)
         while (true) {
             val newQrCode = generator.generateString()
             if (newQrCode !in qrCodes) {
@@ -427,9 +432,10 @@ class QueueService(
         }
     }
 
+    @Suppress("MagicNumber")
     private fun generateUniquePinCode(pinCodes: List<String?>): String {
         while (true) {
-            val newPinCode = (1..pinCodeLength)
+            val newPinCode = (1..PIN_CODE_LENGTH)
                 .map { (0..9).random() }
                 .fold("") { acc: String, i: Int -> acc + i.toString() }
             if (newPinCode !in pinCodes) {

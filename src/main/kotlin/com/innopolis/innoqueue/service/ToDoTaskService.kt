@@ -7,6 +7,7 @@ import com.innopolis.innoqueue.repository.UserQueueRepository
 import com.innopolis.innoqueue.utils.NotificationsTypes
 import com.innopolis.innoqueue.utils.UsersQueueLogic
 import org.springframework.stereotype.Service
+import java.util.*
 
 @Service
 class ToDoTaskService(
@@ -90,7 +91,7 @@ class ToDoTaskService(
 
     private fun saveTaskProgress(queue: UserQueue, expenses: Double?) {
         if (expenses != null && queue.queue?.trackExpenses == true) {
-            val roundedExpenses = String.format("%.2f", expenses).toDouble()
+            val roundedExpenses = String.format(Locale.ENGLISH, "%.2f", expenses).toDouble()
             queue.expenses = queue.expenses?.plus(roundedExpenses)
         }
         queue.isImportant = false

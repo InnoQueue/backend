@@ -12,6 +12,7 @@ class MessagePushNotificationCreator(
         return title to body
     }
 
+    @Suppress("ComplexMethod")
     private fun prepareTitleForNotificationMessage(
         notificationType: NotificationsTypes, participantName: String, queueName: String, isPersonal: Boolean
     ): String? {
@@ -64,6 +65,7 @@ class MessagePushNotificationCreator(
         }
     }
 
+    @Suppress("ComplexMethod")
     private fun prepareBodyForNotificationMessage(
         notificationType: NotificationsTypes, participantName: String, queueName: String, isPersonal: Boolean
     ): String? {

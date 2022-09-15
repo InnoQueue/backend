@@ -17,8 +17,8 @@ import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 
+@Suppress("TooManyFunctions")
 @Service
-
 class NotificationsService(
     private val userService: UserService,
     private val firebaseMessagingService: FirebaseMessagingNotificationsService,
@@ -74,6 +74,7 @@ class NotificationsService(
         sendNotificationsToFirebase(notifications, notificationType, participant, queue)
     }
 
+    @Suppress("TooGenericExceptionCaught")
     private fun sendNotificationsToFirebase(
         notifications: List<Notification>,
         notificationType: NotificationsTypes,

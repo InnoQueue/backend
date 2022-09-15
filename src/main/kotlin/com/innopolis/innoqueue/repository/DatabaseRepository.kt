@@ -6,6 +6,7 @@ import org.springframework.data.repository.CrudRepository
 import org.springframework.stereotype.Repository
 
 @Repository
+@Suppress("MaxLineLength")
 interface DatabaseRepository : CrudRepository<Queue, Long> {
 
     @Query(

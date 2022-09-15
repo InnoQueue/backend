@@ -9,13 +9,13 @@ import com.innopolis.innoqueue.utils.StringGenerator
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
+private const val TOKEN_LENGTH = 64
+
 @Service
 class UserService(
     private val userRepository: UserRepository,
     private val settingsRepository: UserSettingsRepository,
 ) {
-    private val tokenLength = 64
-
     fun getUserByToken(token: String): User {
         return userRepository.findAll().firstOrNull { user -> user.token == token }
             ?: throw NoSuchElementException("No such user with token: $token")
@@ -48,7 +48,7 @@ class UserService(
             throw IllegalArgumentException("Username can't be an empty string")
         }
         val existingTokens = userRepository.findAll().map { it.token }
-        val generator = StringGenerator(tokenLength)
+        val generator = StringGenerator(TOKEN_LENGTH)
         while (true) {
             val randomString = generator.generateString()
             if (!existingTokens.contains(randomString)) {
