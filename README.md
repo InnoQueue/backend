@@ -1,18 +1,20 @@
-# Cross-platform Mobile Development with Flutter S22 elective.
+# Ensuring Quality in Software Projects F22 elective.
 
-> Semester 6, 3rd study year, Innopolis University.
+> Semester 7, 4th study-year, Innopolis University.
 
 [![Hits-of-Code](https://hitsofcode.com/github/InnoQueue/Backend?branch=main)](https://hitsofcode.com/github/InnoQueue/Backend/view?branch=main)
 
-Backend for the **Flutter Project**. To read the full README check [this repository](https://github.com/InnoQueue/README)
+REST API Backend for the **InnoQueue**.
+To read the full README check [this repository](https://github.com/InnoQueue/.github/blob/main/profile/README.md)
 
-## **Haskell** team
-- Timur Nugaev
-- Emil Khabibullin
+## **Team**
 - Roman Soldatov
+- Timur Nugaev
+- Daniil Livitin
+- Mikhail Martovitsky
 
 ## 📌 About
-- For the Flutter project the Backend REST API was developed.
+- For the mobile application the Backend REST API was developed.
 - You can read [API documentation](https://documenter.getpostman.com/view/16213957/UVsSP4ER)
 - In case you want to reset the database by default mock data, use this [endpoint](https://innoqueue.herokuapp.com/reset)
 - The backend is hosted on [Heroku](https://innoqueue.herokuapp.com)
@@ -21,4 +23,4 @@ Backend for the **Flutter Project**. To read the full README check [this reposit
 
 ## 📊 Other repositories
 - README about this project [in this repository](https://github.com/InnoQueue/README)
-- The Flutter project itself is [in this repository](https://github.com/InnoQueue/Mobile)
+- The Mobile application is [in this repository](https://github.com/InnoQueue/Mobile)
