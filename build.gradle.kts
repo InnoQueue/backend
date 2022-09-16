@@ -1,5 +1,6 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
+val springBootVersion: String by project
 plugins {
     id("org.springframework.boot") version "2.7.3"
     id("io.spring.dependency-management") version "1.0.13.RELEASE"
@@ -8,6 +9,8 @@ plugins {
     kotlin("plugin.jpa") version "1.6.21"
     id("io.gitlab.arturbosch.detekt") version "1.21.0"
 }
+
+val javaVersion: String by project
 
 group = "com.innopolis"
 version = "0.0.1-SNAPSHOT"
@@ -18,21 +21,24 @@ repositories {
 }
 
 dependencies {
+    val flywayVersion: String by project
+    val firebaseVersion: String by project
+
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-    implementation("org.flywaydb:flyway-core:9.2.2")
+    implementation("org.flywaydb:flyway-core:$flywayVersion")
+    implementation("com.google.firebase:firebase-admin:$firebaseVersion")
     runtimeOnly("org.postgresql:postgresql")
-    implementation("com.google.firebase:firebase-admin:9.0.0")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 
 tasks.withType<KotlinCompile> {
     kotlinOptions {
         freeCompilerArgs = listOf("-Xjsr305=strict")
-        jvmTarget = "17"
+        jvmTarget = javaVersion
     }
 }
 
@@ -41,10 +47,10 @@ tasks.withType<Test> {
 }
 
 tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
-    jvmTarget = "17"
+    jvmTarget = javaVersion
 }
 tasks.withType<io.gitlab.arturbosch.detekt.DetektCreateBaselineTask>().configureEach {
-    jvmTarget = "17"
+    jvmTarget = javaVersion
 }
 
 detekt {
