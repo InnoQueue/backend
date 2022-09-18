@@ -19,6 +19,10 @@ To read the full README check [this repository](https://github.com/InnoQueue/.gi
 - In case you want to reset the database by default mock data, use this [endpoint](https://innoqueue.herokuapp.com/reset)
 - The backend is hosted on [Heroku](https://innoqueue.herokuapp.com)
 
+## Hooks
+- Make files in `.githooks` executable `chmod 755 commit-msg` and `chmod 755 prepare-commit-msg`
+- In order to enable hooks enter the project and use the following command `git config core.hooksPath .githooks`
+
 > Features on which we are working can be found in [issues](https://github.com/InnoQueue/Backend/issues)
 
 ## 📊 Other repositories
