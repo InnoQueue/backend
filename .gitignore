@@ -202,3 +202,4 @@ gradle-app.setting
 *.hprof
 
 # End of https://www.toptal.com/developers/gitignore/api/gradle,intellij+all,kotlin,java,maven,macos
+/src/main/resources/innoqueue-firebase.json
