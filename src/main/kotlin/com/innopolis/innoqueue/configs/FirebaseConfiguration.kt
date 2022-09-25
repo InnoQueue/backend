@@ -13,7 +13,7 @@ import java.io.InputStream
 
 @Configuration
 class FirebaseConfiguration {
-    @Value("\${GOOGLE_CREDENTIALS}")
+    @Value("\${firebase}")
     private val gservicesConfig: String? = null
 
     @Bean
