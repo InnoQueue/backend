@@ -9,7 +9,7 @@ branch = (
     check_output(["git", "symbolic-ref", "--short", "HEAD"]).decode("utf-8").strip()
 )
 
-regex = r"^[A-Z]{1,9}-[0-9]{1,9}"
+regex = r"^[A-Z]{1,9}_[0-9]{1,9}"
 
 found_obj = re.match(regex, branch)
 
