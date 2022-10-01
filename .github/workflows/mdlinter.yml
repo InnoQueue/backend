@@ -2,8 +2,8 @@ name: Run MD Linter
 on:
   pull_request:
 jobs:
-  lint-changelog:
-    name: Lint changelog file
+  lint-readme:
+    name: Lint README file
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
