@@ -15,4 +15,3 @@ jobs:
           rules: '/lint/rules/changelog.js'
           config: '/lint/config/changelog.yml'
           args: './README.md'
-          fix: true
