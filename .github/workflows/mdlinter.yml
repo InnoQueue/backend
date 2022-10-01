@@ -10,7 +10,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Lint readme file
-        uses: Dablup/markdown-lint@v1.0.0
+        uses: Dablup/markdown-lint@v1
         with:
           rules: '/lint/rules/changelog.js'
           config: '/lint/config/changelog.yml'
