@@ -9,8 +9,8 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v2
 
-      - name: Lint changelog file
-        uses: Dablup/markdown-lint@v1
+      - name: Lint readme file
+        uses: Dablup/markdown-lint@v1.0.0
         with:
           rules: '/lint/rules/changelog.js'
           config: '/lint/config/changelog.yml'
