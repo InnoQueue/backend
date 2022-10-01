@@ -9,10 +9,9 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v2
 
-      - name: Lint readme file
-        uses: docker://avtodev/markdown-lint:v1 # fastest way
+      - name: Lint changelog file
+        uses: Dablup/markdown-lint@v1
         with:
           rules: '/lint/rules/changelog.js'
           config: '/lint/config/changelog.yml'
           args: './README.md'
-          fix: true
