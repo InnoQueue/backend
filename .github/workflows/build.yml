@@ -1,6 +1,5 @@
 name: Run Gradle Build on PRs
-on:
-  pull_request:
+on: [pull_request, push]
 
 jobs:
   gradle:
@@ -20,3 +19,18 @@ jobs:
 
       - name: Execute Gradle build
         run: ./gradlew build
+
+      - name: send telegram message on build fail
+        if: failure()
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: |
+            Build faild
+            ${{ github.actor }} created commit:
+            Commit message: ${{ github.event.commits[0].message }}
+            
+            Repository: ${{ github.repository }}
+            
+            See changes: https://github.com/${{ github.repository }}/commit/${{github.sha}}
