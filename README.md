@@ -20,6 +20,7 @@ To read the full README check [this repository](https://github.com/InnoQueue/.gi
 - You can read [API documentation](https://documenter.getpostman.com/view/16213957/UVsSP4ER)
 - In case you want to reset the database by default mock data, use this [endpoint](https://innoqueue.herokuapp.com/reset)
 - The backend is hosted on [Heroku](https://innoqueue.herokuapp.com)
+- All build failures are published in [telegram](https://t.me/+nkVX0j3FXo8zMmNi)
 
 ## Hooks
 
