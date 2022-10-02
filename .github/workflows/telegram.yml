@@ -1,12 +1,12 @@
 name: telegram message
 on: [pull_request, push]
 jobs:
-  if: failure()
   build:
     name: Build
     runs-on: ubuntu-latest
     steps:
       - name: send telegram message on build fail
+        if: failure()
         uses: appleboy/telegram-action@master
         with:
           to: ${{ secrets.TELEGRAM_TO }}
