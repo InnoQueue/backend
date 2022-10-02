@@ -16,7 +16,7 @@ class SettingsService(
         val user = userService.getUserByToken(token)
         val settings = user.settings!!
         return SettingsDTO(
-            user.name!!,
+            user.nam!!,
             settings.completed!!,
             settings.skipped!!,
             settings.joinedQueue!!,
