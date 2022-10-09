@@ -1,6 +1,5 @@
 name: Run MD Linter
-on:
-  pull_request:
+on: [ pull_request, push ]
 jobs:
   lint-readme:
     name: Lint README file
