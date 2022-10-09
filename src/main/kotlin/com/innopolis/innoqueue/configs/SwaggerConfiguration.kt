@@ -12,7 +12,7 @@ class SwaggerConfiguration {
     fun openApi(): OpenAPI = OpenAPI()
         .info(
             Info()
-                .title("InnoQueue API")
+                .title("InnoQueue API2")
                 .description("Swagger for the InnoQueue Backend\n\nCheck https://github.com/InnoQueue for more info")
                 .version("v1.0.0")
         )

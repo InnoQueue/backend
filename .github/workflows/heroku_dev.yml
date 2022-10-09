@@ -1,6 +1,10 @@
-name: Deploy
+name: Deploy DEV
 on:
-  workflow_dispatch
+  workflow_dispatch:
+  workflow_run:
+    workflows: [ "Build and publish" ]
+    types:
+      - completed
 
 jobs:
   deploy_heroku:
