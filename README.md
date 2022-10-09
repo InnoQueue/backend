@@ -5,7 +5,8 @@
 [![Hits-of-Code](https://hitsofcode.com/github/InnoQueue/Backend?branch=main)](https://hitsofcode.com/github/InnoQueue/Backend/view?branch=main)
 
 REST API Backend for the **InnoQueue**.
-To read the full description, check [README repository](https://github.com/InnoQueue/.github/blob/main/profile/README.md)
+To read the full description,
+check [README repository](https://github.com/InnoQueue/.github/blob/main/profile/README.md)
 
 ## **Team**
 
@@ -33,7 +34,43 @@ To read the full description, check [README repository](https://github.com/InnoQ
 
 ### Manually
 
-- TODO
+- Install [JDK](https://www.oracle.com/java/technologies/downloads/)
+- Install [Gradle](https://gradle.org/install/)
+- Install [Docker](https://docs.docker.com/engine/install/)
+- Open your terminal and run the following commands:
+
+#### Set up the database
+
+- `docker pull postgres`
+- `docker run --name postgres -e POSTGRES_PASSWORD=postgres -d -p 5432:5432 postgres`
+  > Note that you can set your own container name and password. Just make sure that
+  in [application.yml](/src/main/resources/application.yml) file
+  **spring.datasource.username** and **spring.datasource.password** properties have
+  the same values as your container.
+
+#### Run
+
+- `git clone https://github.com/InnoQueue/Backend.git`
+- `cd Backend`
+- Run application: `./gradlew bootRun`
+
+#### Firebase
+
+- Additionally, if you want to send push notifications, set up the firebase project:
+- Create your project using the [Firebase](https://console.firebase.google.com)
+- Go to **Project settings** -> **Service accounts**.
+- In the **Admin SDK configuration snippet section** select `Java`
+  and click on **Generate new private key**.
+- The JSON file's content should be similar to
+  [innoqueue-firebase.json](/src/main/resources/innoqueue-firebase.json.origin)
+- Place this JSON file in **Backend** folder.
+- Run application:
+
+```bash
+GOOGLE_CREDENTIALS=`cat firebase.json` ./gradlew bootRun
+```
+
+where **firebase.json** is your json credentials file.
 
 ### Docker
 

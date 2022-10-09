@@ -8,10 +8,11 @@ import com.google.firebase.messaging.Notification
 import org.springframework.stereotype.Service
 
 @Service
+//@ConditionalOnBean(name = ["firebaseApp"])
 class FirebaseMessagingNotificationsService(
-    firebaseApp: FirebaseApp
+    firebaseApp: FirebaseApp?
 ) {
-    private val firebaseMessaging: FirebaseMessaging = FirebaseMessaging.getInstance(firebaseApp)
+    private val firebaseMessaging: FirebaseMessaging? = firebaseApp?.let { FirebaseMessaging.getInstance(it) }
 
     @Throws(FirebaseMessagingException::class)
     fun sendNotification(title: String?, body: String?, token: String?, dataMap: HashMap<String, String?>): String {
@@ -26,6 +27,6 @@ class FirebaseMessagingNotificationsService(
             .setNotification(notification)
             .putAllData(dataMap)
             .build()
-        return firebaseMessaging.send(message)
+        return firebaseMessaging?.send(message) ?: ""
     }
 }

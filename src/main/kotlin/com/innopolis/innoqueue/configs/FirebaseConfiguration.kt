@@ -12,21 +12,26 @@ import java.io.IOException
 import java.io.InputStream
 
 @Configuration
+//@ConditionalOnProperty(name = ["firebase"], matchIfMissing = true)
 class FirebaseConfiguration {
     @Value("\${firebase}")
     private val gservicesConfig: String? = null
 
     @Bean
     @Throws(IOException::class)
-    fun provideFirebaseOptions(): FirebaseApp {
-        val jsonObject = JSONObject(gservicesConfig.toString())
-        val inputStream: InputStream = ByteArrayInputStream(jsonObject.toString().toByteArray())
-        val googleCredentials = GoogleCredentials
-            .fromStream(inputStream)
-        val firebaseOptions = FirebaseOptions
-            .builder()
-            .setCredentials(googleCredentials)
-            .build()
-        return FirebaseApp.initializeApp(firebaseOptions, "InnoQueue")
+    fun provideFirebaseOptions(): FirebaseApp? {
+        return if (gservicesConfig == "null") {
+            null
+        } else {
+            val jsonObject = JSONObject(gservicesConfig.toString())
+            val inputStream: InputStream = ByteArrayInputStream(jsonObject.toString().toByteArray())
+            val googleCredentials = GoogleCredentials
+                .fromStream(inputStream)
+            val firebaseOptions = FirebaseOptions
+                .builder()
+                .setCredentials(googleCredentials)
+                .build()
+            FirebaseApp.initializeApp(firebaseOptions, "InnoQueue")
+        }
     }
 }

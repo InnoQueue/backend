@@ -15,4 +15,4 @@ spring:
     database: postgresql
   flyway:
     enabled: true
-firebase: ${GOOGLE_CREDENTIALS}
+firebase: ${GOOGLE_CREDENTIALS:null}
