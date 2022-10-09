@@ -111,8 +111,13 @@ where **firebase.json** is your json credentials file.
 ## Deployment
 
 - The backend is hosted on [Heroku](https://innoqueue.herokuapp.com)
-- Also, we host the [dev server](https://innoqueue-dev.herokuapp.com)
-  which we use to test new features with the test database.
+- Also, we host the [innoqueue-dev](https://innoqueue-dev.herokuapp.com)
+  server which we use to test new features with the test database.
+- Deployment is possible if the Build workflow was successful.
+- `innoqueue-dev` is automatically deployed when pushed on `main` branch.
+- `innoqueue-dev` can be also manually deployed from any branch.
+  Run `Deploy DEV` workflow.
+- `innoqueue` is deployd manually from main branch.
 
 > Features on which we are working can be found in [issues](https://github.com/InnoQueue/Backend/issues)
 
