@@ -24,6 +24,7 @@ dependencies {
     val flywayVersion: String by project
     val firebaseVersion: String by project
     val jsonVersion: String by project
+    val springdocVersion: String by project
 
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-web")
@@ -33,6 +34,7 @@ dependencies {
     implementation("org.flywaydb:flyway-core:$flywayVersion")
     implementation("com.google.firebase:firebase-admin:$firebaseVersion")
     implementation("org.json:json:$jsonVersion")
+    implementation("org.springdoc:springdoc-openapi-ui:$springdocVersion")
     runtimeOnly("org.postgresql:postgresql")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }

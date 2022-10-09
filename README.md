@@ -25,7 +25,8 @@ check [README repository](https://github.com/InnoQueue/.github/blob/main/profile
 ## 📌 About
 
 - For the mobile application the Backend REST API was developed.
-- You can read [API documentation](https://documenter.getpostman.com/view/16213957/UVsSP4ER)
+- You can read [Postman API documentation](https://documenter.getpostman.com/view/16213957/UVsSP4ER)
+- You can read [Swagger](https://innoqueue.herokuapp.com/swagger-ui.html)
 - In case you want to reset the database by default mock data, use
   this [endpoint](https://innoqueue.herokuapp.com/reset)
 - The backend is hosted on [Heroku](https://innoqueue.herokuapp.com)
@@ -86,6 +87,9 @@ where **firebase.json** is your json credentials file.
   - `chmod 755 commit-msg`
   - `chmod 755 prepare-commit-msg`
 - In order to enable hooks enter the project and use the following command: `git config core.hooksPath .githooks`
+- Hooks checks:
+  - branch name: `regex = r"^[A-Z]{1,9}_[0-9]{1,9}"`
+  - commit message: `regex = r"(Add |Created |Fix |Update |Rework)(.+)(?:closes #[1-9])|Minor"`
 
 ### GitHub Actions
 

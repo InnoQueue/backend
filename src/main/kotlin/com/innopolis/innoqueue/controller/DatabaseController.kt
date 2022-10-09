@@ -2,6 +2,7 @@ package com.innopolis.innoqueue.controller
 
 import com.innopolis.innoqueue.controller.dto.EmptyDTO
 import com.innopolis.innoqueue.service.DatabaseService
+import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ExceptionHandler
@@ -11,6 +12,10 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping
+@Tag(
+    name = "Backend Settings",
+    description = "Requests to manipulate with the database"
+)
 class DatabaseController(private val service: DatabaseService) {
 
     // TODO remove handleNotFound method and handle exceptions in an appropriate way

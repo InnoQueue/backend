@@ -4,12 +4,14 @@ import com.innopolis.innoqueue.controller.dto.EmptyDTO
 import com.innopolis.innoqueue.controller.dto.NewNotificationDTO
 import com.innopolis.innoqueue.dto.NotificationsListDTO
 import com.innopolis.innoqueue.service.NotificationsService
+import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/notifications")
+@Tag(name = "Notifications")
 class NotificationsController(private val notificationsService: NotificationsService) {
 
     @ExceptionHandler(NoSuchElementException::class)

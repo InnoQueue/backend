@@ -2,6 +2,7 @@ package com.innopolis.innoqueue.controller
 
 import com.innopolis.innoqueue.dto.*
 import com.innopolis.innoqueue.service.QueueService
+import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.*
 @Suppress("TooManyFunctions")
 @RestController
 @RequestMapping("/queues")
+@Tag(name = "Queue")
 class QueueController(private val service: QueueService) {
 
     @ExceptionHandler(NoSuchElementException::class)
