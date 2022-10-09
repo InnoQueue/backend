@@ -20,6 +20,7 @@ check [README repository](https://github.com/InnoQueue/.github/blob/main/profile
 - [About](#-about)
 - [How to build](#how-to-build)
 - [Ensuring Quality](#ensuring-quality)
+- [Deployment](#deployment)
 - [Other repositories](#-other-repositories)
 
 ## 📌 About
@@ -27,18 +28,18 @@ check [README repository](https://github.com/InnoQueue/.github/blob/main/profile
 - For the mobile application the Backend REST API was developed.
 - You can read [Postman API documentation](https://documenter.getpostman.com/view/16213957/UVsSP4ER)
 - You can read [Swagger](https://innoqueue.herokuapp.com/swagger-ui.html)
-- In case you want to reset the database by default mock data, use
-  this [endpoint](https://innoqueue.herokuapp.com/reset)
-- The backend is hosted on [Heroku](https://innoqueue.herokuapp.com)
 
 ## How to build
 
-### Manually
+- `git clone https://github.com/InnoQueue/Backend.git`
+- `cd Backend`
+- There are two ways to run the server: **Gradle run** and **Docker compose**
+
+### Gradle run
 
 - Install [JDK](https://www.oracle.com/java/technologies/downloads/)
 - Install [Gradle](https://gradle.org/install/)
 - Install [Docker](https://docs.docker.com/engine/install/)
-- Open your terminal and run the following commands:
 
 #### Set up the database
 
@@ -51,8 +52,6 @@ check [README repository](https://github.com/InnoQueue/.github/blob/main/profile
 
 #### Run
 
-- `git clone https://github.com/InnoQueue/Backend.git`
-- `cd Backend`
 - Run application: `./gradlew bootRun`
 
 #### Firebase
@@ -73,9 +72,10 @@ GOOGLE_CREDENTIALS=`cat firebase.json` ./gradlew bootRun
 
 where **firebase.json** is your json credentials file.
 
-### Docker
+### Docker compose up
 
-- TODO
+- Install [Docker](https://docs.docker.com/engine/install/)
+- Run: `docker-compose up`
 
 ## Ensuring Quality
 
@@ -100,6 +100,19 @@ where **firebase.json** is your json credentials file.
   - Runs unit and integration tests
   - Build an application
 - All build failures are published in [Telegram chat](https://t.me/+nkVX0j3FXo8zMmNi)
+- The backend image is also published in Docker Hub. You can pull it:
+  `docker pull smorenapi/inno_queue:latest`
+
+### Database migrations
+
+- We use **flyway** to track database changes.
+- Migration files are placed in [migration](src/main/resources/db/migration) folder.
+
+## Deployment
+
+- The backend is hosted on [Heroku](https://innoqueue.herokuapp.com)
+- Also, we host the [dev server](https://innoqueue-dev.herokuapp.com)
+  which we use to test new features with the test database.
 
 > Features on which we are working can be found in [issues](https://github.com/InnoQueue/Backend/issues)
 

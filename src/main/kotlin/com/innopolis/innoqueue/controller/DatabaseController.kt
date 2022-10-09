@@ -24,8 +24,8 @@ class DatabaseController(private val service: DatabaseService) {
     fun handleNotFound(e: Exception): ResponseEntity<String> =
         ResponseEntity("Database is reset by default data", HttpStatus.OK)
 
-    @GetMapping("/reset")
-    fun resetDB(): EmptyDTO = service.resetDB()
+//    @GetMapping("/reset")
+//    fun resetDB(): EmptyDTO = service.resetDB()
 
     @GetMapping("/clear")
     fun clearCodes(): EmptyDTO = service.clearCodes()
