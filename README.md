@@ -1,7 +1,7 @@
 # Ensuring Quality in Software Projects F22 elective
 
 > Semester 7, 4th study-year, Innopolis University.
-
+[![codecov](https://codecov.io/gh/InnoQueue/Backend/branch/codecov/graph/badge.svg?token=9RQU24PHSX)](https://codecov.io/gh/InnoQueue/Backend)
 [![Hits-of-Code](https://hitsofcode.com/github/InnoQueue/Backend?branch=main)](https://hitsofcode.com/github/InnoQueue/Backend/view?branch=main)
 
 REST API Backend for the **InnoQueue**.
