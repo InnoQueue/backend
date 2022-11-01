@@ -1,5 +1,6 @@
 package com.innopolis.innoqueue.service
 
+import com.google.firebase.messaging.FirebaseMessagingException
 import com.innopolis.innoqueue.controller.dto.EmptyDTO
 import com.innopolis.innoqueue.controller.dto.NewNotificationDTO
 import com.innopolis.innoqueue.dto.NotificationDTO
@@ -25,7 +26,6 @@ class NotificationsService(
     private val notificationRepository: NotificationRepository,
     private val queueRepository: QueueRepository,
 ) {
-
     private val deletedUserName = "Deleted user"
     private val deletedQueueName = "Deleted queue"
     private val notificationLiveTimeWeeks: Long = 2
@@ -38,8 +38,8 @@ class NotificationsService(
         }
         notificationRepository.saveAll(unreadNotifications)
         return NotificationsListDTO(
-            unreadNotifications = mapEntityToDTO(unreadNotifications).sortedByDescending { n -> n.date },
-            allNotifications = mapEntityToDTO(allNotifications).sortedByDescending { n -> n.date }
+            unreadNotifications = unreadNotifications.toNotificationDTO().sortedByDescending { n -> n.date },
+            allNotifications = allNotifications.toNotificationDTO().sortedByDescending { n -> n.date }
         )
     }
 
@@ -49,13 +49,10 @@ class NotificationsService(
     }
 
     fun clearOldNotifications(): EmptyDTO {
-
         val currentTime = LocalDateTime.now(ZoneOffset.UTC)
-
         val expiredNotifications =
             notificationRepository.findAll().filter { isNotificationExpired(currentTime, it.date!!) }
         notificationRepository.deleteAll(expiredNotifications)
-
         return EmptyDTO("Old notifications were deleted")
     }
 
@@ -74,7 +71,6 @@ class NotificationsService(
         sendNotificationsToFirebase(notifications, notificationType, participant, queue)
     }
 
-    @Suppress("TooGenericExceptionCaught")
     private fun sendNotificationsToFirebase(
         notifications: List<Notification>,
         notificationType: NotificationsTypes,
@@ -103,7 +99,7 @@ class NotificationsService(
                     dataMap["participant_name"] = participantName
                     val res = firebaseMessagingService.sendNotification(title, body, token, dataMap)
                     println("Firebase result: $res")
-                } catch (e: Exception) {
+                } catch (e: FirebaseMessagingException) {
                     println("Firebase exception: $e")
                 }
             }
@@ -115,7 +111,7 @@ class NotificationsService(
         participant: User,
         queue: Queue
     ): List<Notification> {
-        val messageType = this.convertToMessageType(notificationType)
+        val messageType = notificationType.name
         val notifications = mutableListOf<Notification>()
 
         when (notificationType) {
@@ -123,6 +119,7 @@ class NotificationsService(
                 val notification = createNotification(participant, participant.id!!, messageType, queue.id!!)
                 notifications.add(notification)
             }
+
             else -> {
                 val participantId = participant.id!!
                 for (userQueue in queue.userQueues) {
@@ -171,6 +168,7 @@ class NotificationsService(
             NotificationsTypes.COMPLETED, NotificationsTypes.SKIPPED,
             NotificationsTypes.JOINED_QUEUE, NotificationsTypes.FROZEN,
             NotificationsTypes.UNFROZEN, NotificationsTypes.LEFT_QUEUE, NotificationsTypes.YOUR_TURN -> false
+
             else -> true
         }
     }
@@ -186,17 +184,16 @@ class NotificationsService(
         return notification
     }
 
-    private fun mapEntityToDTO(notifications: List<Notification>): List<NotificationDTO> =
-        notifications.map { n ->
-            NotificationDTO(
-                messageType = n.messageType!!,
-                participantId = n.participantId!!,
-                participantName = this.getParticipantNameById(n.participantId!!),
-                queueId = n.queueId!!,
-                queueName = this.getQueueNameById(n.queueId!!),
-                date = n.date!!
-            )
-        }
+    private fun List<Notification>.toNotificationDTO() = this.map { n ->
+        NotificationDTO(
+            messageType = n.messageType!!,
+            participantId = n.participantId!!,
+            participantName = getParticipantNameById(n.participantId!!),
+            queueId = n.queueId!!,
+            queueName = getQueueNameById(n.queueId!!),
+            date = n.date!!
+        )
+    }
 
     private fun getParticipantNameById(participantId: Long): String {
         return userService.getUserById(participantId)?.name ?: deletedUserName
@@ -204,19 +201,5 @@ class NotificationsService(
 
     private fun getQueueNameById(queueId: Long): String {
         return queueRepository.findByIdOrNull(queueId)?.name ?: deletedQueueName
-    }
-
-    private fun convertToMessageType(notificationType: NotificationsTypes): String {
-        return when (notificationType) {
-            NotificationsTypes.YOUR_TURN -> "YOUR_TURN"
-            NotificationsTypes.SHOOK -> "SHOOK"
-            NotificationsTypes.FROZEN -> "FROZEN"
-            NotificationsTypes.UNFROZEN -> "UNFROZEN"
-            NotificationsTypes.JOINED_QUEUE -> "JOINED_QUEUE"
-            NotificationsTypes.LEFT_QUEUE -> "LEFT_QUEUE"
-            NotificationsTypes.DELETE_QUEUE -> "DELETE_QUEUE"
-            NotificationsTypes.COMPLETED -> "COMPLETED"
-            NotificationsTypes.SKIPPED -> "SKIPPED"
-        }
     }
 }

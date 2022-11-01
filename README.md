@@ -1,6 +1,13 @@
 # Ensuring Quality in Software Projects F22 elective
 
 > Semester 7, 4th study-year, Innopolis University.
+
+![Python CI workflow](https://github.com/InnoQueue/Backend/actions/workflows/build.yml/badge.svg)
+![Python CI workflow](https://github.com/InnoQueue/Backend/actions/workflows/mdlinter.yml/badge.svg)
+![Kotlin CI workflow](https://github.com/InnoQueue/Backend/actions/workflows/docker_publish.yml/badge.svg)
+![Kotlin CI workflow](https://github.com/InnoQueue/Backend/actions/workflows/heroku_dev.yml/badge.svg)
+![Kotlin CI workflow](https://github.com/InnoQueue/Backend/actions/workflows/heroku_prod.yml/badge.svg)
+![Kotlin CI workflow](https://github.com/InnoQueue/Backend/actions/workflows/codecov.yml/badge.svg)
 [![codecov](https://codecov.io/gh/InnoQueue/Backend/branch/codecov/graph/badge.svg?token=9RQU24PHSX)](https://codecov.io/gh/InnoQueue/Backend)
 [![Hits-of-Code](https://hitsofcode.com/github/InnoQueue/Backend?branch=main)](https://hitsofcode.com/github/InnoQueue/Backend/view?branch=main)
 
