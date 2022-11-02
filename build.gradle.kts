@@ -26,6 +26,8 @@ dependencies {
     val firebaseVersion: String by project
     val jsonVersion: String by project
     val springdocVersion: String by project
+    val junitVersion: String by project
+    val testcontainersVersion: String by project
 
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-web")
@@ -36,9 +38,10 @@ dependencies {
     implementation("com.google.firebase:firebase-admin:$firebaseVersion")
     implementation("org.json:json:$jsonVersion")
     implementation("org.springdoc:springdoc-openapi-ui:$springdocVersion")
-    implementation("org.junit.jupiter:junit-jupiter:5.8.1")
     runtimeOnly("org.postgresql:postgresql")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
+    testImplementation("org.testcontainers:postgresql:$testcontainersVersion")
 }
 
 tasks.withType<KotlinCompile> {
