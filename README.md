@@ -8,7 +8,7 @@
 ![Kotlin CI workflow](https://github.com/InnoQueue/Backend/actions/workflows/heroku_dev.yml/badge.svg)
 ![Kotlin CI workflow](https://github.com/InnoQueue/Backend/actions/workflows/heroku_prod.yml/badge.svg)
 ![Kotlin CI workflow](https://github.com/InnoQueue/Backend/actions/workflows/codecov.yml/badge.svg)
-[![codecov](https://codecov.io/gh/InnoQueue/Backend/branch/codecov/graph/badge.svg?token=9RQU24PHSX)](https://codecov.io/gh/InnoQueue/Backend)
+[![codecov](https://codecov.io/gh/InnoQueue/Backend/branch/main/graph/badge.svg?token=9RQU24PHSX)](https://codecov.io/gh/InnoQueue/Backend)
 [![Hits-of-Code](https://hitsofcode.com/github/InnoQueue/Backend?branch=main)](https://hitsofcode.com/github/InnoQueue/Backend/view?branch=main)
 
 REST API Backend for the **InnoQueue**.
