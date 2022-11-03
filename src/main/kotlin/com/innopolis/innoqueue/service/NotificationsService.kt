@@ -12,7 +12,7 @@ import com.innopolis.innoqueue.model.UserQueue
 import com.innopolis.innoqueue.repository.NotificationRepository
 import com.innopolis.innoqueue.repository.QueueRepository
 import com.innopolis.innoqueue.utils.MessagePushNotificationCreator
-import com.innopolis.innoqueue.utils.NotificationsTypes
+import com.innopolis.innoqueue.enums.NotificationsTypes
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
@@ -31,7 +31,7 @@ class NotificationsService(
     private val notificationLiveTimeWeeks: Long = 2
 
     fun getNotifications(token: String): NotificationsListDTO {
-        val user = userService.getUserByToken(token)
+        val user = userService.findUserByToken(token)
         val (allNotifications, unreadNotifications) = user.notifications.partition { it.isRead!! }
         for (notification in unreadNotifications) {
             notification.isRead = true
@@ -44,7 +44,7 @@ class NotificationsService(
     }
 
     fun anyNewNotification(token: String): NewNotificationDTO {
-        val user = userService.getUserByToken(token)
+        val user = userService.findUserByToken(token)
         return NewNotificationDTO(user.notifications.any { !it.isRead!! })
     }
 
@@ -196,7 +196,7 @@ class NotificationsService(
     }
 
     private fun getParticipantNameById(participantId: Long): String {
-        return userService.getUserById(participantId)?.name ?: deletedUserName
+        return userService.findUserById(participantId)?.name ?: deletedUserName
     }
 
     private fun getQueueNameById(queueId: Long): String {

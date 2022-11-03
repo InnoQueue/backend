@@ -27,6 +27,7 @@ dependencies {
     val jsonVersion: String by project
     val springdocVersion: String by project
     val junitVersion: String by project
+    val mockkVersion: String by project
     val testcontainersVersion: String by project
 
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
@@ -41,6 +42,7 @@ dependencies {
     runtimeOnly("org.postgresql:postgresql")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
+    testImplementation("io.mockk:mockk:$mockkVersion")
     testImplementation("org.testcontainers:postgresql:$testcontainersVersion")
 }
 

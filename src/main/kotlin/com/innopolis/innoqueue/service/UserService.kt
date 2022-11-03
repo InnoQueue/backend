@@ -16,31 +16,34 @@ class UserService(
     private val userRepository: UserRepository,
     private val settingsRepository: UserSettingsRepository,
 ) {
-    fun getUserByToken(token: String): User {
-        return userRepository.findAll().firstOrNull { user -> user.token == token }
-            ?: throw NoSuchElementException("No such user with token: $token")
+    fun createNewUser(userName: String, fcmToken: String): TokenDTO {
+        validateUserParameters(userName, fcmToken)
+        val token = generateUserToken()
+        val userId = saveUser(token, userName, fcmToken)
+        return TokenDTO(token, userId)
     }
 
-    fun getUserById(userId: Long): User? {
-        return userRepository.findByIdOrNull(userId)
-    }
+    fun findUserById(userId: Long): User? = userRepository.findByIdOrNull(userId)
 
-    fun generateUserToken(userName: String, fcmToken: String): TokenDTO {
+    fun findUserByToken(token: String): User =
+        userRepository.findUserByToken(token) ?: throw NoSuchElementException("No such user with token: $token")
+
+    private fun validateUserParameters(userName: String, fcmToken: String) {
         if (userName.isEmpty()) {
             throw IllegalArgumentException("Username can't be an empty string")
         }
-        val existingTokens = userRepository.findAll().map { it.token }
-        val generator = StringGenerator(TOKEN_LENGTH)
-        while (true) {
-            val randomString = generator.generateString()
-            if (!existingTokens.contains(randomString)) {
-                val savedUser = createNewUser(randomString, userName, fcmToken)
-                return TokenDTO(randomString, savedUser.id!!)
-            }
+        if (fcmToken.isEmpty()) {
+            throw IllegalArgumentException("fcmToken can't be an empty string")
         }
     }
 
-    private fun createNewUser(token: String, userName: String, fcmToken: String): User {
+    private fun generateUserToken(): String {
+        val existingTokens = userRepository.findAll().mapNotNull { it.token }
+        val generator = StringGenerator(TOKEN_LENGTH, existingTokens)
+        return generator.generateString()
+    }
+
+    private fun saveUser(token: String, userName: String, fcmToken: String): Long {
         val newUser = User()
         newUser.name = userName
         newUser.token = token
@@ -49,6 +52,6 @@ class UserService(
         val settings = UserSetting()
         settings.user = newUser
         settingsRepository.save(settings)
-        return savedUser
+        return savedUser.id!!
     }
 }

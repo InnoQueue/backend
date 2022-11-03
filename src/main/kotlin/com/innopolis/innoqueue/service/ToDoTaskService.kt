@@ -4,7 +4,7 @@ import com.innopolis.innoqueue.dto.ToDoTaskDTO
 import com.innopolis.innoqueue.model.UserQueue
 import com.innopolis.innoqueue.repository.QueueRepository
 import com.innopolis.innoqueue.repository.UserQueueRepository
-import com.innopolis.innoqueue.utils.NotificationsTypes
+import com.innopolis.innoqueue.enums.NotificationsTypes
 import com.innopolis.innoqueue.utils.UsersQueueLogic
 import org.springframework.stereotype.Service
 import java.util.*
@@ -18,7 +18,7 @@ class ToDoTaskService(
     private val queueRepository: QueueRepository
 ) {
     fun getTasks(token: String): List<ToDoTaskDTO> {
-        val user = userService.getUserByToken(token)
+        val user = userService.findUserByToken(token)
         val tasks = user.tasks
             .filter { queue -> queue.userQueues.size > 1 }
             .map { queue ->
@@ -37,7 +37,7 @@ class ToDoTaskService(
     }
 
     fun completeTask(token: String, taskId: Long, expenses: Double?) {
-        val user = userService.getUserByToken(token)
+        val user = userService.findUserByToken(token)
         val queue = queueService.getUserQueueByQueueId(user, taskId)
         // If this queue requires to track expenses it should not be null or negative number
         if (queue.queue?.trackExpenses!!) {
@@ -68,7 +68,7 @@ class ToDoTaskService(
     }
 
     fun skipTask(token: String, taskId: Long) {
-        val user = userService.getUserByToken(token)
+        val user = userService.findUserByToken(token)
         val queue = queueService.getUserQueueByQueueId(user, taskId)
         // User can skip a task if it's his turn
         if (user.tasks.firstOrNull { task -> task.id == taskId } != null) {

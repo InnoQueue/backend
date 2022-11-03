@@ -1,12 +1,17 @@
 package com.innopolis.innoqueue.service
 
+import com.innopolis.innoqueue.model.User
+import com.innopolis.innoqueue.model.UserSetting
 import com.innopolis.innoqueue.repository.UserRepository
 import com.innopolis.innoqueue.repository.UserSettingsRepository
 import com.innopolis.innoqueue.testcontainers.PostgresTestContainer
-import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.Assertions.assertEquals
+import io.mockk.every
+import io.mockk.mockk
+import io.mockk.verify
+import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.test.context.jdbc.Sql
 
 class UserServiceTest : PostgresTestContainer() {
 
@@ -20,28 +25,111 @@ class UserServiceTest : PostgresTestContainer() {
     private lateinit var settingsRepository: UserSettingsRepository
 
     @Test
-    fun `Test generateUserToken empty name exception`() {
+    fun `Test createNewUser empty name exception`() {
+        // given
         val userName = ""
-        val fcmToken = ""
-        Assertions.assertThrows(IllegalArgumentException::class.java) {
-            userService.generateUserToken(userName, fcmToken)
+        val fcmToken = "123"
+
+        // when and then
+        assertThrows(IllegalArgumentException::class.java) {
+            userService.createNewUser(userName, fcmToken)
         }
     }
 
     @Test
-    fun `Test generateUserToken token length`() {
+    fun `Test createNewUser empty fcmToken exception`() {
+        // given
+        val userName = "user"
+        val fcmToken = ""
+
+        // when and then
+        assertThrows(IllegalArgumentException::class.java) {
+            userService.createNewUser(userName, fcmToken)
+        }
+    }
+
+    @Test
+    fun `Test createNewUser check for existing tokens`() {
+        // given
+        val userName = "testUser"
+        val fcmToken = "123"
+        val userRepo = mockk<UserRepository>(relaxed = true)
+        every { userRepo.save(any()) } returns User().apply { id = 1L }
+        val settingsRepo = mockk<UserSettingsRepository>(relaxed = true)
+        every { settingsRepo.save(any()) } returns UserSetting()
+        val service = UserService(userRepo, settingsRepo)
+
+        // when
+        service.createNewUser(userName, fcmToken)
+
+        // then
+        verify(exactly = 1) { userRepo.findAll() }
+    }
+
+    @Test
+    fun `Test createNewUser token length`() {
+        // given
         val userName = "testUser"
         val fcmToken = "123"
         val tokenLength = 64
-        val result = userService.generateUserToken(userName, fcmToken)
+
+        // when
+        val result = userService.createNewUser(userName, fcmToken)
+
+        // then
         assertEquals(tokenLength, result.token.length)
     }
 
     @Test
-    fun `Test generateUserToken user created`() {
+    fun `Test createNewUser user repository called`() {
+        // given
         val userName = "testUser"
         val fcmToken = "123"
-        val result = userService.generateUserToken(userName, fcmToken)
+        val userRepo = mockk<UserRepository>(relaxed = true)
+        every { userRepo.save(any()) } returns User().apply { id = 1L }
+        val settingsRepo = mockk<UserSettingsRepository>(relaxed = true)
+        every { settingsRepo.save(any()) } returns UserSetting()
+        val service = UserService(userRepo, settingsRepo)
+
+        // when
+        service.createNewUser(userName, fcmToken)
+
+        // then
+        verify(exactly = 1) {
+            userRepo.save(any())
+        }
+    }
+
+    @Test
+    fun `Test createNewUser settings repository called`() {
+        // given
+        val userName = "testUser"
+        val fcmToken = "123"
+        val userRepo = mockk<UserRepository>(relaxed = true)
+        every { userRepo.save(any()) } returns User().apply { id = 1L }
+        val settingsRepo = mockk<UserSettingsRepository>(relaxed = true)
+        every { settingsRepo.save(any()) } returns UserSetting()
+        val service = UserService(userRepo, settingsRepo)
+
+        // when
+        service.createNewUser(userName, fcmToken)
+
+        // then
+        verify(exactly = 1) {
+            settingsRepo.save(any())
+        }
+    }
+
+    @Test
+    fun `Test createNewUser user created`() {
+        // given
+        val userName = "testUser"
+        val fcmToken = "123"
+
+        // when
+        val result = userService.createNewUser(userName, fcmToken)
+
+        // then
         val users = userRepository.findAll().toList()
         assertEquals(1, users.size)
         assertEquals(userName, users[0].name)
@@ -51,10 +139,15 @@ class UserServiceTest : PostgresTestContainer() {
     }
 
     @Test
-    fun `Test generateUserToken user settings created`() {
+    fun `Test createNewUser user settings created`() {
+        // given
         val userName = "testUser"
         val fcmToken = "123"
-        val result = userService.generateUserToken(userName, fcmToken)
+
+        // when
+        val result = userService.createNewUser(userName, fcmToken)
+
+        // then
         val settings = settingsRepository.findAll().toList()
         assertEquals(1, settings.size)
         assertEquals(result.userId, settings[0].user?.id)
@@ -64,5 +157,58 @@ class UserServiceTest : PostgresTestContainer() {
         assertEquals(true, settings[0].freeze)
         assertEquals(true, settings[0].leftQueue)
         assertEquals(true, settings[0].yourTurn)
+    }
+
+    @Test
+    @Sql("user.sql")
+    fun `Test findUserById no such user`() {
+        // given
+        val id = 2L
+
+        // when
+        val user = userService.findUserById(id)
+
+        // then
+        assertNull(user)
+    }
+
+    @Test
+    @Sql("user.sql")
+    fun `Test findUserById find user`() {
+        // given
+        val id = 1L
+
+        // when
+        val user = userService.findUserById(id)
+
+        // then
+        assertNotNull(user)
+        assertEquals(id, user?.id)
+    }
+
+    @Test
+    @Sql("user.sql")
+    fun `Test findUserByToken no such user exception`() {
+        // given
+        val token = "123"
+
+        // when and then
+        assertThrows(NoSuchElementException::class.java) {
+            userService.findUserByToken(token)
+        }
+    }
+
+    @Test
+    @Sql("user.sql")
+    fun `Test findUserByToken find user`() {
+        // given
+        val token = "token"
+
+        // when
+        val user = userService.findUserByToken(token)
+
+        // then
+        assertNotNull(user)
+        assertEquals(token, user.token)
     }
 }

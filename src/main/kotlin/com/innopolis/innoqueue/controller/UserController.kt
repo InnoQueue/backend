@@ -29,6 +29,6 @@ class UserController(private val service: UserService) {
                 "- Also provide the Firebase token device for `fcm_token`"
     )
     @ResponseStatus(HttpStatus.OK)
-    fun generateUserToken(@RequestBody newUserDTO: NewUserDTO): TokenDTO =
-        service.generateUserToken(newUserDTO.userName, newUserDTO.fcmToken)
+    fun createNewUser(@RequestBody newUserDTO: NewUserDTO): TokenDTO =
+        service.createNewUser(newUserDTO.userName, newUserDTO.fcmToken)
 }

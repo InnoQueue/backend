@@ -6,7 +6,7 @@ import com.innopolis.innoqueue.repository.QueuePinCodeRepository
 import com.innopolis.innoqueue.repository.QueueQrCodeRepository
 import com.innopolis.innoqueue.repository.QueueRepository
 import com.innopolis.innoqueue.repository.UserQueueRepository
-import com.innopolis.innoqueue.utils.NotificationsTypes
+import com.innopolis.innoqueue.enums.NotificationsTypes
 import com.innopolis.innoqueue.utils.StringGenerator
 import com.innopolis.innoqueue.utils.UsersQueueLogic
 import org.springframework.data.repository.findByIdOrNull
@@ -29,7 +29,7 @@ class QueueService(
     private val queueQrCodeRepository: QueueQrCodeRepository
 ) {
     fun getQueues(token: String): QueuesListDTO {
-        val user = userService.getUserByToken(token)
+        val user = userService.findUserByToken(token)
         val (activeQueue, frozenQueue) = user.queues.partition { it.isActive!! }
         return QueuesListDTO(
             transformUserQueueListToQueueShortDTO(activeQueue).sortedBy { it.queueName },
@@ -38,13 +38,13 @@ class QueueService(
     }
 
     fun getQueueById(token: String, queueId: Long): QueueDTO {
-        val user = userService.getUserByToken(token)
+        val user = userService.findUserByToken(token)
         val userQueue: UserQueue = getUserQueueByQueueId(user, queueId)
         return transformQueueToDTO(queue = userQueue.queue, isActive = userQueue.isActive!!, userId = user.id!!)
     }
 
     fun getQueueInviteCode(token: String, queueId: Long): QueueInviteCodeDTO {
-        val user = userService.getUserByToken(token)
+        val user = userService.findUserByToken(token)
         val userQueue: UserQueue = getUserQueueByQueueId(user, queueId)
         val pinCode = getQueuePinCode(userQueue)
         val qrCode = getQueueQrCode(userQueue)
@@ -52,7 +52,7 @@ class QueueService(
     }
 
     fun createQueue(token: String, queue: NewQueueDTO): QueueDTO {
-        val user = userService.getUserByToken(token)
+        val user = userService.findUserByToken(token)
         val createdQueue = saveQueueEntity(queue, user)
         saveUserQueueEntity(createdQueue, user)
         val qDTO = QueueDTO(
@@ -76,7 +76,7 @@ class QueueService(
         if (editQueue.queueId == null) {
             throw IllegalArgumentException("Queue id should be specified")
         }
-        val user = userService.getUserByToken(token)
+        val user = userService.findUserByToken(token)
         val userQueue = getUserQueueByQueueId(user, editQueue.queueId)
         if (userQueue.queue?.creator?.id != user.id) {
             throw IllegalArgumentException("User is not an admin in this queue: ${editQueue.queueId}")
@@ -127,7 +127,7 @@ class QueueService(
     }
 
     fun freezeUnFreezeQueue(token: String, queueId: Long, status: Boolean) {
-        val user = userService.getUserByToken(token)
+        val user = userService.findUserByToken(token)
         val userQueue = getUserQueueByQueueId(user, queueId)
         when (status) {
             true -> {
@@ -160,7 +160,7 @@ class QueueService(
     }
 
     fun deleteQueue(token: String, queueId: Long) {
-        val user = userService.getUserByToken(token)
+        val user = userService.findUserByToken(token)
         val userQueue = getUserQueueByQueueId(user, queueId)
         // Delete queue
         if (userQueue.queue?.creator?.id == user.id) {
@@ -193,7 +193,7 @@ class QueueService(
 
     @Suppress("ThrowsCount", "ReturnCount")
     fun joinQueue(token: String, queueInviteCodeDTO: QueueInviteCodeDTO): QueueDTO {
-        val user = userService.getUserByToken(token)
+        val user = userService.findUserByToken(token)
 
         if (queueInviteCodeDTO.pinCode != null) {
             val pinCode = queueInviteCodeDTO.pinCode
@@ -248,7 +248,7 @@ class QueueService(
     }
 
     fun shakeUser(token: String, queueId: Long) {
-        val user = userService.getUserByToken(token)
+        val user = userService.findUserByToken(token)
         val userQueue = getUserQueueByQueueId(user, queueId)
         if (userQueue.queue?.currentUser?.id == user.id) {
             throw IllegalArgumentException("You can't shake yourself!")

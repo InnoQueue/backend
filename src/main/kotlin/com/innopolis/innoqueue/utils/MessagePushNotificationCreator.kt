@@ -1,5 +1,7 @@
 package com.innopolis.innoqueue.utils
 
+import com.innopolis.innoqueue.enums.NotificationsTypes
+
 class MessagePushNotificationCreator(
     private val notificationType: NotificationsTypes,
     private val queueName: String,
