@@ -1,7 +1,7 @@
 package com.innopolis.innoqueue.service
 
 import com.innopolis.innoqueue.model.User
-import com.innopolis.innoqueue.model.UserSetting
+import com.innopolis.innoqueue.model.UserSettings
 import com.innopolis.innoqueue.repository.UserRepository
 import com.innopolis.innoqueue.repository.UserSettingsRepository
 import com.innopolis.innoqueue.testcontainers.PostgresTestContainer
@@ -56,7 +56,7 @@ class UserServiceTest : PostgresTestContainer() {
         val userRepo = mockk<UserRepository>(relaxed = true)
         every { userRepo.save(any()) } returns User().apply { id = 1L }
         val settingsRepo = mockk<UserSettingsRepository>(relaxed = true)
-        every { settingsRepo.save(any()) } returns UserSetting()
+        every { settingsRepo.save(any()) } returns UserSettings()
         val service = UserService(userRepo, settingsRepo)
 
         // when
@@ -88,7 +88,7 @@ class UserServiceTest : PostgresTestContainer() {
         val userRepo = mockk<UserRepository>(relaxed = true)
         every { userRepo.save(any()) } returns User().apply { id = 1L }
         val settingsRepo = mockk<UserSettingsRepository>(relaxed = true)
-        every { settingsRepo.save(any()) } returns UserSetting()
+        every { settingsRepo.save(any()) } returns UserSettings()
         val service = UserService(userRepo, settingsRepo)
 
         // when
@@ -108,7 +108,7 @@ class UserServiceTest : PostgresTestContainer() {
         val userRepo = mockk<UserRepository>(relaxed = true)
         every { userRepo.save(any()) } returns User().apply { id = 1L }
         val settingsRepo = mockk<UserSettingsRepository>(relaxed = true)
-        every { settingsRepo.save(any()) } returns UserSetting()
+        every { settingsRepo.save(any()) } returns UserSettings()
         val service = UserService(userRepo, settingsRepo)
 
         // when

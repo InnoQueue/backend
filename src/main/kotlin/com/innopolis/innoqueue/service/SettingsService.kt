@@ -2,6 +2,7 @@ package com.innopolis.innoqueue.service
 
 import com.innopolis.innoqueue.dto.SettingsDTO
 import com.innopolis.innoqueue.model.User
+import com.innopolis.innoqueue.model.UserSettings
 import com.innopolis.innoqueue.repository.UserRepository
 import com.innopolis.innoqueue.repository.UserSettingsRepository
 import org.springframework.stereotype.Service
@@ -28,59 +29,67 @@ class SettingsService(
 
     fun updateSettings(token: String, settings: SettingsDTO): SettingsDTO {
         val user = userService.findUserByToken(token)
-        var (newSavedUser, changed) = updateUserNameOrDefault(user, settings)
-
-        val userSettings = newSavedUser.settings!!
-        if (settings.completed != null) {
-            userSettings.completed = settings.completed
-            changed = true
+        var (newSavedUser, shouldSave) = user.updateUserName(settings)
+        val userSettings = settings.updateUserSettings(newSavedUser.settings!!)
+        shouldSave = when (settings.anyNewSettingsChange()) {
+            true -> true
+            false -> shouldSave
         }
-        if (settings.skipped != null) {
-            userSettings.skipped = settings.skipped
-            changed = true
-        }
-        if (settings.joinedQueue != null) {
-            userSettings.joinedQueue = settings.joinedQueue
-            changed = true
-        }
-        if (settings.freeze != null) {
-            userSettings.freeze = settings.freeze
-            changed = true
-        }
-        if (settings.leftQueue != null) {
-            userSettings.leftQueue = settings.leftQueue
-            changed = true
-        }
-        if (settings.yourTurn != null) {
-            userSettings.yourTurn = settings.yourTurn
-            changed = true
-        }
-        val updatedSettings = when (changed) {
+        return when (shouldSave) {
             true -> {
                 settingsRepository.save(userSettings)
             }
+
             false -> userSettings
+        }.let {
+            SettingsDTO(
+                newSavedUser.name!!,
+                it.completed!!,
+                it.skipped!!,
+                it.joinedQueue!!,
+                it.freeze!!,
+                it.leftQueue!!,
+                it.yourTurn!!
+            )
         }
-        return SettingsDTO(
-            newSavedUser.name!!,
-            updatedSettings.completed!!,
-            updatedSettings.skipped!!,
-            updatedSettings.joinedQueue!!,
-            updatedSettings.freeze!!,
-            updatedSettings.leftQueue!!,
-            updatedSettings.yourTurn!!
-        )
     }
 
-    private fun updateUserNameOrDefault(user: User, settings: SettingsDTO): Pair<User, Boolean> {
-        return if (settings.userName != null) {
-            if (settings.userName.isEmpty()) {
+    private fun User.updateUserName(settings: SettingsDTO): Pair<User, Boolean> =
+        settings.userName?.let {
+            if (it.isEmpty()) {
                 throw IllegalArgumentException("Username can't be an empty string")
             }
-            user.name = settings.userName
-            userRepository.save(user) to true
-        } else {
-            user to false
+            this.name = it
+            userRepository.save(this) to true
+        } ?: (this to false)
+
+    private fun SettingsDTO.updateUserSettings(userSettings: UserSettings): UserSettings {
+        this.completed?.let {
+            userSettings.completed = this.completed
         }
+        this.skipped?.let {
+            userSettings.skipped = this.skipped
+        }
+        this.joinedQueue?.let {
+            userSettings.joinedQueue = this.joinedQueue
+        }
+        this.freeze?.let {
+            userSettings.freeze = this.freeze
+        }
+        this.leftQueue?.let {
+            userSettings.leftQueue = this.leftQueue
+        }
+        this.yourTurn?.let {
+            userSettings.yourTurn = this.yourTurn
+        }
+        return userSettings
     }
+
+    private fun SettingsDTO.anyNewSettingsChange() =
+        this.completed != null ||
+                this.skipped != null ||
+                this.joinedQueue != null ||
+                this.freeze != null ||
+                this.leftQueue != null ||
+                this.yourTurn != null
 }

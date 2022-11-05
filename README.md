@@ -10,6 +10,7 @@
 ![Kotlin CI workflow](https://github.com/InnoQueue/Backend/actions/workflows/codecov.yml/badge.svg)
 [![codecov](https://codecov.io/gh/InnoQueue/Backend/branch/main/graph/badge.svg?token=9RQU24PHSX)](https://codecov.io/gh/InnoQueue/Backend)
 [![Hits-of-Code](https://hitsofcode.com/github/InnoQueue/Backend?branch=main)](https://hitsofcode.com/github/InnoQueue/Backend/view?branch=main)
+![Alt](https://repobeats.axiom.co/api/embed/293a8fa69ee533512501ced47162b3d5bbac10cb.svg "Repobeats analytics image")
 
 REST API Backend for the **InnoQueue**.
 To read the full description,
@@ -21,6 +22,8 @@ check [README repository](https://github.com/InnoQueue/.github/blob/main/profile
 - Timur Nugaev
 - Daniil Livitin
 - Mikhail Martovitsky
+
+![Contributors](https://contrib.rocks/image?repo=InnoQueue/Backend)
 
 ## Contents
 

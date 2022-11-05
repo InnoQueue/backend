@@ -24,7 +24,7 @@ class User {
     var queues: MutableSet<UserQueue> = mutableSetOf()
 
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "user")
-    var settings: UserSetting? = null
+    var settings: UserSettings? = null
 
     @OneToMany(mappedBy = "user")
     var notifications: MutableSet<Notification> = mutableSetOf()
