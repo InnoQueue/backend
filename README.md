@@ -1,3 +1,5 @@
+![Logo](https://user-images.githubusercontent.com/49106163/200147786-3e414c4a-d6ca-4240-b00e-1ef35fac6308.png)
+
 # Ensuring Quality in Software Projects F22 elective
 
 > Semester 7, 4th study-year, Innopolis University.
