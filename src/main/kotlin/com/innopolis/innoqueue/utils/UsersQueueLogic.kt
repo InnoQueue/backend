@@ -1,9 +1,9 @@
 package com.innopolis.innoqueue.utils
 
-import com.innopolis.innoqueue.model.User
-import com.innopolis.innoqueue.model.UserQueue
-import com.innopolis.innoqueue.repository.QueueRepository
-import com.innopolis.innoqueue.repository.UserQueueRepository
+import com.innopolis.innoqueue.models.User
+import com.innopolis.innoqueue.models.UserQueue
+import com.innopolis.innoqueue.dao.QueueRepository
+import com.innopolis.innoqueue.dao.UserQueueRepository
 
 object UsersQueueLogic {
 

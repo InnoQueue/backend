@@ -1,0 +1,33 @@
+package com.innopolis.innoqueue.rest.v1
+
+import com.innopolis.innoqueue.rest.v1.dto.EmptyDTO
+import com.innopolis.innoqueue.rest.v1.dto.NewNotificationDTO
+import com.innopolis.innoqueue.dto.NotificationsListDTO
+import com.innopolis.innoqueue.services.NotificationsService
+import io.swagger.v3.oas.annotations.tags.Tag
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.*
+
+@RestController
+@RequestMapping("/notifications")
+@Tag(name = "Notifications")
+class NotificationsController(
+    private val notificationsService: NotificationsService
+) {
+
+    @ExceptionHandler(NoSuchElementException::class)
+    fun handleNotFound(e: NoSuchElementException): ResponseEntity<String> =
+        ResponseEntity(e.message, HttpStatus.NOT_FOUND)
+
+    @GetMapping
+    fun getNotifications(@RequestHeader("user-token") token: String): NotificationsListDTO =
+        notificationsService.getNotifications(token)
+
+    @GetMapping("/new")
+    fun anyNewNotification(@RequestHeader("user-token") token: String): NewNotificationDTO =
+        notificationsService.anyNewNotification(token)
+
+    @GetMapping("/clear")
+    fun clearOldNotifications(): EmptyDTO = notificationsService.clearOldNotifications()
+}
