@@ -13,7 +13,10 @@ class SwaggerConfiguration {
         .info(
             Info()
                 .title("InnoQueue API2")
-                .description("Swagger for the InnoQueue Backend\n\nCheck https://github.com/InnoQueue for more info")
+                .description(
+                    "Backend API documentation for the InnoQueue backend service.\n\n" +
+                            "Check out [our github](https://github.com/InnoQueue) for more information."
+                )
                 .version("v1.0.0")
         )
 }
