@@ -22,11 +22,10 @@ class UserController(private val service: UserService) {
         summary = "Sign Up and get token",
         description = "If you don't have a token yet, you need to register yourself. " +
                 "Just send this request to get a new token. Use this token for other requests to identify yourself. " +
-                "You won't be able to restore your account if you lost your token.\n" +
-                "\n" +
-                "- You need to provide `user_name`. This is the nickname for your account. " +
+                "You won't be able to restore your account if you lose your token.\n\n" +
+                "- You need to provide non empty `user_name`. This is the nickname for your account. " +
                 "It does **not** need to be unique.\n" +
-                "- Also provide the Firebase token device for `fcm_token`"
+                "- Also provide the Firebase token device for `fcm_token`. It is an optional field."
     )
     @ResponseStatus(HttpStatus.OK)
     fun createNewUser(@RequestBody newUserDTO: NewUserDTO): TokenDTO =

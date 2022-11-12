@@ -1,7 +1,7 @@
 package com.innopolis.innoqueue.rest.v1
 
-import com.innopolis.innoqueue.rest.v1.dto.TaskDTO
 import com.innopolis.innoqueue.dto.ToDoTaskDTO
+import com.innopolis.innoqueue.rest.v1.dto.TaskDTO
 import com.innopolis.innoqueue.services.ToDoTaskService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*
             "It will reappear on the next queue's loop iteration (when all roommates complete or skip this task).\n\n" +
             "- `is_important` - `true` if some roommate shook a user to remind about this queue. " +
             "So, this task is urgent.\n\n" +
-            "- `track_expenses` - `true` if such task requires to input expenses\n"
+            "- `track_expenses` - `true` if such task requires to input expenses.\n"
 )
 class ToDoTasksController(private val service: ToDoTaskService) {
 
@@ -33,10 +33,10 @@ class ToDoTasksController(private val service: ToDoTaskService) {
 
     @Operation(
         summary = "Get todo-tasks",
-        description = "Queues in which there are no participants (only you) won't be shown.\n" +
-                "- `is_important` - whether someone shook you (sent reminder). So, this task is urgent now.\n\n" +
-                "- `hash_code` - hash code which indicates queues details.\n" +
-                "So, a client will know whether he can request for queue details or use its local cache."
+        description = "- `is_important` - whether someone shook you (sent reminder). So, this task is urgent now.\n\n" +
+                "- `hash_code` - hash code which indicates queues details. " +
+                "So, a client will know whether he can request for queue details or use its local cache.\n\n" +
+                "- Queues in which there are no participants (only you) won't be shown.\n"
     )
     @GetMapping
     fun getTasks(@RequestHeader("user-token") token: String): List<ToDoTaskDTO> = service.getTasks(token)

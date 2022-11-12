@@ -12,15 +12,7 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/settings")
 @Tag(
     name = "Settings",
-    description = "User settings which you can modify\n" +
-            "\n" +
-            "- `name` - user name. The name can be any non empty string, it's not required to be unique.\n" +
-            "- `completed` - boolean flag to receive notifications **if someone completed a task**.\n" +
-            "- `skipped` - boolean flag to receive notifications **if someone skipped a task**.\n" +
-            "- `joined_queue` - boolean flag to receive notifications **if someone joined a queue**.\n" +
-            "- `freeze` - boolean flag to receive notifications **if someone froze or unfroze a queue**.\n" +
-            "- `left_queue` - boolean flag to receive notifications **if someone left a queue**.\n" +
-            "- `your_turn` - boolean flag to receive notifications **who is next responsible for a particular task**."
+    description = "User settings which you can modify."
 )
 class SettingsController(private val service: SettingsService) {
 
@@ -35,8 +27,15 @@ class SettingsController(private val service: SettingsService) {
     @Operation(
         summary = "Get settings",
         description = "Get your current settings\n\n" +
-                "- `name` - user name\n\n" +
-                "- other booleans are notification settings, whether a user wishes to receive them."
+                "- `name` - the user's name.\n\n" +
+                "- other booleans are notification settings, whether a user wishes to receive them.\n" +
+                "- `completed` - boolean flag to receive notifications **if someone completed a task**.\n" +
+                "- `skipped` - boolean flag to receive notifications **if someone skipped a task**.\n" +
+                "- `joined_queue` - boolean flag to receive notifications **if someone joined a queue**.\n" +
+                "- `freeze` - boolean flag to receive notifications **if someone froze or unfroze a queue**.\n" +
+                "- `left_queue` - boolean flag to receive notifications **if someone left a queue**.\n" +
+                "- `your_turn` - boolean flag to receive notifications **who is next responsible " +
+                "for a particular task**."
     )
     @GetMapping
     fun getSettings(@RequestHeader("user-token") token: String): SettingsDTO = service.getSettings(token)
@@ -46,8 +45,14 @@ class SettingsController(private val service: SettingsService) {
         description = "Send a `JSON` body with updated settings.\n\n" +
                 "If you want to edit only several fields then include only them.\n" +
                 "Other fields will have the old unchanged values.\n\n" +
-                "- `name` - user name\n" +
-                "- other booleans are notification settings, whether a user wishes to receive them or not."
+                "- `name` - user name. The name can be any non empty string, it's not required to be unique.\n" +
+                "- `completed` - boolean flag to receive notifications **if someone completed a task**.\n" +
+                "- `skipped` - boolean flag to receive notifications **if someone skipped a task**.\n" +
+                "- `joined_queue` - boolean flag to receive notifications **if someone joined a queue**.\n" +
+                "- `freeze` - boolean flag to receive notifications **if someone froze or unfroze a queue**.\n" +
+                "- `left_queue` - boolean flag to receive notifications **if someone left a queue**.\n" +
+                "- `your_turn` - boolean flag to receive notifications **who is next responsible " +
+                "for a particular task**."
     )
     @PatchMapping
     @ResponseStatus(HttpStatus.OK)
