@@ -1,7 +1,6 @@
 package com.innopolis.innoqueue.rest.v1
 
 import com.innopolis.innoqueue.dto.SettingsDTO
-import com.innopolis.innoqueue.rest.v1.SettingsController
 import com.innopolis.innoqueue.services.SettingsService
 import io.mockk.mockk
 import io.mockk.verify

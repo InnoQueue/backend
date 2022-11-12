@@ -1,6 +1,5 @@
 package com.innopolis.innoqueue.rest.v1
 
-import com.innopolis.innoqueue.rest.v1.UserController
 import com.innopolis.innoqueue.rest.v1.dto.NewUserDTO
 import com.innopolis.innoqueue.services.UserService
 import io.mockk.mockk

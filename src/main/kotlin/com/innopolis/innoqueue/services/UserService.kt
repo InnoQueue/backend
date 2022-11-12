@@ -1,10 +1,10 @@
 package com.innopolis.innoqueue.services
 
-import com.innopolis.innoqueue.rest.v1.dto.TokenDTO
-import com.innopolis.innoqueue.models.User
-import com.innopolis.innoqueue.models.UserSettings
 import com.innopolis.innoqueue.dao.UserRepository
 import com.innopolis.innoqueue.dao.UserSettingsRepository
+import com.innopolis.innoqueue.models.User
+import com.innopolis.innoqueue.models.UserSettings
+import com.innopolis.innoqueue.rest.v1.dto.TokenDTO
 import com.innopolis.innoqueue.utils.StringGenerator
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service

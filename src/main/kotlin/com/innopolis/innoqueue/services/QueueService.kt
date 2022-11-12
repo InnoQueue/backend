@@ -1,12 +1,12 @@
 package com.innopolis.innoqueue.services
 
-import com.innopolis.innoqueue.dto.*
-import com.innopolis.innoqueue.enums.NotificationsType
-import com.innopolis.innoqueue.models.*
 import com.innopolis.innoqueue.dao.QueuePinCodeRepository
 import com.innopolis.innoqueue.dao.QueueQrCodeRepository
 import com.innopolis.innoqueue.dao.QueueRepository
 import com.innopolis.innoqueue.dao.UserQueueRepository
+import com.innopolis.innoqueue.dto.*
+import com.innopolis.innoqueue.enums.NotificationsType
+import com.innopolis.innoqueue.models.*
 import com.innopolis.innoqueue.utils.StringGenerator
 import com.innopolis.innoqueue.utils.UsersQueueLogic
 import org.springframework.data.repository.findByIdOrNull

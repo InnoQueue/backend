@@ -1,9 +1,9 @@
 package com.innopolis.innoqueue.services
 
-import com.innopolis.innoqueue.models.User
-import com.innopolis.innoqueue.models.UserSettings
 import com.innopolis.innoqueue.dao.UserRepository
 import com.innopolis.innoqueue.dao.UserSettingsRepository
+import com.innopolis.innoqueue.models.User
+import com.innopolis.innoqueue.models.UserSettings
 import com.innopolis.innoqueue.testcontainers.PostgresTestContainer
 import io.mockk.every
 import io.mockk.mockk
