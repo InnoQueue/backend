@@ -1,9 +1,6 @@
 package com.innopolis.innoqueue.services
 
-import com.innopolis.innoqueue.dao.QueuePinCodeRepository
-import com.innopolis.innoqueue.dao.QueueQrCodeRepository
-import com.innopolis.innoqueue.dao.QueueRepository
-import com.innopolis.innoqueue.dao.UserQueueRepository
+import com.innopolis.innoqueue.dao.*
 import com.innopolis.innoqueue.dto.*
 import com.innopolis.innoqueue.enums.NotificationsType
 import com.innopolis.innoqueue.models.*
@@ -29,26 +26,37 @@ class QueueService(
     private val queueQrCodeRepository: QueueQrCodeRepository
 ) {
     fun getQueues(token: String): QueuesListDTO {
-        val user = userService.findUserByToken(token)
-        val (activeQueue, frozenQueue) = user.queues.partition { it.isActive!! }
-        return QueuesListDTO(
-            transformUserQueueListToQueueShortDTO(activeQueue).sortedBy { it.queueName },
-            transformUserQueueListToQueueShortDTO(frozenQueue).sortedBy { it.queueName }
-        )
+        val (activeQueues, frozenQueues) = userQueueRepository.findAllUserQueueByToken(token)
+            .partition { it.getIsActive() }
+        return QueuesListDTO(activeQueues.convertToQueueShortDTO(), frozenQueues.convertToQueueShortDTO())
     }
 
     fun getQueueById(token: String, queueId: Long): QueueDTO {
-        val user = userService.findUserByToken(token)
-        val userQueue: UserQueue = getUserQueueByQueueId(user, queueId)
-        return transformQueueToDTO(queue = userQueue.queue, isActive = userQueue.isActive!!, userId = user.id!!)
+        val queueOptional = queueRepository.findById(queueId)
+        if (!queueOptional.isPresent) {
+            throw IllegalArgumentException("User does not belong to such queue: $queueId")
+        }
+        val userQueue = userQueueRepository.findUserQueueByToken(token, queueId)
+            ?: throw IllegalArgumentException("User does not belong to such queue: $queueId")
+        val queue = queueOptional.get()
+        return QueueDTO(
+            queueId = queue.id!!,
+            queueName = queue.name!!,
+            queueColor = queue.color!!,
+            currentUser = transformUserToUserExpensesDTO(queue.currentUser, queue),
+            isYourTurn = queue.currentUser?.id == userQueue.user?.id,
+            participants = getParticipants(queue),
+            trackExpenses = queue.trackExpenses!!,
+            isActive = userQueue.isActive!!,
+            isAdmin = queue.creator?.id == userQueue.user?.id,
+            hashCode = getHashCode(queueId)
+        )
     }
 
     fun getQueueInviteCode(token: String, queueId: Long): QueueInviteCodeDTO {
-        val user = userService.findUserByToken(token)
-        val userQueue: UserQueue = getUserQueueByQueueId(user, queueId)
-        val pinCode = getQueuePinCode(userQueue)
-        val qrCode = getQueueQrCode(userQueue)
-        return QueueInviteCodeDTO(pinCode = pinCode, qrCode = qrCode)
+        val userQueue = userQueueRepository.findUserQueueByToken(token, queueId)
+            ?: throw IllegalArgumentException("User does not belong to such queue: $queueId")
+        return QueueInviteCodeDTO(pinCode = userQueue.getQueuePinCode(), qrCode = userQueue.getQueueQrCode())
     }
 
     fun createQueue(token: String, queue: NewQueueDTO): QueueDTO {
@@ -281,26 +289,15 @@ class QueueService(
         )
     }
 
-    private fun transformUserQueueListToQueueShortDTO(
-        userQueueList: List<UserQueue>
-    ): List<QueueShortDTO> =
-        userQueueList.map { q -> transformQueueToQueueShortDTO(q) }
-
-    private fun transformQueueToQueueShortDTO(userQueue: UserQueue): QueueShortDTO {
-        val queue = userQueue.queue
-        return QueueShortDTO(
-            queueId = queue?.id!!,
-            queueName = queue.name!!,
-            queueColor = queue.color!!,
-            hashCode = getHashCode(
-                transformQueueToDTO(
-                    queue = queue,
-                    isActive = userQueue.isActive!!,
-                    userId = userQueue.user?.id!!
-                )
+    private fun List<UserQueuesShortForm>.convertToQueueShortDTO(): List<QueueShortDTO> =
+        this.map {
+            QueueShortDTO(
+                queueId = it.getQueueId(),
+                queueName = it.getQueueName(),
+                queueColor = it.getColor(),
+                hashCode = getHashCode(it.getQueueId())
             )
-        )
-    }
+        }
 
     @Suppress("MagicNumber")
     fun getHashCode(queue: QueueDTO): Int {
@@ -416,13 +413,13 @@ class QueueService(
         return userQueue
     }
 
-    private fun getQueuePinCode(userQueue: UserQueue): String {
+    private fun UserQueue.getQueuePinCode(): String {
         val queuePinCodes = queuePinCodeRepository.findAll()
-        val queuePinCode = queuePinCodes.firstOrNull { it.queue?.id == userQueue.queue?.id }
+        val queuePinCode = queuePinCodes.firstOrNull { it.queue?.id == this.queue?.id }
         return if (queuePinCode == null) {
             val pinCode = generateUniquePinCode(queuePinCodes.map { it.pinCode })
             val newQueuePinCode = QueuePinCode()
-            newQueuePinCode.queue = userQueue.queue
+            newQueuePinCode.queue = this.queue
             newQueuePinCode.pinCode = pinCode
             newQueuePinCode.dateCreated = LocalDateTime.now(ZoneOffset.UTC)
             queuePinCodeRepository.save(newQueuePinCode)
@@ -430,13 +427,13 @@ class QueueService(
         } else queuePinCode.pinCode!!
     }
 
-    private fun getQueueQrCode(userQueue: UserQueue): String {
+    private fun UserQueue.getQueueQrCode(): String {
         val queueQrCodes = queueQrCodeRepository.findAll()
-        val queueQrCode = queueQrCodes.firstOrNull { it.queue?.id == userQueue.queue?.id }
+        val queueQrCode = queueQrCodes.firstOrNull { it.queue?.id == this.queue?.id }
         return if (queueQrCode == null) {
             val qrCode = generateUniqueQRCode(queueQrCodes.map { it.qrCode })
             val newQueueQrCode = QueueQrCode()
-            newQueueQrCode.queue = userQueue.queue
+            newQueueQrCode.queue = this.queue
             newQueueQrCode.qrCode = qrCode
             newQueueQrCode.dateCreated = LocalDateTime.now(ZoneOffset.UTC)
             queueQrCodeRepository.save(newQueueQrCode)

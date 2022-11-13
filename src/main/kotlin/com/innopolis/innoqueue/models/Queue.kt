@@ -28,6 +28,6 @@ class Queue {
     @JoinColumn(name = "current_user_id", nullable = false)
     var currentUser: User? = null
 
-    @OneToMany(mappedBy = "queue")
+    @OneToMany(mappedBy = "queue", fetch = FetchType.EAGER)
     var userQueues: MutableSet<UserQueue> = mutableSetOf()
 }

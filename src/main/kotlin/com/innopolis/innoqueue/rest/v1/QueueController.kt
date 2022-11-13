@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.*
             "A queue is meant to have several people doing the same job in a certain" +
             "sequence. It automatically tracks the order, and works with to-do tasks."
 )
-class QueueController(private val service: QueueService) {
+class QueueController(
+    private val service: QueueService
+) {
 
     @ExceptionHandler(NoSuchElementException::class)
     fun handleNotFound(e: NoSuchElementException): ResponseEntity<String> =

@@ -51,27 +51,28 @@ class ToDoTaskService(
 //            )
 //        }
 
-        val queue = userQueueRepository.findUserQueueByToken(token, taskId)
-        // If user is not next in this queue
-        if (userQueue.getUserId() != userQueue.getCurrentUserId()) {
-            addProgress(queue, expenses)
-        } // if it's user's turn in this queue
-        else {
-            // if user completed a task, but he had skips, then he still is the next one of this queue
-            if (userQueue.getSkips() > 0) {
-                addProgress(queue, expenses)
-            }// if user completed a task and didn't have skips then the turn is assigned to the next user
+        userQueueRepository.findUserQueueByToken(token, taskId)?.let {
+            // If user is not next in this queue
+            if (userQueue.getUserId() != userQueue.getCurrentUserId()) {
+                addProgress(it, expenses)
+            } // if it's user's turn in this queue
             else {
-                saveTaskProgress(queue, expenses)
-                // Assign the next user in a queue
-                val nextUser = UsersQueueLogic.assignNextUser(queue, userQueueRepository, queueRepository)
-                notificationsService.sendNotificationMessage(
-                    NotificationsType.YOUR_TURN,
-                    nextUser.id!!,
-                    nextUser.name!!,
-                    queue.queue?.id!!,
-                    queue.queue?.name!!
-                )
+                // if user completed a task, but he had skips, then he still is the next one of this queue
+                if (userQueue.getSkips() > 0) {
+                    addProgress(it, expenses)
+                }// if user completed a task and didn't have skips then the turn is assigned to the next user
+                else {
+                    saveTaskProgress(it, expenses)
+                    // Assign the next user in a queue
+                    val nextUser = UsersQueueLogic.assignNextUser(it, userQueueRepository, queueRepository)
+                    notificationsService.sendNotificationMessage(
+                        NotificationsType.YOUR_TURN,
+                        nextUser.id!!,
+                        nextUser.name!!,
+                        it.queue?.id!!,
+                        it.queue?.name!!
+                    )
+                }
             }
         }
     }
