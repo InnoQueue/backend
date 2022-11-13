@@ -6,6 +6,7 @@ import com.innopolis.innoqueue.dto.ToDoTaskDTO
 import com.innopolis.innoqueue.enums.NotificationsType
 import com.innopolis.innoqueue.models.UserQueue
 import com.innopolis.innoqueue.utils.UsersQueueLogic
+import org.hibernate.Hibernate
 import org.springframework.stereotype.Service
 import java.util.*
 
@@ -13,73 +14,90 @@ import java.util.*
 class ToDoTaskService(
     private val userService: UserService,
     private val queueService: QueueService,
-    private val notificationService: NotificationsService,
+    private val notificationsService: NotificationsService,
+    private val queueRepository: QueueRepository,
     private val userQueueRepository: UserQueueRepository,
-    private val queueRepository: QueueRepository
 ) {
-    fun getTasks(token: String): List<ToDoTaskDTO> {
-        val user = userService.findUserByToken(token)
-        val tasks = user.tasks
-            .filter { queue -> queue.userQueues.size > 1 }
-            .map { queue ->
-                ToDoTaskDTO(
-                    queueId = queue.id,
-                    name = queue.name,
-                    color = queue.color,
-                    isImportant = queue.userQueues.firstOrNull { u -> u.user?.id == user.id }?.isImportant,
-                    trackExpenses = queue.trackExpenses,
-                    hashCode = queueService.getHashCode(queueService.transformQueueToDTO(queue, true, user.id!!))
-                )
-            }
-            .toList()
-        val (importantTasks, otherTasks) = tasks.partition { it.isImportant!! }
-        return importantTasks.sortedBy { it.name!! } + otherTasks.sortedBy { it.name!! }
-    }
+    fun getToDoTasks(token: String): List<ToDoTaskDTO> = queueRepository
+        .findToDoTasks(token)
+        .map {
+            ToDoTaskDTO(
+                queueId = it.getQueueId(),
+                name = it.getQueueName(),
+                color = it.getQueueColor(),
+                isImportant = it.getIsImportant(),
+                trackExpenses = it.getTrackExpenses(),
+                hashCode = queueService.getHashCode(it.getQueueId())
+            )
+        }
 
     fun completeTask(token: String, taskId: Long, expenses: Double?) {
-        val user = userService.findUserByToken(token)
-        val queue = queueService.getUserQueueByQueueId(user, taskId)
+        val userQueue = userQueueRepository.findUserQueue(token, taskId)
         // If this queue requires to track expenses it should not be null or negative number
-        if (queue.queue?.trackExpenses!!) {
-            if (expenses == null || expenses < 0) {
-                throw IllegalArgumentException("Expenses should be a non negative number")
-            }
+        if (userQueue.getTrackExpenses() && (expenses == null || expenses < 0)) {
+            throw IllegalArgumentException("Expenses should be a non negative number")
         }
+        // TODO validate if participants > 1
+        // TODO rewrite the logic
+//        addProgress(queue, expenses)
+//        // if it was user's turn in this queue, and he didn't have skips then the turn is assigned to the next user
+//        if (userQueue.getUserId() == userQueue.getCurrentUserId() && userQueue.getSkips() <= 0) {
+//            // Assign the next user in a queue
+//            val nextUser = UsersQueueLogic.assignNextUser(queue, userQueueRepository, queueRepository)
+//            notificationsService.sendNotificationMessage(
+//                NotificationsType.YOUR_TURN,
+//                nextUser,
+//                queue.queue!!
+//            )
+//        }
+
+        val queue = userQueueRepository.findUserQueueByToken(token, taskId)
         // If user is not next in this queue
-        if (user.tasks.none { task -> task.id == taskId }) {
+        if (userQueue.getUserId() != userQueue.getCurrentUserId()) {
             addProgress(queue, expenses)
         } // if it's user's turn in this queue
         else {
             // if user completed a task, but he had skips, then he still is the next one of this queue
-            if (queue.skips!! > 0) {
+            if (userQueue.getSkips() > 0) {
                 addProgress(queue, expenses)
-            }// if user completed a task and didn't have skips then the turn is assigned to the next one user.
+            }// if user completed a task and didn't have skips then the turn is assigned to the next user
             else {
                 saveTaskProgress(queue, expenses)
                 // Assign the next user in a queue
                 val nextUser = UsersQueueLogic.assignNextUser(queue, userQueueRepository, queueRepository)
-                notificationService.sendNotificationMessage(
+                notificationsService.sendNotificationMessage(
                     NotificationsType.YOUR_TURN,
-                    nextUser,
-                    queue.queue!!
+                    nextUser.id!!,
+                    nextUser.name!!,
+                    queue.queue?.id!!,
+                    queue.queue?.name!!
                 )
             }
         }
     }
 
     fun skipTask(token: String, taskId: Long) {
-        val user = userService.findUserByToken(token)
-        val queue = queueService.getUserQueueByQueueId(user, taskId)
+        val userQueue = userQueueRepository.findUserQueue(token, taskId)
         // User can skip a task if it's his turn
-        if (user.tasks.firstOrNull { task -> task.id == taskId } != null) {
+        if (userQueue.getUserId() == userQueue.getCurrentUserId()) {
+            val user = userService.findUserByToken(token)
+            val queue = queueService.getUserQueueByQueueId(user, taskId)
             queue.skips = queue.skips?.plus(1)
             userQueueRepository.save(queue)
-            notificationService.sendNotificationMessage(NotificationsType.SKIPPED, user, queue.queue!!)
+            notificationsService.sendNotificationMessage(
+                NotificationsType.SKIPPED,
+                user.id!!,
+                user.name!!,
+                queue.queue?.id!!,
+                queue.queue?.name!!
+            )
             val nextUser = UsersQueueLogic.assignNextUser(queue, userQueueRepository, queueRepository)
-            notificationService.sendNotificationMessage(
+            notificationsService.sendNotificationMessage(
                 NotificationsType.YOUR_TURN,
-                nextUser,
-                queue.queue!!
+                nextUser.id!!,
+                nextUser.name!!,
+                queue.queue?.id!!,
+                queue.queue?.name!!
             )
         }
     }
@@ -96,10 +114,14 @@ class ToDoTaskService(
         }
         queue.isImportant = false
         val savedQueue = userQueueRepository.save(queue)
-        notificationService.sendNotificationMessage(
+        Hibernate.initialize(queue.user)
+        Hibernate.initialize(savedQueue.queue)
+        notificationsService.sendNotificationMessage(
             NotificationsType.COMPLETED,
-            queue.user!!,
-            savedQueue.queue!!
+            queue.user?.id!!,
+            queue.user?.name!!,
+            savedQueue.queue?.id!!,
+            savedQueue.queue?.name!!
         )
     }
 }

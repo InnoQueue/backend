@@ -2,11 +2,11 @@ package com.innopolis.innoqueue.services
 
 import com.innopolis.innoqueue.dao.NotificationRepository
 import com.innopolis.innoqueue.dao.QueueRepository
+import com.innopolis.innoqueue.dao.UserQueueRepository
 import com.innopolis.innoqueue.dto.NotificationDTO
 import com.innopolis.innoqueue.dto.NotificationsListDTO
 import com.innopolis.innoqueue.enums.NotificationsType
 import com.innopolis.innoqueue.models.Notification
-import com.innopolis.innoqueue.models.Queue
 import com.innopolis.innoqueue.models.User
 import com.innopolis.innoqueue.models.UserQueue
 import com.innopolis.innoqueue.rest.v1.dto.EmptyDTO
@@ -26,6 +26,7 @@ class NotificationsService(
     private val firebaseMessagingService: FirebaseMessagingNotificationsService,
     private val userService: UserService,
     private val queueRepository: QueueRepository,
+    private val userQueueRepository: UserQueueRepository,
     private val notificationRepository: NotificationRepository
 ) {
 
@@ -49,16 +50,18 @@ class NotificationsService(
 
     fun sendNotificationMessage(
         notificationType: NotificationsType,
-        participant: User,
-        queue: Queue
+        participantId: Long,
+        participantName: String,
+        queueId: Long,
+        queueName: String
     ) {
-        val notifications = prepareNotificationsListToSend(notificationType, participant, queue)
+        val notifications = prepareNotificationsListToSend(notificationType, participantId, queueId)
         notificationRepository.saveAll(notifications)
         firebaseMessagingService.sendNotificationsToFirebase(
             addressees = notifications.mapNotNull { it.user }.map { it.id!! to it.fcmToken },
             notificationType = notificationType,
-            participant = participant.id!! to participant.name!!,
-            queue = queue.id!! to queue.name!!,
+            participant = participantId to participantName,
+            queue = queueId to queueName,
         )
     }
 
@@ -82,41 +85,41 @@ class NotificationsService(
 
     private fun prepareNotificationsListToSend(
         notificationType: NotificationsType,
-        participant: User,
-        queue: Queue
+        participantId: Long,
+        queueId: Long,
     ): List<Notification> = when (notificationType) {
         NotificationsType.SHOOK -> {
             listOf(
                 createNotification(
-                    recipientUser = participant,
-                    participantUserId = participant.id!!,
+                    recipientUserId = participantId,
+                    participantUserId = participantId,
                     notificationsType = notificationType,
-                    referredQueueId = queue.id!!
+                    referredQueueId = queueId
                 )
             )
         }
 
         else -> {
-            queue.userQueues
-                .filter { it.shouldSendMessage(notificationType, participant.id!!) }
+            userQueueRepository.findUserQueueByQueueId(queueId)
+                .filter { it.shouldSendMessage(notificationType, participantId) }
                 .map {
                     createNotification(
-                        recipientUser = it.user!!,
-                        participantUserId = participant.id!!,
+                        recipientUserId = it.user?.id!!,
+                        participantUserId = participantId,
                         notificationsType = notificationType,
-                        referredQueueId = queue.id!!
+                        referredQueueId = queueId
                     )
                 }
         }
     }
 
     private fun createNotification(
-        recipientUser: User,
+        recipientUserId: Long,
         participantUserId: Long,
         notificationsType: NotificationsType,
         referredQueueId: Long
     ): Notification = Notification().apply {
-        user = recipientUser
+        user = userService.findUserById(recipientUserId)
         participantId = participantUserId
         messageType = notificationsType
         queueId = referredQueueId

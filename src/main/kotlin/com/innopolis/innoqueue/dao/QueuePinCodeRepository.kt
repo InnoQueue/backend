@@ -6,5 +6,4 @@ import org.springframework.data.repository.CrudRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-
 interface QueuePinCodeRepository : CrudRepository<QueuePinCode, Long>, JpaSpecificationExecutor<QueuePinCode>

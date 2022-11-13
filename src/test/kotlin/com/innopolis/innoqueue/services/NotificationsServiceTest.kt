@@ -2,6 +2,7 @@ package com.innopolis.innoqueue.services
 
 import com.innopolis.innoqueue.dao.NotificationRepository
 import com.innopolis.innoqueue.dao.QueueRepository
+import com.innopolis.innoqueue.dao.UserQueueRepository
 import com.innopolis.innoqueue.enums.NotificationsType
 import com.innopolis.innoqueue.models.*
 import com.innopolis.innoqueue.testcontainers.PostgresTestContainer
@@ -33,6 +34,7 @@ class NotificationsServiceTest : PostgresTestContainer() {
         every { userService.findUserNameById(any()) } returns null
         val queueRepository = mockk<QueueRepository>(relaxed = true)
         every { queueRepository.findByIdOrNull(any()) } returns null
+        val userQueueRepository = mockk<UserQueueRepository>(relaxed = true)
         val notificationRepo = mockk<NotificationRepository>(relaxed = true)
         every { notificationRepo.findAllByToken(token) } returns listOf(Notification()
             .apply {
@@ -42,7 +44,13 @@ class NotificationsServiceTest : PostgresTestContainer() {
                 queueId = 1
                 date = LocalDateTime.now()
             })
-        val service = NotificationsService(firebaseMessagingService, userService, queueRepository, notificationRepo)
+        val service = NotificationsService(
+            firebaseMessagingService,
+            userService,
+            queueRepository,
+            userQueueRepository,
+            notificationRepo
+        )
 
         // when
         service.getNotifications(token)
@@ -124,9 +132,16 @@ class NotificationsServiceTest : PostgresTestContainer() {
         val firebaseMessagingService = mockk<FirebaseMessagingNotificationsService>(relaxed = true)
         val userService = mockk<UserService>(relaxed = true)
         val queueRepository = mockk<QueueRepository>(relaxed = true)
+        val userQueueRepository = mockk<UserQueueRepository>(relaxed = true)
         val notificationRepo = mockk<NotificationRepository>(relaxed = true)
         every { notificationRepo.anyUnreadNotification(token) } returns true
-        val service = NotificationsService(firebaseMessagingService, userService, queueRepository, notificationRepo)
+        val service = NotificationsService(
+            firebaseMessagingService,
+            userService,
+            queueRepository,
+            userQueueRepository,
+            notificationRepo
+        )
 
         // when
         service.anyNewNotification(token)
@@ -168,8 +183,15 @@ class NotificationsServiceTest : PostgresTestContainer() {
         val firebaseMessagingService = mockk<FirebaseMessagingNotificationsService>(relaxed = true)
         val userService = mockk<UserService>(relaxed = true)
         val queueRepository = mockk<QueueRepository>(relaxed = true)
+        val userQueueRepository = mockk<UserQueueRepository>(relaxed = true)
         val notificationRepo = mockk<NotificationRepository>(relaxed = true)
-        val service = NotificationsService(firebaseMessagingService, userService, queueRepository, notificationRepo)
+        val service = NotificationsService(
+            firebaseMessagingService,
+            userService,
+            queueRepository,
+            userQueueRepository,
+            notificationRepo
+        )
 
         // when
         service.clearOldNotifications()
@@ -205,7 +227,13 @@ class NotificationsServiceTest : PostgresTestContainer() {
         val queueModel = getQueueModel(participantModel)
 
         // when
-        notificationsService.sendNotificationMessage(notificationType, participantModel, queueModel)
+        notificationsService.sendNotificationMessage(
+            notificationType,
+            participantModel.id!!,
+            participantModel.name!!,
+            queueModel.id!!,
+            queueModel.name!!
+        )
 
         // then
         val notifications = notificationRepository.findAll().toList()
@@ -228,7 +256,13 @@ class NotificationsServiceTest : PostgresTestContainer() {
         val queueModel = getQueueModel(participantModel)
 
         // when
-        notificationsService.sendNotificationMessage(notificationType, participantModel, queueModel)
+        notificationsService.sendNotificationMessage(
+            notificationType,
+            participantModel.id!!,
+            participantModel.name!!,
+            queueModel.id!!,
+            queueModel.name!!
+        )
 
         // then
         val notifications = notificationRepository.findAll().toList()
@@ -251,7 +285,13 @@ class NotificationsServiceTest : PostgresTestContainer() {
         val queueModel = getQueueModel(participantModel)
 
         // when
-        notificationsService.sendNotificationMessage(notificationType, participantModel, queueModel)
+        notificationsService.sendNotificationMessage(
+            notificationType,
+            participantModel.id!!,
+            participantModel.name!!,
+            queueModel.id!!,
+            queueModel.name!!
+        )
 
         // then
         val notifications = notificationRepository.findAll().toList()
@@ -274,7 +314,13 @@ class NotificationsServiceTest : PostgresTestContainer() {
         val queueModel = getQueueModel(participantModel)
 
         // when
-        notificationsService.sendNotificationMessage(notificationType, participantModel, queueModel)
+        notificationsService.sendNotificationMessage(
+            notificationType,
+            participantModel.id!!,
+            participantModel.name!!,
+            queueModel.id!!,
+            queueModel.name!!
+        )
 
         // then
         val notifications = notificationRepository.findAll().toList()
@@ -296,7 +342,13 @@ class NotificationsServiceTest : PostgresTestContainer() {
         val queueModel = getQueueModel(participantModel)
 
         // when
-        notificationsService.sendNotificationMessage(notificationType, participantModel, queueModel)
+        notificationsService.sendNotificationMessage(
+            notificationType,
+            participantModel.id!!,
+            participantModel.name!!,
+            queueModel.id!!,
+            queueModel.name!!
+        )
 
         // then
         val notifications = notificationRepository.findAll().toList()
@@ -319,7 +371,13 @@ class NotificationsServiceTest : PostgresTestContainer() {
         val queueModel = getQueueModel(participantModel)
 
         // when
-        notificationsService.sendNotificationMessage(notificationType, participantModel, queueModel)
+        notificationsService.sendNotificationMessage(
+            notificationType,
+            participantModel.id!!,
+            participantModel.name!!,
+            queueModel.id!!,
+            queueModel.name!!
+        )
 
         // then
         val notifications = notificationRepository.findAll().toList()
@@ -342,7 +400,13 @@ class NotificationsServiceTest : PostgresTestContainer() {
         val queueModel = getQueueModel(participantModel)
 
         // when
-        notificationsService.sendNotificationMessage(notificationType, participantModel, queueModel)
+        notificationsService.sendNotificationMessage(
+            notificationType,
+            participantModel.id!!,
+            participantModel.name!!,
+            queueModel.id!!,
+            queueModel.name!!
+        )
 
         // then
         val notifications = notificationRepository.findAll().toList()
@@ -365,7 +429,13 @@ class NotificationsServiceTest : PostgresTestContainer() {
         val queueModel = getQueueModel(participantModel)
 
         // when
-        notificationsService.sendNotificationMessage(notificationType, participantModel, queueModel)
+        notificationsService.sendNotificationMessage(
+            notificationType,
+            participantModel.id!!,
+            participantModel.name!!,
+            queueModel.id!!,
+            queueModel.name!!
+        )
 
         // then
         val notifications = notificationRepository.findAll().toList()
@@ -388,7 +458,13 @@ class NotificationsServiceTest : PostgresTestContainer() {
         val queueModel = getQueueModel(participantModel)
 
         // when
-        notificationsService.sendNotificationMessage(notificationType, participantModel, queueModel)
+        notificationsService.sendNotificationMessage(
+            notificationType,
+            participantModel.id!!,
+            participantModel.name!!,
+            queueModel.id!!,
+            queueModel.name!!
+        )
 
         // then
         val notifications = notificationRepository.findAll().toList()

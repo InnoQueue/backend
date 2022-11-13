@@ -21,7 +21,9 @@ import org.springframework.web.bind.annotation.*
             "So, this task is urgent.\n\n" +
             "- `track_expenses` - `true` if such task requires to input expenses.\n"
 )
-class ToDoTasksController(private val service: ToDoTaskService) {
+class ToDoTasksController(
+    private val service: ToDoTaskService
+) {
 
     @ExceptionHandler(NoSuchElementException::class)
     fun handleNotFound(e: NoSuchElementException): ResponseEntity<String> =
@@ -39,7 +41,7 @@ class ToDoTasksController(private val service: ToDoTaskService) {
                 "- Queues in which there are no participants (only you) won't be shown.\n"
     )
     @GetMapping
-    fun getTasks(@RequestHeader("user-token") token: String): List<ToDoTaskDTO> = service.getTasks(token)
+    fun getToDoTasks(@RequestHeader("user-token") token: String): List<ToDoTaskDTO> = service.getToDoTasks(token)
 
     @Operation(summary = "Complete a to-do task")
     @PostMapping("/done")

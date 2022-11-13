@@ -136,8 +136,10 @@ class QueueService(
                     userQueueRepository.save(userQueue)
                     notificationService.sendNotificationMessage(
                         NotificationsType.UNFROZEN,
-                        user,
-                        userQueue.queue!!
+                        user.id!!,
+                        user.name!!,
+                        userQueue.queue?.id!!,
+                        userQueue.queue?.name!!
                     )
                 }
             }
@@ -150,8 +152,10 @@ class QueueService(
                         userQueueRepository.save(userQueue)
                         notificationService.sendNotificationMessage(
                             NotificationsType.FROZEN,
-                            user,
-                            userQueue.queue!!
+                            user.id!!,
+                            user.name!!,
+                            userQueue.queue?.id!!,
+                            userQueue.queue?.name!!,
                         )
                     }
                 }
@@ -166,16 +170,20 @@ class QueueService(
         if (userQueue.queue?.creator?.id == user.id) {
             notificationService.sendNotificationMessage(
                 NotificationsType.DELETE_QUEUE,
-                user,
-                userQueue.queue!!
+                user.id!!,
+                user.name!!,
+                userQueue.queue?.id!!,
+                userQueue.queue?.name!!
             )
             queueRepository.delete(userQueue.queue!!)
         } // Leave queue
         else {
             notificationService.sendNotificationMessage(
                 NotificationsType.LEFT_QUEUE,
-                user,
-                userQueue.queue!!
+                user.id!!,
+                user.name!!,
+                userQueue.queue?.id!!,
+                userQueue.queue?.name!!
             )
             userQueue.skips = 0
             // If it's your turn, reassign another user
@@ -183,8 +191,10 @@ class QueueService(
                 val nextUser = UsersQueueLogic.assignNextUser(userQueue, userQueueRepository, queueRepository)
                 notificationService.sendNotificationMessage(
                     NotificationsType.YOUR_TURN,
-                    nextUser,
-                    userQueue.queue!!
+                    nextUser.id!!,
+                    nextUser.name!!,
+                    userQueue.queue?.id!!,
+                    userQueue.queue?.name!!
                 )
             }
             userQueueRepository.delete(userQueue)
@@ -210,8 +220,10 @@ class QueueService(
                 val newUserQueue = userQueueRepository.save(createUserQueueEntity(user, queueEntity))
                 notificationService.sendNotificationMessage(
                     NotificationsType.JOINED_QUEUE,
-                    user,
-                    newUserQueue.queue!!
+                    user.id!!,
+                    user.name!!,
+                    newUserQueue.queue?.id!!,
+                    newUserQueue.queue?.name!!
                 )
 
                 return transformQueueToDTO(
@@ -232,8 +244,10 @@ class QueueService(
                 val newUserQueue = userQueueRepository.save(createUserQueueEntity(user, queueEntity))
                 notificationService.sendNotificationMessage(
                     NotificationsType.JOINED_QUEUE,
-                    user,
-                    newUserQueue.queue!!
+                    user.id!!,
+                    user.name!!,
+                    newUserQueue.queue?.id!!,
+                    newUserQueue.queue?.name!!
                 )
                 return transformQueueToDTO(
                     queue = newUserQueue.queue,
@@ -260,8 +274,10 @@ class QueueService(
         userQueueRepository.save(participantQueue)
         notificationService.sendNotificationMessage(
             NotificationsType.SHOOK,
-            participantQueue.user!!,
-            userQueue.queue!!
+            participantQueue.user?.id!!,
+            participantQueue.user?.name!!,
+            userQueue.queue?.id!!,
+            userQueue.queue?.name!!
         )
     }
 
@@ -309,6 +325,12 @@ class QueueService(
         }
 
         return hashCode
+    }
+
+    // TODO finish method
+    @Suppress("FunctionOnlyReturningConstant", "UnusedPrivateMember")
+    fun getHashCode(queueId: Long): Int {
+        return 123
     }
 
     fun transformQueueToDTO(queue: Queue?, isActive: Boolean, userId: Long): QueueDTO {

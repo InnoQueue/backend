@@ -20,7 +20,7 @@ class User {
     @Column(name = "fcm_token", nullable = false, length = 256)
     var fcmToken: String? = null
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     var queues: MutableSet<UserQueue> = mutableSetOf()
 
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "user")
