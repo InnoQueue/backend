@@ -90,7 +90,7 @@ class QueueService(
             throw IllegalArgumentException("User is not an admin in this queue: ${editQueue.queueId}")
         }
         val queueEntity = queueRepository.findByIdOrNull(editQueue.queueId)
-            ?: throw NoSuchElementException("Queue does not exist. ID: ${editQueue.queueId}")
+            ?: throw IllegalArgumentException("Queue does not exist. ID: ${editQueue.queueId}")
 
         var changed = false
         if (editQueue.name != null) {

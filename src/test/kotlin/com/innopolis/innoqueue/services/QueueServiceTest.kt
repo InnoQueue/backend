@@ -12,6 +12,7 @@ import com.innopolis.innoqueue.testcontainers.PostgresTestContainer
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
@@ -135,6 +136,32 @@ class QueueServiceTest : PostgresTestContainer() {
     }
 
     @Test
+    @Sql("users.sql", "user_settings.sql", "queues2.sql", "user_queue2.sql")
+    fun `Test getQueueById exception if queue does not exist`() {
+        // given
+        val token = "11111"
+        val queueId = 4444L
+
+        // when and then
+        Assertions.assertThrows(IllegalArgumentException::class.java) {
+            queueService.getQueueById(token, queueId)
+        }
+    }
+
+    @Test
+    @Sql("users.sql", "user_settings.sql", "queues2.sql")
+    fun `Test getQueueById exception if user does not belong to queue`() {
+        // given
+        val token = "11111"
+        val queueId = 6L
+
+        // when and then
+        Assertions.assertThrows(IllegalArgumentException::class.java) {
+            queueService.getQueueById(token, queueId)
+        }
+    }
+
+    @Test
     @Sql("users.sql", "user_settings.sql", "queues2.sql", "user_queue3.sql")
     fun `Test getQueueById`() {
         // given
@@ -196,6 +223,19 @@ class QueueServiceTest : PostgresTestContainer() {
     }
 
     @Test
+    @Sql("users.sql", "user_settings.sql", "queues2.sql")
+    fun `Test getQueueInviteCode exception if user does not belong to queue`() {
+        // given
+        val token = "11111"
+        val queueId = 6L
+
+        // when and then
+        Assertions.assertThrows(IllegalArgumentException::class.java) {
+            queueService.getQueueInviteCode(token, queueId)
+        }
+    }
+
+    @Test
     @Sql("users.sql", "user_settings.sql", "queues2.sql", "user_queue3.sql")
     fun `Test getQueueInviteCode`() {
         // given
@@ -253,6 +293,101 @@ class QueueServiceTest : PostgresTestContainer() {
         assertEquals(true, responseDto.isYourTurn)
         assertEquals(true, responseDto.isActive)
         assertEquals(true, responseDto.isAdmin)
+    }
+
+    @Test
+    @Sql("users.sql", "user_settings.sql", "queues2.sql", "user_queue2.sql")
+    fun `Test editQueue exception if queueId is not specified`() {
+        // given
+        val token = "11111"
+        val queueDto = EditQueueDTO(
+            queueId = null,
+            name = "queueName",
+            color = "queueColor",
+            trackExpenses = true,
+            participants = null
+        )
+
+        // when and then
+        Assertions.assertThrows(IllegalArgumentException::class.java) {
+            queueService.editQueue(token, queueDto)
+        }
+    }
+
+    @Test
+    @Sql("users.sql", "user_settings.sql", "queues2.sql", "user_queue2.sql")
+    fun `Test editQueue exception if user is not admin`() {
+        // given
+        val token = "11111"
+        val queueDto = EditQueueDTO(
+            queueId = 6L,
+            name = "queueName",
+            color = "queueColor",
+            trackExpenses = true,
+            participants = null
+        )
+
+        // when and then
+        Assertions.assertThrows(IllegalArgumentException::class.java) {
+            queueService.editQueue(token, queueDto)
+        }
+    }
+
+    @Test
+    @Sql("users.sql", "user_settings.sql", "queues2.sql", "user_queue2.sql")
+    fun `Test editQueue exception if queue does not exist`() {
+        // given
+        val token = "11111"
+        val queueDto = EditQueueDTO(
+            queueId = 6542L,
+            name = "queueName",
+            color = "queueColor",
+            trackExpenses = true,
+            participants = null
+        )
+
+        // when and then
+        Assertions.assertThrows(IllegalArgumentException::class.java) {
+            queueService.editQueue(token, queueDto)
+        }
+    }
+
+    @Test
+    @Sql("users.sql", "user_settings.sql", "queues2.sql", "user_queue2.sql")
+    fun `Test editQueue exception if queue name is an empty string`() {
+        // given
+        val token = "11111"
+        val queueDto = EditQueueDTO(
+            queueId = 34L,
+            name = "",
+            color = "queueColor",
+            trackExpenses = true,
+            participants = null
+        )
+
+        // when and then
+        Assertions.assertThrows(IllegalArgumentException::class.java) {
+            queueService.editQueue(token, queueDto)
+        }
+    }
+
+    @Test
+    @Sql("users.sql", "user_settings.sql", "queues2.sql", "user_queue2.sql")
+    fun `Test editQueue exception if queue color is an empty string`() {
+        // given
+        val token = "11111"
+        val queueDto = EditQueueDTO(
+            queueId = 34L,
+            name = "name",
+            color = "",
+            trackExpenses = true,
+            participants = null
+        )
+
+        // when and then
+        Assertions.assertThrows(IllegalArgumentException::class.java) {
+            queueService.editQueue(token, queueDto)
+        }
     }
 
     @Test
@@ -360,6 +495,38 @@ class QueueServiceTest : PostgresTestContainer() {
     }
 
     @Test
+    @Sql("users.sql", "user_settings.sql", "queues2.sql", "user_queue2.sql", "queue_pin_code.sql", "queue_qr_code.sql")
+    fun `Test joinQueue exception if nothing is provided`() {
+        // given
+        val token = "11111"
+        val queueDto = QueueInviteCodeDTO(
+            pinCode = null,
+            qrCode = null
+        )
+
+        // when and then
+        Assertions.assertThrows(IllegalArgumentException::class.java) {
+            queueService.joinQueue(token, queueDto)
+        }
+    }
+
+    @Test
+    @Sql("users.sql", "user_settings.sql", "queues2.sql", "user_queue2.sql", "queue_pin_code.sql")
+    fun `Test joinQueue exception if pin code does not exist`() {
+        // given
+        val token = "11111"
+        val queueDto = QueueInviteCodeDTO(
+            pinCode = "does not exist",
+            qrCode = null
+        )
+
+        // when and then
+        Assertions.assertThrows(IllegalArgumentException::class.java) {
+            queueService.joinQueue(token, queueDto)
+        }
+    }
+
+    @Test
     @Sql("users.sql", "user_settings.sql", "queues2.sql", "queue_pin_code.sql")
     fun `Test joinQueue pin code`() {
         // given
@@ -376,6 +543,22 @@ class QueueServiceTest : PostgresTestContainer() {
         // then
         assertTrue(userQueueRepository.findAll().any { it.queue?.id == queueId && it.user?.id == 1L })
         assertEquals(queueId, result.queueId)
+    }
+
+    @Test
+    @Sql("users.sql", "user_settings.sql", "queues2.sql", "user_queue2.sql", "queue_qr_code.sql")
+    fun `Test joinQueue exception if qr code does not exist`() {
+        // given
+        val token = "11111"
+        val queueDto = QueueInviteCodeDTO(
+            pinCode = null,
+            qrCode = "does not exist"
+        )
+
+        // when and then
+        Assertions.assertThrows(IllegalArgumentException::class.java) {
+            queueService.joinQueue(token, queueDto)
+        }
     }
 
     @Test
