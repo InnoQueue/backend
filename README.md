@@ -12,6 +12,7 @@
 ![Kotlin CI workflow](https://github.com/InnoQueue/Backend/actions/workflows/codecov.yml/badge.svg)
 [![codecov](https://codecov.io/gh/InnoQueue/Backend/branch/main/graph/badge.svg?token=9RQU24PHSX)](https://codecov.io/gh/InnoQueue/Backend)
 [![Hits-of-Code](https://hitsofcode.com/github/InnoQueue/Backend?branch=main)](https://hitsofcode.com/github/InnoQueue/Backend/view?branch=main)
+[![](https://tokei.rs/b1/github/InnoQueue/Backend)](https://github.com/InnoQueue/Backend)
 ![Alt](https://repobeats.axiom.co/api/embed/293a8fa69ee533512501ced47162b3d5bbac10cb.svg "Repobeats analytics image")
 
 REST API Backend for the **InnoQueue**.
