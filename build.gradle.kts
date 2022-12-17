@@ -1,3 +1,4 @@
+import org.jetbrains.kotlin.cli.jvm.main
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val springBootVersion: String by project
@@ -9,6 +10,7 @@ plugins {
     kotlin("plugin.jpa") version "1.6.21"
     id("io.gitlab.arturbosch.detekt") version "1.21.0"
     id("jacoco")
+    id("org.jetbrains.dokka") version "1.7.20"
 }
 
 val javaVersion: String by project
@@ -44,13 +46,6 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
     testImplementation("io.mockk:mockk:$mockkVersion")
     testImplementation("org.testcontainers:postgresql:$testcontainersVersion")
-}
-
-tasks.withType<KotlinCompile> {
-    kotlinOptions {
-        freeCompilerArgs = listOf("-Xjsr305=strict")
-        jvmTarget = javaVersion
-    }
 }
 
 tasks.withType<Test> {
