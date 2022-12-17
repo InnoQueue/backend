@@ -3,6 +3,9 @@ package com.innopolis.innoqueue.models
 import java.time.LocalDateTime
 import javax.persistence.*
 
+/**
+ * Model representing the "user_queue" db table
+ */
 @Entity
 @Table(name = "user_queue")
 class UserQueue {

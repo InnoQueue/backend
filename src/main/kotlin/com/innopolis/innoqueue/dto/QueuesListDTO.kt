@@ -2,6 +2,9 @@ package com.innopolis.innoqueue.dto
 
 import com.fasterxml.jackson.annotation.JsonProperty
 
+/**
+ * DTO for returning list of active and frozen queues
+ */
 data class QueuesListDTO(
     @JsonProperty("active")
     val activeQueues: List<QueueShortDTO>,

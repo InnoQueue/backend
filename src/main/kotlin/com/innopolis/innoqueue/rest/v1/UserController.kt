@@ -9,14 +9,24 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
+/**
+ * Controller with endpoints to work with user model
+ */
 @RestController
 @RequestMapping("/user")
 @Tag(name = "User")
 class UserController(private val service: UserService) {
+
+    /**
+     * Exception bad request handler
+     */
     @ExceptionHandler(IllegalArgumentException::class)
     fun handleBadRequest(e: IllegalArgumentException): ResponseEntity<String> =
         ResponseEntity(e.message, HttpStatus.BAD_REQUEST)
 
+    /**
+     * POST endpoint for creating new user account
+     */
     @PostMapping("/signup")
     @Operation(
         summary = "Sign Up and get token",

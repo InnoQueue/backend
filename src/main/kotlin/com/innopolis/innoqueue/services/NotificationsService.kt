@@ -20,6 +20,9 @@ private const val DELETED_USER_NAME = "Deleted user"
 private const val DELETED_QUEUE_NAME = "Deleted queue"
 private const val CLEAR_RESPONSE = "Old notifications were deleted"
 
+/**
+ * Service for working with notifications
+ */
 @Suppress("TooManyFunctions")
 @Service
 class NotificationsService(
@@ -30,6 +33,10 @@ class NotificationsService(
     private val notificationRepository: NotificationRepository
 ) {
 
+    /**
+     * Lists all notifications
+     * @param token - user token
+     */
     fun getNotifications(token: String): NotificationsListDTO {
         val (allNotifications, unreadNotifications) = notificationRepository.findAllByToken(token)
             .partition { it.isRead!! }
@@ -40,14 +47,24 @@ class NotificationsService(
         )
     }
 
+    /**
+     * Returns boolean whether there is any unread notification
+     * @param token - user token
+     */
     fun anyNewNotification(token: String): NewNotificationDTO =
         NewNotificationDTO(notificationRepository.anyUnreadNotification(token))
 
+    /**
+     * Deletes notifications older than 2 weeks
+     */
     fun clearOldNotifications(): EmptyDTO {
         notificationRepository.deleteAll(notificationRepository.findAllExpiredNotifications())
         return EmptyDTO(CLEAR_RESPONSE)
     }
 
+    /**
+     * Saves notification in database and sends it via firebase
+     */
     fun sendNotificationMessage(
         notificationType: NotificationsType,
         participantId: Long,

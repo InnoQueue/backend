@@ -9,6 +9,9 @@ import com.innopolis.innoqueue.enums.NotificationsType
 import com.innopolis.innoqueue.utils.MessagePushNotificationCreator
 import org.springframework.stereotype.Service
 
+/**
+ * Service for working with Firebase
+ */
 @Service
 //@ConditionalOnBean(name = ["firebaseApp"])
 class FirebaseMessagingNotificationsService(
@@ -16,6 +19,9 @@ class FirebaseMessagingNotificationsService(
 ) {
     private val firebaseMessaging: FirebaseMessaging? = firebaseApp?.let { FirebaseMessaging.getInstance(it) }
 
+    /**
+     * Sends a particular message via Firebase
+     */
     fun sendNotificationsToFirebase(
         addressees: List<Pair<Long, String?>>,
         notificationType: NotificationsType,

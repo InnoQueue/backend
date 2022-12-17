@@ -5,8 +5,15 @@ import com.innopolis.innoqueue.dao.UserQueueRepository
 import com.innopolis.innoqueue.models.User
 import com.innopolis.innoqueue.models.UserQueue
 
+/**
+ * Util class for calculating which user has to be assigned to the queue
+ */
 object UsersQueueLogic {
 
+    /**
+     * Determines which user should be on duty for a particular queue
+     * @param queue - queue to which new user has to be assigned
+     */
     fun assignNextUser(
         queue: UserQueue,
         userQueueRepository: UserQueueRepository,

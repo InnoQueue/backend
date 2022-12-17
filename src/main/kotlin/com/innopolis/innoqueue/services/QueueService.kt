@@ -15,6 +15,9 @@ import kotlin.math.abs
 private const val PIN_CODE_LENGTH: Int = 6
 private const val QR_CODE_LENGTH: Int = 48
 
+/**
+ * Service for working with queues
+ */
 @Suppress("TooManyFunctions")
 @Service
 class QueueService(
@@ -25,12 +28,22 @@ class QueueService(
     private val queuePinCodeRepository: QueuePinCodeRepository,
     private val queueQrCodeRepository: QueueQrCodeRepository
 ) {
+
+    /**
+     * Lists all queues for a particular user
+     * @param token - user token
+     */
     fun getQueues(token: String): QueuesListDTO {
         val (activeQueues, frozenQueues) = userQueueRepository.findAllUserQueueByToken(token)
             .partition { it.getIsActive() }
         return QueuesListDTO(activeQueues.convertToQueueShortDTO(), frozenQueues.convertToQueueShortDTO())
     }
 
+    /**
+     * Lists queue details
+     * @param token - user token
+     * @param queueId - id of a queue
+     */
     fun getQueueById(token: String, queueId: Long): QueueDTO {
         val queueOptional = queueRepository.findById(queueId)
         if (!queueOptional.isPresent) {
@@ -53,12 +66,21 @@ class QueueService(
         )
     }
 
+    /**
+     * Return invite codes for a queue
+     * @param token - user token
+     * @param queueId - id of a queue
+     */
     fun getQueueInviteCode(token: String, queueId: Long): QueueInviteCodeDTO {
         val userQueue = userQueueRepository.findUserQueueByToken(token, queueId)
             ?: throw IllegalArgumentException("User does not belong to such queue: $queueId")
         return QueueInviteCodeDTO(pinCode = userQueue.getQueuePinCode(), qrCode = userQueue.getQueueQrCode())
     }
 
+    /**
+     * Saves new queue
+     * @param token - user token
+     */
     fun createQueue(token: String, queue: NewQueueDTO): QueueDTO {
         val user = userService.findUserByToken(token)
         val createdQueue = saveQueueEntity(queue, user)
@@ -79,6 +101,10 @@ class QueueService(
         return qDTO
     }
 
+    /**
+     * Changes existing queue
+     * @param token - user token
+     */
     @Suppress("ThrowsCount")
     fun editQueue(token: String, editQueue: EditQueueDTO): QueueDTO {
         if (editQueue.queueId == null) {
@@ -129,11 +155,17 @@ class QueueService(
         return getQueueById(token, updatedQueue.id!!)
     }
 
+    /**
+     * Return user_queue model
+     */
     fun getUserQueueByQueueId(user: User, queueId: Long): UserQueue {
         return user.queues.firstOrNull { it.queue?.id == queueId }
             ?: throw IllegalArgumentException("User does not belong to such queue: $queueId")
     }
 
+    /**
+     * Change queue's freeze status
+     */
     fun freezeUnFreezeQueue(token: String, queueId: Long, status: Boolean) {
         val user = userService.findUserByToken(token)
         val userQueue = getUserQueueByQueueId(user, queueId)
@@ -171,6 +203,11 @@ class QueueService(
         }
     }
 
+    /**
+     * Deletes or leaves a queue
+     * @param token - user token
+     * @param queueId - id of a queue
+     */
     fun deleteQueue(token: String, queueId: Long) {
         val user = userService.findUserByToken(token)
         val userQueue = getUserQueueByQueueId(user, queueId)
@@ -209,6 +246,10 @@ class QueueService(
         }
     }
 
+    /**
+     * Join queue via invite code
+     * @param token - user token
+     */
     @Suppress("ThrowsCount", "ReturnCount")
     fun joinQueue(token: String, queueInviteCodeDTO: QueueInviteCodeDTO): QueueDTO {
         val user = userService.findUserByToken(token)
@@ -269,6 +310,11 @@ class QueueService(
         }
     }
 
+    /**
+     * Send a notification to user who is on duty for a particular queue
+     * @param token - user token who sends notification
+     * @param queueId - id of a queue
+     */
     fun shakeUser(token: String, queueId: Long) {
         val user = userService.findUserByToken(token)
         val userQueue = getUserQueueByQueueId(user, queueId)

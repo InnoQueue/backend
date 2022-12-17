@@ -24,8 +24,15 @@ WHERE queue.current_user_id = user_queue.user_id
 ORDER BY queue.name, user_queue.is_important DESC;  
 """
 
+/**
+ * DAO repository for working with "queue" db table
+ */
 @Repository
 interface QueueRepository : CrudRepository<Queue, Long> {
+    /**
+     * Returns queues for which a particular user is on duty
+     * @param token - user token
+     */
     @Query(GET_TODO_TASKS, nativeQuery = true)
     fun findToDoTasks(token: String): List<QueueAndUserQueue>
 }

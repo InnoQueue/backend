@@ -7,12 +7,20 @@ import com.innopolis.innoqueue.models.User
 import com.innopolis.innoqueue.models.UserSettings
 import org.springframework.stereotype.Service
 
+/**
+ * Service for working with user settings
+ */
 @Service
 class SettingsService(
     private val userService: UserService,
     private val userRepository: UserRepository,
     private val settingsRepository: UserSettingsRepository
 ) {
+
+    /**
+     * Lists user settings
+     * @param token - user token
+     */
     fun getSettings(token: String): SettingsDTO {
         val user = userService.findUserByToken(token)
         val settings = user.settings!!
@@ -27,6 +35,10 @@ class SettingsService(
         )
     }
 
+    /**
+     * Updates user settings
+     * @param token - user token
+     */
     fun updateSettings(token: String, settings: SettingsDTO): SettingsDTO {
         val user = userService.findUserByToken(token)
         var (newSavedUser, shouldSave) = user.updateUserName(settings)

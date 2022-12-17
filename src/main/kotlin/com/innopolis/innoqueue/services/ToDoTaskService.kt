@@ -10,6 +10,9 @@ import org.hibernate.Hibernate
 import org.springframework.stereotype.Service
 import java.util.*
 
+/**
+ * Service for working with queues for which user is on duty
+ */
 @Service
 class ToDoTaskService(
     private val userService: UserService,
@@ -18,6 +21,11 @@ class ToDoTaskService(
     private val queueRepository: QueueRepository,
     private val userQueueRepository: UserQueueRepository,
 ) {
+
+    /**
+     * Lists user queues for which he is responsible right now
+     * @param token - user token
+     */
     fun getToDoTasks(token: String): List<ToDoTaskDTO> = queueRepository
         .findToDoTasks(token)
         .map {
@@ -31,6 +39,11 @@ class ToDoTaskService(
             )
         }
 
+    /**
+     * Add progress for a particular queue
+     * @param token - user token
+     * @param taskId - id of a queue
+     */
     fun completeTask(token: String, taskId: Long, expenses: Double?) {
         val userQueue = userQueueRepository.findUserQueue(token, taskId)
         // If this queue requires to track expenses it should not be null or negative number
@@ -77,6 +90,11 @@ class ToDoTaskService(
         }
     }
 
+    /**
+     * Skip to-do for which user is responsible right now
+     * @param token - user token
+     * @param taskId - id of a queue
+     */
     fun skipTask(token: String, taskId: Long) {
         val userQueue = userQueueRepository.findUserQueue(token, taskId)
         // User can skip a task if it's his turn

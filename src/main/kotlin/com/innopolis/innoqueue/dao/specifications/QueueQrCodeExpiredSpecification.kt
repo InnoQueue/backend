@@ -8,9 +8,16 @@ import javax.persistence.criteria.CriteriaQuery
 import javax.persistence.criteria.Predicate
 import javax.persistence.criteria.Root
 
+/**
+ * Spring Data specification for searching for outdated QR codes
+ * @param expiredDateTime - the date after which QR codes should be deleted
+ */
 class QueueQrCodeExpiredSpecification(
     private val expiredDateTime: LocalDateTime
 ) : Specification<QueueQrCode> {
+    /**
+     * Predicates for searching outdated QR codes in database
+     */
     override fun toPredicate(
         root: Root<QueueQrCode>,
         query: CriteriaQuery<*>,

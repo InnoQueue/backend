@@ -2,6 +2,9 @@ package com.innopolis.innoqueue.dto
 
 import com.fasterxml.jackson.annotation.JsonProperty
 
+/**
+ * DTO for returning queue invite credentials
+ */
 class QueueInviteCodeDTO(
     @JsonProperty("pin_code")
     val pinCode: String?,

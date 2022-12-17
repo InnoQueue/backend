@@ -2,12 +2,18 @@ package com.innopolis.innoqueue.utils
 
 import com.innopolis.innoqueue.enums.NotificationsType
 
+/**
+ * Util class for building notification message text
+ */
 class MessagePushNotificationCreator(
     private val notificationType: NotificationsType,
     private val queueName: String,
     private val isPersonal: Boolean,
     private val participantName: String
 ) {
+    /**
+     * Method prepares title and body text for a notification
+     */
     fun getTitleAndBodyForMessage(): Pair<String?, String?> {
         val title = prepareTitleForNotificationMessage(notificationType, participantName, queueName, isPersonal)
         val body = prepareBodyForNotificationMessage(notificationType, participantName, queueName, isPersonal)

@@ -6,8 +6,15 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
 
+/**
+ * Bean configuration for the Swagger
+ * It uses OpenAPI v3 standard
+ */
 @Configuration
 class SwaggerConfiguration {
+    /**
+     * Bean provides OpenAPI custom configuration
+     */
     @Bean
     fun openApi(): OpenAPI = OpenAPI()
         .info(

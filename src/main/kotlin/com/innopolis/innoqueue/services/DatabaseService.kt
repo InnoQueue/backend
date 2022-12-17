@@ -12,11 +12,17 @@ import java.time.ZoneOffset
 private const val PIN_CODE_LIVE_TIME_HOURS: Long = 1L
 private const val QR_CODE_LIVE_TIME_DAYS: Long = 1L
 
+/**
+ * Service for managing the database
+ */
 @Service
 class DatabaseService(
     private val queuePinCodeRepository: QueuePinCodeRepository,
     private val queueQrCodeRepository: QueueQrCodeRepository
 ) {
+    /**
+     * Clear expired invite codes
+     */
     fun clearExpiredInviteCodes(): EmptyDTO {
         val currentDateTime = LocalDateTime.now(ZoneOffset.UTC)
         removeExpiredPinCodes(currentDateTime)
@@ -24,11 +30,6 @@ class DatabaseService(
         return EmptyDTO("Expired invite codes were deleted")
     }
 
-    /**
-     * Test documentation for removeExpiredPinCodes
-     * @author Daniil
-     * @param currentDateTime
-     */
     private fun removeExpiredPinCodes(currentDateTime: LocalDateTime) {
         val expiredPinCodesDateTime = currentDateTime.minusHours(PIN_CODE_LIVE_TIME_HOURS)
         val expiredPinCodes = queuePinCodeRepository.findAll(QueuePinCodeExpiredSpecification(expiredPinCodesDateTime))

@@ -8,6 +8,9 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
+/**
+ * Controller with endpoints to work with user settings
+ */
 @RestController
 @RequestMapping("/settings")
 @Tag(
@@ -16,14 +19,24 @@ import org.springframework.web.bind.annotation.*
 )
 class SettingsController(private val service: SettingsService) {
 
+    /**
+     * Exception not found handler
+     */
     @ExceptionHandler(NoSuchElementException::class)
     fun handleNotFound(e: NoSuchElementException): ResponseEntity<String> =
         ResponseEntity(e.message, HttpStatus.NOT_FOUND)
 
+    /**
+     * Exception bad request handler
+     */
     @ExceptionHandler(IllegalArgumentException::class)
     fun handleBadRequest(e: IllegalArgumentException): ResponseEntity<String> =
         ResponseEntity(e.message, HttpStatus.BAD_REQUEST)
 
+    /**
+     * GET endpoint for listing user settings
+     * @param token - user token
+     */
     @Operation(
         summary = "Get settings",
         description = "Get your current settings\n\n" +
@@ -40,6 +53,10 @@ class SettingsController(private val service: SettingsService) {
     @GetMapping
     fun getSettings(@RequestHeader("user-token") token: String): SettingsDTO = service.getSettings(token)
 
+    /**
+     * PATCH endpoint for updating user settings
+     * @param token - user token
+     */
     @Operation(
         summary = "Edit settings",
         description = "Send a `JSON` body with updated settings.\n\n" +

@@ -8,9 +8,16 @@ import javax.persistence.criteria.CriteriaQuery
 import javax.persistence.criteria.Predicate
 import javax.persistence.criteria.Root
 
+/**
+ * Spring Data specification for searching for outdated pin codes
+ * @param expiredDateTime - the date after which pin codes should be deleted
+ */
 class QueuePinCodeExpiredSpecification(
     private val expiredDateTime: LocalDateTime
 ) : Specification<QueuePinCode> {
+    /**
+     * Predicates for searching outdated pin codes in database
+     */
     override fun toPredicate(
         root: Root<QueuePinCode>,
         query: CriteriaQuery<*>,

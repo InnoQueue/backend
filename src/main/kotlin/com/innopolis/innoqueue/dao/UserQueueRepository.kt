@@ -60,20 +60,44 @@ FROM user_queue
 WHERE user_queue.queue_id = :queueId ;
 """
 
+/**
+ * DAO repository for working with "user_queue" db table
+ */
 @Repository
 interface UserQueueRepository : CrudRepository<UserQueue, Long> {
+    /**
+     * Returns user_queue model with custom fields for a particular user token and queueId
+     * @param token - user token
+     */
     @Query(GET_USER_QUEUE, nativeQuery = true)
     fun findUserQueue(token: String, queueId: Long): UserQueueAndQueue
 
+    /**
+     * Returns user_queue model for a particular user token and queueId
+     * @param token - user token
+     * @param queueId - id of queue
+     */
     @Query(GET_USER_QUEUE_BY_TOKEN, nativeQuery = true)
     fun findUserQueueByToken(token: String, queueId: Long): UserQueue?
 
+    /**
+     * Returns a list of user_queue models for a particular queueId
+     * @param queueId - id of queue
+     */
     @Query(GET_USER_QUEUE_BY_QUEUE_ID, nativeQuery = true)
     fun findUserQueueByQueueId(queueId: Long): List<UserQueue>
 
+    /**
+     * Returns a list of user_queue models for a particular user token
+     * @param token - user token
+     */
     @Query(GET_ALL_USER_QUEUE_BY_TOKEN, nativeQuery = true)
     fun findAllUserQueueByToken(token: String): List<UserQueuesShortForm>
 
+    /**
+     * Returns a list of users participating in a particular queue
+     * @param queueId - id of queue
+     */
     @Query(GET_QUEUE_PARTICIPANTS, nativeQuery = true)
     fun findQueueParticipants(queueId: Long): List<QueueParticipants>
 }

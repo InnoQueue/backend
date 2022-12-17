@@ -2,6 +2,9 @@ package com.innopolis.innoqueue.dto
 
 import com.fasterxml.jackson.annotation.JsonProperty
 
+/**
+ * DTO for returning to-do entity
+ */
 data class ToDoTaskDTO(
     @JsonProperty("queue_id")
     val queueId: Long?,

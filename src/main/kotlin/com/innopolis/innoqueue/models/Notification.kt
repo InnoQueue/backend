@@ -4,6 +4,9 @@ import com.innopolis.innoqueue.enums.NotificationsType
 import java.time.LocalDateTime
 import javax.persistence.*
 
+/**
+ * Model representing the "notifications" db table
+ */
 @Entity
 @Table(name = "notifications")
 class Notification {

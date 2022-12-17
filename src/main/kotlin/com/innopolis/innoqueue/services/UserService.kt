@@ -11,11 +11,19 @@ import org.springframework.stereotype.Service
 
 private const val TOKEN_LENGTH = 64
 
+/**
+ * Service for working with the user model
+ */
 @Service
 class UserService(
     private val userRepository: UserRepository,
     private val settingsRepository: UserSettingsRepository,
 ) {
+    /**
+     * Creates new user model
+     * @param userName - user's name
+     * @param fcmToken - device Firebase token
+     */
     fun createNewUser(userName: String, fcmToken: String): TokenDTO {
         validateUserParameters(userName, fcmToken)
         val token = generateUserToken()
@@ -23,10 +31,22 @@ class UserService(
         return TokenDTO(token, userId)
     }
 
+    /**
+     * Returns user model by it's id
+     * @param userId - user's id
+     */
     fun findUserById(userId: Long): User? = userRepository.findByIdOrNull(userId)
 
+    /**
+     * Returns user's name by it's id
+     * @param userId - user's id
+     */
     fun findUserNameById(userId: Long): String? = userRepository.findByIdOrNull(userId)?.name
 
+    /**
+     * Returns user model by it's token id
+     * @param token - user token
+     */
     fun findUserByToken(token: String): User =
         userRepository.findUserByToken(token) ?: throw NoSuchElementException("No such user with token: $token")
 

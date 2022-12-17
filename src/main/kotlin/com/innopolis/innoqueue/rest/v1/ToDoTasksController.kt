@@ -9,6 +9,9 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
+/**
+ * Controller with endpoints to work with user to-do tasks
+ */
 @RestController
 @RequestMapping("/tasks")
 @Tag(
@@ -25,14 +28,24 @@ class ToDoTasksController(
     private val service: ToDoTaskService
 ) {
 
+    /**
+     * Exception not found handler
+     */
     @ExceptionHandler(NoSuchElementException::class)
     fun handleNotFound(e: NoSuchElementException): ResponseEntity<String> =
         ResponseEntity(e.message, HttpStatus.NOT_FOUND)
 
+    /**
+     * Exception bad request handler
+     */
     @ExceptionHandler(IllegalArgumentException::class)
     fun handleBadRequest(e: IllegalArgumentException): ResponseEntity<String> =
         ResponseEntity(e.message, HttpStatus.BAD_REQUEST)
 
+    /**
+     * GET endpoint for listing user to-do tasks
+     * @param token - user token
+     */
     @Operation(
         summary = "Get todo-tasks",
         description = "- `is_important` - whether someone shook you (sent reminder). So, this task is urgent now.\n\n" +
@@ -43,12 +56,20 @@ class ToDoTasksController(
     @GetMapping
     fun getToDoTasks(@RequestHeader("user-token") token: String): List<ToDoTaskDTO> = service.getToDoTasks(token)
 
+    /**
+     * POST endpoint for completing to-do task
+     * @param token - user token
+     */
     @Operation(summary = "Complete a to-do task")
     @PostMapping("/done")
     @ResponseStatus(HttpStatus.OK)
     fun completeTask(@RequestHeader("user-token") token: String, @RequestBody task: TaskDTO) =
         service.completeTask(token, task.taskId, task.expenses)
 
+    /**
+     * POST endpoint for skipping to-do task
+     * @param token - user token
+     */
     @Operation(summary = "Skip a to-do task")
     @PostMapping("/skip")
     @ResponseStatus(HttpStatus.OK)

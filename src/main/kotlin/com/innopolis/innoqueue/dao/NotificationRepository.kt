@@ -31,14 +31,28 @@ FROM notifications
 WHERE "date" < current_timestamp + INTERVAL '- 2 WEEK';   
 """
 
+/**
+ * DAO repository for working with "notification" db table
+ */
 @Repository
 interface NotificationRepository : CrudRepository<Notification, Long> {
+    /**
+     * Returns all notification for a particular user token
+     * @param token - user token
+     */
     @Query(GET_NOTIFICATIONS_QUERY, nativeQuery = true)
     fun findAllByToken(token: String): List<Notification>
 
+    /**
+     * Returns boolean whether there is any unread notification for a particular user token
+     * @param token - user token
+     */
     @Query(ANY_UNREAD_NOTIFICATION_QUERY, nativeQuery = true)
     fun anyUnreadNotification(token: String): Boolean
 
+    /**
+     * Returns notifications which are older than 2 weeks
+     */
     @Query(GET_EXPIRED_NOTIFICATIONS_QUERY, nativeQuery = true)
     fun findAllExpiredNotifications(): List<Notification>
 }

@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import com.innopolis.innoqueue.enums.NotificationsType
 import java.time.LocalDateTime
 
+/**
+ * DTO for returning a notification message
+ */
 data class NotificationDTO(
     @JsonProperty("message_type")
     val messageType: NotificationsType,

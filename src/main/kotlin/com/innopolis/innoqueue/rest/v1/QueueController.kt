@@ -8,6 +8,9 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
+/**
+ * Controller with endpoints to work with queues
+ */
 @Suppress("TooManyFunctions")
 @RestController
 @RequestMapping("/queues")
@@ -21,14 +24,24 @@ class QueueController(
     private val service: QueueService
 ) {
 
+    /**
+     * Exception not found handler
+     */
     @ExceptionHandler(NoSuchElementException::class)
     fun handleNotFound(e: NoSuchElementException): ResponseEntity<String> =
         ResponseEntity(e.message, HttpStatus.NOT_FOUND)
 
+    /**
+     * Exception bad request handler
+     */
     @ExceptionHandler(IllegalArgumentException::class)
     fun handleBadRequest(e: IllegalArgumentException): ResponseEntity<String> =
         ResponseEntity(e.message, HttpStatus.BAD_REQUEST)
 
+    /**
+     * GET endpoint for listing all queues
+     * @param token - user token
+     */
     @Operation(
         summary = "Get queues",
         description = "- List all queues which the user joined.\n\n" +
@@ -46,6 +59,10 @@ class QueueController(
     @GetMapping
     fun getQueues(@RequestHeader("user-token") token: String): QueuesListDTO = service.getQueues(token)
 
+    /**
+     * GET endpoint for queue details
+     * @param token - user token
+     */
     @Operation(
         summary = "Get a queue by id",
         description = "Get the full information about a queue by its id.\n\n" +
@@ -58,6 +75,11 @@ class QueueController(
     fun getQueueById(@RequestHeader("user-token") token: String, @PathVariable queueId: Long): QueueDTO =
         service.getQueueById(token, queueId)
 
+    /**
+     * GET endpoint for creating and returning queue's invite codes
+     * @param token - user token
+     * @param queueId - id of a queue
+     */
     @Operation(
         summary = "Invite to a queue by id",
         description = "Provide a queue's id to get an invitation pin and QR code.\n\n" +
@@ -73,12 +95,20 @@ class QueueController(
     ): QueueInviteCodeDTO =
         service.getQueueInviteCode(token, queueId)
 
+    /**
+     * POST endpoint for creating new queue
+     * @param token - user token
+     */
     @Operation(summary = "Create a queue")
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
     fun createQueue(@RequestHeader("user-token") token: String, @RequestBody queue: NewQueueDTO): QueueDTO =
         service.createQueue(token, queue)
 
+    /**
+     * PATCH endpoint for editing existing queue
+     * @param token - user token
+     */
     @Operation(
         summary = "Edit a queue",
         description = "You can specify only such fields which you want to modify. Other fields will have " +
@@ -90,6 +120,10 @@ class QueueController(
     fun editQueue(@RequestHeader("user-token") token: String, @RequestBody queue: EditQueueDTO): QueueDTO =
         service.editQueue(token, queue)
 
+    /**
+     * POST endpoint for freezing a queue and making it inactive
+     * @param token - user token
+     */
     @Operation(
         summary = "Freeze a queue",
         description = "- The user temporarily leaves this queue.\n\n"
@@ -101,6 +135,10 @@ class QueueController(
     fun freezeQueue(@RequestHeader("user-token") token: String, @PathVariable queueId: Long) =
         service.freezeUnFreezeQueue(token, queueId, false)
 
+    /**
+     * POST endpoint for unfreezing a queue and making it active
+     * @param token - user token
+     */
     @Operation(
         summary = "Unfreeze a queue",
         description = "Call this endpoint to resume the user's participation in this queue and get to-do task for it."
@@ -110,6 +148,10 @@ class QueueController(
     fun unfreezeQueue(@RequestHeader("user-token") token: String, @PathVariable queueId: Long) =
         service.freezeUnFreezeQueue(token, queueId, true)
 
+    /**
+     * DELETE endpoint for deleting or leaving a queue (depends whether a user is admin of this queue)
+     * @param token - user token
+     */
     @Operation(
         summary = "Delete a queue",
         description = "- if a user is an admin, this queue will be deleted for everyone.\n\n" +
@@ -121,6 +163,10 @@ class QueueController(
     fun deleteQueue(@RequestHeader("user-token") token: String, @PathVariable queueId: Long) =
         service.deleteQueue(token, queueId)
 
+    /**
+     * POST endpoint for joining a queue
+     * @param token - user token
+     */
     @Operation(
         summary = "Join a queue",
         description = "Use either `pin_code` or `qr_code` field.\n" +
@@ -133,6 +179,10 @@ class QueueController(
     fun joinQueue(@RequestHeader("user-token") token: String, @RequestBody queue: QueueInviteCodeDTO) =
         service.joinQueue(token, queue)
 
+    /**
+     * POST endpoint for sending notification to a user who is on duty for a particular queue
+     * @param token - user token
+     */
     @Operation(
         summary = "Shake user",
         description = "Shake the user who is currently responsible in the queue." +

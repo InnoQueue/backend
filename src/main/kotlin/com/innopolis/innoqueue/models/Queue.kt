@@ -2,6 +2,9 @@ package com.innopolis.innoqueue.models
 
 import javax.persistence.*
 
+/**
+ * Model representing the "queue" db table
+ */
 @Entity
 @Table(name = "queue")
 class Queue {

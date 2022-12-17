@@ -10,6 +10,9 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
+/**
+ * Controller with endpoints to work with notifications
+ */
 @RestController
 @RequestMapping("/notifications")
 @Tag(name = "Notifications")
@@ -17,10 +20,17 @@ class NotificationsController(
     private val notificationsService: NotificationsService
 ) {
 
+    /**
+     * Exception handler
+     */
     @ExceptionHandler(NoSuchElementException::class)
     fun handleNotFound(e: NoSuchElementException): ResponseEntity<String> =
         ResponseEntity(e.message, HttpStatus.NOT_FOUND)
 
+    /**
+     * GET endpoint for listing all notifications
+     * @param token - user token
+     */
     @Operation(
         summary = "Get notifications",
         description = "The server stores notifications for **2 weeks only**.\n\n" +
@@ -30,6 +40,10 @@ class NotificationsController(
     fun getNotifications(@RequestHeader("user-token") token: String): NotificationsListDTO =
         notificationsService.getNotifications(token)
 
+    /**
+     * GET endpoint for indicating whether there is any unread notification
+     * @param token - user token
+     */
     @Operation(
         summary = "Check for any new notification",
         description = "You can check whether a client has any unread " +
@@ -42,6 +56,9 @@ class NotificationsController(
     fun anyNewNotification(@RequestHeader("user-token") token: String): NewNotificationDTO =
         notificationsService.anyNewNotification(token)
 
+    /**
+     * GET endpoint for deleting notifications older than 2 weeks
+     */
     @Operation(
         summary = "Clear old notifications",
         description = "- Open this URL to delete old notifications forcibly.\n\n" +

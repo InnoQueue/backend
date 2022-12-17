@@ -2,6 +2,9 @@ package com.innopolis.innoqueue.dto
 
 import com.fasterxml.jackson.annotation.JsonProperty
 
+/**
+ * DTO for returning user settings
+ */
 data class SettingsDTO(
     @JsonProperty("name")
     val userName: String?,

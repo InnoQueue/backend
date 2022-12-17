@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
+/**
+ * Controller for managing Database
+ */
 @RestController
 @RequestMapping
 @Tag(
@@ -16,6 +19,9 @@ import org.springframework.web.bind.annotation.RestController
 )
 class DatabaseController(private val service: DatabaseService) {
 
+    /**
+     * Endpoint for deleting expired invite codes
+     */
     @Operation(
         summary = "Reset invite codes",
         description = "- Open this URL to delete expired invite codes forcibly.\n\n" +

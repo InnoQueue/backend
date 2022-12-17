@@ -5,5 +5,8 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor
 import org.springframework.data.repository.CrudRepository
 import org.springframework.stereotype.Repository
 
+/**
+ * DAO repository for working with "queue_qr_code" db table
+ */
 @Repository
 interface QueueQrCodeRepository : CrudRepository<QueueQrCode, Long>, JpaSpecificationExecutor<QueueQrCode>

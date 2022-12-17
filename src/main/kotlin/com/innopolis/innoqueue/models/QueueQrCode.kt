@@ -3,6 +3,9 @@ package com.innopolis.innoqueue.models
 import java.time.LocalDateTime
 import javax.persistence.*
 
+/**
+ * Model representing the "queue_qr_code" db table
+ */
 @Entity
 @Table(name = "queue_qr_code")
 class QueueQrCode {
