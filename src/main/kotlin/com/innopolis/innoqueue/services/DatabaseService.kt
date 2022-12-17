@@ -24,6 +24,11 @@ class DatabaseService(
         return EmptyDTO("Expired invite codes were deleted")
     }
 
+    /**
+     * Test documentation for removeExpiredPinCodes
+     * @author Daniil
+     * @param currentDateTime
+     */
     private fun removeExpiredPinCodes(currentDateTime: LocalDateTime) {
         val expiredPinCodesDateTime = currentDateTime.minusHours(PIN_CODE_LIVE_TIME_HOURS)
         val expiredPinCodes = queuePinCodeRepository.findAll(QueuePinCodeExpiredSpecification(expiredPinCodesDateTime))

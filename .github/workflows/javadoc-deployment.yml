@@ -1,13 +1,14 @@
-name: Docs deployment
+name: Javadocs deployment
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
 jobs:
-  publish:
+  docs-publish:
     runs-on: ubuntu-latest
     steps:
       - name: Deploy JavaDoc 🚀
-      - uses: actions/checkout@v2
+        uses: actions/checkout@v2
         with:
           persist-credentials: false
       - name: Set up JDK
