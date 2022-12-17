@@ -41,6 +41,7 @@ abstract class PostgresTestContainer {
         postgreSQLContainer.start()
     }
 
+
     internal class Initializer : ApplicationContextInitializer<ConfigurableApplicationContext> {
         override fun initialize(configurableApplicationContext: ConfigurableApplicationContext) {
             TestPropertyValues.of(
