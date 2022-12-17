@@ -55,7 +55,7 @@ tasks.withType<KotlinCompile> {
 
 tasks.withType<Test> {
     useJUnitPlatform()
-    finalizedBy("jacocoTestReport")
+    finalizedBy("jacocoTestCoverageVerification", "jacocoTestReport")
     doLast {
         println("View code coverage at:")
         println("file://$buildDir/reports/jacoco/test/html/index.html")
@@ -66,6 +66,16 @@ tasks.withType<JacocoReport> {
     reports {
         xml.apply {
             isEnabled = true
+        }
+    }
+}
+
+tasks.withType<JacocoCoverageVerification> {
+    violationRules {
+        rule {
+            limit {
+                minimum = BigDecimal(0.8)
+            }
         }
     }
 }
