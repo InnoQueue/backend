@@ -2,8 +2,6 @@
 
 > Semester 7, 4th study-year, Innopolis University.
 
-![Logo](https://user-images.githubusercontent.com/49106163/200147786-3e414c4a-d6ca-4240-b00e-1ef35fac6308.png)
-
 ![Python CI workflow](https://github.com/InnoQueue/Backend/actions/workflows/build.yml/badge.svg)
 ![Python CI workflow](https://github.com/InnoQueue/Backend/actions/workflows/mdlinter.yml/badge.svg)
 ![Kotlin CI workflow](https://github.com/InnoQueue/Backend/actions/workflows/docker_publish.yml/badge.svg)
@@ -14,20 +12,7 @@
 [![Hits-of-Code](https://hitsofcode.com/github/InnoQueue/Backend?branch=main)](https://hitsofcode.com/github/InnoQueue/Backend/view?branch=main)
 ![Alt](https://repobeats.axiom.co/api/embed/293a8fa69ee533512501ced47162b3d5bbac10cb.svg "Repobeats analytics image")
 
-REST API Backend for the **InnoQueue**.
-To read the full description,
-check [README repository](https://github.com/InnoQueue/.github/blob/main/profile/README.md)
-
-## **Team**
-
-- Roman Soldatov
-- Timur Nugaev
-- Daniil Livitin
-- Mikhail Martovitsky
-
-![Contributors](https://contrib.rocks/image?repo=InnoQueue/Backend)
-
-## Contents
+## 📖 Contents
 
 - [About](#-about)
 - [How to build](#how-to-build)
@@ -35,13 +20,42 @@ check [README repository](https://github.com/InnoQueue/.github/blob/main/profile
 - [Deployment](#deployment)
 - [Other repositories](#-other-repositories)
 
+![Logo](https://user-images.githubusercontent.com/49106163/200147786-3e414c4a-d6ca-4240-b00e-1ef35fac6308.png)
+
+## InnoQueue: Backend
+
+When you live with 5 other people, you have to manage your household chores.
+This could mean taking trash every once in a while or washing dishes.
+That said, there is a problem of bearing in mind all those different orders and chores.
+And then somebody may take a rain check here and there and you have no idea who's doing what
+and there is no way to tell except for boring Excel sheets, but it requires a lot of time and dedication to set up and
+maintain a spreadsheet.
+
+So, we present to you the application that can do the heavy lifting of maintaining and automating
+all of these nuances for you!
+
+This is how it works: users complete tasks in a queue one by one in a loop.
+So, ideally, every roommate should complete a task on each iteration.
+You can also have multiple queues go in parallel and there's no confusion!
+
+[I want to know more!](https://github.com/InnoQueue/.github/blob/main/profile/README.md)
+
+## 👨🏻‍💻 Team
+
+- [Roman Soldatov](https://github.com/SMore-Napi)
+- [Timur Nugaev](https://github.com/al1ych)
+- [Daniil Livitin](https://github.com/Dablup)
+- [Mikhail Martovitsky](https://github.com/MikhailMarch)
+
+![Contributors](https://contrib.rocks/image?repo=InnoQueue/Backend)
+
 ## 📌 About
 
 - For the mobile application the Backend REST API was developed.
 - You can read [Postman API documentation](https://documenter.getpostman.com/view/16213957/UVsSP4ER)
 - You can read [Swagger](https://innoqueue.herokuapp.com/swagger-ui.html)
 
-## How to build
+## 🔨 How to build
 
 - `git clone https://github.com/InnoQueue/Backend.git`
 - `cd Backend`
@@ -58,13 +72,9 @@ check [README repository](https://github.com/InnoQueue/.github/blob/main/profile
 - `docker pull postgres`
 - `docker run --name postgres -e POSTGRES_PASSWORD=postgres -d -p 5432:5432 postgres`
   > Note that you can set your own container name and password. Just make sure that
-  in [application.yml](/src/main/resources/application.yml) file
-  **spring.datasource.username** and **spring.datasource.password** properties have
-  the same values as your container.
-
-#### Run
-
-- Run application: `./gradlew bootRun`
+  > in [application.yml](/src/main/resources/application.yml) file
+  > **spring.datasource.username** and **spring.datasource.password** properties have
+  > the same values as your container.
 
 #### Firebase
 
@@ -89,7 +99,13 @@ where **firebase.json** is your json credentials file.
 - Install [Docker](https://docs.docker.com/engine/install/)
 - Run: `docker-compose up`
 
-## Ensuring Quality
+## 🏃🏻‍♂️ How to run
+
+- Run application: `./gradlew bootRun`
+
+## 👍🏻 Ensuring Quality
+
+> Features on which we are working can be found in [issues](https://github.com/InnoQueue/Backend/issues)
 
 ### Hooks
 
@@ -111,7 +127,8 @@ where **firebase.json** is your json credentials file.
   - Runs source files compilation to check possible errors
   - Runs unit and integration tests
   - Build an application
-- All build failures are published in [Telegram chat](https://t.me/+nkVX0j3FXo8zMmNi)
+- All build failures are published in [our Telegram chat](https://t.me/+nkVX0j3FXo8zMmNi)
+- All build successes are also published in [our Telegram chat](https://t.me/+nkVX0j3FXo8zMmNi)
 - The backend image is also published in Docker Hub. You can pull it:
   `docker pull smorenapi/inno_queue:latest`
 
@@ -120,20 +137,53 @@ where **firebase.json** is your json credentials file.
 - We use **flyway** to track database changes.
 - Migration files are placed in [migration](src/main/resources/db/migration) folder.
 
-## Deployment
+## 🚀 Deployment
 
-- The backend is hosted on [Heroku](https://innoqueue.herokuapp.com)
-- Also, we host the [innoqueue-dev](https://innoqueue-dev.herokuapp.com)
-  server which we use to test new features with the test database.
-- Deployment is possible if the Build workflow was successful.
-- `innoqueue-dev` is automatically deployed when pushed on `main` branch.
-- `innoqueue-dev` can be also manually deployed from any branch.
-  Run `Deploy DEV` workflow.
-- `innoqueue` is deployd manually from main branch.
+- The backend is hosted for production on Heroku [here](https://innoqueue.herokuapp.com)
+- Also, we host for dev purposes [here](https://innoqueue-dev.herokuapp.com).
+  We use it to test new features with the test database.
+- Deployment is possible only when the Build workflow is successful.
+- If build fails or succeeds, our team receives information in our Telegram chat through our bot.
+- `innoqueue-dev` is automatically deployed when pushed on the `main` branch.
+- `innoqueue-dev` can also be manually deployed from any branch.
+  Run the `Deploy DEV` workflow.
+- `innoqueue` is deployed manually from main branch.
 
-> Features on which we are working can be found in [issues](https://github.com/InnoQueue/Backend/issues)
+## 📚 Contribution
 
-## 📊 Other repositories
+If you have any ideas on how to imporove the quality of our product or of the quality ensurance
+for our project, we welcome your enthusiasm and here's how you can contribute!
+
+In short:
+
+- Fork this repo
+- Create a new issue in our repo, where you describe what contribution you want to make thoroughly
+- Assign the correct labels to the issue [*]
+- Create a new branch using appropriate naming conventions [**]
+- Make the necessary changes
+- Push the changes to your repo
+- Make a pull request from your repo on your branch to our repo's main branch
+- Don't forget to add a comprehensive description so we understand better what you did
+- We're going to review your changes and decide on whether to accept your code [***]
+
+[*] Issue labels:
+
+- `routine` is for routine tasks like quality ensurance. the code under this tag should
+  not add any new functionality application-wise. for example: `rework database schemas`
+- `feature` is for tasks that add new functionality, features, etc. for example: `add pagination`
+- `bug` is for bugfixes.
+
+> Note: we do not accept any other labels for contribution issues
+
+[**] Naming conventions:
+
+- If it's a feature you're adding, name your branch `feature/task-title`
+- If it's a routine task, name your branch `routine/task-title`
+- If it's a bug fix, name your branch `fix/task-title`
+
+[***] Code review may take up to 2 working days
+
+## 📊 Related repositories
 
 - README about this project [in this repository](https://github.com/InnoQueue/README)
 - The Mobile application is [in this repository](https://github.com/InnoQueue/Mobile)
