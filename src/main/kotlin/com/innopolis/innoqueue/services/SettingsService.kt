@@ -27,6 +27,9 @@ class SettingsService(
         )
     }
 
+    /**
+     * Test java doc for updateSettings
+     */
     fun updateSettings(token: String, settings: SettingsDTO): SettingsDTO {
         val user = userService.findUserByToken(token)
         var (newSavedUser, shouldSave) = user.updateUserName(settings)
