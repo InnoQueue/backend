@@ -6,6 +6,7 @@ import com.innopolis.innoqueue.models.User
 import com.innopolis.innoqueue.models.UserSettings
 import com.innopolis.innoqueue.rest.v1.dto.TokenDTO
 import com.innopolis.innoqueue.utils.StringGenerator
+import org.springframework.core.env.Environment
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
@@ -16,8 +17,9 @@ private const val TOKEN_LENGTH = 64
  */
 @Service
 class UserService(
-    private val userRepository: UserRepository,
-    private val settingsRepository: UserSettingsRepository,
+        private val userRepository: UserRepository,
+        private val settingsRepository: UserSettingsRepository,
+        private val environment: Environment
 ) {
     /**
      * Creates new user model
@@ -27,8 +29,21 @@ class UserService(
     fun createNewUser(userName: String, fcmToken: String): TokenDTO {
         validateUserParameters(userName, fcmToken)
         val token = generateUserToken()
-        val userId = saveUser(token, userName, fcmToken)
-        return TokenDTO(token, userId)
+        // TODO remove after adding registration option
+        return if (!environment.activeProfiles.contains("dev")) {
+            val userId = saveUser(token, userName, fcmToken)
+            TokenDTO(token, userId)
+        } else {
+            val existingUser = userRepository.findAll().toList().firstOrNull { it.name == userName }
+            if (existingUser == null) {
+                val userId = saveUser(token, userName, fcmToken)
+                TokenDTO(token, userId)
+            } else {
+                existingUser.fcmToken = fcmToken
+                userRepository.save(existingUser)
+                TokenDTO(existingUser.token!!, existingUser.id!!)
+            }
+        }
     }
 
     /**
@@ -48,7 +63,7 @@ class UserService(
      * @param token - user token
      */
     fun findUserByToken(token: String): User =
-        userRepository.findUserByToken(token) ?: throw NoSuchElementException("No such user with token: $token")
+            userRepository.findUserByToken(token) ?: throw NoSuchElementException("No such user with token: $token")
 
     private fun validateUserParameters(userName: String, fcmToken: String) {
         if (userName.isEmpty()) {

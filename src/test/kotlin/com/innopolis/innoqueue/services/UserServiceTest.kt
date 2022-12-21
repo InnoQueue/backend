@@ -11,6 +11,7 @@ import io.mockk.verify
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.core.env.Environment
 import org.springframework.test.context.jdbc.Sql
 
 class UserServiceTest : PostgresTestContainer() {
@@ -57,7 +58,9 @@ class UserServiceTest : PostgresTestContainer() {
         every { userRepo.save(any()) } returns User().apply { id = 1L }
         val settingsRepo = mockk<UserSettingsRepository>(relaxed = true)
         every { settingsRepo.save(any()) } returns UserSettings()
-        val service = UserService(userRepo, settingsRepo)
+        val environment = mockk<Environment>(relaxed = true)
+        every { environment.activeProfiles } returns emptyArray<String>()
+        val service = UserService(userRepo, settingsRepo, environment)
 
         // when
         service.createNewUser(userName, fcmToken)
@@ -89,7 +92,9 @@ class UserServiceTest : PostgresTestContainer() {
         every { userRepo.save(any()) } returns User().apply { id = 1L }
         val settingsRepo = mockk<UserSettingsRepository>(relaxed = true)
         every { settingsRepo.save(any()) } returns UserSettings()
-        val service = UserService(userRepo, settingsRepo)
+        val environment = mockk<Environment>(relaxed = true)
+        every { environment.activeProfiles } returns emptyArray<String>()
+        val service = UserService(userRepo, settingsRepo, environment)
 
         // when
         service.createNewUser(userName, fcmToken)
@@ -109,7 +114,9 @@ class UserServiceTest : PostgresTestContainer() {
         every { userRepo.save(any()) } returns User().apply { id = 1L }
         val settingsRepo = mockk<UserSettingsRepository>(relaxed = true)
         every { settingsRepo.save(any()) } returns UserSettings()
-        val service = UserService(userRepo, settingsRepo)
+        val environment = mockk<Environment>(relaxed = true)
+        every { environment.activeProfiles } returns emptyArray<String>()
+        val service = UserService(userRepo, settingsRepo, environment)
 
         // when
         service.createNewUser(userName, fcmToken)
