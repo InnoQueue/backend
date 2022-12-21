@@ -15,9 +15,9 @@ object UsersQueueLogic {
      * @param queue - queue to which new user has to be assigned
      */
     fun assignNextUser(
-        queue: UserQueue,
-        userQueueRepository: UserQueueRepository,
-        queueRepository: QueueRepository
+            queue: UserQueue,
+            userQueueRepository: UserQueueRepository,
+            queueRepository: QueueRepository
     ): User {
         val (usersInQueue, currentUserIndex) = getUsersInQueue(queue, userQueueRepository)
         var index: Int = currentUserIndex!! + 1
@@ -47,13 +47,14 @@ object UsersQueueLogic {
 
     private fun getUsersInQueue(queue: UserQueue, userQueueRepository: UserQueueRepository): Pair<List<User?>, Int?> {
         val usersInQueue = userQueueRepository.findAll()
-            .filter { it.queue?.id == queue.queue?.id }
-            .sortedBy { it.dateJoined }
-            .map { it.user }
+                .filter { it.queue?.id == queue.queue?.id }
+                .filter { it.isActive == true }
+                .sortedBy { it.dateJoined }
+                .map { it.user }
 
         val currentUserIndex = usersInQueue
-            .zip(usersInQueue.indices)
-            .firstOrNull { (u, _) -> u?.id == queue.queue?.currentUser?.id }?.second ?: 0
+                .zip(usersInQueue.indices)
+                .firstOrNull { (u, _) -> u?.id == queue.queue?.currentUser?.id }?.second ?: 0
 
         return usersInQueue to currentUserIndex
     }
