@@ -52,8 +52,8 @@ You can also have multiple queues go in parallel and there's no confusion!
 ## 📌 About
 
 - For the mobile application the Backend REST API was developed.
-- You can read [Postman API documentation](https://documenter.getpostman.com/view/16213957/UVsSP4ER)
 - You can read [Swagger](https://innoqueue.herokuapp.com/swagger-ui.html)
+- You can read [Postman API documentation](https://documenter.getpostman.com/view/16213957/UVsSP4ER)(deprecated)
 - [Javadoc documentation](https://innoqueue.github.io/Backend/)
 
 ## 🔨 How to build
