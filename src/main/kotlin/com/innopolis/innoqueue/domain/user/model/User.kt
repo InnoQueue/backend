@@ -1,5 +1,7 @@
-package com.innopolis.innoqueue.models
+package com.innopolis.innoqueue.domain.user.model
 
+import com.innopolis.innoqueue.models.Notification
+import com.innopolis.innoqueue.models.UserQueue
 import javax.persistence.*
 
 /**
@@ -23,18 +25,27 @@ class User {
     @Column(name = "fcm_token", nullable = false, length = 256)
     var fcmToken: String? = null
 
+    @Column(name = "completed", nullable = false)
+    var completed: Boolean? = true
+
+    @Column(name = "skipped", nullable = false)
+    var skipped: Boolean? = true
+
+    @Column(name = "joined_queue", nullable = false)
+    var joinedQueue: Boolean? = true
+
+    @Column(name = "\"freeze\"", nullable = false)
+    var freeze: Boolean? = true
+
+    @Column(name = "left_queue", nullable = false)
+    var leftQueue: Boolean? = true
+
+    @Column(name = "your_turn", nullable = false)
+    var yourTurn: Boolean? = true
+
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     var queues: MutableSet<UserQueue> = mutableSetOf()
 
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "user")
-    var settings: UserSettings? = null
-
     @OneToMany(mappedBy = "user")
     var notifications: MutableSet<Notification> = mutableSetOf()
-
-    @OneToMany(mappedBy = "creator")
-    var createdQueues: MutableSet<Queue> = mutableSetOf()
-
-    @OneToMany(mappedBy = "currentUser")
-    var tasks: MutableSet<Queue> = mutableSetOf()
 }

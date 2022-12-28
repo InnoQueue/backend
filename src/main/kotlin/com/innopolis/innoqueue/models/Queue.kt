@@ -1,5 +1,6 @@
 package com.innopolis.innoqueue.models
 
+import com.innopolis.innoqueue.domain.user.model.User
 import javax.persistence.*
 
 /**

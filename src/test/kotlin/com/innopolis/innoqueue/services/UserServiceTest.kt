@@ -1,9 +1,9 @@
 package com.innopolis.innoqueue.services
 
-import com.innopolis.innoqueue.dao.UserRepository
-import com.innopolis.innoqueue.dao.UserSettingsRepository
-import com.innopolis.innoqueue.models.User
-import com.innopolis.innoqueue.models.UserSettings
+import com.innopolis.innoqueue.domain.user.dao.UserRepository
+import com.innopolis.innoqueue.domain.user.model.User
+import com.innopolis.innoqueue.domain.user.dto.UpdateUserDTO
+import com.innopolis.innoqueue.domain.user.service.UserService
 import com.innopolis.innoqueue.testcontainers.PostgresTestContainer
 import io.mockk.every
 import io.mockk.mockk
@@ -21,9 +21,6 @@ class UserServiceTest : PostgresTestContainer() {
 
     @Autowired
     private lateinit var userRepository: UserRepository
-
-    @Autowired
-    private lateinit var settingsRepository: UserSettingsRepository
 
     @Test
     fun `Test createNewUser empty name exception`() {
@@ -56,11 +53,9 @@ class UserServiceTest : PostgresTestContainer() {
         val fcmToken = "123"
         val userRepo = mockk<UserRepository>(relaxed = true)
         every { userRepo.save(any()) } returns User().apply { id = 1L }
-        val settingsRepo = mockk<UserSettingsRepository>(relaxed = true)
-        every { settingsRepo.save(any()) } returns UserSettings()
         val environment = mockk<Environment>(relaxed = true)
         every { environment.activeProfiles } returns emptyArray<String>()
-        val service = UserService(userRepo, settingsRepo, environment)
+        val service = UserService(userRepo, environment)
 
         // when
         service.createNewUser(userName, fcmToken)
@@ -90,11 +85,9 @@ class UserServiceTest : PostgresTestContainer() {
         val fcmToken = "123"
         val userRepo = mockk<UserRepository>(relaxed = true)
         every { userRepo.save(any()) } returns User().apply { id = 1L }
-        val settingsRepo = mockk<UserSettingsRepository>(relaxed = true)
-        every { settingsRepo.save(any()) } returns UserSettings()
         val environment = mockk<Environment>(relaxed = true)
         every { environment.activeProfiles } returns emptyArray<String>()
-        val service = UserService(userRepo, settingsRepo, environment)
+        val service = UserService(userRepo, environment)
 
         // when
         service.createNewUser(userName, fcmToken)
@@ -102,28 +95,6 @@ class UserServiceTest : PostgresTestContainer() {
         // then
         verify(exactly = 1) {
             userRepo.save(any())
-        }
-    }
-
-    @Test
-    fun `Test createNewUser settings repository called`() {
-        // given
-        val userName = "testUser"
-        val fcmToken = "123"
-        val userRepo = mockk<UserRepository>(relaxed = true)
-        every { userRepo.save(any()) } returns User().apply { id = 1L }
-        val settingsRepo = mockk<UserSettingsRepository>(relaxed = true)
-        every { settingsRepo.save(any()) } returns UserSettings()
-        val environment = mockk<Environment>(relaxed = true)
-        every { environment.activeProfiles } returns emptyArray<String>()
-        val service = UserService(userRepo, settingsRepo, environment)
-
-        // when
-        service.createNewUser(userName, fcmToken)
-
-        // then
-        verify(exactly = 1) {
-            settingsRepo.save(any())
         }
     }
 
@@ -139,31 +110,18 @@ class UserServiceTest : PostgresTestContainer() {
         // then
         val users = userRepository.findAll().toList()
         assertEquals(1, users.size)
-        assertEquals(userName, users[0].name)
-        assertEquals(fcmToken, users[0].fcmToken)
-        assertEquals(result.token, users[0].token)
-        assertEquals(result.userId, users[0].id)
-    }
-
-    @Test
-    fun `Test createNewUser user settings created`() {
-        // given
-        val userName = "testUser"
-        val fcmToken = "123"
-
-        // when
-        val result = userService.createNewUser(userName, fcmToken)
-
-        // then
-        val settings = settingsRepository.findAll().toList()
-        assertEquals(1, settings.size)
-        assertEquals(result.userId, settings[0].user?.id)
-        assertEquals(true, settings[0].completed)
-        assertEquals(true, settings[0].skipped)
-        assertEquals(true, settings[0].joinedQueue)
-        assertEquals(true, settings[0].freeze)
-        assertEquals(true, settings[0].leftQueue)
-        assertEquals(true, settings[0].yourTurn)
+        with(users[0]) {
+            assertEquals(userName, name)
+            assertEquals(fcmToken, this.fcmToken)
+            assertEquals(result.token, token)
+            assertEquals(result.userId, id)
+            assertEquals(true, completed)
+            assertEquals(true, skipped)
+            assertEquals(true, joinedQueue)
+            assertEquals(true, freeze)
+            assertEquals(true, leftQueue)
+            assertEquals(true, yourTurn)
+        }
     }
 
     @Test
@@ -244,5 +202,589 @@ class UserServiceTest : PostgresTestContainer() {
         // then
         assertNotNull(user)
         assertEquals(token, user.token)
+    }
+
+    @Test
+    @Sql("user.sql")
+    fun `Test getUserSettings`() {
+        // given
+        val token = "token"
+
+        // when
+        val settings = userService.getUserSettings(token)
+
+        // then
+        with(settings) {
+            assertEquals("user name", userName)
+            assertEquals(true, completed)
+            assertEquals(false, skipped)
+            assertEquals(true, joinedQueue)
+            assertEquals(false, freeze)
+            assertEquals(true, leftQueue)
+            assertEquals(false, yourTurn)
+        }
+    }
+
+    @Test
+    @Sql("user.sql")
+    fun `Test updateUserSettings empty userName exception`() {
+        // given
+        val token = "token"
+        val userDTO = UpdateUserDTO(
+            userName = "",
+            completed = null,
+            skipped = null,
+            joinedQueue = null,
+            freeze = null,
+            leftQueue = null,
+            yourTurn = null
+        )
+
+        // when and then
+        assertThrows(IllegalArgumentException::class.java) {
+            userService.updateUserSettings(token, userDTO)
+        }
+    }
+
+    @Test
+    fun `Test updateUserSettings change userName and user repo save called`() {
+        // given
+        val token = "token"
+        val userDTO = UpdateUserDTO(
+            userName = "new user",
+            completed = null,
+            skipped = null,
+            joinedQueue = null,
+            freeze = null,
+            leftQueue = null,
+            yourTurn = null
+        )
+        val userRepo = mockk<UserRepository>(relaxed = true)
+        every { userRepo.findUserByToken(token) } returns User().apply {
+            id = 1L
+            name = "user name"
+        }
+        every { userRepo.save(any()) } returns User().apply {
+            id = 1L
+            name = "user name"
+        }
+        val service = UserService(userRepo, mockk())
+
+        // when
+        service.updateUserSettings(token, userDTO)
+
+        // then
+        verify(exactly = 1) { userRepo.save(any()) }
+    }
+
+    @Test
+    fun `Test updateUserSettings change settings and user repo save called`() {
+        // given
+        val token = "token"
+        val userDTO = UpdateUserDTO(
+            userName = null,
+            completed = true,
+            skipped = true,
+            joinedQueue = true,
+            freeze = true,
+            leftQueue = true,
+            yourTurn = true
+        )
+        val userRepo = mockk<UserRepository>(relaxed = true)
+        every { userRepo.findUserByToken(token) } returns User().apply {
+            id = 1L
+            name = "user name"
+        }
+        every { userRepo.save(any()) } returns User().apply {
+            id = 1L
+            name = "user name"
+        }
+        val service = UserService(userRepo, mockk())
+
+        // when
+        service.updateUserSettings(token, userDTO)
+
+        // then
+        verify(exactly = 1) { userRepo.save(any()) }
+    }
+
+    @Test
+    @Sql("user.sql")
+    fun `Test updateUserSettings no updates and no changes in DB`() {
+        // given
+        val token = "token"
+        val userDTO = UpdateUserDTO(
+            userName = null,
+            completed = null,
+            skipped = null,
+            joinedQueue = null,
+            freeze = null,
+            leftQueue = null,
+            yourTurn = null
+        )
+
+        // when
+        val response = userService.updateUserSettings(token, userDTO)
+        val userModel = userRepository.findAll().first()
+
+        // then
+        // response model
+        with(response) {
+            assertEquals("user name", userName)
+            assertEquals(true, completed)
+            assertEquals(false, skipped)
+            assertEquals(true, joinedQueue)
+            assertEquals(false, freeze)
+            assertEquals(true, leftQueue)
+            assertEquals(false, yourTurn)
+        }
+
+        // database
+        with(userModel) {
+            assertEquals("user name", name)
+            assertEquals(true, completed)
+            assertEquals(false, skipped)
+            assertEquals(true, joinedQueue)
+            assertEquals(false, freeze)
+            assertEquals(true, leftQueue)
+            assertEquals(false, yourTurn)
+        }
+    }
+
+    @Test
+    @Sql("user.sql")
+    fun `Test updateUserSettings change userName`() {
+        // given
+        val token = "token"
+        val expectedUserName = "new user name"
+        val userDTO = UpdateUserDTO(
+            userName = "new user name",
+            completed = null,
+            skipped = null,
+            joinedQueue = null,
+            freeze = null,
+            leftQueue = null,
+            yourTurn = null
+        )
+
+        // when
+        val response = userService.updateUserSettings(token, userDTO)
+        val userModel = userRepository.findAll().first()
+
+        // then
+        // response model
+        with(response) {
+            assertEquals(expectedUserName, userName)
+            assertEquals(true, completed)
+            assertEquals(false, skipped)
+            assertEquals(true, joinedQueue)
+            assertEquals(false, freeze)
+            assertEquals(true, leftQueue)
+            assertEquals(false, yourTurn)
+        }
+
+        // database
+        with(userModel) {
+            assertEquals(expectedUserName, name)
+            assertEquals(true, completed)
+            assertEquals(false, skipped)
+            assertEquals(true, joinedQueue)
+            assertEquals(false, freeze)
+            assertEquals(true, leftQueue)
+            assertEquals(false, yourTurn)
+        }
+    }
+
+    @Test
+    @Sql("user.sql")
+    fun `Test updateUserSettings change completed`() {
+        // given
+        val token = "token"
+        val completed = false
+        val skipped = false
+        val joinedQueue = true
+        val freeze = false
+        val leftQueue = true
+        val yourTurn = false
+        val userDTO = UpdateUserDTO(
+            userName = null,
+            completed = completed,
+            skipped = null,
+            joinedQueue = null,
+            freeze = null,
+            leftQueue = null,
+            yourTurn = null
+        )
+
+        // when
+        val response = userService.updateUserSettings(token, userDTO)
+        val userModel = userRepository.findAll().first()
+
+        // then
+        // response model
+        with(response) {
+            assertEquals("user name", userName)
+            assertEquals(completed, this.completed)
+            assertEquals(skipped, this.skipped)
+            assertEquals(joinedQueue, this.joinedQueue)
+            assertEquals(freeze, this.freeze)
+            assertEquals(leftQueue, this.leftQueue)
+            assertEquals(yourTurn, this.yourTurn)
+        }
+
+        // database
+        with(userModel) {
+            assertEquals("user name", name)
+            assertEquals(completed, this.completed)
+            assertEquals(skipped, this.skipped)
+            assertEquals(joinedQueue, this.joinedQueue)
+            assertEquals(freeze, this.freeze)
+            assertEquals(leftQueue, this.leftQueue)
+            assertEquals(yourTurn, this.yourTurn)
+        }
+    }
+
+    @Test
+    @Sql("user.sql")
+    fun `Test updateUserSettings change skipped`() {
+        // given
+        val token = "token"
+        val completed = true
+        val skipped = true
+        val joinedQueue = true
+        val freeze = false
+        val leftQueue = true
+        val yourTurn = false
+        val userDTO = UpdateUserDTO(
+            userName = null,
+            completed = null,
+            skipped = skipped,
+            joinedQueue = null,
+            freeze = null,
+            leftQueue = null,
+            yourTurn = null
+        )
+
+        // when
+        val response = userService.updateUserSettings(token, userDTO)
+        val userModel = userRepository.findAll().first()
+
+        // then
+        // response model
+        with(response) {
+            assertEquals("user name", userName)
+            assertEquals(completed, this.completed)
+            assertEquals(skipped, this.skipped)
+            assertEquals(joinedQueue, this.joinedQueue)
+            assertEquals(freeze, this.freeze)
+            assertEquals(leftQueue, this.leftQueue)
+            assertEquals(yourTurn, this.yourTurn)
+        }
+
+        // database
+        with(userModel) {
+            assertEquals("user name", name)
+            assertEquals(completed, this.completed)
+            assertEquals(skipped, this.skipped)
+            assertEquals(joinedQueue, this.joinedQueue)
+            assertEquals(freeze, this.freeze)
+            assertEquals(leftQueue, this.leftQueue)
+            assertEquals(yourTurn, this.yourTurn)
+        }
+    }
+
+    @Test
+    @Sql("user.sql")
+    fun `Test updateUserSettings change joinedQueue`() {
+        // given
+        val token = "token"
+        val completed = true
+        val skipped = false
+        val joinedQueue = false
+        val freeze = false
+        val leftQueue = true
+        val yourTurn = false
+        val userDTO = UpdateUserDTO(
+            userName = null,
+            completed = null,
+            skipped = null,
+            joinedQueue = joinedQueue,
+            freeze = null,
+            leftQueue = null,
+            yourTurn = null
+        )
+
+        // when
+        val response = userService.updateUserSettings(token, userDTO)
+        val userModel = userRepository.findAll().first()
+
+        // then
+        // response model
+        with(response) {
+            assertEquals("user name", userName)
+            assertEquals(completed, this.completed)
+            assertEquals(skipped, this.skipped)
+            assertEquals(joinedQueue, this.joinedQueue)
+            assertEquals(freeze, this.freeze)
+            assertEquals(leftQueue, this.leftQueue)
+            assertEquals(yourTurn, this.yourTurn)
+        }
+
+        // database
+        with(userModel) {
+            assertEquals("user name", name)
+            assertEquals(completed, this.completed)
+            assertEquals(skipped, this.skipped)
+            assertEquals(joinedQueue, this.joinedQueue)
+            assertEquals(freeze, this.freeze)
+            assertEquals(leftQueue, this.leftQueue)
+            assertEquals(yourTurn, this.yourTurn)
+        }
+    }
+
+    @Test
+    @Sql("user.sql")
+    fun `Test updateUserSettings change freeze`() {
+        // given
+        val token = "token"
+        val completed = true
+        val skipped = false
+        val joinedQueue = true
+        val freeze = true
+        val leftQueue = true
+        val yourTurn = false
+        val userDTO = UpdateUserDTO(
+            userName = null,
+            completed = null,
+            skipped = null,
+            joinedQueue = null,
+            freeze = freeze,
+            leftQueue = null,
+            yourTurn = null
+        )
+
+        // when
+        val response = userService.updateUserSettings(token, userDTO)
+        val userModel = userRepository.findAll().first()
+
+        // then
+        // response model
+        with(response) {
+            assertEquals("user name", userName)
+            assertEquals(completed, this.completed)
+            assertEquals(skipped, this.skipped)
+            assertEquals(joinedQueue, this.joinedQueue)
+            assertEquals(freeze, this.freeze)
+            assertEquals(leftQueue, this.leftQueue)
+            assertEquals(yourTurn, this.yourTurn)
+        }
+
+        // database
+        with(userModel) {
+            assertEquals("user name", name)
+            assertEquals(completed, this.completed)
+            assertEquals(skipped, this.skipped)
+            assertEquals(joinedQueue, this.joinedQueue)
+            assertEquals(freeze, this.freeze)
+            assertEquals(leftQueue, this.leftQueue)
+            assertEquals(yourTurn, this.yourTurn)
+        }
+    }
+
+    @Test
+    @Sql("user.sql")
+    fun `Test updateUserSettings change leftQueue`() {
+        // given
+        val token = "token"
+        val completed = true
+        val skipped = false
+        val joinedQueue = true
+        val freeze = false
+        val leftQueue = false
+        val yourTurn = false
+        val userDTO = UpdateUserDTO(
+            userName = null,
+            completed = null,
+            skipped = null,
+            joinedQueue = null,
+            freeze = null,
+            leftQueue = leftQueue,
+            yourTurn = null
+        )
+
+        // when
+        val response = userService.updateUserSettings(token, userDTO)
+        val userModel = userRepository.findAll().first()
+
+        // then
+        // response model
+        with(response) {
+            assertEquals("user name", userName)
+            assertEquals(completed, this.completed)
+            assertEquals(skipped, this.skipped)
+            assertEquals(joinedQueue, this.joinedQueue)
+            assertEquals(freeze, this.freeze)
+            assertEquals(leftQueue, this.leftQueue)
+            assertEquals(yourTurn, this.yourTurn)
+        }
+
+        // database
+        with(userModel) {
+            assertEquals("user name", name)
+            assertEquals(completed, this.completed)
+            assertEquals(skipped, this.skipped)
+            assertEquals(joinedQueue, this.joinedQueue)
+            assertEquals(freeze, this.freeze)
+            assertEquals(leftQueue, this.leftQueue)
+            assertEquals(yourTurn, this.yourTurn)
+        }
+    }
+
+    @Test
+    @Sql("user.sql")
+    fun `Test updateUserSettings change yourTurn`() {
+        // given
+        val token = "token"
+        val completed = true
+        val skipped = false
+        val joinedQueue = true
+        val freeze = false
+        val leftQueue = true
+        val yourTurn = true
+        val userDTO = UpdateUserDTO(
+            userName = null,
+            completed = null,
+            skipped = null,
+            joinedQueue = null,
+            freeze = null,
+            leftQueue = null,
+            yourTurn = yourTurn
+        )
+
+        // when
+        val response = userService.updateUserSettings(token, userDTO)
+        val userModel = userRepository.findAll().first()
+
+        // then
+        // response model
+        with(response) {
+            assertEquals("user name", userName)
+            assertEquals(completed, this.completed)
+            assertEquals(skipped, this.skipped)
+            assertEquals(joinedQueue, this.joinedQueue)
+            assertEquals(freeze, this.freeze)
+            assertEquals(leftQueue, this.leftQueue)
+            assertEquals(yourTurn, this.yourTurn)
+        }
+
+        // database
+        with(userModel) {
+            assertEquals("user name", name)
+            assertEquals(completed, this.completed)
+            assertEquals(skipped, this.skipped)
+            assertEquals(joinedQueue, this.joinedQueue)
+            assertEquals(freeze, this.freeze)
+            assertEquals(leftQueue, this.leftQueue)
+            assertEquals(yourTurn, this.yourTurn)
+        }
+    }
+
+    @Test
+    @Sql("user.sql")
+    fun `Test updateUserSettings update all settings`() {
+        // given
+        val token = "token"
+        val completed = false
+        val skipped = false
+        val joinedQueue = false
+        val freeze = false
+        val leftQueue = false
+        val yourTurn = false
+        val userDTO = UpdateUserDTO(
+            userName = null,
+            completed = completed,
+            skipped = skipped,
+            joinedQueue = joinedQueue,
+            freeze = freeze,
+            leftQueue = leftQueue,
+            yourTurn = yourTurn
+        )
+
+        // when
+        val response = userService.updateUserSettings(token, userDTO)
+        val userModel = userRepository.findAll().first()
+
+        // then
+        // response model
+        with(response) {
+            assertEquals("user name", userName)
+            assertEquals(completed, this.completed)
+            assertEquals(skipped, this.skipped)
+            assertEquals(joinedQueue, this.joinedQueue)
+            assertEquals(freeze, this.freeze)
+            assertEquals(leftQueue, this.leftQueue)
+            assertEquals(yourTurn, this.yourTurn)
+        }
+
+        // database
+        with(userModel) {
+            assertEquals("user name", name)
+            assertEquals(completed, this.completed)
+            assertEquals(skipped, this.skipped)
+            assertEquals(joinedQueue, this.joinedQueue)
+            assertEquals(freeze, this.freeze)
+            assertEquals(leftQueue, this.leftQueue)
+            assertEquals(yourTurn, this.yourTurn)
+        }
+    }
+
+    @Test
+    @Sql("user.sql")
+    fun `Test updateUserSettings update all settings and userName`() {
+        // given
+        val token = "token"
+        val userName = "new user name"
+        val completed = false
+        val skipped = false
+        val joinedQueue = false
+        val freeze = false
+        val leftQueue = false
+        val yourTurn = false
+        val userDTO = UpdateUserDTO(
+            userName = userName,
+            completed = completed,
+            skipped = skipped,
+            joinedQueue = joinedQueue,
+            freeze = freeze,
+            leftQueue = leftQueue,
+            yourTurn = yourTurn
+        )
+
+        // when
+        val response = userService.updateUserSettings(token, userDTO)
+        val userModel = userRepository.findAll().first()
+
+        // then
+        // response model
+        with(response) {
+            assertEquals(userName, userName)
+            assertEquals(completed, this.completed)
+            assertEquals(skipped, this.skipped)
+            assertEquals(joinedQueue, this.joinedQueue)
+            assertEquals(freeze, this.freeze)
+            assertEquals(leftQueue, this.leftQueue)
+            assertEquals(yourTurn, this.yourTurn)
+        }
+
+        // database
+        with(userModel) {
+            assertEquals(userName, name)
+            assertEquals(completed, this.completed)
+            assertEquals(skipped, this.skipped)
+            assertEquals(joinedQueue, this.joinedQueue)
+            assertEquals(freeze, this.freeze)
+            assertEquals(leftQueue, this.leftQueue)
+            assertEquals(yourTurn, this.yourTurn)
+        }
     }
 }

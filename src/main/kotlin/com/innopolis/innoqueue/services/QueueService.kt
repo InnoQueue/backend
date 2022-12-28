@@ -1,6 +1,8 @@
 package com.innopolis.innoqueue.services
 
 import com.innopolis.innoqueue.dao.*
+import com.innopolis.innoqueue.domain.user.model.User
+import com.innopolis.innoqueue.domain.user.service.UserService
 import com.innopolis.innoqueue.dto.*
 import com.innopolis.innoqueue.enums.NotificationsType
 import com.innopolis.innoqueue.models.*

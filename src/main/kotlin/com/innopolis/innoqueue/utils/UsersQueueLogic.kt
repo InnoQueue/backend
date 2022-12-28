@@ -2,7 +2,7 @@ package com.innopolis.innoqueue.utils
 
 import com.innopolis.innoqueue.dao.QueueRepository
 import com.innopolis.innoqueue.dao.UserQueueRepository
-import com.innopolis.innoqueue.models.User
+import com.innopolis.innoqueue.domain.user.model.User
 import com.innopolis.innoqueue.models.UserQueue
 
 /**

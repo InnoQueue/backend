@@ -7,7 +7,8 @@ import com.innopolis.innoqueue.dto.NotificationDTO
 import com.innopolis.innoqueue.dto.NotificationsListDTO
 import com.innopolis.innoqueue.enums.NotificationsType
 import com.innopolis.innoqueue.models.Notification
-import com.innopolis.innoqueue.models.User
+import com.innopolis.innoqueue.domain.user.model.User
+import com.innopolis.innoqueue.domain.user.service.UserService
 import com.innopolis.innoqueue.models.UserQueue
 import com.innopolis.innoqueue.rest.v1.dto.EmptyDTO
 import com.innopolis.innoqueue.rest.v1.dto.NewNotificationDTO
@@ -163,14 +164,13 @@ class NotificationsService(
         if (this.id == participantId) {
             true
         } else {
-            val userSetting = this.settings!!
             when (notificationType) {
-                NotificationsType.COMPLETED -> userSetting.completed!!
-                NotificationsType.SKIPPED -> userSetting.skipped!!
-                NotificationsType.JOINED_QUEUE -> userSetting.joinedQueue!!
-                NotificationsType.FROZEN, NotificationsType.UNFROZEN -> userSetting.freeze!!
-                NotificationsType.LEFT_QUEUE -> userSetting.leftQueue!!
-                NotificationsType.YOUR_TURN -> userSetting.yourTurn!!
+                NotificationsType.COMPLETED -> this.completed!!
+                NotificationsType.SKIPPED -> this.skipped!!
+                NotificationsType.JOINED_QUEUE -> this.joinedQueue!!
+                NotificationsType.FROZEN, NotificationsType.UNFROZEN -> this.freeze!!
+                NotificationsType.LEFT_QUEUE -> this.leftQueue!!
+                NotificationsType.YOUR_TURN -> this.yourTurn!!
                 else -> true
             }
         }

@@ -4,7 +4,11 @@ import com.innopolis.innoqueue.dao.NotificationRepository
 import com.innopolis.innoqueue.dao.QueueRepository
 import com.innopolis.innoqueue.dao.UserQueueRepository
 import com.innopolis.innoqueue.enums.NotificationsType
-import com.innopolis.innoqueue.models.*
+import com.innopolis.innoqueue.models.Notification
+import com.innopolis.innoqueue.models.Queue
+import com.innopolis.innoqueue.domain.user.model.User
+import com.innopolis.innoqueue.domain.user.service.UserService
+import com.innopolis.innoqueue.models.UserQueue
 import com.innopolis.innoqueue.testcontainers.PostgresTestContainer
 import io.mockk.every
 import io.mockk.mockk
@@ -215,15 +219,11 @@ class NotificationsServiceTest : PostgresTestContainer() {
     }
 
     @Test
-    @Sql("users.sql", "user_settings.sql", "queues.sql", "user_queue.sql")
+    @Sql("users.sql", "queues.sql", "user_queue.sql")
     fun `Test sendNotificationMessage YOUR_TURN`() {
         // given
         val notificationType = NotificationsType.YOUR_TURN
-        val participantModel = User().apply {
-            id = 1L
-            name = "admin"
-            settings = getUserSettings()
-        }
+        val participantModel = getUser()
         val queueModel = getQueueModel(participantModel)
 
         // when
@@ -244,15 +244,11 @@ class NotificationsServiceTest : PostgresTestContainer() {
     }
 
     @Test
-    @Sql("users.sql", "user_settings.sql", "queues.sql", "user_queue.sql")
+    @Sql("users.sql", "queues.sql", "user_queue.sql")
     fun `Test sendNotificationMessage COMPLETED`() {
         // given
         val notificationType = NotificationsType.COMPLETED
-        val participantModel = User().apply {
-            id = 1L
-            name = "admin"
-            settings = getUserSettings()
-        }
+        val participantModel = getUser()
         val queueModel = getQueueModel(participantModel)
 
         // when
@@ -273,15 +269,11 @@ class NotificationsServiceTest : PostgresTestContainer() {
     }
 
     @Test
-    @Sql("users.sql", "user_settings.sql", "queues.sql", "user_queue.sql")
+    @Sql("users.sql", "queues.sql", "user_queue.sql")
     fun `Test sendNotificationMessage SKIPPED`() {
         // given
         val notificationType = NotificationsType.SKIPPED
-        val participantModel = User().apply {
-            id = 1L
-            name = "admin"
-            settings = getUserSettings()
-        }
+        val participantModel = getUser()
         val queueModel = getQueueModel(participantModel)
 
         // when
@@ -302,15 +294,11 @@ class NotificationsServiceTest : PostgresTestContainer() {
     }
 
     @Test
-    @Sql("users.sql", "user_settings.sql", "queues.sql", "user_queue.sql")
+    @Sql("users.sql", "queues.sql", "user_queue.sql")
     fun `Test sendNotificationMessage SHOOK`() {
         // given
         val notificationType = NotificationsType.SHOOK
-        val participantModel = User().apply {
-            id = 1L
-            name = "admin"
-            settings = getUserSettings()
-        }
+        val participantModel = getUser()
         val queueModel = getQueueModel(participantModel)
 
         // when
@@ -330,15 +318,11 @@ class NotificationsServiceTest : PostgresTestContainer() {
     }
 
     @Test
-    @Sql("users.sql", "user_settings.sql", "queues.sql", "user_queue.sql")
+    @Sql("users.sql", "queues.sql", "user_queue.sql")
     fun `Test sendNotificationMessage FROZEN`() {
         // given
         val notificationType = NotificationsType.FROZEN
-        val participantModel = User().apply {
-            id = 1L
-            name = "admin"
-            settings = getUserSettings()
-        }
+        val participantModel = getUser()
         val queueModel = getQueueModel(participantModel)
 
         // when
@@ -359,15 +343,11 @@ class NotificationsServiceTest : PostgresTestContainer() {
     }
 
     @Test
-    @Sql("users.sql", "user_settings.sql", "queues.sql", "user_queue.sql")
+    @Sql("users.sql", "queues.sql", "user_queue.sql")
     fun `Test sendNotificationMessage UNFROZEN`() {
         // given
         val notificationType = NotificationsType.UNFROZEN
-        val participantModel = User().apply {
-            id = 1L
-            name = "admin"
-            settings = getUserSettings()
-        }
+        val participantModel = getUser()
         val queueModel = getQueueModel(participantModel)
 
         // when
@@ -388,15 +368,11 @@ class NotificationsServiceTest : PostgresTestContainer() {
     }
 
     @Test
-    @Sql("users.sql", "user_settings.sql", "queues.sql", "user_queue.sql")
+    @Sql("users.sql", "queues.sql", "user_queue.sql")
     fun `Test sendNotificationMessage JOINED_QUEUE`() {
         // given
         val notificationType = NotificationsType.JOINED_QUEUE
-        val participantModel = User().apply {
-            id = 1L
-            name = "admin"
-            settings = getUserSettings()
-        }
+        val participantModel = getUser()
         val queueModel = getQueueModel(participantModel)
 
         // when
@@ -417,15 +393,11 @@ class NotificationsServiceTest : PostgresTestContainer() {
     }
 
     @Test
-    @Sql("users.sql", "user_settings.sql", "queues.sql", "user_queue.sql")
+    @Sql("users.sql", "queues.sql", "user_queue.sql")
     fun `Test sendNotificationMessage LEFT_QUEUE`() {
         // given
         val notificationType = NotificationsType.LEFT_QUEUE
-        val participantModel = User().apply {
-            id = 1L
-            name = "admin"
-            settings = getUserSettings()
-        }
+        val participantModel = getUser()
         val queueModel = getQueueModel(participantModel)
 
         // when
@@ -446,15 +418,11 @@ class NotificationsServiceTest : PostgresTestContainer() {
     }
 
     @Test
-    @Sql("users.sql", "user_settings.sql", "queues.sql", "user_queue.sql")
+    @Sql("users.sql", "queues.sql", "user_queue.sql")
     fun `Test sendNotificationMessage DELETE_QUEUE`() {
         // given
         val notificationType = NotificationsType.DELETE_QUEUE
-        val participantModel = User().apply {
-            id = 1L
-            name = "admin"
-            settings = getUserSettings()
-        }
+        val participantModel = getUser()
         val queueModel = getQueueModel(participantModel)
 
         // when
@@ -511,11 +479,7 @@ class NotificationsServiceTest : PostgresTestContainer() {
         UserQueue().apply {
             id = userQueueId
             queue = queueModel
-            user = User().apply {
-                id = userId
-                name = userName
-                settings = getUserSettings(enableUserSettings)
-            }
+            user = getUser(userId, userName, enableUserSettings)
             isActive = true
             skips = 0
             expenses = 0.0
@@ -523,7 +487,9 @@ class NotificationsServiceTest : PostgresTestContainer() {
             dateJoined = LocalDateTime.of(2022, 11, 4, 12, 12, 12)
         }
 
-    private fun getUserSettings(value: Boolean = true) = UserSettings().apply {
+    private fun getUser(userId: Long = 1L, userName: String = "admin", value: Boolean = true) = User().apply {
+        id = userId
+        name = userName
         completed = value
         skipped = value
         joinedQueue = value

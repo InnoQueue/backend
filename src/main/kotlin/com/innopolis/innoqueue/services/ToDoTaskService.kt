@@ -2,6 +2,7 @@ package com.innopolis.innoqueue.services
 
 import com.innopolis.innoqueue.dao.QueueRepository
 import com.innopolis.innoqueue.dao.UserQueueRepository
+import com.innopolis.innoqueue.domain.user.service.UserService
 import com.innopolis.innoqueue.dto.ToDoTaskDTO
 import com.innopolis.innoqueue.enums.NotificationsType
 import com.innopolis.innoqueue.models.UserQueue

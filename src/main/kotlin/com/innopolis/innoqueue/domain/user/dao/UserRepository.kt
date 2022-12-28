@@ -1,6 +1,6 @@
-package com.innopolis.innoqueue.dao
+package com.innopolis.innoqueue.domain.user.dao
 
-import com.innopolis.innoqueue.models.User
+import com.innopolis.innoqueue.domain.user.model.User
 import org.springframework.data.repository.CrudRepository
 import org.springframework.stereotype.Repository
 

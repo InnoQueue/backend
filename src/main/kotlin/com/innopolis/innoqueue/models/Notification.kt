@@ -1,5 +1,6 @@
 package com.innopolis.innoqueue.models
 
+import com.innopolis.innoqueue.domain.user.model.User
 import com.innopolis.innoqueue.enums.NotificationsType
 import java.time.LocalDateTime
 import javax.persistence.*

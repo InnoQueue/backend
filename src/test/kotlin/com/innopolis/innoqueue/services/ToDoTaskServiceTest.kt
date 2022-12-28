@@ -2,6 +2,7 @@ package com.innopolis.innoqueue.services
 
 import com.innopolis.innoqueue.dao.QueueRepository
 import com.innopolis.innoqueue.dao.UserQueueRepository
+import com.innopolis.innoqueue.domain.user.service.UserService
 import com.innopolis.innoqueue.testcontainers.PostgresTestContainer
 import io.mockk.every
 import io.mockk.mockk
@@ -41,7 +42,7 @@ class ToDoTaskServiceTest : PostgresTestContainer() {
     }
 
     @Test
-    @Sql("users.sql", "user_settings.sql", "queues2.sql", "user_queue2.sql")
+    @Sql("users.sql", "queues2.sql", "user_queue2.sql")
     fun `Test getToDoTasks method`() {
         // given
         val token = "11111"
@@ -72,7 +73,7 @@ class ToDoTaskServiceTest : PostgresTestContainer() {
     }
 
     @Test
-    @Sql("users.sql", "user_settings.sql", "queues2.sql", "user_queue2.sql")
+    @Sql("users.sql", "queues2.sql", "user_queue2.sql")
     fun `Test getToDoTasks important todos first`() {
         // given
         val token = "token"
@@ -88,7 +89,7 @@ class ToDoTaskServiceTest : PostgresTestContainer() {
     }
 
     @Test
-    @Sql("users.sql", "user_settings.sql", "queues2.sql", "user_queue2.sql")
+    @Sql("users.sql", "queues2.sql", "user_queue2.sql")
     fun `Test getToDoTasks sorted by queue name`() {
         // given
         val token = "token"
@@ -104,7 +105,7 @@ class ToDoTaskServiceTest : PostgresTestContainer() {
     }
 
     @Test
-    @Sql("users.sql", "user_settings.sql", "queues2.sql", "user_queue2.sql")
+    @Sql("users.sql", "queues2.sql", "user_queue2.sql")
     fun `Test getToDoTasks does not show todos with 1 participant`() {
         // given
         val token = "11111"
@@ -119,7 +120,7 @@ class ToDoTaskServiceTest : PostgresTestContainer() {
     }
 
     @Test
-    @Sql("users.sql", "user_settings.sql", "queues2.sql", "user_queue2.sql")
+    @Sql("users.sql", "queues2.sql", "user_queue2.sql")
     fun `Test completeTask expenses is null`() {
         // given
         val token = "11111"
@@ -132,7 +133,7 @@ class ToDoTaskServiceTest : PostgresTestContainer() {
     }
 
     @Test
-    @Sql("users.sql", "user_settings.sql", "queues2.sql", "user_queue2.sql")
+    @Sql("users.sql", "queues2.sql", "user_queue2.sql")
     fun `Test completeTask expenses is negative`() {
         // given
         val token = "11111"
@@ -145,7 +146,7 @@ class ToDoTaskServiceTest : PostgresTestContainer() {
     }
 
     @Test
-    @Sql("users.sql", "user_settings.sql", "queues2.sql", "user_queue2.sql")
+    @Sql("users.sql", "queues2.sql", "user_queue2.sql")
     fun `Test completeTask is on duty`() {
         // given
         val token = "11111"
@@ -159,7 +160,7 @@ class ToDoTaskServiceTest : PostgresTestContainer() {
     }
 
     @Test
-    @Sql("users.sql", "user_settings.sql", "queues2.sql", "user_queue2.sql")
+    @Sql("users.sql", "queues2.sql", "user_queue2.sql")
     fun `Test completeTask add progress when not on duty`() {
         // given
         val token = "11111"
@@ -173,7 +174,7 @@ class ToDoTaskServiceTest : PostgresTestContainer() {
     }
 
     @Test
-    @Sql("users.sql", "user_settings.sql", "queues2.sql", "user_queue2.sql")
+    @Sql("users.sql", "queues2.sql", "user_queue2.sql")
     fun `Test completeTask is on duty and has skips`() {
         // given
         val token = "11111"
@@ -187,7 +188,7 @@ class ToDoTaskServiceTest : PostgresTestContainer() {
     }
 
     @Test
-    @Sql("users.sql", "user_settings.sql", "queues2.sql", "user_queue2.sql")
+    @Sql("users.sql", "queues2.sql", "user_queue2.sql")
     fun `Test skipTask`() {
         // given
         val token = "11111"

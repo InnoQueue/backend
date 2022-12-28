@@ -4,6 +4,7 @@ import com.innopolis.innoqueue.dao.QueuePinCodeRepository
 import com.innopolis.innoqueue.dao.QueueQrCodeRepository
 import com.innopolis.innoqueue.dao.QueueRepository
 import com.innopolis.innoqueue.dao.UserQueueRepository
+import com.innopolis.innoqueue.domain.user.service.UserService
 import com.innopolis.innoqueue.dto.EditQueueDTO
 import com.innopolis.innoqueue.dto.NewQueueDTO
 import com.innopolis.innoqueue.dto.QueueInviteCodeDTO
@@ -58,7 +59,7 @@ class QueueServiceTest : PostgresTestContainer() {
     }
 
     @Test
-    @Sql("users.sql", "user_settings.sql", "queues2.sql", "user_queue3.sql")
+    @Sql("users.sql", "queues2.sql", "user_queue3.sql")
     fun `Test getQueues activeQueues`() {
         // given
         val token = "11111"
@@ -87,7 +88,7 @@ class QueueServiceTest : PostgresTestContainer() {
     }
 
     @Test
-    @Sql("users.sql", "user_settings.sql", "queues2.sql", "user_queue3.sql")
+    @Sql("users.sql", "queues2.sql", "user_queue3.sql")
     fun `Test getQueues frozenQueues`() {
         // given
         val token = "11111"
@@ -108,7 +109,7 @@ class QueueServiceTest : PostgresTestContainer() {
     }
 
     @Test
-    @Sql("users.sql", "user_settings.sql", "queues2.sql", "user_queue3.sql")
+    @Sql("users.sql", "queues2.sql", "user_queue3.sql")
     fun `Test getQueues activeQueues are sorted by name`() {
         // given
         val token = "11111"
@@ -122,7 +123,7 @@ class QueueServiceTest : PostgresTestContainer() {
     }
 
     @Test
-    @Sql("users.sql", "user_settings.sql", "queues2.sql", "user_queue3.sql")
+    @Sql("users.sql", "queues2.sql", "user_queue3.sql")
     fun `Test getQueues frozenQueues are sorted by name`() {
         // given
         val token = "11111"
@@ -136,7 +137,7 @@ class QueueServiceTest : PostgresTestContainer() {
     }
 
     @Test
-    @Sql("users.sql", "user_settings.sql", "queues2.sql", "user_queue2.sql")
+    @Sql("users.sql", "queues2.sql", "user_queue2.sql")
     fun `Test getQueueById exception if queue does not exist`() {
         // given
         val token = "11111"
@@ -149,7 +150,7 @@ class QueueServiceTest : PostgresTestContainer() {
     }
 
     @Test
-    @Sql("users.sql", "user_settings.sql", "queues2.sql")
+    @Sql("users.sql", "queues2.sql")
     fun `Test getQueueById exception if user does not belong to queue`() {
         // given
         val token = "11111"
@@ -162,7 +163,7 @@ class QueueServiceTest : PostgresTestContainer() {
     }
 
     @Test
-    @Sql("users.sql", "user_settings.sql", "queues2.sql", "user_queue3.sql")
+    @Sql("users.sql", "queues2.sql", "user_queue3.sql")
     fun `Test getQueueById`() {
         // given
         val token = "11111"
@@ -223,7 +224,7 @@ class QueueServiceTest : PostgresTestContainer() {
     }
 
     @Test
-    @Sql("users.sql", "user_settings.sql", "queues2.sql")
+    @Sql("users.sql", "queues2.sql")
     fun `Test getQueueInviteCode exception if user does not belong to queue`() {
         // given
         val token = "11111"
@@ -236,7 +237,7 @@ class QueueServiceTest : PostgresTestContainer() {
     }
 
     @Test
-    @Sql("users.sql", "user_settings.sql", "queues2.sql", "user_queue3.sql")
+    @Sql("users.sql", "queues2.sql", "user_queue3.sql")
     fun `Test getQueueInviteCode`() {
         // given
         val token = "11111"
@@ -253,7 +254,7 @@ class QueueServiceTest : PostgresTestContainer() {
     }
 
     @Test
-    @Sql("users.sql", "user_settings.sql")
+    @Sql("users.sql")
     fun `Test createQueue`() {
         // given
         val token = "11111"
@@ -296,7 +297,7 @@ class QueueServiceTest : PostgresTestContainer() {
     }
 
     @Test
-    @Sql("users.sql", "user_settings.sql", "queues2.sql", "user_queue2.sql")
+    @Sql("users.sql", "queues2.sql", "user_queue2.sql")
     fun `Test editQueue exception if queueId is not specified`() {
         // given
         val token = "11111"
@@ -315,7 +316,7 @@ class QueueServiceTest : PostgresTestContainer() {
     }
 
     @Test
-    @Sql("users.sql", "user_settings.sql", "queues2.sql", "user_queue2.sql")
+    @Sql("users.sql", "queues2.sql", "user_queue2.sql")
     fun `Test editQueue exception if user is not admin`() {
         // given
         val token = "11111"
@@ -334,7 +335,7 @@ class QueueServiceTest : PostgresTestContainer() {
     }
 
     @Test
-    @Sql("users.sql", "user_settings.sql", "queues2.sql", "user_queue2.sql")
+    @Sql("users.sql", "queues2.sql", "user_queue2.sql")
     fun `Test editQueue exception if queue does not exist`() {
         // given
         val token = "11111"
@@ -353,7 +354,7 @@ class QueueServiceTest : PostgresTestContainer() {
     }
 
     @Test
-    @Sql("users.sql", "user_settings.sql", "queues2.sql", "user_queue2.sql")
+    @Sql("users.sql", "queues2.sql", "user_queue2.sql")
     fun `Test editQueue exception if queue name is an empty string`() {
         // given
         val token = "11111"
@@ -372,7 +373,7 @@ class QueueServiceTest : PostgresTestContainer() {
     }
 
     @Test
-    @Sql("users.sql", "user_settings.sql", "queues2.sql", "user_queue2.sql")
+    @Sql("users.sql", "queues2.sql", "user_queue2.sql")
     fun `Test editQueue exception if queue color is an empty string`() {
         // given
         val token = "11111"
@@ -391,7 +392,7 @@ class QueueServiceTest : PostgresTestContainer() {
     }
 
     @Test
-    @Sql("users.sql", "user_settings.sql", "queues2.sql", "user_queue3.sql")
+    @Sql("users.sql", "queues2.sql", "user_queue3.sql")
     fun `Test editQueue`() {
         // given
         val token = "11111"
@@ -428,7 +429,7 @@ class QueueServiceTest : PostgresTestContainer() {
     }
 
     @Test
-    @Sql("users.sql", "user_settings.sql", "queues.sql", "user_queue3.sql")
+    @Sql("users.sql", "queues.sql", "user_queue3.sql")
     fun `Test freeze queue`() {
         // given
         val token = "11111"
@@ -445,7 +446,7 @@ class QueueServiceTest : PostgresTestContainer() {
     }
 
     @Test
-    @Sql("users.sql", "user_settings.sql", "queues2.sql", "user_queue3.sql")
+    @Sql("users.sql", "queues2.sql", "user_queue3.sql")
     fun `Test unfreeze queue`() {
         // given
         val token = "11111"
@@ -462,7 +463,7 @@ class QueueServiceTest : PostgresTestContainer() {
     }
 
     @Test
-    @Sql("users.sql", "user_settings.sql", "queues2.sql", "user_queue3.sql")
+    @Sql("users.sql", "queues2.sql", "user_queue3.sql")
     fun `Test leave queue`() {
         // given
         val token = "11111"
@@ -478,7 +479,7 @@ class QueueServiceTest : PostgresTestContainer() {
     }
 
     @Test
-    @Sql("users.sql", "user_settings.sql", "queues2.sql", "user_queue3.sql")
+    @Sql("users.sql", "queues2.sql", "user_queue3.sql")
     fun `Test delete queue`() {
         // given
         val token = "11111"
@@ -495,7 +496,7 @@ class QueueServiceTest : PostgresTestContainer() {
     }
 
     @Test
-    @Sql("users.sql", "user_settings.sql", "queues2.sql", "user_queue2.sql", "queue_pin_code.sql", "queue_qr_code.sql")
+    @Sql("users.sql", "queues2.sql", "user_queue2.sql", "queue_pin_code.sql", "queue_qr_code.sql")
     fun `Test joinQueue exception if nothing is provided`() {
         // given
         val token = "11111"
@@ -511,7 +512,7 @@ class QueueServiceTest : PostgresTestContainer() {
     }
 
     @Test
-    @Sql("users.sql", "user_settings.sql", "queues2.sql", "user_queue2.sql", "queue_pin_code.sql")
+    @Sql("users.sql", "queues2.sql", "user_queue2.sql", "queue_pin_code.sql")
     fun `Test joinQueue exception if pin code does not exist`() {
         // given
         val token = "11111"
@@ -527,7 +528,7 @@ class QueueServiceTest : PostgresTestContainer() {
     }
 
     @Test
-    @Sql("users.sql", "user_settings.sql", "queues2.sql", "queue_pin_code.sql")
+    @Sql("users.sql", "queues2.sql", "queue_pin_code.sql")
     fun `Test joinQueue pin code`() {
         // given
         val token = "11111"
@@ -546,7 +547,7 @@ class QueueServiceTest : PostgresTestContainer() {
     }
 
     @Test
-    @Sql("users.sql", "user_settings.sql", "queues2.sql", "user_queue2.sql", "queue_qr_code.sql")
+    @Sql("users.sql", "queues2.sql", "user_queue2.sql", "queue_qr_code.sql")
     fun `Test joinQueue exception if qr code does not exist`() {
         // given
         val token = "11111"
@@ -562,7 +563,7 @@ class QueueServiceTest : PostgresTestContainer() {
     }
 
     @Test
-    @Sql("users.sql", "user_settings.sql", "queues2.sql", "queue_qr_code.sql")
+    @Sql("users.sql", "queues2.sql", "queue_qr_code.sql")
     fun `Test joinQueue qr code`() {
         // given
         val token = "11111"
@@ -581,7 +582,7 @@ class QueueServiceTest : PostgresTestContainer() {
     }
 
     @Test
-    @Sql("users.sql", "user_settings.sql", "queues2.sql", "user_queue3.sql")
+    @Sql("users.sql", "queues2.sql", "user_queue3.sql")
     fun `Test shakeUser`() {
         // given
         val token = "11111"
