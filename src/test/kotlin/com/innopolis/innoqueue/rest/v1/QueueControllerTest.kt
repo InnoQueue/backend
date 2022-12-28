@@ -1,9 +1,9 @@
 package com.innopolis.innoqueue.rest.v1
 
-import com.innopolis.innoqueue.dto.EditQueueDTO
-import com.innopolis.innoqueue.dto.NewQueueDTO
-import com.innopolis.innoqueue.dto.QueueInviteCodeDTO
-import com.innopolis.innoqueue.services.QueueService
+import com.innopolis.innoqueue.domain.queue.dto.EditQueueDTO
+import com.innopolis.innoqueue.domain.queue.dto.NewQueueDTO
+import com.innopolis.innoqueue.domain.queue.dto.QueueInviteCodeDTO
+import com.innopolis.innoqueue.domain.queue.service.QueueService
 import io.mockk.mockk
 import io.mockk.verify
 import org.junit.jupiter.api.Test

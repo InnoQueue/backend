@@ -1,7 +1,8 @@
 package com.innopolis.innoqueue.rest.v1
 
+import com.innopolis.innoqueue.domain.queue.dto.*
+import com.innopolis.innoqueue.domain.queue.service.QueueService
 import com.innopolis.innoqueue.dto.*
-import com.innopolis.innoqueue.services.QueueService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.HttpStatus

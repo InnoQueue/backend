@@ -1,11 +1,11 @@
 package com.innopolis.innoqueue.domain.user.service
 
 import com.innopolis.innoqueue.domain.user.dao.UserRepository
+import com.innopolis.innoqueue.domain.user.dto.TokenDTO
 import com.innopolis.innoqueue.domain.user.dto.UpdateUserDTO
 import com.innopolis.innoqueue.domain.user.dto.UserDTO
 import com.innopolis.innoqueue.domain.user.model.User
-import com.innopolis.innoqueue.domain.user.dto.TokenDTO
-import com.innopolis.innoqueue.utils.StringGenerator
+import com.innopolis.innoqueue.util.StringGenerator
 import org.springframework.core.env.Environment
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service

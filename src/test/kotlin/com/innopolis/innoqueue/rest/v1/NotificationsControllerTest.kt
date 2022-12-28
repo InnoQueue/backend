@@ -1,6 +1,6 @@
 package com.innopolis.innoqueue.rest.v1
 
-import com.innopolis.innoqueue.services.NotificationsService
+import com.innopolis.innoqueue.service.NotificationsService
 import io.mockk.mockk
 import io.mockk.verify
 import org.junit.jupiter.api.Test

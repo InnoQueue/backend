@@ -1,7 +1,7 @@
 package com.innopolis.innoqueue.domain.user.model
 
-import com.innopolis.innoqueue.models.Notification
-import com.innopolis.innoqueue.models.UserQueue
+import com.innopolis.innoqueue.model.Notification
+import com.innopolis.innoqueue.model.UserQueue
 import javax.persistence.*
 
 /**
