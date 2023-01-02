@@ -52,7 +52,7 @@ class ToDoTaskService(
         if (userQueue.getTrackExpenses() && (expenses == null || expenses < 0)) {
             throw IllegalArgumentException("Expenses should be a non negative number")
         }
-        // TODO validate if participants > 1
+        // TODO validate if active participants > 1
         // TODO rewrite the logic
 //        addProgress(queue, expenses)
 //        // if it was user's turn in this queue, and he didn't have skips then the turn is assigned to the next user
@@ -128,21 +128,24 @@ class ToDoTaskService(
         saveTaskProgress(queue, expenses)
     }
 
-    private fun saveTaskProgress(queue: UserQueue, expenses: Double?) {
-        if (expenses != null && queue.queue?.trackExpenses == true) {
+    private fun saveTaskProgress(userQueue: UserQueue, expenses: Double?) {
+        if (expenses != null && userQueue.queue?.trackExpenses == true) {
             val roundedExpenses = String.format(Locale.ENGLISH, "%.2f", expenses).toDouble()
-            queue.expenses = queue.expenses?.plus(roundedExpenses)
+            userQueue.expenses = userQueue.expenses?.plus(roundedExpenses)
         }
+        Hibernate.initialize(userQueue.queue)
+        val queue = userQueue.queue!!
         queue.isImportant = false
-        val savedQueue = userQueueRepository.save(queue)
-        Hibernate.initialize(queue.user)
-        Hibernate.initialize(savedQueue.queue)
+        queueRepository.save(queue)
+        val savedUserQueue = userQueueRepository.save(userQueue)
+        Hibernate.initialize(userQueue.user)
+        Hibernate.initialize(savedUserQueue.queue)
         notificationsService.sendNotificationMessage(
             NotificationsType.COMPLETED,
-            queue.user?.id!!,
-            queue.user?.name!!,
-            savedQueue.queue?.id!!,
-            savedQueue.queue?.name!!
+            userQueue.user?.id!!,
+            userQueue.user?.name!!,
+            savedUserQueue.queue?.id!!,
+            savedUserQueue.queue?.name!!
         )
     }
 }

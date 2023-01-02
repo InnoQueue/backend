@@ -34,9 +34,6 @@ class UserQueue {
     @Column(name = "expenses", nullable = false)
     var expenses: Double? = null
 
-    @Column(name = "is_important", nullable = false)
-    var isImportant: Boolean? = false
-
     @Column(name = "date_joined", nullable = false)
     var dateJoined: LocalDateTime? = null
 }

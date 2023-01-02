@@ -582,7 +582,7 @@ class QueueServiceTest : PostgresTestContainer() {
         queueService.shakeUser(token, queueId)
 
         // then
-        val userQueue = userQueueRepository.findAll().first { it.queue?.id == queueId && it.user?.id == 2L }
-        assertEquals(true, userQueue.isImportant)
+        val queue = queueRepository.findAll().first { it?.id == queueId }
+        assertEquals(true, queue.isImportant)
     }
 }

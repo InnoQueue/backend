@@ -504,6 +504,7 @@ class NotificationsServiceTest : PostgresTestContainer() {
             color = "BLUE"
             creator = participantModel
             trackExpenses = false
+            isImportant = false
             currentUser = participantModel
         }
         queueModel.userQueues = mutableSetOf(
@@ -514,7 +515,6 @@ class NotificationsServiceTest : PostgresTestContainer() {
                 isActive = true
                 skips = 0
                 expenses = 0.0
-                isImportant = false
                 dateJoined = LocalDateTime.of(2022, 11, 4, 12, 12, 12)
             },
             getUserQueue(2L, 2L, "Emil", queueModel),
@@ -539,7 +539,6 @@ class NotificationsServiceTest : PostgresTestContainer() {
             isActive = true
             skips = 0
             expenses = 0.0
-            isImportant = false
             dateJoined = LocalDateTime.of(2022, 11, 4, 12, 12, 12)
         }
 

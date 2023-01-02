@@ -46,6 +46,9 @@ class Queue {
     @Column(name = "qr_date_created", nullable = true)
     var qrDateCreated: LocalDateTime? = null
 
+    @Column(name = "is_important", nullable = false)
+    var isImportant: Boolean? = false
+
     @OneToMany(mappedBy = "queue", fetch = FetchType.EAGER)
     var userQueues: MutableSet<UserQueue> = mutableSetOf()
 }

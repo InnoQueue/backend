@@ -11,7 +11,7 @@ private const val GET_TODO_TASKS = """
 SELECT queue.queue_id queueId,
        queue.name queueName,
        queue.color queueColor,
-       user_queue.is_important isImportant,
+       queue.is_important isImportant,
        queue.track_expenses trackExpenses
 FROM queue
          JOIN user_queue ON queue.queue_id = user_queue.queue_id
@@ -23,7 +23,7 @@ WHERE queue.current_user_id = user_queue.user_id
                          FROM user_queue
                          GROUP BY queue_id
                          HAVING COUNT(*) > 1)
-ORDER BY queue.name, user_queue.is_important DESC;  
+ORDER BY queue.name, queue.is_important DESC;  
 """
 
 private const val GET_PIN_CODES = """

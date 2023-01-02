@@ -330,17 +330,20 @@ class QueueService(
             throw IllegalArgumentException("You can't shake yourself!")
         }
 
-        val participantQueue = userQueue.queue?.currentUser?.queues?.firstOrNull { it.queue?.id == queueId }
+        val queue = userQueue.queue
             ?: throw IllegalArgumentException("The queueId is invalid")
-        participantQueue.isImportant = true
-        userQueueRepository.save(participantQueue)
-        notificationService.sendNotificationMessage(
-            NotificationsType.SHOOK,
-            participantQueue.user?.id!!,
-            participantQueue.user?.name!!,
-            userQueue.queue?.id!!,
-            userQueue.queue?.name!!
-        )
+        val currentUserQueue = queue.currentUser
+        currentUserQueue?.let {
+            queue.isImportant = true
+            queueRepository.save(queue)
+            notificationService.sendNotificationMessage(
+                NotificationsType.SHOOK,
+                it.id!!,
+                it.name!!,
+                userQueue.queue?.id!!,
+                userQueue.queue?.name!!
+            )
+        }
     }
 
     private fun List<UserQueuesShortForm>.convertToQueueShortDTO(): List<QueueShortDTO> =
@@ -462,7 +465,6 @@ class QueueService(
         userQueue.isActive = true
         userQueue.skips = 0
         userQueue.expenses = 0.0
-        userQueue.isImportant = false
         userQueue.dateJoined = LocalDateTime.now()
         return userQueue
     }
