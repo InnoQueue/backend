@@ -2,6 +2,7 @@ package com.innopolis.innoqueue.service
 
 import com.innopolis.innoqueue.dao.NotificationRepository
 import com.innopolis.innoqueue.dao.UserQueueRepository
+import com.innopolis.innoqueue.domain.fcmtoken.service.FcmTokenService
 import com.innopolis.innoqueue.domain.queue.dao.QueueRepository
 import com.innopolis.innoqueue.domain.user.model.User
 import com.innopolis.innoqueue.domain.user.service.UserService
@@ -29,6 +30,7 @@ private const val CLEAR_RESPONSE = "Old notifications were deleted"
 class NotificationsService(
     private val firebaseMessagingService: FirebaseMessagingNotificationsService,
     private val userService: UserService,
+    private val fcmTokenService: FcmTokenService,
     private val queueRepository: QueueRepository,
     private val userQueueRepository: UserQueueRepository,
     private val notificationRepository: NotificationRepository
@@ -76,7 +78,9 @@ class NotificationsService(
         val notifications = prepareNotificationsListToSend(notificationType, participantId, queueId)
         notificationRepository.saveAll(notifications)
         firebaseMessagingService.sendNotificationsToFirebase(
-            addressees = notifications.mapNotNull { it.user }.map { it.id!! to it.fcmToken },
+            addressees = notifications
+                .mapNotNull { it.user }
+                .map { it.id!! to fcmTokenService.findTokensForUser(it.id!!) },
             notificationType = notificationType,
             participant = participantId to participantName,
             queue = queueId to queueName,

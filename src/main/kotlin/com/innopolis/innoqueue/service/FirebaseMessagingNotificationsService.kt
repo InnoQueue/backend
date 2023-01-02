@@ -19,11 +19,12 @@ class FirebaseMessagingNotificationsService(
 ) {
     private val firebaseMessaging: FirebaseMessaging? = firebaseApp?.let { FirebaseMessaging.getInstance(it) }
 
+    @Suppress("NestedBlockDepth")
     /**
      * Sends a particular message via Firebase
      */
     fun sendNotificationsToFirebase(
-        addressees: List<Pair<Long, String?>>,
+        addressees: List<Pair<Long, List<String>>>,
         notificationType: NotificationsType,
         participant: Pair<Long, String>,
         queue: Pair<Long, String>,
@@ -35,18 +36,20 @@ class FirebaseMessagingNotificationsService(
             isPersonal = isPersonal,
             participantName = participant.second
         ).getTitleAndBodyForMessage()
-        if (title != null && body != null && addressee.second != null) {
-            try {
-                val dataMap = HashMap<String, String?>()
-                dataMap["title"] = title
-                dataMap["body"] = body
-                dataMap["queue_id"] = queue.first.toString()
-                dataMap["queue_name"] = queue.second
-                dataMap["participant_name"] = participant.second
-                val res = sendNotification(title, body, addressee.second, dataMap)
-                println("Firebase result: $res")
-            } catch (e: FirebaseMessagingException) {
-                println("Firebase exception: $e")
+        if (title != null && body != null) {
+            addressee.second.forEach {
+                try {
+                    val dataMap = HashMap<String, String?>()
+                    dataMap["title"] = title
+                    dataMap["body"] = body
+                    dataMap["queue_id"] = queue.first.toString()
+                    dataMap["queue_name"] = queue.second
+                    dataMap["participant_name"] = participant.second
+                    val res = sendNotification(title, body, it, dataMap)
+                    println("Firebase result: $res")
+                } catch (e: FirebaseMessagingException) {
+                    println("Firebase exception: $e")
+                }
             }
         }
     }

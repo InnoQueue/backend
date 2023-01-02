@@ -22,9 +22,6 @@ class User {
     @Column(name = "name", nullable = false, length = 64)
     var name: String? = null
 
-    @Column(name = "fcm_token", nullable = false, length = 256)
-    var fcmToken: String? = null
-
     @Column(name = "completed", nullable = false)
     var completed: Boolean? = true
 

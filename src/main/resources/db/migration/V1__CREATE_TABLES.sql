@@ -1,4 +1,4 @@
-create table "user"
+create table IF NOT EXISTS "user"
 (
     user_id   bigserial
         constraint user_pk
@@ -8,14 +8,14 @@ create table "user"
     fcm_token varchar(256) not null
 );
 
-create unique index user_user_id_uindex
+create unique index IF NOT EXISTS user_user_id_uindex
     on "user" (user_id);
 
-create unique index user_token_uindex
+create unique index IF NOT EXISTS user_token_uindex
     on "user" (token);
 
 
-create table user_settings
+create table IF NOT EXISTS user_settings
 (
     user_settings_id bigserial
         constraint user_settings_pk
@@ -32,14 +32,14 @@ create table user_settings
     your_turn        boolean not null
 );
 
-create unique index user_settings_user_id_uindex
+create unique index IF NOT EXISTS user_settings_user_id_uindex
     on user_settings (user_id);
 
-create unique index user_settings_user_settings_id_uindex
+create unique index IF NOT EXISTS user_settings_user_settings_id_uindex
     on user_settings (user_settings_id);
 
 
-create table queue
+create table IF NOT EXISTS queue
 (
     queue_id        bigserial
         constraint queue_pk
@@ -57,11 +57,11 @@ create table queue
             on update cascade on delete cascade
 );
 
-create unique index queue_queue_id_uindex
+create unique index IF NOT EXISTS queue_queue_id_uindex
     on queue (queue_id);
 
 
-create table notifications
+create table IF NOT EXISTS notifications
 (
     notification_id bigserial
         constraint notifications_pk
@@ -77,14 +77,14 @@ create table notifications
     date            timestamp   not null
 );
 
-create unique index notifications_notification_id_uindex
+create unique index IF NOT EXISTS notifications_notification_id_uindex
     on notifications (notification_id);
 
-create index notifications_date__index
+create index IF NOT EXISTS notifications_date__index
     on notifications (date);
 
 
-create table user_queue
+create table IF NOT EXISTS user_queue
 (
     user_queue_id bigserial
         constraint user_queue_pk
@@ -104,14 +104,14 @@ create table user_queue
     date_joined   timestamp        not null
 );
 
-create unique index user_queue_user_queue_id_uindex
+create unique index IF NOT EXISTS user_queue_user_queue_id_uindex
     on user_queue (user_queue_id);
 
-create index user_queue_date_joined__index
+create index IF NOT EXISTS user_queue_date_joined__index
     on user_queue (date_joined);
 
 
-create table queue_pin_code
+create table IF NOT EXISTS queue_pin_code
 (
     queue_id     bigint     not null
         constraint queue_id
@@ -124,20 +124,20 @@ create table queue_pin_code
     date_created timestamp  not null
 );
 
-create unique index queue_pin_code_id_uindex
+create unique index IF NOT EXISTS queue_pin_code_id_uindex
     on queue_pin_code (id);
 
-create unique index queue_pin_code_queue_id_uindex
+create unique index IF NOT EXISTS queue_pin_code_queue_id_uindex
     on queue_pin_code (queue_id);
 
-create unique index queue_pin_code_pin_code_uindex
+create unique index IF NOT EXISTS queue_pin_code_pin_code_uindex
     on queue_pin_code (pin_code);
 
-create index queue_pin_code_date_created__index
+create index IF NOT EXISTS queue_pin_code_date_created__index
     on queue_pin_code (date_created);
 
 
-create table queue_qr_code
+create table IF NOT EXISTS queue_qr_code
 (
     id           bigserial
         constraint queue_qr_code_pk
@@ -150,14 +150,14 @@ create table queue_qr_code
     date_created timestamp   not null
 );
 
-create unique index queue_qr_code_id_uindex
+create unique index IF NOT EXISTS queue_qr_code_id_uindex
     on queue_qr_code (id);
 
-create unique index queue_qr_code_queue_id_uindex
+create unique index IF NOT EXISTS queue_qr_code_queue_id_uindex
     on queue_qr_code (queue_id);
 
-create unique index queue_qr_code_qr_code_uindex
+create unique index IF NOT EXISTS queue_qr_code_qr_code_uindex
     on queue_qr_code (qr_code);
 
-create index queue_qr_code_date_created__index
+create index IF NOT EXISTS queue_qr_code_date_created__index
     on queue_qr_code (date_created);

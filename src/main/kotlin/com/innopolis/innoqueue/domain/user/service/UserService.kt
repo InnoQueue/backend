@@ -1,5 +1,6 @@
 package com.innopolis.innoqueue.domain.user.service
 
+import com.innopolis.innoqueue.domain.fcmtoken.service.FcmTokenService
 import com.innopolis.innoqueue.domain.user.dao.UserRepository
 import com.innopolis.innoqueue.domain.user.dto.TokenDTO
 import com.innopolis.innoqueue.domain.user.dto.UpdateUserDTO
@@ -18,6 +19,7 @@ private const val TOKEN_LENGTH = 64
 @Service
 class UserService(
     private val userRepository: UserRepository,
+    private val fcmTokenService: FcmTokenService,
     private val environment: Environment
 ) {
     /**
@@ -104,8 +106,7 @@ class UserService(
                 val userId = saveUser(token, userName, fcmToken)
                 TokenDTO(token, userId)
             } else {
-                existingUser.fcmToken = fcmToken
-                userRepository.save(existingUser)
+                fcmTokenService.saveFcmToken(existingUser.id!!, fcmToken)
                 TokenDTO(existingUser.token!!, existingUser.id!!)
             }
         }
@@ -126,13 +127,14 @@ class UserService(
         return generator.generateString()
     }
 
-    private fun saveUser(userToken: String, userName: String, userFcmToken: String): Long =
-        userRepository.save(
-            User()
-                .apply {
-                    name = userName
-                    token = userToken
-                    fcmToken = userFcmToken
-                }
+    private fun saveUser(userToken: String, userName: String, userFcmToken: String): Long {
+        val userId = userRepository.save(
+            User().apply {
+                name = userName
+                token = userToken
+            }
         ).id!!
+        fcmTokenService.saveFcmToken(userId, userFcmToken)
+        return userId
+    }
 }

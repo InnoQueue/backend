@@ -1,5 +1,7 @@
 package com.innopolis.innoqueue.domain.user.service
 
+import com.innopolis.innoqueue.domain.fcmtoken.dao.FcmTokenRepository
+import com.innopolis.innoqueue.domain.fcmtoken.service.FcmTokenService
 import com.innopolis.innoqueue.domain.user.dao.UserRepository
 import com.innopolis.innoqueue.domain.user.dto.UpdateUserDTO
 import com.innopolis.innoqueue.domain.user.model.User
@@ -13,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.env.Environment
 import org.springframework.test.context.jdbc.Sql
 
+@Suppress("LargeClass")
 class UserServiceTest : PostgresTestContainer() {
 
     @Autowired
@@ -20,6 +23,9 @@ class UserServiceTest : PostgresTestContainer() {
 
     @Autowired
     private lateinit var userRepository: UserRepository
+
+    @Autowired
+    private lateinit var fcmTokenRepository: FcmTokenRepository
 
     @Test
     fun `Test createNewUser empty name exception`() {
@@ -52,9 +58,11 @@ class UserServiceTest : PostgresTestContainer() {
         val fcmToken = "123"
         val userRepo = mockk<UserRepository>(relaxed = true)
         every { userRepo.save(any()) } returns User().apply { id = 1L }
+        val fcmService = mockk<FcmTokenService>(relaxed = true)
+        every { fcmService.saveFcmToken(any(), any()) } returns Unit
         val environment = mockk<Environment>(relaxed = true)
         every { environment.activeProfiles } returns emptyArray<String>()
-        val service = UserService(userRepo, environment)
+        val service = UserService(userRepo, fcmService, environment)
 
         // when
         service.createNewUser(userName, fcmToken)
@@ -84,9 +92,11 @@ class UserServiceTest : PostgresTestContainer() {
         val fcmToken = "123"
         val userRepo = mockk<UserRepository>(relaxed = true)
         every { userRepo.save(any()) } returns User().apply { id = 1L }
+        val fcmService = mockk<FcmTokenService>(relaxed = true)
+        every { fcmService.saveFcmToken(any(), any()) } returns Unit
         val environment = mockk<Environment>(relaxed = true)
         every { environment.activeProfiles } returns emptyArray<String>()
-        val service = UserService(userRepo, environment)
+        val service = UserService(userRepo, fcmService, environment)
 
         // when
         service.createNewUser(userName, fcmToken)
@@ -111,7 +121,6 @@ class UserServiceTest : PostgresTestContainer() {
         assertEquals(1, users.size)
         with(users[0]) {
             assertEquals(userName, name)
-            assertEquals(fcmToken, this.fcmToken)
             assertEquals(result.token, token)
             assertEquals(result.userId, id)
             assertEquals(true, completed)
@@ -120,6 +129,14 @@ class UserServiceTest : PostgresTestContainer() {
             assertEquals(true, freeze)
             assertEquals(true, leftQueue)
             assertEquals(true, yourTurn)
+        }
+
+        val fcmTokens = fcmTokenRepository.findAll().toList()
+        assertEquals(1, fcmTokens.size)
+
+        with(fcmTokens[0]) {
+            assertEquals(result.userId, fcmTokenId?.userId)
+            assertEquals(fcmToken, fcmTokenId?.fcmToken)
         }
     }
 
@@ -267,7 +284,7 @@ class UserServiceTest : PostgresTestContainer() {
             id = 1L
             name = "user name"
         }
-        val service = UserService(userRepo, mockk())
+        val service = UserService(userRepo, mockk(), mockk())
 
         // when
         service.updateUserSettings(token, userDTO)
@@ -298,7 +315,7 @@ class UserServiceTest : PostgresTestContainer() {
             id = 1L
             name = "user name"
         }
-        val service = UserService(userRepo, mockk())
+        val service = UserService(userRepo, mockk(), mockk())
 
         // when
         service.updateUserSettings(token, userDTO)
