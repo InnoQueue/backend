@@ -11,6 +11,7 @@ import com.innopolis.innoqueue.domain.user.service.UserService
 import com.innopolis.innoqueue.dto.UserExpensesDTO
 import com.innopolis.innoqueue.enums.NotificationsType
 import com.innopolis.innoqueue.model.UserQueue
+import com.innopolis.innoqueue.model.UserQueueId
 import com.innopolis.innoqueue.service.NotificationsService
 import com.innopolis.innoqueue.util.StringGenerator
 import org.springframework.data.repository.findByIdOrNull
@@ -62,11 +63,11 @@ class QueueService(
             queueName = queue.name!!,
             queueColor = queue.color!!,
             currentUser = transformUserToUserExpensesDTO(queue.currentUser, queue),
-            isYourTurn = queue.currentUser?.id == userQueue.user?.id,
+            isYourTurn = queue.currentUser?.id == userQueue.userQueueId?.userId,
             participants = getParticipants(queue),
             trackExpenses = queue.trackExpenses!!,
             isActive = userQueue.isActive!!,
-            isAdmin = queue.creator?.id == userQueue.user?.id,
+            isAdmin = queue.creator?.id == userQueue.userQueueId?.userId,
             hashCode = getHashCode(queueId)
         )
     }
@@ -79,9 +80,10 @@ class QueueService(
     fun getQueueInviteCode(token: String, queueId: Long): QueueInviteCodeDTO {
         val userQueue = userQueueRepository.findUserQueueByToken(token, queueId)
             ?: throw IllegalArgumentException("User does not belong to such queue: $queueId")
+        val queue = queueRepository.findAll().firstOrNull { it.id == userQueue.userQueueId?.queueId }!!
         return QueueInviteCodeDTO(
-            pinCode = userQueue.queue!!.getQueuePinCode(),
-            qrCode = userQueue.queue!!.getQueueQrCode()
+            pinCode = queue.getQueuePinCode(),
+            qrCode = queue.getQueueQrCode()
         )
     }
 
@@ -120,7 +122,7 @@ class QueueService(
         }
         val user = userService.findUserByToken(token)
         val userQueue = getUserQueueByQueueId(user, editQueue.queueId)
-        if (userQueue.queue?.creator?.id != user.id) {
+        if (queueRepository.findAll().firstOrNull { it.id == userQueue.userQueueId?.queueId }?.creator?.id != user.id) {
             throw IllegalArgumentException("User is not an admin in this queue: ${editQueue.queueId}")
         }
         val queueEntity = queueRepository.findByIdOrNull(editQueue.queueId)
@@ -152,9 +154,9 @@ class QueueService(
         if (editQueue.participants != null) {
             val userToDelete = userQueueRepository
                 .findAll()
-                .filter { it.queue?.id == updatedQueue.id }
-                .filter { it.user?.id !in editQueue.participants }
-                .filter { it.user?.id != user.id }
+                .filter { it.userQueueId?.queueId == updatedQueue.id }
+                .filter { it.userQueueId?.userId !in editQueue.participants }
+                .filter { it.userQueueId?.userId != user.id }
             if (userToDelete.isNotEmpty()) {
                 userQueueRepository.deleteAll(userToDelete)
             }
@@ -167,7 +169,7 @@ class QueueService(
      * Return user_queue model
      */
     fun getUserQueueByQueueId(user: User, queueId: Long): UserQueue {
-        return user.queues.firstOrNull { it.queue?.id == queueId }
+        return userQueueRepository.findUserQueueByQueueId(queueId).firstOrNull { it.userQueueId?.userId == user.id }
             ?: throw IllegalArgumentException("User does not belong to such queue: $queueId")
     }
 
@@ -186,8 +188,8 @@ class QueueService(
                         NotificationsType.UNFROZEN,
                         user.id!!,
                         user.name!!,
-                        userQueue.queue?.id!!,
-                        userQueue.queue?.name!!
+                        userQueue.userQueueId?.queueId!!,
+                        queueRepository.findAll().firstOrNull { it.id == userQueue.userQueueId?.queueId }!!.name!!
                     )
                 }
             }
@@ -195,15 +197,16 @@ class QueueService(
             false -> {
                 if (userQueue.isActive!!) {
                     // You can't freeze queue if it's your turn
-                    if (userQueue.queue?.currentUser?.id != user.id) {
+                    val queue = queueRepository.findAll().firstOrNull { it.id == userQueue.userQueueId?.queueId }!!
+                    if (queue.currentUser?.id != user.id) {
                         userQueue.isActive = false
                         userQueueRepository.save(userQueue)
                         notificationService.sendNotificationMessage(
                             NotificationsType.FROZEN,
                             user.id!!,
                             user.name!!,
-                            userQueue.queue?.id!!,
-                            userQueue.queue?.name!!,
+                            queue.id!!,
+                            queue.name!!,
                         )
                     }
                 }
@@ -220,34 +223,40 @@ class QueueService(
         val user = userService.findUserByToken(token)
         val userQueue = getUserQueueByQueueId(user, queueId)
         // Delete queue
-        if (userQueue.queue?.creator?.id == user.id) {
+        val queue = queueRepository.findAll().firstOrNull { it.id == userQueue.userQueueId?.queueId }!!
+        if (queue.creator?.id == user.id) {
             notificationService.sendNotificationMessage(
                 NotificationsType.DELETE_QUEUE,
                 user.id!!,
                 user.name!!,
-                userQueue.queue?.id!!,
-                userQueue.queue?.name!!
+                queue.id!!,
+                queue.name!!
             )
-            queueRepository.delete(userQueue.queue!!)
+            queueRepository.delete(queue)
         } // Leave queue
         else {
             notificationService.sendNotificationMessage(
                 NotificationsType.LEFT_QUEUE,
                 user.id!!,
                 user.name!!,
-                userQueue.queue?.id!!,
-                userQueue.queue?.name!!
+                queue.id!!,
+                queue.name!!
             )
             userQueue.progress = 0
             // If it's your turn, reassign another user
-            if (userQueue.queue?.currentUser?.id == user.id) {
-                val nextUser = UsersQueueLogic.assignNextUser(userQueue, userQueueRepository, queueRepository)
+            if (queue.currentUser?.id == user.id) {
+                val nextUser = UsersQueueLogic.assignNextUser(
+                    userQueue,
+                    userService,
+                    userQueueRepository,
+                    queueRepository
+                )
                 notificationService.sendNotificationMessage(
                     NotificationsType.YOUR_TURN,
                     nextUser.id!!,
                     nextUser.name!!,
-                    userQueue.queue?.id!!,
-                    userQueue.queue?.name!!
+                    queue.id!!,
+                    queue.name!!
                 )
             }
             userQueueRepository.delete(userQueue)
@@ -258,7 +267,7 @@ class QueueService(
      * Join queue via invite code
      * @param token - user token
      */
-    @Suppress("ThrowsCount", "ReturnCount")
+    @Suppress("ThrowsCount", "ReturnCount", "LongMethod")
     fun joinQueue(token: String, queueInviteCodeDTO: QueueInviteCodeDTO): QueueDTO {
         val user = userService.findUserByToken(token)
 
@@ -267,7 +276,8 @@ class QueueService(
             val queue = queueRepository.findAll().firstOrNull { it.pinCode == pinCode }
                 ?: throw IllegalArgumentException("The pin code for queue is invalid: $pinCode")
 
-            val userQueue = user.queues.firstOrNull { it.queue?.id == queue.id }
+            val userQueue = userQueueRepository.findAll()
+                .firstOrNull { it.userQueueId?.queueId == queue.id && it.userQueueId?.userId == user.id }
 
             if (userQueue == null) {
 
@@ -279,22 +289,27 @@ class QueueService(
                     NotificationsType.JOINED_QUEUE,
                     user.id!!,
                     user.name!!,
-                    newUserQueue.queue?.id!!,
-                    newUserQueue.queue?.name!!
+                    queueEntity.id!!,
+                    queueEntity.name!!
                 )
 
                 return transformQueueToDTO(
-                    queue = newUserQueue.queue,
+                    queue = queueEntity,
                     isActive = newUserQueue.isActive!!,
                     userId = user.id!!
                 )
             }
-            return transformQueueToDTO(queue = userQueue.queue, isActive = userQueue.isActive!!, userId = user.id!!)
+            return transformQueueToDTO(
+                queue = queue,
+                isActive = userQueue.isActive!!,
+                userId = user.id!!
+            )
         } else if (queueInviteCodeDTO.qrCode != null) {
             val qrCode = queueInviteCodeDTO.qrCode
             val queue = queueRepository.findAll().firstOrNull { it.qrCode == qrCode }
                 ?: throw IllegalArgumentException("The QR code for queue is invalid: $qrCode")
-            val userQueue = user.queues.firstOrNull { it.queue?.id == queue.id }
+            val userQueue = userQueueRepository.findAll()
+                .firstOrNull { it.userQueueId?.queueId == queue.id && it.userQueueId?.userId == user.id }
             if (userQueue == null) {
                 val queueEntity = queueRepository.findAll().firstOrNull { it.id == queue.id }
                     ?: throw IllegalArgumentException("The QR code for queue is invalid: $qrCode")
@@ -303,16 +318,20 @@ class QueueService(
                     NotificationsType.JOINED_QUEUE,
                     user.id!!,
                     user.name!!,
-                    newUserQueue.queue?.id!!,
-                    newUserQueue.queue?.name!!
+                    queueEntity.id!!,
+                    queueEntity.name!!
                 )
                 return transformQueueToDTO(
-                    queue = newUserQueue.queue,
+                    queue = queueEntity,
                     isActive = newUserQueue.isActive!!,
                     userId = user.id!!
                 )
             }
-            return transformQueueToDTO(queue = userQueue.queue, isActive = userQueue.isActive!!, userId = user.id!!)
+            return transformQueueToDTO(
+                queue = queue,
+                isActive = userQueue.isActive!!,
+                userId = user.id!!
+            )
         } else {
             throw IllegalArgumentException("Provide qr_code or pin_code!")
         }
@@ -325,13 +344,13 @@ class QueueService(
      */
     fun shakeUser(token: String, queueId: Long) {
         val user = userService.findUserByToken(token)
-        val userQueue = getUserQueueByQueueId(user, queueId)
-        if (userQueue.queue?.currentUser?.id == user.id) {
+        // Check if user joined this queue
+        getUserQueueByQueueId(user, queueId)
+        val queue = queueRepository.findAll().firstOrNull { it?.id == queueId }
+            ?: throw IllegalArgumentException("The queueId is invalid")
+        if (queue.currentUser?.id == user.id) {
             throw IllegalArgumentException("You can't shake yourself!")
         }
-
-        val queue = userQueue.queue
-            ?: throw IllegalArgumentException("The queueId is invalid")
         val currentUserQueue = queue.currentUser
         currentUserQueue?.let {
             queue.isImportant = true
@@ -340,8 +359,8 @@ class QueueService(
                 NotificationsType.SHOOK,
                 it.id!!,
                 it.name!!,
-                userQueue.queue?.id!!,
-                userQueue.queue?.name!!
+                queue.id!!,
+                queue.name!!
             )
         }
     }
@@ -405,9 +424,10 @@ class QueueService(
     }
 
     private fun getParticipants(queue: Queue): List<UserExpensesDTO> {
-        val userQueueParticipants = queue.userQueues.sortedBy { it.dateJoined }
+        val userQueueParticipants =
+            userQueueRepository.findAll().filter { it.userQueueId?.queueId == queue.id }.sortedBy { it.dateJoined }
 
-        val currentUserIndex = userQueueParticipants.indexOfFirst { it.user?.id == queue.currentUser?.id }
+        val currentUserIndex = userQueueParticipants.indexOfFirst { it.userQueueId?.userId == queue.currentUser?.id }
         val participantsAfterCurrent =
             userQueueParticipants.slice((currentUserIndex + 1) until userQueueParticipants.size)
         val participantsBeforeCurrent = userQueueParticipants.slice(0 until currentUserIndex)
@@ -424,15 +444,19 @@ class QueueService(
         val (activeUsers, frozenUsers) = sortedParticipants.partition { it.isActive!! }
         val participantsResult = activeUsers + frozenUsers
 
-        return participantsResult.map { userQueue -> userQueue.user }.map { transformUserToUserExpensesDTO(it, queue) }
+        return participantsResult.map { userQueue -> userService.findUserById(userQueue.userQueueId?.userId!!) }
+            .map { transformUserToUserExpensesDTO(it, queue) }
     }
 
     private fun transformUserToUserExpensesDTO(user: User?, queue: Queue): UserExpensesDTO {
-        val isActive = user?.queues?.firstOrNull { it.queue?.id == queue.id }?.isActive ?: true
+        val isActive = userQueueRepository.findAll()
+            .firstOrNull { it.userQueueId?.queueId == queue.id && it.userQueueId?.userId == user?.id }?.isActive
+            ?: true
         return UserExpensesDTO(
             user?.id!!,
             user.name!!,
-            queue.userQueues.firstOrNull { it.user?.id == user.id }?.expenses,
+            userQueueRepository.findAll()
+                .firstOrNull { it.userQueueId?.queueId == queue.id && it.userQueueId?.userId == user.id }?.expenses,
             isActive
         )
     }
@@ -460,8 +484,10 @@ class QueueService(
 
     private fun createUserQueueEntity(user: User, queue: Queue): UserQueue {
         val userQueue = UserQueue()
-        userQueue.queue = queue
-        userQueue.user = user
+        userQueue.userQueueId = UserQueueId().apply {
+            queueId = queue.id!!
+            userId = user.id!!
+        }
         userQueue.isActive = true
         userQueue.progress = 0
         userQueue.completes = 0

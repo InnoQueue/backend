@@ -84,31 +84,18 @@ create index IF NOT EXISTS notifications_date__index
     on notifications (date);
 
 
-create table IF NOT EXISTS user_queue
+CREATE TABLE IF NOT EXISTS user_queue
 (
-    user_queue_id bigserial
-        constraint user_queue_pk
-            primary key,
-    queue_id      bigint           not null
-        constraint queue_id
-            references queue
-            on update cascade on delete cascade,
-    user_id       bigint           not null
-        constraint user_id
-            references "user"
-            on update cascade on delete cascade,
-    is_active     boolean          not null,
-    skips         integer          not null,
-    expenses      double precision not null,
-    is_important  boolean          not null,
-    date_joined   timestamp        not null
+    user_id     BIGSERIAL REFERENCES "user" (user_id) ON UPDATE CASCADE ON DELETE CASCADE   NOT NULL,
+    queue_id    BIGSERIAL REFERENCES "queue" (queue_id) ON UPDATE CASCADE ON DELETE CASCADE NOT NULL,
+    progress    integer                                                                     NOT NULL DEFAULT 0,
+    completes   integer                                                                     NOT NULL DEFAULT 0,
+    skips       integer                                                                     NOT NULL DEFAULT 0,
+    expenses    bigint                                                                      NOT NULL DEFAULT 0,
+    is_active   boolean                                                                     NOT NULL DEFAULT true,
+    date_joined timestamp                                                                   NOT NULL,
+    PRIMARY KEY (user_id, queue_id)
 );
-
-create unique index IF NOT EXISTS user_queue_user_queue_id_uindex
-    on user_queue (user_queue_id);
-
-create index IF NOT EXISTS user_queue_date_joined__index
-    on user_queue (date_joined);
 
 
 create table IF NOT EXISTS queue_pin_code

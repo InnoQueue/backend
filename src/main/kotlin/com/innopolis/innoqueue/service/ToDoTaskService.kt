@@ -8,9 +8,7 @@ import com.innopolis.innoqueue.domain.user.service.UserService
 import com.innopolis.innoqueue.dto.ToDoTaskDTO
 import com.innopolis.innoqueue.enums.NotificationsType
 import com.innopolis.innoqueue.model.UserQueue
-import org.hibernate.Hibernate
 import org.springframework.stereotype.Service
-import java.util.*
 
 /**
  * Service for working with queues for which user is on duty
@@ -79,13 +77,14 @@ class ToDoTaskService(
                 else {
                     saveTaskProgress(it, expenses)
                     // Assign the next user in a queue
-                    val nextUser = UsersQueueLogic.assignNextUser(it, userQueueRepository, queueRepository)
+                    val nextUser = UsersQueueLogic.assignNextUser(it, userService, userQueueRepository, queueRepository)
+                    val queue = queueRepository.findAll().firstOrNull { q -> q.id == it.userQueueId?.queueId }!!
                     notificationsService.sendNotificationMessage(
                         NotificationsType.YOUR_TURN,
                         nextUser.id!!,
                         nextUser.name!!,
-                        it.queue?.id!!,
-                        it.queue?.name!!
+                        queue.id!!,
+                        queue.name!!
                     )
                 }
             }
@@ -98,28 +97,29 @@ class ToDoTaskService(
      * @param taskId - id of a queue
      */
     fun skipTask(token: String, taskId: Long) {
-        val userQueue = userQueueRepository.findUserQueue(token, taskId)
+        val userQueueAndQueue = userQueueRepository.findUserQueue(token, taskId)
         // User can skip a task if it's his turn
-        if (userQueue.getUserId() == userQueue.getCurrentUserId()) {
+        if (userQueueAndQueue.getUserId() == userQueueAndQueue.getCurrentUserId()) {
             val user = userService.findUserByToken(token)
-            val queue = queueService.getUserQueueByQueueId(user, taskId)
-            queue.progress = queue.progress?.plus(1)
-            queue.skips = queue.skips?.plus(1)
-            userQueueRepository.save(queue)
+            val userQueue = queueService.getUserQueueByQueueId(user, taskId)
+            userQueue.progress = userQueue.progress?.plus(1)
+            userQueue.skips = userQueue.skips?.plus(1)
+            userQueueRepository.save(userQueue)
+            val queue = queueRepository.findAll().firstOrNull { it.id == userQueue.userQueueId?.queueId }!!
             notificationsService.sendNotificationMessage(
                 NotificationsType.SKIPPED,
                 user.id!!,
                 user.name!!,
-                queue.queue?.id!!,
-                queue.queue?.name!!
+                queue.id!!,
+                queue.name!!
             )
-            val nextUser = UsersQueueLogic.assignNextUser(queue, userQueueRepository, queueRepository)
+            val nextUser = UsersQueueLogic.assignNextUser(userQueue, userService, userQueueRepository, queueRepository)
             notificationsService.sendNotificationMessage(
                 NotificationsType.YOUR_TURN,
                 nextUser.id!!,
                 nextUser.name!!,
-                queue.queue?.id!!,
-                queue.queue?.name!!
+                queue.id!!,
+                queue.name!!
             )
         }
     }
@@ -131,22 +131,19 @@ class ToDoTaskService(
 
     private fun saveTaskProgress(userQueue: UserQueue, expenses: Long?) {
         userQueue.completes = userQueue.completes?.plus(1)
-        if (expenses != null && userQueue.queue?.trackExpenses == true) {
+        val queue = queueRepository.findAll().firstOrNull { it.id == userQueue.userQueueId?.queueId }!!
+        if (expenses != null && queue.trackExpenses == true) {
             userQueue.expenses = userQueue.expenses?.plus(expenses)
         }
-        Hibernate.initialize(userQueue.queue)
-        val queue = userQueue.queue!!
         queue.isImportant = false
         queueRepository.save(queue)
-        val savedUserQueue = userQueueRepository.save(userQueue)
-        Hibernate.initialize(userQueue.user)
-        Hibernate.initialize(savedUserQueue.queue)
+        userQueueRepository.save(userQueue)
         notificationsService.sendNotificationMessage(
             NotificationsType.COMPLETED,
-            userQueue.user?.id!!,
-            userQueue.user?.name!!,
-            savedUserQueue.queue?.id!!,
-            savedUserQueue.queue?.name!!
+            userQueue.userQueueId?.userId!!,
+            userService.findUserNameById(userQueue.userQueueId?.userId!!)!!,
+            queue.id!!,
+            queue.name!!
         )
     }
 }

@@ -530,44 +530,41 @@ class NotificationsServiceTest : PostgresTestContainer() {
             isImportant = false
             currentUser = participantModel
         }
-        queueModel.userQueues = mutableSetOf(
-            UserQueue().apply {
-                id = 1L
-                queue = queueModel
-                user = participantModel
-                isActive = true
-                progress = 0
-                completes = 0
-                skips = 0
-                expenses = 0L
-                dateJoined = LocalDateTime.of(2022, 11, 4, 12, 12, 12)
-            },
-            getUserQueue(2L, 2L, "Emil", queueModel),
-            getUserQueue(3L, 3L, "Roman", queueModel),
-            getUserQueue(4L, 4L, "Timur", queueModel, false),
-            getUserQueue(5L, 5L, "Ivan", queueModel)
-        )
+//        queueModel.userQueues = mutableSetOf(
+//            UserQueue().apply {
+//                userQueueId?.queueId = queueModel.id
+//                userQueueId?.userId = participantModel.id
+//                isActive = true
+//                progress = 0
+//                completes = 0
+//                skips = 0
+//                expenses = 0L
+//                dateJoined = LocalDateTime.of(2022, 11, 4, 12, 12, 12)
+//            },
+//            getUserQueue(2L, "Emil", queueModel),
+//            getUserQueue(3L, "Roman", queueModel),
+//            getUserQueue(4L, "Timur", queueModel, false),
+//            getUserQueue(5L, "Ivan", queueModel)
+//        )
         return queueModel
     }
 
-    private fun getUserQueue(
-        userQueueId: Long,
-        userId: Long,
-        userName: String,
-        queueModel: Queue,
-        enableUserSettings: Boolean = true
-    ) =
-        UserQueue().apply {
-            id = userQueueId
-            queue = queueModel
-            user = getUser(userId, userName, enableUserSettings)
-            isActive = true
-            progress = 0
-            completes = 0
-            skips = 0
-            expenses = 0L
-            dateJoined = LocalDateTime.of(2022, 11, 4, 12, 12, 12)
-        }
+//    private fun getUserQueue(
+//        userId: Long,
+//        userName: String,
+//        queueModel: Queue,
+//        enableUserSettings: Boolean = true
+//    ) =
+//        UserQueue().apply {
+//            userQueueId?.queueId = queueModel.id
+//            userQueueId?.userId = userId
+//            isActive = true
+//            progress = 0
+//            completes = 0
+//            skips = 0
+//            expenses = 0L
+//            dateJoined = LocalDateTime.of(2022, 11, 4, 12, 12, 12)
+//        }
 
     private fun getUser(userId: Long = 1L, userName: String = "admin", value: Boolean = true) = User().apply {
         id = userId

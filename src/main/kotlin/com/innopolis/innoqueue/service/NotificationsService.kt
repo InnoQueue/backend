@@ -126,7 +126,7 @@ class NotificationsService(
                 .filter { it.shouldSendMessage(notificationType, participantId) }
                 .map {
                     createNotification(
-                        recipientUserId = it.user?.id!!,
+                        recipientUserId = it.userQueueId?.userId!!,
                         participantUserId = participantId,
                         notificationsType = notificationType,
                         referredQueueId = queueId
@@ -155,7 +155,7 @@ class NotificationsService(
     ): Boolean = if (notificationsType.isRequiredNotification()) {
         true
     } else {
-        this.user!!.isUserSubscribed(notificationsType, participantId)
+        userService.findUserById(this.userQueueId?.userId!!)!!.isUserSubscribed(notificationsType, participantId)
     }
 
     private fun NotificationsType.isRequiredNotification(): Boolean =

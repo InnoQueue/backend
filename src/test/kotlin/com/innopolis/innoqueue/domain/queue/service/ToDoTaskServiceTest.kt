@@ -117,7 +117,9 @@ class ToDoTaskServiceTest : PostgresTestContainer() {
         val result = toDoTaskService.getToDoTasks(token)
 
         // then
-        assertTrue(userQueueRepository.findAll().any { it.user?.token == token && it.queue?.id == queueId })
+        assertTrue(
+            userQueueRepository.findAll()
+                .any { it.userQueueId?.userId == 1L && it.userQueueId?.queueId == queueId })
         assertTrue(result.none { it.queueId == queueId })
     }
 
@@ -172,7 +174,11 @@ class ToDoTaskServiceTest : PostgresTestContainer() {
         toDoTaskService.completeTask(token, taskId, 0L)
 
         // then
-        assertEquals(-1, userQueueRepository.findAll().first { it.id == 7L }.progress)
+        assertEquals(
+            -1,
+            userQueueRepository.findAll()
+                .first { it.userQueueId?.userId == 1L && it.userQueueId?.queueId == taskId }.progress
+        )
     }
 
     @Test
@@ -186,7 +192,11 @@ class ToDoTaskServiceTest : PostgresTestContainer() {
         toDoTaskService.completeTask(token, taskId, 0L)
 
         // then
-        assertEquals(0, userQueueRepository.findAll().first { it.id == 1L }.progress)
+        assertEquals(
+            0,
+            userQueueRepository.findAll()
+                .first { it.userQueueId?.userId == 1L && it.userQueueId?.queueId == taskId }.progress
+        )
     }
 
     @Test
@@ -200,6 +210,10 @@ class ToDoTaskServiceTest : PostgresTestContainer() {
         toDoTaskService.skipTask(token, taskId)
 
         // then
-        assertEquals(2, userQueueRepository.findAll().first { it.id == 1L }.progress)
+        assertEquals(
+            2,
+            userQueueRepository.findAll()
+                .first { it.userQueueId?.userId == 1L && it.userQueueId?.queueId == taskId }.progress
+        )
     }
 }
