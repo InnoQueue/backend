@@ -73,7 +73,7 @@ class ToDoTaskService(
             } // if it's user's turn in this queue
             else {
                 // if user completed a task, but he had skips, then he still is the next one of this queue
-                if (userQueue.getSkips() > 0) {
+                if (userQueue.getProgress() > 0) {
                     addProgress(it, expenses)
                 }// if user completed a task and didn't have skips then the turn is assigned to the next user
                 else {
@@ -103,6 +103,7 @@ class ToDoTaskService(
         if (userQueue.getUserId() == userQueue.getCurrentUserId()) {
             val user = userService.findUserByToken(token)
             val queue = queueService.getUserQueueByQueueId(user, taskId)
+            queue.progress = queue.progress?.plus(1)
             queue.skips = queue.skips?.plus(1)
             userQueueRepository.save(queue)
             notificationsService.sendNotificationMessage(
@@ -124,11 +125,12 @@ class ToDoTaskService(
     }
 
     private fun addProgress(queue: UserQueue, expenses: Double?) {
-        queue.skips = queue.skips?.minus(1)
+        queue.progress = queue.progress?.minus(1)
         saveTaskProgress(queue, expenses)
     }
 
     private fun saveTaskProgress(userQueue: UserQueue, expenses: Double?) {
+        userQueue.completes = userQueue.completes?.plus(1)
         if (expenses != null && userQueue.queue?.trackExpenses == true) {
             val roundedExpenses = String.format(Locale.ENGLISH, "%.2f", expenses).toDouble()
             userQueue.expenses = userQueue.expenses?.plus(roundedExpenses)

@@ -238,7 +238,7 @@ class QueueService(
                 userQueue.queue?.id!!,
                 userQueue.queue?.name!!
             )
-            userQueue.skips = 0
+            userQueue.progress = 0
             // If it's your turn, reassign another user
             if (userQueue.queue?.currentUser?.id == user.id) {
                 val nextUser = UsersQueueLogic.assignNextUser(userQueue, userQueueRepository, queueRepository)
@@ -416,10 +416,10 @@ class QueueService(
         participants.addAll(participantsAfterCurrent)
         participants.addAll(participantsBeforeCurrent)
 
-        val (participantsWithAddProgress, participantsWithoutAddProgress) = participants.partition { it.skips!! < 0 }
+        val (participantsWithAddProgress, participantsWithoutAddProgress) = participants.partition { it.progress!! < 0 }
 
         val sortedParticipants =
-            participantsWithoutAddProgress + participantsWithAddProgress.sortedByDescending { it.skips }
+            participantsWithoutAddProgress + participantsWithAddProgress.sortedByDescending { it.progress }
 
         val (activeUsers, frozenUsers) = sortedParticipants.partition { it.isActive!! }
         val participantsResult = activeUsers + frozenUsers
@@ -463,6 +463,8 @@ class QueueService(
         userQueue.queue = queue
         userQueue.user = user
         userQueue.isActive = true
+        userQueue.progress = 0
+        userQueue.completes = 0
         userQueue.skips = 0
         userQueue.expenses = 0.0
         userQueue.dateJoined = LocalDateTime.now()

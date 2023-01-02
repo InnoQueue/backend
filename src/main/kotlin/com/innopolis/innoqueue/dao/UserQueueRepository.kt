@@ -11,6 +11,8 @@ SELECT user_queue.user_id    userId,
        queue.current_user_id currentUserId,
        queue.track_expenses  trackExpenses,
        user_queue.is_active  isActive,
+       user_queue.progress,
+       user_queue.completes,
        user_queue.skips,
        user_queue.expenses
 FROM user_queue

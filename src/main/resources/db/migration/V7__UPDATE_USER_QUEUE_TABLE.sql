@@ -1,0 +1,7 @@
+ALTER TABLE user_queue
+    DROP COLUMN IF EXISTS skips;
+
+ALTER TABLE user_queue
+    ADD COLUMN IF NOT EXISTS progress  integer NOT NULL DEFAULT 0,
+    ADD COLUMN IF NOT EXISTS completes integer NOT NULL DEFAULT 0,
+    ADD COLUMN IF NOT EXISTS skips     integer NOT NULL DEFAULT 0;

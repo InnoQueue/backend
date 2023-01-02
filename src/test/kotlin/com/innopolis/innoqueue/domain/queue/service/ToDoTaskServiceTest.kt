@@ -172,7 +172,7 @@ class ToDoTaskServiceTest : PostgresTestContainer() {
         toDoTaskService.completeTask(token, taskId, 0.0)
 
         // then
-        assertEquals(-1, userQueueRepository.findAll().first { it.id == 7L }.skips)
+        assertEquals(-1, userQueueRepository.findAll().first { it.id == 7L }.progress)
     }
 
     @Test
@@ -186,7 +186,7 @@ class ToDoTaskServiceTest : PostgresTestContainer() {
         toDoTaskService.completeTask(token, taskId, 0.0)
 
         // then
-        assertEquals(0, userQueueRepository.findAll().first { it.id == 1L }.skips)
+        assertEquals(0, userQueueRepository.findAll().first { it.id == 1L }.progress)
     }
 
     @Test
@@ -200,6 +200,6 @@ class ToDoTaskServiceTest : PostgresTestContainer() {
         toDoTaskService.skipTask(token, taskId)
 
         // then
-        assertEquals(2, userQueueRepository.findAll().first { it.id == 1L }.skips)
+        assertEquals(2, userQueueRepository.findAll().first { it.id == 1L }.progress)
     }
 }

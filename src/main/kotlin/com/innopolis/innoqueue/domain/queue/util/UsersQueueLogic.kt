@@ -29,8 +29,8 @@ object UsersQueueLogic {
             val nextUserQueue = nextUser?.queues?.firstOrNull { q -> q.queue?.id == queue.queue?.id }!!
 
             // If next user has skips < 0, then increment his skip and assign a queue to the user after him
-            if (nextUserQueue.skips!! < 0) {
-                nextUserQueue.skips = nextUserQueue.skips!! + 1
+            if (nextUserQueue.progress!! < 0) {
+                nextUserQueue.progress = nextUserQueue.progress!! + 1
                 userQueueRepository.save(nextUserQueue)
                 index++
             } // We found the next candidate

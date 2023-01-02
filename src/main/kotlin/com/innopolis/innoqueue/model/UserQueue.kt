@@ -26,13 +26,19 @@ class UserQueue {
     var user: User? = null
 
     @Column(name = "is_active", nullable = false)
-    var isActive: Boolean? = false
+    var isActive: Boolean? = true
+
+    @Column(name = "progress", nullable = false)
+    var progress: Int? = 0
+
+    @Column(name = "completes", nullable = false)
+    var completes: Int? = 0
 
     @Column(name = "skips", nullable = false)
-    var skips: Int? = null
+    var skips: Int? = 0
 
     @Column(name = "expenses", nullable = false)
-    var expenses: Double? = null
+    var expenses: Double? = 0.0
 
     @Column(name = "date_joined", nullable = false)
     var dateJoined: LocalDateTime? = null
