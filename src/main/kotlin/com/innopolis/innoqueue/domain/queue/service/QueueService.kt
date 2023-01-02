@@ -466,7 +466,7 @@ class QueueService(
         userQueue.progress = 0
         userQueue.completes = 0
         userQueue.skips = 0
-        userQueue.expenses = 0.0
+        userQueue.expenses = 0L
         userQueue.dateJoined = LocalDateTime.now()
         return userQueue
     }

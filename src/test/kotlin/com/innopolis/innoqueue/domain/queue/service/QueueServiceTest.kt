@@ -174,7 +174,7 @@ class QueueServiceTest : PostgresTestContainer() {
             UserExpensesDTO(
                 userId = 2L,
                 userName = "Emil",
-                expenses = 0.0,
+                expenses = 0L,
                 isActive = true
             ), result.currentUser
         )
@@ -183,7 +183,7 @@ class QueueServiceTest : PostgresTestContainer() {
             UserExpensesDTO(
                 userId = 3L,
                 userName = "Roman",
-                expenses = 0.0,
+                expenses = 0L,
                 isActive = true
             ), result.participants[0]
         )
@@ -191,7 +191,7 @@ class QueueServiceTest : PostgresTestContainer() {
             UserExpensesDTO(
                 userId = 4L,
                 userName = "Timur",
-                expenses = 0.0,
+                expenses = 0L,
                 isActive = true
             ), result.participants[1]
         )
@@ -199,7 +199,7 @@ class QueueServiceTest : PostgresTestContainer() {
             UserExpensesDTO(
                 userId = 5L,
                 userName = "Ivan",
-                expenses = 0.0,
+                expenses = 0L,
                 isActive = true
             ), result.participants[2]
         )
@@ -207,7 +207,7 @@ class QueueServiceTest : PostgresTestContainer() {
             UserExpensesDTO(
                 userId = 1L,
                 userName = "admin",
-                expenses = 0.0,
+                expenses = 0L,
                 isActive = false
             ), result.participants[3]
         )

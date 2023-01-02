@@ -1,6 +1,7 @@
 package com.innopolis.innoqueue.rest.v1
 
 import com.innopolis.innoqueue.dto.ToDoTaskDTO
+import com.innopolis.innoqueue.rest.v1.dto.SkipTaskDTO
 import com.innopolis.innoqueue.rest.v1.dto.TaskDTO
 import com.innopolis.innoqueue.service.ToDoTaskService
 import io.swagger.v3.oas.annotations.Operation
@@ -73,6 +74,6 @@ class ToDoTasksController(
     @Operation(summary = "Skip a to-do task")
     @PostMapping("/skip")
     @ResponseStatus(HttpStatus.OK)
-    fun skipTask(@RequestHeader("user-token") token: String, @RequestBody task: TaskDTO): Unit =
+    fun skipTask(@RequestHeader("user-token") token: String, @RequestBody task: SkipTaskDTO): Unit =
         service.skipTask(token, task.taskId)
 }

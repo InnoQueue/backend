@@ -46,7 +46,7 @@ class ToDoTaskService(
      * @param token - user token
      * @param taskId - id of a queue
      */
-    fun completeTask(token: String, taskId: Long, expenses: Double?) {
+    fun completeTask(token: String, taskId: Long, expenses: Long?) {
         val userQueue = userQueueRepository.findUserQueue(token, taskId)
         // If this queue requires to track expenses it should not be null or negative number
         if (userQueue.getTrackExpenses() && (expenses == null || expenses < 0)) {
@@ -124,16 +124,15 @@ class ToDoTaskService(
         }
     }
 
-    private fun addProgress(queue: UserQueue, expenses: Double?) {
+    private fun addProgress(queue: UserQueue, expenses: Long?) {
         queue.progress = queue.progress?.minus(1)
         saveTaskProgress(queue, expenses)
     }
 
-    private fun saveTaskProgress(userQueue: UserQueue, expenses: Double?) {
+    private fun saveTaskProgress(userQueue: UserQueue, expenses: Long?) {
         userQueue.completes = userQueue.completes?.plus(1)
         if (expenses != null && userQueue.queue?.trackExpenses == true) {
-            val roundedExpenses = String.format(Locale.ENGLISH, "%.2f", expenses).toDouble()
-            userQueue.expenses = userQueue.expenses?.plus(roundedExpenses)
+            userQueue.expenses = userQueue.expenses?.plus(expenses)
         }
         Hibernate.initialize(userQueue.queue)
         val queue = userQueue.queue!!

@@ -143,7 +143,7 @@ class ToDoTaskServiceTest : PostgresTestContainer() {
 
         // when and then
         Assertions.assertThrows(IllegalArgumentException::class.java) {
-            toDoTaskService.completeTask(token, taskId, -1.1)
+            toDoTaskService.completeTask(token, taskId, -110L)
         }
     }
 
@@ -155,7 +155,7 @@ class ToDoTaskServiceTest : PostgresTestContainer() {
         val taskId = 40L
 
         // when
-        toDoTaskService.completeTask(token, taskId, 0.0)
+        toDoTaskService.completeTask(token, taskId, 0L)
 
         // then
         assertTrue(toDoTaskService.getToDoTasks(token).none { it.queueId == taskId })
@@ -169,7 +169,7 @@ class ToDoTaskServiceTest : PostgresTestContainer() {
         val taskId = 34L
 
         // when
-        toDoTaskService.completeTask(token, taskId, 0.0)
+        toDoTaskService.completeTask(token, taskId, 0L)
 
         // then
         assertEquals(-1, userQueueRepository.findAll().first { it.id == 7L }.progress)
@@ -183,7 +183,7 @@ class ToDoTaskServiceTest : PostgresTestContainer() {
         val taskId = 44L
 
         // when
-        toDoTaskService.completeTask(token, taskId, 0.0)
+        toDoTaskService.completeTask(token, taskId, 0L)
 
         // then
         assertEquals(0, userQueueRepository.findAll().first { it.id == 1L }.progress)

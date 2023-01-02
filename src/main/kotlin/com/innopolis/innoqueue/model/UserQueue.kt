@@ -38,7 +38,7 @@ class UserQueue {
     var skips: Int? = 0
 
     @Column(name = "expenses", nullable = false)
-    var expenses: Double? = 0.0
+    var expenses: Long? = 0
 
     @Column(name = "date_joined", nullable = false)
     var dateJoined: LocalDateTime? = null

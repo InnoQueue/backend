@@ -539,7 +539,7 @@ class NotificationsServiceTest : PostgresTestContainer() {
                 progress = 0
                 completes = 0
                 skips = 0
-                expenses = 0.0
+                expenses = 0L
                 dateJoined = LocalDateTime.of(2022, 11, 4, 12, 12, 12)
             },
             getUserQueue(2L, 2L, "Emil", queueModel),
@@ -565,7 +565,7 @@ class NotificationsServiceTest : PostgresTestContainer() {
             progress = 0
             completes = 0
             skips = 0
-            expenses = 0.0
+            expenses = 0L
             dateJoined = LocalDateTime.of(2022, 11, 4, 12, 12, 12)
         }
 

@@ -1,5 +1,6 @@
 package com.innopolis.innoqueue.rest.v1
 
+import com.innopolis.innoqueue.rest.v1.dto.SkipTaskDTO
 import com.innopolis.innoqueue.rest.v1.dto.TaskDTO
 import com.innopolis.innoqueue.service.ToDoTaskService
 import io.mockk.mockk
@@ -28,7 +29,7 @@ class ToDoTasksControllerTest {
         val token = "token"
         val taskDTO = TaskDTO(
             taskId = 1L,
-            expenses = 10.0
+            expenses = 1000
         )
         val service = mockk<ToDoTaskService>(relaxed = true)
         val controller = ToDoTasksController(service)
@@ -44,9 +45,8 @@ class ToDoTasksControllerTest {
     fun `Test skipTask service called`() {
         // given
         val token = "token"
-        val taskDTO = TaskDTO(
-            taskId = 1L,
-            expenses = null
+        val taskDTO = SkipTaskDTO(
+            taskId = 1L
         )
         val service = mockk<ToDoTaskService>(relaxed = true)
         val controller = ToDoTasksController(service)
