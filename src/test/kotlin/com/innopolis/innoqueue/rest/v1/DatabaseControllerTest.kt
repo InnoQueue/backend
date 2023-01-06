@@ -1,6 +1,6 @@
 package com.innopolis.innoqueue.rest.v1
 
-import com.innopolis.innoqueue.service.DatabaseService
+import com.innopolis.innoqueue.domain.queue.service.DatabaseService
 import io.mockk.mockk
 import io.mockk.verify
 import org.junit.jupiter.api.Test

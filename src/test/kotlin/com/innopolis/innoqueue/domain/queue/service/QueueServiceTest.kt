@@ -1,13 +1,13 @@
 package com.innopolis.innoqueue.domain.queue.service
 
-import com.innopolis.innoqueue.dao.UserQueueRepository
+import com.innopolis.innoqueue.domain.notification.service.NotificationService
 import com.innopolis.innoqueue.domain.queue.dao.QueueRepository
-import com.innopolis.innoqueue.domain.queue.dto.EditQueueDTO
-import com.innopolis.innoqueue.domain.queue.dto.NewQueueDTO
-import com.innopolis.innoqueue.domain.queue.dto.QueueInviteCodeDTO
+import com.innopolis.innoqueue.domain.queue.dto.EditQueueDto
+import com.innopolis.innoqueue.domain.queue.dto.NewQueueDto
+import com.innopolis.innoqueue.domain.queue.dto.QueueInviteCodeDto
+import com.innopolis.innoqueue.domain.queue.dto.UserExpensesDto
 import com.innopolis.innoqueue.domain.user.service.UserService
-import com.innopolis.innoqueue.dto.UserExpensesDTO
-import com.innopolis.innoqueue.service.NotificationService
+import com.innopolis.innoqueue.domain.userqueue.dao.UserQueueRepository
 import com.innopolis.innoqueue.testcontainer.PostgresTestContainer
 import io.mockk.every
 import io.mockk.mockk
@@ -171,7 +171,7 @@ class QueueServiceTest : PostgresTestContainer() {
         assertEquals(false, result.isActive)
         assertEquals(false, result.isAdmin)
         assertEquals(
-            UserExpensesDTO(
+            UserExpensesDto(
                 userId = 2L,
                 userName = "Emil",
                 expenses = 0L,
@@ -180,7 +180,7 @@ class QueueServiceTest : PostgresTestContainer() {
         )
         assertEquals(4, result.participants.size)
         assertEquals(
-            UserExpensesDTO(
+            UserExpensesDto(
                 userId = 3L,
                 userName = "Roman",
                 expenses = 0L,
@@ -188,7 +188,7 @@ class QueueServiceTest : PostgresTestContainer() {
             ), result.participants[0]
         )
         assertEquals(
-            UserExpensesDTO(
+            UserExpensesDto(
                 userId = 4L,
                 userName = "Timur",
                 expenses = 0L,
@@ -196,7 +196,7 @@ class QueueServiceTest : PostgresTestContainer() {
             ), result.participants[1]
         )
         assertEquals(
-            UserExpensesDTO(
+            UserExpensesDto(
                 userId = 5L,
                 userName = "Ivan",
                 expenses = 0L,
@@ -204,7 +204,7 @@ class QueueServiceTest : PostgresTestContainer() {
             ), result.participants[2]
         )
         assertEquals(
-            UserExpensesDTO(
+            UserExpensesDto(
                 userId = 1L,
                 userName = "admin",
                 expenses = 0L,
@@ -251,7 +251,7 @@ class QueueServiceTest : PostgresTestContainer() {
         val queueName = "queueName"
         val queueColor = "queueColor"
         val trackExpenses = true
-        val queueDto = NewQueueDTO(
+        val queueDto = NewQueueDto(
             name = queueName,
             color = queueColor,
             trackExpenses = trackExpenses
@@ -291,7 +291,7 @@ class QueueServiceTest : PostgresTestContainer() {
     fun `Test editQueue exception if queueId is not specified`() {
         // given
         val token = "11111"
-        val queueDto = EditQueueDTO(
+        val queueDto = EditQueueDto(
             queueId = null,
             name = "queueName",
             color = "queueColor",
@@ -310,7 +310,7 @@ class QueueServiceTest : PostgresTestContainer() {
     fun `Test editQueue exception if user is not admin`() {
         // given
         val token = "11111"
-        val queueDto = EditQueueDTO(
+        val queueDto = EditQueueDto(
             queueId = 6L,
             name = "queueName",
             color = "queueColor",
@@ -329,7 +329,7 @@ class QueueServiceTest : PostgresTestContainer() {
     fun `Test editQueue exception if queue does not exist`() {
         // given
         val token = "11111"
-        val queueDto = EditQueueDTO(
+        val queueDto = EditQueueDto(
             queueId = 6542L,
             name = "queueName",
             color = "queueColor",
@@ -348,7 +348,7 @@ class QueueServiceTest : PostgresTestContainer() {
     fun `Test editQueue exception if queue name is an empty string`() {
         // given
         val token = "11111"
-        val queueDto = EditQueueDTO(
+        val queueDto = EditQueueDto(
             queueId = 34L,
             name = "",
             color = "queueColor",
@@ -367,7 +367,7 @@ class QueueServiceTest : PostgresTestContainer() {
     fun `Test editQueue exception if queue color is an empty string`() {
         // given
         val token = "11111"
-        val queueDto = EditQueueDTO(
+        val queueDto = EditQueueDto(
             queueId = 34L,
             name = "name",
             color = "",
@@ -390,7 +390,7 @@ class QueueServiceTest : PostgresTestContainer() {
         val queueName = "new queue name"
         val queueColor = "new queue color"
         val trackExpenses = false
-        val queueDto = EditQueueDTO(
+        val queueDto = EditQueueDto(
             queueId = queueId,
             name = queueName,
             color = queueColor,
@@ -492,7 +492,7 @@ class QueueServiceTest : PostgresTestContainer() {
     fun `Test joinQueue exception if nothing is provided`() {
         // given
         val token = "11111"
-        val queueDto = QueueInviteCodeDTO(
+        val queueDto = QueueInviteCodeDto(
             pinCode = null,
             qrCode = null
         )
@@ -508,7 +508,7 @@ class QueueServiceTest : PostgresTestContainer() {
     fun `Test joinQueue exception if pin code does not exist`() {
         // given
         val token = "11111"
-        val queueDto = QueueInviteCodeDTO(
+        val queueDto = QueueInviteCodeDto(
             pinCode = "does not exist",
             qrCode = null
         )
@@ -525,7 +525,7 @@ class QueueServiceTest : PostgresTestContainer() {
         // given
         val token = "11111"
         val queueId = 6L
-        val queueDto = QueueInviteCodeDTO(
+        val queueDto = QueueInviteCodeDto(
             pinCode = "111111",
             qrCode = null
         )
@@ -545,7 +545,7 @@ class QueueServiceTest : PostgresTestContainer() {
     fun `Test joinQueue exception if qr code does not exist`() {
         // given
         val token = "11111"
-        val queueDto = QueueInviteCodeDTO(
+        val queueDto = QueueInviteCodeDto(
             pinCode = null,
             qrCode = "does not exist"
         )
@@ -562,7 +562,7 @@ class QueueServiceTest : PostgresTestContainer() {
         // given
         val token = "11111"
         val queueId = 6L
-        val queueDto = QueueInviteCodeDTO(
+        val queueDto = QueueInviteCodeDto(
             pinCode = null,
             qrCode = "111111"
         )

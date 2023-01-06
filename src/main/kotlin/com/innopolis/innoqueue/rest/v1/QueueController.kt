@@ -2,7 +2,6 @@ package com.innopolis.innoqueue.rest.v1
 
 import com.innopolis.innoqueue.domain.queue.dto.*
 import com.innopolis.innoqueue.domain.queue.service.QueueService
-import com.innopolis.innoqueue.dto.*
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.HttpStatus
@@ -58,7 +57,7 @@ class QueueController(
                 "So, a client will know whether he can request for queue details or use its local cache."
     )
     @GetMapping
-    fun getQueues(@RequestHeader("user-token") token: String): QueuesListDTO = service.getQueues(token)
+    fun getQueues(@RequestHeader("user-token") token: String): QueuesListDto = service.getQueues(token)
 
     /**
      * GET endpoint for queue details
@@ -73,7 +72,7 @@ class QueueController(
                 "They are sorted in terms who is next will be forced to be responsible for a queue."
     )
     @GetMapping("/{queueId}")
-    fun getQueueById(@RequestHeader("user-token") token: String, @PathVariable queueId: Long): QueueDTO =
+    fun getQueueById(@RequestHeader("user-token") token: String, @PathVariable queueId: Long): QueueDto =
         service.getQueueById(token, queueId)
 
     /**
@@ -93,7 +92,7 @@ class QueueController(
     fun getQueueInviteCode(
         @RequestHeader("user-token") token: String,
         @PathVariable queueId: Long
-    ): QueueInviteCodeDTO =
+    ): QueueInviteCodeDto =
         service.getQueueInviteCode(token, queueId)
 
     /**
@@ -103,7 +102,7 @@ class QueueController(
     @Operation(summary = "Create a queue")
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
-    fun createQueue(@RequestHeader("user-token") token: String, @RequestBody queue: NewQueueDTO): QueueDTO =
+    fun createQueue(@RequestHeader("user-token") token: String, @RequestBody queue: NewQueueDto): QueueDto =
         service.createQueue(token, queue)
 
     /**
@@ -118,7 +117,7 @@ class QueueController(
     )
     @PatchMapping
     @ResponseStatus(HttpStatus.OK)
-    fun editQueue(@RequestHeader("user-token") token: String, @RequestBody queue: EditQueueDTO): QueueDTO =
+    fun editQueue(@RequestHeader("user-token") token: String, @RequestBody queue: EditQueueDto): QueueDto =
         service.editQueue(token, queue)
 
     /**
@@ -177,7 +176,7 @@ class QueueController(
     )
     @PostMapping("/join")
     @ResponseStatus(HttpStatus.OK)
-    fun joinQueue(@RequestHeader("user-token") token: String, @RequestBody queue: QueueInviteCodeDTO) =
+    fun joinQueue(@RequestHeader("user-token") token: String, @RequestBody queue: QueueInviteCodeDto) =
         service.joinQueue(token, queue)
 
     /**

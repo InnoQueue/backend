@@ -1,7 +1,7 @@
 package com.innopolis.innoqueue.domain.queue.dao
 
-import com.innopolis.innoqueue.dao.QueueAndUserQueue
 import com.innopolis.innoqueue.domain.queue.model.Queue
+import com.innopolis.innoqueue.domain.queue.model.QueueAndUserQueue
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.CrudRepository

@@ -1,10 +1,9 @@
 package com.innopolis.innoqueue.domain.queue.service
 
-import com.innopolis.innoqueue.dao.UserQueueRepository
+import com.innopolis.innoqueue.domain.notification.service.NotificationService
 import com.innopolis.innoqueue.domain.queue.dao.QueueRepository
 import com.innopolis.innoqueue.domain.user.service.UserService
-import com.innopolis.innoqueue.service.NotificationService
-import com.innopolis.innoqueue.service.ToDoTaskService
+import com.innopolis.innoqueue.domain.userqueue.dao.UserQueueRepository
 import com.innopolis.innoqueue.testcontainer.PostgresTestContainer
 import io.mockk.every
 import io.mockk.mockk

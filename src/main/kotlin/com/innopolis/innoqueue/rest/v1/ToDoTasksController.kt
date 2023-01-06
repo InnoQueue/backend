@@ -1,9 +1,9 @@
 package com.innopolis.innoqueue.rest.v1
 
-import com.innopolis.innoqueue.dto.ToDoTaskDTO
-import com.innopolis.innoqueue.rest.v1.dto.SkipTaskDTO
-import com.innopolis.innoqueue.rest.v1.dto.TaskDTO
-import com.innopolis.innoqueue.service.ToDoTaskService
+import com.innopolis.innoqueue.domain.queue.dto.ToDoTaskDto
+import com.innopolis.innoqueue.domain.queue.service.ToDoTaskService
+import com.innopolis.innoqueue.rest.v1.dto.SkipTaskDto
+import com.innopolis.innoqueue.rest.v1.dto.TaskDto
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.HttpStatus
@@ -55,7 +55,7 @@ class ToDoTasksController(
                 "- Queues in which there are no participants (only you) won't be shown.\n"
     )
     @GetMapping
-    fun getToDoTasks(@RequestHeader("user-token") token: String): List<ToDoTaskDTO> = service.getToDoTasks(token)
+    fun getToDoTasks(@RequestHeader("user-token") token: String): List<ToDoTaskDto> = service.getToDoTasks(token)
 
     /**
      * POST endpoint for completing to-do task
@@ -64,7 +64,7 @@ class ToDoTasksController(
     @Operation(summary = "Complete a to-do task")
     @PostMapping("/done")
     @ResponseStatus(HttpStatus.OK)
-    fun completeTask(@RequestHeader("user-token") token: String, @RequestBody task: TaskDTO) =
+    fun completeTask(@RequestHeader("user-token") token: String, @RequestBody task: TaskDto) =
         service.completeTask(token, task.taskId, task.expenses)
 
     /**
@@ -74,6 +74,6 @@ class ToDoTasksController(
     @Operation(summary = "Skip a to-do task")
     @PostMapping("/skip")
     @ResponseStatus(HttpStatus.OK)
-    fun skipTask(@RequestHeader("user-token") token: String, @RequestBody task: SkipTaskDTO): Unit =
+    fun skipTask(@RequestHeader("user-token") token: String, @RequestBody task: SkipTaskDto): Unit =
         service.skipTask(token, task.taskId)
 }

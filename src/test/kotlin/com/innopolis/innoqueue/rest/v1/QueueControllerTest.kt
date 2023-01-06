@@ -1,8 +1,8 @@
 package com.innopolis.innoqueue.rest.v1
 
-import com.innopolis.innoqueue.domain.queue.dto.EditQueueDTO
-import com.innopolis.innoqueue.domain.queue.dto.NewQueueDTO
-import com.innopolis.innoqueue.domain.queue.dto.QueueInviteCodeDTO
+import com.innopolis.innoqueue.domain.queue.dto.EditQueueDto
+import com.innopolis.innoqueue.domain.queue.dto.NewQueueDto
+import com.innopolis.innoqueue.domain.queue.dto.QueueInviteCodeDto
 import com.innopolis.innoqueue.domain.queue.service.QueueService
 import io.mockk.mockk
 import io.mockk.verify
@@ -58,7 +58,7 @@ class QueueControllerTest {
     fun `Test createQueue service called`() {
         // given
         val token = "token"
-        val queueDto = NewQueueDTO(
+        val queueDto = NewQueueDto(
             name = "name",
             color = "color",
             trackExpenses = false
@@ -77,7 +77,7 @@ class QueueControllerTest {
     fun `Test editQueue service called`() {
         // given
         val token = "token"
-        val queueDto = EditQueueDTO(
+        val queueDto = EditQueueDto(
             name = "name",
             color = "color",
             trackExpenses = false,
@@ -143,7 +143,7 @@ class QueueControllerTest {
     fun `Test joinQueue service called`() {
         // given
         val token = "token"
-        val queueDto = QueueInviteCodeDTO(
+        val queueDto = QueueInviteCodeDto(
             pinCode = "pin code",
             qrCode = null
         )

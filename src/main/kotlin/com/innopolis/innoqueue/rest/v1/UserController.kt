@@ -1,10 +1,10 @@
 package com.innopolis.innoqueue.rest.v1
 
-import com.innopolis.innoqueue.rest.v1.dto.NewUserDTO
-import com.innopolis.innoqueue.domain.user.dto.TokenDTO
-import com.innopolis.innoqueue.domain.user.dto.UpdateUserDTO
-import com.innopolis.innoqueue.domain.user.dto.UserDTO
+import com.innopolis.innoqueue.domain.user.dto.TokenDto
+import com.innopolis.innoqueue.domain.user.dto.UpdateUserDto
+import com.innopolis.innoqueue.domain.user.dto.UserDto
 import com.innopolis.innoqueue.domain.user.service.UserService
+import com.innopolis.innoqueue.rest.v1.dto.NewUserDto
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.HttpStatus
@@ -50,7 +50,7 @@ class UserController(private val service: UserService) {
                 "- Also provide the Firebase token device for `fcmToken`. It is an optional field."
     )
     @ResponseStatus(HttpStatus.OK)
-    fun createNewUser(@RequestBody newUserDTO: NewUserDTO): TokenDTO =
+    fun createNewUser(@RequestBody newUserDTO: NewUserDto): TokenDto =
         service.createNewUser(newUserDTO.userName, newUserDTO.fcmToken)
 
     /**
@@ -71,7 +71,7 @@ class UserController(private val service: UserService) {
                 "for a particular task**."
     )
     @GetMapping
-    fun getUserSettings(@RequestHeader("user-token") token: String): UserDTO = service.getUserSettings(token)
+    fun getUserSettings(@RequestHeader("user-token") token: String): UserDto = service.getUserSettings(token)
 
     /**
      * PATCH endpoint for updating user settings
@@ -95,6 +95,6 @@ class UserController(private val service: UserService) {
     @ResponseStatus(HttpStatus.OK)
     fun updateUserSettings(
         @RequestHeader("user-token") token: String,
-        @RequestBody settings: UpdateUserDTO
-    ): UserDTO = service.updateUserSettings(token, settings)
+        @RequestBody settings: UpdateUserDto
+    ): UserDto = service.updateUserSettings(token, settings)
 }

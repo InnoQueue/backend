@@ -1,18 +1,17 @@
 package com.innopolis.innoqueue.domain.queue.service
 
-import com.innopolis.innoqueue.dao.UserQueueRepository
-import com.innopolis.innoqueue.dao.UserQueuesShortForm
+import com.innopolis.innoqueue.domain.notification.enums.NotificationsType
+import com.innopolis.innoqueue.domain.notification.service.NotificationService
 import com.innopolis.innoqueue.domain.queue.dao.QueueRepository
 import com.innopolis.innoqueue.domain.queue.dto.*
 import com.innopolis.innoqueue.domain.queue.model.Queue
 import com.innopolis.innoqueue.domain.queue.util.UsersQueueLogic
 import com.innopolis.innoqueue.domain.user.model.User
 import com.innopolis.innoqueue.domain.user.service.UserService
-import com.innopolis.innoqueue.dto.UserExpensesDTO
-import com.innopolis.innoqueue.enums.NotificationsType
-import com.innopolis.innoqueue.model.UserQueue
-import com.innopolis.innoqueue.model.UserQueueId
-import com.innopolis.innoqueue.service.NotificationService
+import com.innopolis.innoqueue.domain.userqueue.dao.UserQueueRepository
+import com.innopolis.innoqueue.domain.userqueue.model.UserQueue
+import com.innopolis.innoqueue.domain.userqueue.model.UserQueueId
+import com.innopolis.innoqueue.domain.userqueue.model.UserQueuesShortForm
 import com.innopolis.innoqueue.util.StringGenerator
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
@@ -39,10 +38,10 @@ class QueueService(
      * Lists all queues for a particular user
      * @param token - user token
      */
-    fun getQueues(token: String): QueuesListDTO {
+    fun getQueues(token: String): QueuesListDto {
         val (activeQueues, frozenQueues) = userQueueRepository.findAllUserQueueByToken(token)
             .partition { it.getIsActive() }
-        return QueuesListDTO(activeQueues.convertToQueueShortDTO(), frozenQueues.convertToQueueShortDTO())
+        return QueuesListDto(activeQueues.convertToQueueShortDTO(), frozenQueues.convertToQueueShortDTO())
     }
 
     /**
@@ -50,7 +49,7 @@ class QueueService(
      * @param token - user token
      * @param queueId - id of a queue
      */
-    fun getQueueById(token: String, queueId: Long): QueueDTO {
+    fun getQueueById(token: String, queueId: Long): QueueDto {
         val queueOptional = queueRepository.findById(queueId)
         if (!queueOptional.isPresent) {
             throw IllegalArgumentException("User does not belong to such queue: $queueId")
@@ -58,7 +57,7 @@ class QueueService(
         val userQueue = userQueueRepository.findUserQueueByToken(token, queueId)
             ?: throw IllegalArgumentException("User does not belong to such queue: $queueId")
         val queue = queueOptional.get()
-        return QueueDTO(
+        return QueueDto(
             queueId = queue.queueId!!,
             queueName = queue.name!!,
             queueColor = queue.color!!,
@@ -77,11 +76,11 @@ class QueueService(
      * @param token - user token
      * @param queueId - id of a queue
      */
-    fun getQueueInviteCode(token: String, queueId: Long): QueueInviteCodeDTO {
+    fun getQueueInviteCode(token: String, queueId: Long): QueueInviteCodeDto {
         val userQueue = userQueueRepository.findUserQueueByToken(token, queueId)
             ?: throw IllegalArgumentException("User does not belong to such queue: $queueId")
         val queue = queueRepository.findAll().firstOrNull { it.queueId == userQueue.userQueueId?.queueId }!!
-        return QueueInviteCodeDTO(
+        return QueueInviteCodeDto(
             pinCode = queue.getQueuePinCode(),
             qrCode = queue.getQueueQrCode()
         )
@@ -91,11 +90,11 @@ class QueueService(
      * Saves new queue
      * @param token - user token
      */
-    fun createQueue(token: String, queue: NewQueueDTO): QueueDTO {
+    fun createQueue(token: String, queue: NewQueueDto): QueueDto {
         val user = userService.findUserByToken(token)
         val createdQueue = saveQueueEntity(queue, user)
         saveUserQueueEntity(createdQueue, user)
-        val qDTO = QueueDTO(
+        val qDTO = QueueDto(
             queueId = createdQueue.queueId!!,
             queueName = createdQueue.name!!,
             queueColor = createdQueue.color!!,
@@ -116,7 +115,7 @@ class QueueService(
      * @param token - user token
      */
     @Suppress("ThrowsCount")
-    fun editQueue(token: String, editQueue: EditQueueDTO): QueueDTO {
+    fun editQueue(token: String, editQueue: EditQueueDto): QueueDto {
         if (editQueue.queueId == null) {
             throw IllegalArgumentException("Queue id should be specified")
         }
@@ -270,7 +269,7 @@ class QueueService(
      * @param token - user token
      */
     @Suppress("ThrowsCount", "ReturnCount", "LongMethod")
-    fun joinQueue(token: String, queueInviteCodeDTO: QueueInviteCodeDTO): QueueDTO {
+    fun joinQueue(token: String, queueInviteCodeDTO: QueueInviteCodeDto): QueueDto {
         val user = userService.findUserByToken(token)
 
         if (queueInviteCodeDTO.pinCode != null) {
@@ -367,9 +366,9 @@ class QueueService(
         }
     }
 
-    private fun List<UserQueuesShortForm>.convertToQueueShortDTO(): List<QueueShortDTO> =
+    private fun List<UserQueuesShortForm>.convertToQueueShortDTO(): List<QueueShortDto> =
         this.map {
-            QueueShortDTO(
+            QueueShortDto(
                 queueId = it.getQueueId(),
                 queueName = it.getQueueName(),
                 queueColor = it.getColor(),
@@ -378,7 +377,7 @@ class QueueService(
         }
 
     @Suppress("MagicNumber")
-    fun getHashCode(queue: QueueDTO): Int {
+    fun getHashCode(queue: QueueDto): Int {
         val hashCodes =
             mutableListOf(
                 queue.queueId.hashCode(),
@@ -408,8 +407,8 @@ class QueueService(
         return 123
     }
 
-    fun transformQueueToDTO(queue: Queue?, isActive: Boolean, userId: Long): QueueDTO {
-        val qDTO = QueueDTO(
+    fun transformQueueToDTO(queue: Queue?, isActive: Boolean, userId: Long): QueueDto {
+        val qDTO = QueueDto(
             queueId = queue?.queueId!!,
             queueName = queue.name!!,
             queueColor = queue.color!!,
@@ -425,7 +424,7 @@ class QueueService(
         return qDTO
     }
 
-    private fun getParticipants(queue: Queue): List<UserExpensesDTO> {
+    private fun getParticipants(queue: Queue): List<UserExpensesDto> {
         val userQueueParticipants =
             userQueueRepository.findAll().filter { it.userQueueId?.queueId == queue.queueId }.sortedBy { it.dateJoined }
 
@@ -454,12 +453,12 @@ class QueueService(
         }
     }
 
-    private fun transformUserToUserExpensesDTO(userId: Long?, queue: Queue): UserExpensesDTO {
+    private fun transformUserToUserExpensesDTO(userId: Long?, queue: Queue): UserExpensesDto {
         val user = userService.findUserById(userId!!)
         val isActive = userQueueRepository.findAll()
             .firstOrNull { it.userQueueId?.queueId == queue.queueId && it.userQueueId?.userId == user?.id }?.isActive
             ?: true
-        return UserExpensesDTO(
+        return UserExpensesDto(
             user?.id!!,
             user.name!!,
             userQueueRepository.findAll()
@@ -470,7 +469,7 @@ class QueueService(
         )
     }
 
-    private fun saveQueueEntity(queue: NewQueueDTO, user: User): Queue {
+    private fun saveQueueEntity(queue: NewQueueDto, user: User): Queue {
         if (queue.name.isEmpty()) {
             throw IllegalArgumentException("Queue name can't be an empty string")
         }

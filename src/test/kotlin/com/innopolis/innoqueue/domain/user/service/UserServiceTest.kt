@@ -3,7 +3,7 @@ package com.innopolis.innoqueue.domain.user.service
 import com.innopolis.innoqueue.domain.fcmtoken.dao.FcmTokenRepository
 import com.innopolis.innoqueue.domain.fcmtoken.service.FcmTokenService
 import com.innopolis.innoqueue.domain.user.dao.UserRepository
-import com.innopolis.innoqueue.domain.user.dto.UpdateUserDTO
+import com.innopolis.innoqueue.domain.user.dto.UpdateUserDto
 import com.innopolis.innoqueue.domain.user.model.User
 import com.innopolis.innoqueue.testcontainer.PostgresTestContainer
 import io.mockk.every
@@ -246,7 +246,7 @@ class UserServiceTest : PostgresTestContainer() {
     fun `Test updateUserSettings empty userName exception`() {
         // given
         val token = "token"
-        val userDTO = UpdateUserDTO(
+        val userDTO = UpdateUserDto(
             userName = "",
             completed = null,
             skipped = null,
@@ -266,7 +266,7 @@ class UserServiceTest : PostgresTestContainer() {
     fun `Test updateUserSettings change userName and user repo save called`() {
         // given
         val token = "token"
-        val userDTO = UpdateUserDTO(
+        val userDTO = UpdateUserDto(
             userName = "new user",
             completed = null,
             skipped = null,
@@ -297,7 +297,7 @@ class UserServiceTest : PostgresTestContainer() {
     fun `Test updateUserSettings change settings and user repo save called`() {
         // given
         val token = "token"
-        val userDTO = UpdateUserDTO(
+        val userDTO = UpdateUserDto(
             userName = null,
             completed = true,
             skipped = true,
@@ -329,7 +329,7 @@ class UserServiceTest : PostgresTestContainer() {
     fun `Test updateUserSettings no updates and no changes in DB`() {
         // given
         val token = "token"
-        val userDTO = UpdateUserDTO(
+        val userDTO = UpdateUserDto(
             userName = null,
             completed = null,
             skipped = null,
@@ -373,7 +373,7 @@ class UserServiceTest : PostgresTestContainer() {
         // given
         val token = "token"
         val expectedUserName = "new user name"
-        val userDTO = UpdateUserDTO(
+        val userDTO = UpdateUserDto(
             userName = "new user name",
             completed = null,
             skipped = null,
@@ -422,7 +422,7 @@ class UserServiceTest : PostgresTestContainer() {
         val freeze = false
         val leftQueue = true
         val yourTurn = false
-        val userDTO = UpdateUserDTO(
+        val userDTO = UpdateUserDto(
             userName = null,
             completed = completed,
             skipped = null,
@@ -471,7 +471,7 @@ class UserServiceTest : PostgresTestContainer() {
         val freeze = false
         val leftQueue = true
         val yourTurn = false
-        val userDTO = UpdateUserDTO(
+        val userDTO = UpdateUserDto(
             userName = null,
             completed = null,
             skipped = skipped,
@@ -520,7 +520,7 @@ class UserServiceTest : PostgresTestContainer() {
         val freeze = false
         val leftQueue = true
         val yourTurn = false
-        val userDTO = UpdateUserDTO(
+        val userDTO = UpdateUserDto(
             userName = null,
             completed = null,
             skipped = null,
@@ -569,7 +569,7 @@ class UserServiceTest : PostgresTestContainer() {
         val freeze = true
         val leftQueue = true
         val yourTurn = false
-        val userDTO = UpdateUserDTO(
+        val userDTO = UpdateUserDto(
             userName = null,
             completed = null,
             skipped = null,
@@ -618,7 +618,7 @@ class UserServiceTest : PostgresTestContainer() {
         val freeze = false
         val leftQueue = false
         val yourTurn = false
-        val userDTO = UpdateUserDTO(
+        val userDTO = UpdateUserDto(
             userName = null,
             completed = null,
             skipped = null,
@@ -667,7 +667,7 @@ class UserServiceTest : PostgresTestContainer() {
         val freeze = false
         val leftQueue = true
         val yourTurn = true
-        val userDTO = UpdateUserDTO(
+        val userDTO = UpdateUserDto(
             userName = null,
             completed = null,
             skipped = null,
@@ -716,7 +716,7 @@ class UserServiceTest : PostgresTestContainer() {
         val freeze = false
         val leftQueue = false
         val yourTurn = false
-        val userDTO = UpdateUserDTO(
+        val userDTO = UpdateUserDto(
             userName = null,
             completed = completed,
             skipped = skipped,
@@ -766,7 +766,7 @@ class UserServiceTest : PostgresTestContainer() {
         val freeze = false
         val leftQueue = false
         val yourTurn = false
-        val userDTO = UpdateUserDTO(
+        val userDTO = UpdateUserDto(
             userName = userName,
             completed = completed,
             skipped = skipped,

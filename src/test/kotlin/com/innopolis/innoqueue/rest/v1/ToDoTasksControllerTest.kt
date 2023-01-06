@@ -1,8 +1,8 @@
 package com.innopolis.innoqueue.rest.v1
 
-import com.innopolis.innoqueue.rest.v1.dto.SkipTaskDTO
-import com.innopolis.innoqueue.rest.v1.dto.TaskDTO
-import com.innopolis.innoqueue.service.ToDoTaskService
+import com.innopolis.innoqueue.domain.queue.service.ToDoTaskService
+import com.innopolis.innoqueue.rest.v1.dto.SkipTaskDto
+import com.innopolis.innoqueue.rest.v1.dto.TaskDto
 import io.mockk.mockk
 import io.mockk.verify
 import org.junit.jupiter.api.Test
@@ -27,7 +27,7 @@ class ToDoTasksControllerTest {
     fun `Test completeTask service called`() {
         // given
         val token = "token"
-        val taskDTO = TaskDTO(
+        val taskDTO = TaskDto(
             taskId = 1L,
             expenses = 1000
         )
@@ -45,7 +45,7 @@ class ToDoTasksControllerTest {
     fun `Test skipTask service called`() {
         // given
         val token = "token"
-        val taskDTO = SkipTaskDTO(
+        val taskDTO = SkipTaskDto(
             taskId = 1L
         )
         val service = mockk<ToDoTaskService>(relaxed = true)

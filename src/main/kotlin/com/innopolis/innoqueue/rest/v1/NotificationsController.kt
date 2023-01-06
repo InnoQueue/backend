@@ -1,9 +1,9 @@
 package com.innopolis.innoqueue.rest.v1
 
-import com.innopolis.innoqueue.dto.NotificationsListDTO
-import com.innopolis.innoqueue.rest.v1.dto.EmptyDTO
-import com.innopolis.innoqueue.rest.v1.dto.NewNotificationDTO
-import com.innopolis.innoqueue.service.NotificationService
+import com.innopolis.innoqueue.domain.notification.dto.NotificationsListDto
+import com.innopolis.innoqueue.domain.notification.service.NotificationService
+import com.innopolis.innoqueue.rest.v1.dto.EmptyDto
+import com.innopolis.innoqueue.rest.v1.dto.NewNotificationDto
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.HttpStatus
@@ -37,7 +37,7 @@ class NotificationsController(
                 "Next time when you send this request, all `unread` messages will be in the `all` section."
     )
     @GetMapping
-    fun getNotifications(@RequestHeader("user-token") token: String): NotificationsListDTO =
+    fun getNotifications(@RequestHeader("user-token") token: String): NotificationsListDto =
         notificationService.getNotifications(token)
 
     /**
@@ -53,7 +53,7 @@ class NotificationsController(
                 "You can send this request any number of times: the `unread` message won't become `read`."
     )
     @GetMapping("/new")
-    fun anyNewNotification(@RequestHeader("user-token") token: String): NewNotificationDTO =
+    fun anyNewNotification(@RequestHeader("user-token") token: String): NewNotificationDto =
         notificationService.anyNewNotification(token)
 
     /**
@@ -66,5 +66,5 @@ class NotificationsController(
                 "- `old notifications` - notifications that are older than **2 weeks**.\n\n"
     )
     @GetMapping("/clear")
-    fun clearOldNotifications(): EmptyDTO = notificationService.clearOldNotifications()
+    fun clearOldNotifications(): EmptyDto = notificationService.clearOldNotifications()
 }

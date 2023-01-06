@@ -2,9 +2,9 @@ package com.innopolis.innoqueue.domain.user.service
 
 import com.innopolis.innoqueue.domain.fcmtoken.service.FcmTokenService
 import com.innopolis.innoqueue.domain.user.dao.UserRepository
-import com.innopolis.innoqueue.domain.user.dto.TokenDTO
-import com.innopolis.innoqueue.domain.user.dto.UpdateUserDTO
-import com.innopolis.innoqueue.domain.user.dto.UserDTO
+import com.innopolis.innoqueue.domain.user.dto.TokenDto
+import com.innopolis.innoqueue.domain.user.dto.UpdateUserDto
+import com.innopolis.innoqueue.domain.user.dto.UserDto
 import com.innopolis.innoqueue.domain.user.model.User
 import com.innopolis.innoqueue.util.StringGenerator
 import org.springframework.core.env.Environment
@@ -45,8 +45,8 @@ class UserService(
      * List user settings
      * @param token - user token
      */
-    fun getUserSettings(token: String): UserDTO = this.findUserByToken(token).let {
-        UserDTO(
+    fun getUserSettings(token: String): UserDto = this.findUserByToken(token).let {
+        UserDto(
             it.name!!,
             it.completed!!,
             it.skipped!!,
@@ -61,7 +61,7 @@ class UserService(
      * Update user settings
      * @param token - user token
      */
-    fun updateUserSettings(token: String, settings: UpdateUserDTO): UserDTO {
+    fun updateUserSettings(token: String, settings: UpdateUserDto): UserDto {
         val user = this.findUserByToken(token)
         settings.userName?.let {
             if (it.isEmpty()) {
@@ -76,7 +76,7 @@ class UserService(
         settings.leftQueue?.let { user.leftQueue = it }
         settings.yourTurn?.let { user.yourTurn = it }
         return userRepository.save(user).let {
-            UserDTO(
+            UserDto(
                 it.name!!,
                 it.completed!!,
                 it.skipped!!,
@@ -93,21 +93,21 @@ class UserService(
      * @param userName - user's name
      * @param fcmToken - device Firebase token
      */
-    fun createNewUser(userName: String, fcmToken: String): TokenDTO {
+    fun createNewUser(userName: String, fcmToken: String): TokenDto {
         validateUserParameters(userName, fcmToken)
         val token = generateUserToken()
         // TODO remove after adding registration option
         return if (!environment.activeProfiles.contains("dev")) {
             val userId = saveUser(token, userName, fcmToken)
-            TokenDTO(token, userId)
+            TokenDto(token, userId)
         } else {
             val existingUser = userRepository.findAll().toList().firstOrNull { it.name == userName }
             if (existingUser == null) {
                 val userId = saveUser(token, userName, fcmToken)
-                TokenDTO(token, userId)
+                TokenDto(token, userId)
             } else {
                 fcmTokenService.saveFcmToken(existingUser.id!!, fcmToken)
-                TokenDTO(existingUser.token!!, existingUser.id!!)
+                TokenDto(existingUser.token!!, existingUser.id!!)
             }
         }
     }

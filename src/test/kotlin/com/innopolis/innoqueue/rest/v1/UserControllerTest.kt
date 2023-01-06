@@ -1,8 +1,8 @@
 package com.innopolis.innoqueue.rest.v1
 
-import com.innopolis.innoqueue.rest.v1.dto.NewUserDTO
-import com.innopolis.innoqueue.domain.user.dto.UpdateUserDTO
+import com.innopolis.innoqueue.domain.user.dto.UpdateUserDto
 import com.innopolis.innoqueue.domain.user.service.UserService
+import com.innopolis.innoqueue.rest.v1.dto.NewUserDto
 import io.mockk.mockk
 import io.mockk.verify
 import org.junit.jupiter.api.Test
@@ -18,7 +18,7 @@ class UserControllerTest {
         val controller = UserController(service)
 
         // when
-        controller.createNewUser(NewUserDTO(userName, fcmToken))
+        controller.createNewUser(NewUserDto(userName, fcmToken))
 
         // then
         verify(exactly = 1) { service.createNewUser(userName, fcmToken) }
@@ -42,7 +42,7 @@ class UserControllerTest {
     fun `Test updateUserSettings service called`() {
         // given
         val token = "token"
-        val userDTO = UpdateUserDTO(
+        val userDTO = UpdateUserDto(
             userName = "userName",
             completed = true,
             skipped = false,

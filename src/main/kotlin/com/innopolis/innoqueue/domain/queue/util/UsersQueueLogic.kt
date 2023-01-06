@@ -1,10 +1,10 @@
 package com.innopolis.innoqueue.domain.queue.util
 
-import com.innopolis.innoqueue.dao.UserQueueRepository
 import com.innopolis.innoqueue.domain.queue.dao.QueueRepository
 import com.innopolis.innoqueue.domain.user.model.User
 import com.innopolis.innoqueue.domain.user.service.UserService
-import com.innopolis.innoqueue.model.UserQueue
+import com.innopolis.innoqueue.domain.userqueue.dao.UserQueueRepository
+import com.innopolis.innoqueue.domain.userqueue.model.UserQueue
 
 /**
  * Util class for calculating which user has to be assigned to the queue
