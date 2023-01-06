@@ -60,9 +60,7 @@ class UserServiceTest : PostgresTestContainer() {
         every { userRepo.save(any()) } returns User().apply { id = 1L }
         val fcmService = mockk<FcmTokenService>(relaxed = true)
         every { fcmService.saveFcmToken(any(), any()) } returns Unit
-        val environment = mockk<Environment>(relaxed = true)
-        every { environment.activeProfiles } returns emptyArray<String>()
-        val service = UserService(userRepo, fcmService, environment)
+        val service = UserService(userRepo, fcmService)
 
         // when
         service.createNewUser(userName, fcmToken)
@@ -94,9 +92,7 @@ class UserServiceTest : PostgresTestContainer() {
         every { userRepo.save(any()) } returns User().apply { id = 1L }
         val fcmService = mockk<FcmTokenService>(relaxed = true)
         every { fcmService.saveFcmToken(any(), any()) } returns Unit
-        val environment = mockk<Environment>(relaxed = true)
-        every { environment.activeProfiles } returns emptyArray<String>()
-        val service = UserService(userRepo, fcmService, environment)
+        val service = UserService(userRepo, fcmService)
 
         // when
         service.createNewUser(userName, fcmToken)
@@ -284,7 +280,7 @@ class UserServiceTest : PostgresTestContainer() {
             id = 1L
             name = "user name"
         }
-        val service = UserService(userRepo, mockk(), mockk())
+        val service = UserService(userRepo, mockk())
 
         // when
         service.updateUserSettings(token, userDTO)
@@ -315,7 +311,7 @@ class UserServiceTest : PostgresTestContainer() {
             id = 1L
             name = "user name"
         }
-        val service = UserService(userRepo, mockk(), mockk())
+        val service = UserService(userRepo, mockk())
 
         // when
         service.updateUserSettings(token, userDTO)

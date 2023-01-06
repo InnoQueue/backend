@@ -7,7 +7,7 @@ import com.innopolis.innoqueue.domain.user.dto.UpdateUserDto
 import com.innopolis.innoqueue.domain.user.dto.UserDto
 import com.innopolis.innoqueue.domain.user.model.User
 import com.innopolis.innoqueue.util.StringGenerator
-import org.springframework.core.env.Environment
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
@@ -19,9 +19,12 @@ private const val TOKEN_LENGTH = 64
 @Service
 class UserService(
     private val userRepository: UserRepository,
-    private val fcmTokenService: FcmTokenService,
-    private val environment: Environment
+    private val fcmTokenService: FcmTokenService
 ) {
+
+    @Value("\${login.register}")
+    private val registerOption: Boolean = true
+
     /**
      * Return user model by it's token id
      * @param token - user token
@@ -97,7 +100,7 @@ class UserService(
         validateUserParameters(userName, fcmToken)
         val token = generateUserToken()
         // TODO remove after adding registration option
-        return if (!environment.activeProfiles.contains("dev")) {
+        return if (registerOption) {
             val userId = saveUser(token, userName, fcmToken)
             TokenDto(token, userId)
         } else {

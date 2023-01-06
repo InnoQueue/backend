@@ -25,3 +25,5 @@ springdoc:
   swagger-ui:
     enabled: true
     path: swagger-ui.html
+login:
+  register: ${REGISTER_OPTION:true}
