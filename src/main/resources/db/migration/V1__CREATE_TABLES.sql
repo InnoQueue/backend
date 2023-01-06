@@ -39,26 +39,22 @@ create unique index IF NOT EXISTS user_settings_user_settings_id_uindex
     on user_settings (user_settings_id);
 
 
-create table IF NOT EXISTS queue
+CREATE TABLE IF NOT EXISTS queue
 (
-    queue_id        bigserial
-        constraint queue_pk
-            primary key,
-    name            varchar(64) not null,
-    color           varchar(64) not null,
-    creator_id      bigint      not null
-        constraint creator_id
-            references "user"
-            on update cascade on delete cascade,
-    track_expenses  boolean     not null,
-    current_user_id bigint      not null
-        constraint current_user_id
-            references "user"
-            on update cascade on delete cascade
+    queue_id         BIGSERIAL PRIMARY KEY,
+    name             VARCHAR(64) NOT NULL,
+    color            VARCHAR(64) NOT NULL,
+    track_expenses   BOOLEAN     NOT NULL,
+    is_important     BOOLEAN     NOT NULL DEFAULT FALSE,
+    current_user_id  BIGINT,
+    creator_id       BIGINT,
+    pin_code         VARCHAR(8),
+    qr_code          VARCHAR(64),
+    pin_date_created TIMESTAMP,
+    qr_date_created  TIMESTAMP
 );
 
-create unique index IF NOT EXISTS queue_queue_id_uindex
-    on queue (queue_id);
+CREATE SEQUENCE IF NOT EXISTS queue_id_seq START WITH 100 INCREMENT BY 1;
 
 
 create table IF NOT EXISTS notifications

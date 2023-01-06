@@ -9,7 +9,6 @@ import com.innopolis.innoqueue.domain.user.model.User
 import com.innopolis.innoqueue.domain.user.service.UserService
 import com.innopolis.innoqueue.enums.NotificationsType
 import com.innopolis.innoqueue.model.Notification
-import com.innopolis.innoqueue.model.UserQueue
 import com.innopolis.innoqueue.testcontainer.PostgresTestContainer
 import io.mockk.every
 import io.mockk.mockk
@@ -270,7 +269,7 @@ class NotificationsServiceTest : PostgresTestContainer() {
             notificationType,
             participantModel.id!!,
             participantModel.name!!,
-            queueModel.id!!,
+            queueModel.queueId!!,
             queueModel.name!!
         )
 
@@ -300,7 +299,7 @@ class NotificationsServiceTest : PostgresTestContainer() {
             notificationType,
             participantModel.id!!,
             participantModel.name!!,
-            queueModel.id!!,
+            queueModel.queueId!!,
             queueModel.name!!
         )
 
@@ -330,7 +329,7 @@ class NotificationsServiceTest : PostgresTestContainer() {
             notificationType,
             participantModel.id!!,
             participantModel.name!!,
-            queueModel.id!!,
+            queueModel.queueId!!,
             queueModel.name!!
         )
 
@@ -360,7 +359,7 @@ class NotificationsServiceTest : PostgresTestContainer() {
             notificationType,
             participantModel.id!!,
             participantModel.name!!,
-            queueModel.id!!,
+            queueModel.queueId!!,
             queueModel.name!!
         )
 
@@ -389,7 +388,7 @@ class NotificationsServiceTest : PostgresTestContainer() {
             notificationType,
             participantModel.id!!,
             participantModel.name!!,
-            queueModel.id!!,
+            queueModel.queueId!!,
             queueModel.name!!
         )
 
@@ -419,7 +418,7 @@ class NotificationsServiceTest : PostgresTestContainer() {
             notificationType,
             participantModel.id!!,
             participantModel.name!!,
-            queueModel.id!!,
+            queueModel.queueId!!,
             queueModel.name!!
         )
 
@@ -449,7 +448,7 @@ class NotificationsServiceTest : PostgresTestContainer() {
             notificationType,
             participantModel.id!!,
             participantModel.name!!,
-            queueModel.id!!,
+            queueModel.queueId!!,
             queueModel.name!!
         )
 
@@ -479,7 +478,7 @@ class NotificationsServiceTest : PostgresTestContainer() {
             notificationType,
             participantModel.id!!,
             participantModel.name!!,
-            queueModel.id!!,
+            queueModel.queueId!!,
             queueModel.name!!
         )
 
@@ -509,7 +508,7 @@ class NotificationsServiceTest : PostgresTestContainer() {
             notificationType,
             participantModel.id!!,
             participantModel.name!!,
-            queueModel.id!!,
+            queueModel.queueId!!,
             queueModel.name!!
         )
 
@@ -522,13 +521,13 @@ class NotificationsServiceTest : PostgresTestContainer() {
 
     private fun getQueueModel(participantModel: User): Queue {
         val queueModel = Queue().apply {
-            id = 44L
+            queueId = 44L
             name = "Bring Water"
             color = "BLUE"
-            creator = participantModel
+            creatorId = participantModel.id
             trackExpenses = false
             isImportant = false
-            currentUser = participantModel
+            currentUserId = participantModel.id
         }
 //        queueModel.userQueues = mutableSetOf(
 //            UserQueue().apply {

@@ -40,9 +40,9 @@ object UsersQueueLogic {
                 index++
             } // We found the next candidate
             else {
-                val queueToUpdate = queueRepository.findAll().firstOrNull { it.id == queue.userQueueId?.queueId }
+                val queueToUpdate = queueRepository.findAll().firstOrNull { it.queueId == queue.userQueueId?.queueId }
                 if (queueToUpdate != null) {
-                    queueToUpdate.currentUser = nextUser
+                    queueToUpdate.currentUserId = nextUser.id
                     queueRepository.save(queueToUpdate)
                     return nextUser
                 }
@@ -63,7 +63,7 @@ object UsersQueueLogic {
             .map { userService.findUserById(it.userQueueId?.userId!!)!! }
 
         val currentUserId =
-            queueRepository.findAll().firstOrNull { it.id == userQueue.userQueueId?.queueId }?.currentUser?.id
+            queueRepository.findAll().firstOrNull { it.queueId == userQueue.userQueueId?.queueId }?.currentUserId
         val currentUserIndex = usersInQueue
             .zip(usersInQueue.indices)
             .firstOrNull { (u, _) -> u.id == currentUserId }?.second ?: 0

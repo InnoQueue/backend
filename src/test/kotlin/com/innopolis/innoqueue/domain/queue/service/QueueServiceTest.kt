@@ -239,8 +239,8 @@ class QueueServiceTest : PostgresTestContainer() {
         // then
         val pinCodes = queueRepository.findAll().filter { it.pinCode != null }
         val qrCodes = queueRepository.findAll().filter { it.qrCode != null }
-        assertTrue(pinCodes.any { it.pinCode == result.pinCode && it?.id == queueId })
-        assertTrue(qrCodes.any { it.qrCode == result.qrCode && it?.id == queueId })
+        assertTrue(pinCodes.any { it.pinCode == result.pinCode && it?.queueId == queueId })
+        assertTrue(qrCodes.any { it.qrCode == result.qrCode && it?.queueId == queueId })
     }
 
     @Test
@@ -267,10 +267,10 @@ class QueueServiceTest : PostgresTestContainer() {
         assertEquals(1, queue.size)
         assertEquals(1, userQueue.size)
 
-        assertEquals(queue[0].id, responseDto.queueId)
+        assertEquals(queue[0].queueId, responseDto.queueId)
         assertEquals(queue[0].name, responseDto.queueName)
         assertEquals(queue[0].color, responseDto.queueColor)
-        assertEquals(queue[0].currentUser?.id, responseDto.currentUser.userId)
+        assertEquals(queue[0].currentUserId, responseDto.currentUser.userId)
         assertEquals(queue[0].trackExpenses, responseDto.trackExpenses)
         assertEquals(userQueue[0].isActive, responseDto.currentUser.isActive)
         assertEquals(userQueue[0].isActive, responseDto.isActive)
@@ -402,7 +402,7 @@ class QueueServiceTest : PostgresTestContainer() {
         val responseDto = queueService.editQueue(token, queueDto)
 
         // then
-        val queue = queueRepository.findAll().first { it.id == queueId }
+        val queue = queueRepository.findAll().first { it.queueId == queueId }
         val userQueueList = userQueueRepository.findAll().filter { it.userQueueId?.queueId == queueId }.toList()
 
         assertEquals(queueName, responseDto.queueName)
@@ -484,7 +484,7 @@ class QueueServiceTest : PostgresTestContainer() {
         val userQueues = userQueueRepository.findAll().filter { it.userQueueId?.queueId == queueId }.toList()
         val queues = queueRepository.findAll()
         assertEquals(0, userQueues.size)
-        assertTrue(queues.none { it.id == queueId })
+        assertTrue(queues.none { it.queueId == queueId })
     }
 
     @Test
@@ -588,7 +588,7 @@ class QueueServiceTest : PostgresTestContainer() {
         queueService.shakeUser(token, queueId)
 
         // then
-        val queue = queueRepository.findAll().first { it?.id == queueId }
+        val queue = queueRepository.findAll().first { it?.queueId == queueId }
         assertEquals(true, queue.isImportant)
     }
 }

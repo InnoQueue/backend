@@ -78,12 +78,12 @@ class ToDoTaskService(
                     saveTaskProgress(it, expenses)
                     // Assign the next user in a queue
                     val nextUser = UsersQueueLogic.assignNextUser(it, userService, userQueueRepository, queueRepository)
-                    val queue = queueRepository.findAll().firstOrNull { q -> q.id == it.userQueueId?.queueId }!!
+                    val queue = queueRepository.findAll().firstOrNull { q -> q.queueId == it.userQueueId?.queueId }!!
                     notificationsService.sendNotificationMessage(
                         NotificationsType.YOUR_TURN,
                         nextUser.id!!,
                         nextUser.name!!,
-                        queue.id!!,
+                        queue.queueId!!,
                         queue.name!!
                     )
                 }
@@ -105,12 +105,12 @@ class ToDoTaskService(
             userQueue.progress = userQueue.progress?.plus(1)
             userQueue.skips = userQueue.skips?.plus(1)
             userQueueRepository.save(userQueue)
-            val queue = queueRepository.findAll().firstOrNull { it.id == userQueue.userQueueId?.queueId }!!
+            val queue = queueRepository.findAll().firstOrNull { it.queueId == userQueue.userQueueId?.queueId }!!
             notificationsService.sendNotificationMessage(
                 NotificationsType.SKIPPED,
                 user.id!!,
                 user.name!!,
-                queue.id!!,
+                queue.queueId!!,
                 queue.name!!
             )
             val nextUser = UsersQueueLogic.assignNextUser(userQueue, userService, userQueueRepository, queueRepository)
@@ -118,7 +118,7 @@ class ToDoTaskService(
                 NotificationsType.YOUR_TURN,
                 nextUser.id!!,
                 nextUser.name!!,
-                queue.id!!,
+                queue.queueId!!,
                 queue.name!!
             )
         }
@@ -131,7 +131,7 @@ class ToDoTaskService(
 
     private fun saveTaskProgress(userQueue: UserQueue, expenses: Long?) {
         userQueue.completes = userQueue.completes?.plus(1)
-        val queue = queueRepository.findAll().firstOrNull { it.id == userQueue.userQueueId?.queueId }!!
+        val queue = queueRepository.findAll().firstOrNull { it.queueId == userQueue.userQueueId?.queueId }!!
         if (expenses != null && queue.trackExpenses == true) {
             userQueue.expenses = userQueue.expenses?.plus(expenses)
         }
@@ -142,7 +142,7 @@ class ToDoTaskService(
             NotificationsType.COMPLETED,
             userQueue.userQueueId?.userId!!,
             userService.findUserNameById(userQueue.userQueueId?.userId!!)!!,
-            queue.id!!,
+            queue.queueId!!,
             queue.name!!
         )
     }
