@@ -3,7 +3,7 @@ package com.innopolis.innoqueue.rest.v1
 import com.innopolis.innoqueue.dto.NotificationsListDTO
 import com.innopolis.innoqueue.rest.v1.dto.EmptyDTO
 import com.innopolis.innoqueue.rest.v1.dto.NewNotificationDTO
-import com.innopolis.innoqueue.service.NotificationsService
+import com.innopolis.innoqueue.service.NotificationService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.HttpStatus
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/notifications")
 @Tag(name = "Notifications")
 class NotificationsController(
-    private val notificationsService: NotificationsService
+    private val notificationService: NotificationService
 ) {
 
     /**
@@ -38,7 +38,7 @@ class NotificationsController(
     )
     @GetMapping
     fun getNotifications(@RequestHeader("user-token") token: String): NotificationsListDTO =
-        notificationsService.getNotifications(token)
+        notificationService.getNotifications(token)
 
     /**
      * GET endpoint for indicating whether there is any unread notification
@@ -54,7 +54,7 @@ class NotificationsController(
     )
     @GetMapping("/new")
     fun anyNewNotification(@RequestHeader("user-token") token: String): NewNotificationDTO =
-        notificationsService.anyNewNotification(token)
+        notificationService.anyNewNotification(token)
 
     /**
      * GET endpoint for deleting notifications older than 2 weeks
@@ -66,5 +66,5 @@ class NotificationsController(
                 "- `old notifications` - notifications that are older than **2 weeks**.\n\n"
     )
     @GetMapping("/clear")
-    fun clearOldNotifications(): EmptyDTO = notificationsService.clearOldNotifications()
+    fun clearOldNotifications(): EmptyDTO = notificationService.clearOldNotifications()
 }

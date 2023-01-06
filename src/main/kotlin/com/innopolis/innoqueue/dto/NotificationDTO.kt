@@ -11,11 +11,11 @@ data class NotificationDTO(
     @JsonProperty("message_type")
     val messageType: NotificationsType,
     @JsonProperty("participant_id")
-    val participantId: Long,
+    val participantId: Long?,
     @JsonProperty("participant_name")
     val participantName: String?,
     @JsonProperty("queue_id")
-    val queueId: Long,
+    val queueId: Long?,
     @JsonProperty("queue_name")
     val queueName: String,
     @JsonProperty("timestamp")

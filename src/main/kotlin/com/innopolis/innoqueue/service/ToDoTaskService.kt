@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service
 class ToDoTaskService(
     private val userService: UserService,
     private val queueService: QueueService,
-    private val notificationsService: NotificationsService,
+    private val notificationService: NotificationService,
     private val queueRepository: QueueRepository,
     private val userQueueRepository: UserQueueRepository,
 ) {
@@ -79,7 +79,7 @@ class ToDoTaskService(
                     // Assign the next user in a queue
                     val nextUser = UsersQueueLogic.assignNextUser(it, userService, userQueueRepository, queueRepository)
                     val queue = queueRepository.findAll().firstOrNull { q -> q.queueId == it.userQueueId?.queueId }!!
-                    notificationsService.sendNotificationMessage(
+                    notificationService.sendNotificationMessage(
                         NotificationsType.YOUR_TURN,
                         nextUser.id!!,
                         nextUser.name!!,
@@ -106,7 +106,7 @@ class ToDoTaskService(
             userQueue.skips = userQueue.skips?.plus(1)
             userQueueRepository.save(userQueue)
             val queue = queueRepository.findAll().firstOrNull { it.queueId == userQueue.userQueueId?.queueId }!!
-            notificationsService.sendNotificationMessage(
+            notificationService.sendNotificationMessage(
                 NotificationsType.SKIPPED,
                 user.id!!,
                 user.name!!,
@@ -114,7 +114,7 @@ class ToDoTaskService(
                 queue.name!!
             )
             val nextUser = UsersQueueLogic.assignNextUser(userQueue, userService, userQueueRepository, queueRepository)
-            notificationsService.sendNotificationMessage(
+            notificationService.sendNotificationMessage(
                 NotificationsType.YOUR_TURN,
                 nextUser.id!!,
                 nextUser.name!!,
@@ -138,7 +138,7 @@ class ToDoTaskService(
         queue.isImportant = false
         queueRepository.save(queue)
         userQueueRepository.save(userQueue)
-        notificationsService.sendNotificationMessage(
+        notificationService.sendNotificationMessage(
             NotificationsType.COMPLETED,
             userQueue.userQueueId?.userId!!,
             userService.findUserNameById(userQueue.userQueueId?.userId!!)!!,

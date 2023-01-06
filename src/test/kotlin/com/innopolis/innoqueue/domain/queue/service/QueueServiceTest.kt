@@ -7,7 +7,7 @@ import com.innopolis.innoqueue.domain.queue.dto.NewQueueDTO
 import com.innopolis.innoqueue.domain.queue.dto.QueueInviteCodeDTO
 import com.innopolis.innoqueue.domain.user.service.UserService
 import com.innopolis.innoqueue.dto.UserExpensesDTO
-import com.innopolis.innoqueue.service.NotificationsService
+import com.innopolis.innoqueue.service.NotificationService
 import com.innopolis.innoqueue.testcontainer.PostgresTestContainer
 import io.mockk.every
 import io.mockk.mockk
@@ -35,11 +35,11 @@ class QueueServiceTest : PostgresTestContainer() {
         // given
         val token = "token"
         val userService = mockk<UserService>(relaxed = true)
-        val notificationsService = mockk<NotificationsService>(relaxed = true)
+        val notificationService = mockk<NotificationService>(relaxed = true)
         val userQueueRepo = mockk<UserQueueRepository>(relaxed = true)
         every { userQueueRepo.findAllUserQueueByToken(token) } returns emptyList()
         val queueRepo = mockk<QueueRepository>(relaxed = true)
-        val service = QueueService(userService, notificationsService, userQueueRepo, queueRepo)
+        val service = QueueService(userService, notificationService, userQueueRepo, queueRepo)
 
         // when
         service.getQueues(token)

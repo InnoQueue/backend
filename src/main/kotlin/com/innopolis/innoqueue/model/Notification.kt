@@ -9,10 +9,10 @@ import javax.persistence.*
  * Model representing the "notifications" db table
  */
 @Entity
-@Table(name = "notifications")
+@Table(name = "notification")
 class Notification {
     @Id
-    @SequenceGenerator(name = "notifications_generator", sequenceName = "notifications_id_seq", allocationSize = 1)
+    @SequenceGenerator(name = "notifications_generator", sequenceName = "notification_id_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "notifications_generator")
     @Column(name = "notification_id", nullable = false)
     var id: Long? = null
@@ -25,10 +25,10 @@ class Notification {
     @Enumerated(EnumType.STRING)
     var messageType: NotificationsType? = null
 
-    @Column(name = "participant_id", nullable = false)
+    @Column(name = "participant_id")
     var participantId: Long? = null
 
-    @Column(name = "queue_id", nullable = false)
+    @Column(name = "queue_id")
     var queueId: Long? = null
 
     @Column(name = "is_read", nullable = false)

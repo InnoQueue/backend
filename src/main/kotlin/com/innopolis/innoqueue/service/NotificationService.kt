@@ -27,7 +27,7 @@ private const val CLEAR_RESPONSE = "Old notifications were deleted"
  */
 @Suppress("TooManyFunctions")
 @Service
-class NotificationsService(
+class NotificationService(
     private val firebaseMessagingService: FirebaseMessagingNotificationsService,
     private val userService: UserService,
     private val fcmTokenService: FcmTokenService,
@@ -97,10 +97,13 @@ class NotificationsService(
     private fun List<Notification>.toNotificationDTO() = this.map {
         NotificationDTO(
             messageType = it.messageType!!,
-            participantId = it.participantId!!,
-            participantName = userService.findUserNameById(it.participantId!!) ?: DELETED_USER_NAME,
-            queueId = it.queueId!!,
-            queueName = queueRepository.findByIdOrNull(it.queueId!!)?.name ?: DELETED_QUEUE_NAME,
+            participantId = it.participantId,
+            participantName = if (it.participantId == null) DELETED_USER_NAME else userService
+                .findUserNameById(it.participantId!!) ?: DELETED_USER_NAME,
+            queueId = it.queueId,
+            queueName = if (it.queueId == null) DELETED_QUEUE_NAME else queueRepository
+                .findByIdOrNull(it.queueId!!)?.name
+                ?: DELETED_QUEUE_NAME,
             date = it.date!!
         )
     }

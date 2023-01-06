@@ -12,7 +12,7 @@ import com.innopolis.innoqueue.dto.UserExpensesDTO
 import com.innopolis.innoqueue.enums.NotificationsType
 import com.innopolis.innoqueue.model.UserQueue
 import com.innopolis.innoqueue.model.UserQueueId
-import com.innopolis.innoqueue.service.NotificationsService
+import com.innopolis.innoqueue.service.NotificationService
 import com.innopolis.innoqueue.util.StringGenerator
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
@@ -30,7 +30,7 @@ private const val QR_CODE_LENGTH: Int = 48
 @Service
 class QueueService(
     private val userService: UserService,
-    private val notificationService: NotificationsService,
+    private val notificationService: NotificationService,
     private val userQueueRepository: UserQueueRepository,
     private val queueRepository: QueueRepository
 ) {

@@ -5,6 +5,7 @@ import com.innopolis.innoqueue.dao.UserQueueRepository
 import com.innopolis.innoqueue.domain.fcmtoken.service.FcmTokenService
 import com.innopolis.innoqueue.domain.queue.dao.QueueRepository
 import com.innopolis.innoqueue.domain.queue.model.Queue
+import com.innopolis.innoqueue.domain.user.dao.UserRepository
 import com.innopolis.innoqueue.domain.user.model.User
 import com.innopolis.innoqueue.domain.user.service.UserService
 import com.innopolis.innoqueue.enums.NotificationsType
@@ -21,13 +22,19 @@ import org.springframework.data.repository.findByIdOrNull
 import org.springframework.test.context.jdbc.Sql
 import java.time.LocalDateTime
 
-class NotificationsServiceTest : PostgresTestContainer() {
+class NotificationServiceTest : PostgresTestContainer() {
 
     @Autowired
-    private lateinit var notificationsService: NotificationsService
+    private lateinit var notificationService: NotificationService
 
     @Autowired
     private lateinit var notificationRepository: NotificationRepository
+
+    @Autowired
+    private lateinit var queueRepository: QueueRepository
+
+    @Autowired
+    private lateinit var userRepository: UserRepository
 
     @Test
     fun `Test getNotifications repos were called`() {
@@ -51,7 +58,7 @@ class NotificationsServiceTest : PostgresTestContainer() {
                     queueId = 1
                 date = LocalDateTime.now()
             })
-        val service = NotificationsService(
+        val service = NotificationService(
             firebaseMessagingService,
             userService,
             fcmService,
@@ -73,14 +80,16 @@ class NotificationsServiceTest : PostgresTestContainer() {
         "/com/innopolis/innoqueue/domain/queue/service/users.sql",
         "fcm_token.sql",
         "/com/innopolis/innoqueue/domain/queue/service/queues.sql",
-        "notifications.sql"
+        "notification.sql"
     )
     fun `Test getNotifications`() {
         // given
         val token = "11111"
 
         // when
-        val notifications = notificationsService.getNotifications(token)
+        queueRepository.deleteById(40L)
+        userRepository.deleteById(3L)
+        val notifications = notificationService.getNotifications(token)
 
         // then
         assertEquals(3, notifications.unreadNotifications.size)
@@ -111,9 +120,9 @@ class NotificationsServiceTest : PostgresTestContainer() {
         assertEquals("Bring Water", notifications.allNotifications[0].queueName)
 
         assertEquals(NotificationsType.SKIPPED, notifications.allNotifications[1].messageType)
-        assertEquals(3, notifications.allNotifications[1].participantId)
-        assertEquals("Roman", notifications.allNotifications[1].participantName)
-        assertEquals(400, notifications.allNotifications[1].queueId)
+        assertEquals(null, notifications.allNotifications[1].participantId)
+        assertEquals("Deleted user", notifications.allNotifications[1].participantName)
+        assertEquals(null, notifications.allNotifications[1].queueId)
         assertEquals("Deleted queue", notifications.allNotifications[1].queueName)
 
         assertEquals(NotificationsType.JOINED_QUEUE, notifications.allNotifications[2].messageType)
@@ -128,15 +137,15 @@ class NotificationsServiceTest : PostgresTestContainer() {
         "/com/innopolis/innoqueue/domain/queue/service/users.sql",
         "fcm_token.sql",
         "/com/innopolis/innoqueue/domain/queue/service/queues.sql",
-        "notifications.sql"
+        "notification.sql"
     )
     fun `Test getNotifications all read`() {
         // given
         val token = "11111"
 
         // when
-        notificationsService.getNotifications(token)
-        val notifications = notificationsService.getNotifications(token)
+        notificationService.getNotifications(token)
+        val notifications = notificationService.getNotifications(token)
 
         // then
         assertEquals(0, notifications.unreadNotifications.size)
@@ -154,7 +163,7 @@ class NotificationsServiceTest : PostgresTestContainer() {
         val userQueueRepository = mockk<UserQueueRepository>(relaxed = true)
         val notificationRepo = mockk<NotificationRepository>(relaxed = true)
         every { notificationRepo.anyUnreadNotification(token) } returns true
-        val service = NotificationsService(
+        val service = NotificationService(
             firebaseMessagingService,
             userService,
             fcmService,
@@ -175,14 +184,14 @@ class NotificationsServiceTest : PostgresTestContainer() {
         "/com/innopolis/innoqueue/domain/queue/service/users.sql",
         "fcm_token.sql",
         "/com/innopolis/innoqueue/domain/queue/service/queues.sql",
-        "notifications.sql"
+        "notification.sql"
     )
     fun `Test anyNewNotification unread`() {
         // given
         val token = "11111"
 
         // when
-        val result = notificationsService.anyNewNotification(token)
+        val result = notificationService.anyNewNotification(token)
 
         // then
         assertEquals(true, result.anyNew)
@@ -193,15 +202,15 @@ class NotificationsServiceTest : PostgresTestContainer() {
         "/com/innopolis/innoqueue/domain/queue/service/users.sql",
         "fcm_token.sql",
         "/com/innopolis/innoqueue/domain/queue/service/queues.sql",
-        "notifications.sql"
+        "notification.sql"
     )
     fun `Test anyNewNotification all read`() {
         // given
         val token = "11111"
 
         // when
-        notificationsService.getNotifications(token)
-        val result = notificationsService.anyNewNotification(token)
+        notificationService.getNotifications(token)
+        val result = notificationService.anyNewNotification(token)
 
         // then
         assertEquals(false, result.anyNew)
@@ -216,7 +225,7 @@ class NotificationsServiceTest : PostgresTestContainer() {
         val queueRepository = mockk<QueueRepository>(relaxed = true)
         val userQueueRepository = mockk<UserQueueRepository>(relaxed = true)
         val notificationRepo = mockk<NotificationRepository>(relaxed = true)
-        val service = NotificationsService(
+        val service = NotificationService(
             firebaseMessagingService,
             userService,
             fcmService,
@@ -238,11 +247,11 @@ class NotificationsServiceTest : PostgresTestContainer() {
         "/com/innopolis/innoqueue/domain/queue/service/users.sql",
         "fcm_token.sql",
         "/com/innopolis/innoqueue/domain/queue/service/queues.sql",
-        "notifications.sql"
+        "notification.sql"
     )
     fun `Test clearOldNotifications`() {
         // when
-        val resultDto = notificationsService.clearOldNotifications()
+        val resultDto = notificationService.clearOldNotifications()
 
         // then
         val notifications = notificationRepository.findAll().toList()
@@ -265,7 +274,7 @@ class NotificationsServiceTest : PostgresTestContainer() {
         val queueModel = getQueueModel(participantModel)
 
         // when
-        notificationsService.sendNotificationMessage(
+        notificationService.sendNotificationMessage(
             notificationType,
             participantModel.id!!,
             participantModel.name!!,
@@ -295,7 +304,7 @@ class NotificationsServiceTest : PostgresTestContainer() {
         val queueModel = getQueueModel(participantModel)
 
         // when
-        notificationsService.sendNotificationMessage(
+        notificationService.sendNotificationMessage(
             notificationType,
             participantModel.id!!,
             participantModel.name!!,
@@ -325,7 +334,7 @@ class NotificationsServiceTest : PostgresTestContainer() {
         val queueModel = getQueueModel(participantModel)
 
         // when
-        notificationsService.sendNotificationMessage(
+        notificationService.sendNotificationMessage(
             notificationType,
             participantModel.id!!,
             participantModel.name!!,
@@ -355,7 +364,7 @@ class NotificationsServiceTest : PostgresTestContainer() {
         val queueModel = getQueueModel(participantModel)
 
         // when
-        notificationsService.sendNotificationMessage(
+        notificationService.sendNotificationMessage(
             notificationType,
             participantModel.id!!,
             participantModel.name!!,
@@ -384,7 +393,7 @@ class NotificationsServiceTest : PostgresTestContainer() {
         val queueModel = getQueueModel(participantModel)
 
         // when
-        notificationsService.sendNotificationMessage(
+        notificationService.sendNotificationMessage(
             notificationType,
             participantModel.id!!,
             participantModel.name!!,
@@ -414,7 +423,7 @@ class NotificationsServiceTest : PostgresTestContainer() {
         val queueModel = getQueueModel(participantModel)
 
         // when
-        notificationsService.sendNotificationMessage(
+        notificationService.sendNotificationMessage(
             notificationType,
             participantModel.id!!,
             participantModel.name!!,
@@ -444,7 +453,7 @@ class NotificationsServiceTest : PostgresTestContainer() {
         val queueModel = getQueueModel(participantModel)
 
         // when
-        notificationsService.sendNotificationMessage(
+        notificationService.sendNotificationMessage(
             notificationType,
             participantModel.id!!,
             participantModel.name!!,
@@ -474,7 +483,7 @@ class NotificationsServiceTest : PostgresTestContainer() {
         val queueModel = getQueueModel(participantModel)
 
         // when
-        notificationsService.sendNotificationMessage(
+        notificationService.sendNotificationMessage(
             notificationType,
             participantModel.id!!,
             participantModel.name!!,
@@ -504,7 +513,7 @@ class NotificationsServiceTest : PostgresTestContainer() {
         val queueModel = getQueueModel(participantModel)
 
         // when
-        notificationsService.sendNotificationMessage(
+        notificationService.sendNotificationMessage(
             notificationType,
             participantModel.id!!,
             participantModel.name!!,

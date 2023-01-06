@@ -1,6 +1,6 @@
 package com.innopolis.innoqueue.rest.v1
 
-import com.innopolis.innoqueue.service.NotificationsService
+import com.innopolis.innoqueue.service.NotificationService
 import io.mockk.mockk
 import io.mockk.verify
 import org.junit.jupiter.api.Test
@@ -11,7 +11,7 @@ class NotificationsControllerTest {
     fun `Test getNotifications service called`() {
         // given
         val token = "token"
-        val service = mockk<NotificationsService>(relaxed = true)
+        val service = mockk<NotificationService>(relaxed = true)
         val controller = NotificationsController(service)
 
         // when
@@ -25,7 +25,7 @@ class NotificationsControllerTest {
     fun `Test anyNewNotification service called`() {
         // given
         val token = "token"
-        val service = mockk<NotificationsService>(relaxed = true)
+        val service = mockk<NotificationService>(relaxed = true)
         val controller = NotificationsController(service)
 
         // when
@@ -38,7 +38,7 @@ class NotificationsControllerTest {
     @Test
     fun `Test clearOldNotifications service called`() {
         // given
-        val service = mockk<NotificationsService>(relaxed = true)
+        val service = mockk<NotificationService>(relaxed = true)
         val controller = NotificationsController(service)
 
         // when
