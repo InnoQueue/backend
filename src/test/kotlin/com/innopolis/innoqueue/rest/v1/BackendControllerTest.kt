@@ -1,17 +1,17 @@
 package com.innopolis.innoqueue.rest.v1
 
-import com.innopolis.innoqueue.domain.queue.service.DatabaseService
+import com.innopolis.innoqueue.domain.external.service.DatabaseService
 import io.mockk.mockk
 import io.mockk.verify
 import org.junit.jupiter.api.Test
 
-class DatabaseControllerTest {
+class BackendControllerTest {
 
     @Test
     fun `Test clearInviteCodes service called`() {
         // given
         val service = mockk<DatabaseService>(relaxed = true)
-        val controller = DatabaseController(service)
+        val controller = BackendController(service)
 
         // when
         controller.clearExpiredInviteCodes()

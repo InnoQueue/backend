@@ -1,9 +1,11 @@
-package com.innopolis.innoqueue.domain.queue.service
+package com.innopolis.innoqueue.domain.external.service
 
+import com.innopolis.innoqueue.domain.external.dto.HostDto
 import com.innopolis.innoqueue.domain.queue.dao.QueueRepository
 import com.innopolis.innoqueue.domain.queue.dao.specification.QueuePinCodeExpiredSpecification
 import com.innopolis.innoqueue.domain.queue.dao.specification.QueueQrCodeExpiredSpecification
 import com.innopolis.innoqueue.rest.v1.dto.EmptyDto
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 import java.time.ZoneOffset
@@ -16,7 +18,11 @@ private const val QR_CODE_LIVE_TIME_DAYS: Long = 1L
  */
 @Service
 class DatabaseService(
-    private val queueRepository: QueueRepository
+    private val queueRepository: QueueRepository,
+    @Value("\${server.host.dev}")
+    private val devHost: String? = null,
+    @Value("\${server.host.prod}")
+    private val prodHost: String? = null
 ) {
     /**
      * Clear expired invite codes
@@ -27,6 +33,8 @@ class DatabaseService(
         removeExpiredQrCodes(currentDateTime)
         return EmptyDto("Expired invite codes were deleted")
     }
+
+    fun getHost() = HostDto(devHost!!, prodHost!!)
 
     private fun removeExpiredPinCodes(currentDateTime: LocalDateTime) {
         val expiredPinCodesDateTime = currentDateTime.minusHours(PIN_CODE_LIVE_TIME_HOURS)

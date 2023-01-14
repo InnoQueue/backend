@@ -1,5 +1,6 @@
 package com.innopolis.innoqueue.domain.queue.service
 
+import com.innopolis.innoqueue.domain.external.service.DatabaseService
 import com.innopolis.innoqueue.domain.queue.dao.QueueRepository
 import com.innopolis.innoqueue.domain.queue.model.Queue
 import com.innopolis.innoqueue.testcontainer.PostgresTestContainer
