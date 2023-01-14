@@ -4,6 +4,9 @@ import com.innopolis.innoqueue.domain.queue.dto.EditQueueDto
 import com.innopolis.innoqueue.domain.queue.dto.NewQueueDto
 import com.innopolis.innoqueue.domain.queue.dto.QueueInviteCodeDto
 import com.innopolis.innoqueue.domain.queue.service.QueueService
+import com.innopolis.innoqueue.domain.queue.service.ToDoTaskService
+import com.innopolis.innoqueue.rest.v0.dto.SkipTaskDto
+import com.innopolis.innoqueue.rest.v0.dto.TaskDto
 import io.mockk.mockk
 import io.mockk.verify
 import org.junit.jupiter.api.Test
@@ -15,7 +18,7 @@ class QueueControllerTest {
         // given
         val token = "token"
         val service = mockk<QueueService>(relaxed = true)
-        val controller = QueueController(service)
+        val controller = QueueController(service, mockk())
 
         // when
         controller.getQueues(token)
@@ -30,7 +33,7 @@ class QueueControllerTest {
         val token = "token"
         val queueId = 1L
         val service = mockk<QueueService>(relaxed = true)
-        val controller = QueueController(service)
+        val controller = QueueController(service, mockk())
 
         // when
         controller.getQueueById(token, queueId)
@@ -45,7 +48,7 @@ class QueueControllerTest {
         val token = "token"
         val queueId = 1L
         val service = mockk<QueueService>(relaxed = true)
-        val controller = QueueController(service)
+        val controller = QueueController(service, mockk())
 
         // when
         controller.getQueueInviteCode(token, queueId)
@@ -64,7 +67,7 @@ class QueueControllerTest {
             trackExpenses = false
         )
         val service = mockk<QueueService>(relaxed = true)
-        val controller = QueueController(service)
+        val controller = QueueController(service, mockk())
 
         // when
         controller.createQueue(token, queueDto)
@@ -85,7 +88,7 @@ class QueueControllerTest {
             participants = null
         )
         val service = mockk<QueueService>(relaxed = true)
-        val controller = QueueController(service)
+        val controller = QueueController(service, mockk())
 
         // when
         controller.editQueue(token, queueDto)
@@ -100,7 +103,7 @@ class QueueControllerTest {
         val token = "token"
         val queueId = 1L
         val service = mockk<QueueService>(relaxed = true)
-        val controller = QueueController(service)
+        val controller = QueueController(service, mockk())
 
         // when
         controller.freezeQueue(token, queueId)
@@ -115,7 +118,7 @@ class QueueControllerTest {
         val token = "token"
         val queueId = 1L
         val service = mockk<QueueService>(relaxed = true)
-        val controller = QueueController(service)
+        val controller = QueueController(service, mockk())
 
         // when
         controller.unfreezeQueue(token, queueId)
@@ -130,7 +133,7 @@ class QueueControllerTest {
         val token = "token"
         val queueId = 1L
         val service = mockk<QueueService>(relaxed = true)
-        val controller = QueueController(service)
+        val controller = QueueController(service, mockk())
 
         // when
         controller.deleteQueue(token, queueId)
@@ -148,7 +151,7 @@ class QueueControllerTest {
             qrCode = null
         )
         val service = mockk<QueueService>(relaxed = true)
-        val controller = QueueController(service)
+        val controller = QueueController(service, mockk())
 
         // when
         controller.joinQueue(token, queueDto)
@@ -163,12 +166,61 @@ class QueueControllerTest {
         val token = "token"
         val queueId = 1L
         val service = mockk<QueueService>(relaxed = true)
-        val controller = QueueController(service)
+        val controller = QueueController(service, mockk())
 
         // when
         controller.shakeUser(token, queueId)
 
         // then
         verify(exactly = 1) { service.shakeUser(token, queueId) }
+    }
+
+    @Test
+    fun `Test getTasks service called`() {
+        // given
+        val token = "token"
+        val service = mockk<ToDoTaskService>(relaxed = true)
+        val controller = QueueController(mockk(), service)
+
+        // when
+        controller.getToDoTasks(token)
+
+        // then
+        verify(exactly = 1) { service.getToDoTasks(token) }
+    }
+
+    @Test
+    fun `Test completeTask service called`() {
+        // given
+        val token = "token"
+        val taskDTO = TaskDto(
+            taskId = 1L,
+            expenses = 1000
+        )
+        val service = mockk<ToDoTaskService>(relaxed = true)
+        val controller = QueueController(mockk(), service)
+
+        // when
+        controller.completeTask(token, taskDTO)
+
+        // then
+        verify(exactly = 1) { service.completeTask(token, taskDTO.taskId, taskDTO.expenses) }
+    }
+
+    @Test
+    fun `Test skipTask service called`() {
+        // given
+        val token = "token"
+        val taskDTO = SkipTaskDto(
+            taskId = 1L
+        )
+        val service = mockk<ToDoTaskService>(relaxed = true)
+        val controller = QueueController(mockk(), service)
+
+        // when
+        controller.skipTask(token, taskDTO)
+
+        // then
+        verify(exactly = 1) { service.skipTask(token, taskDTO.taskId) }
     }
 }

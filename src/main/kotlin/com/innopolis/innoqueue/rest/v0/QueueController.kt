@@ -2,6 +2,9 @@ package com.innopolis.innoqueue.rest.v0
 
 import com.innopolis.innoqueue.domain.queue.dto.*
 import com.innopolis.innoqueue.domain.queue.service.QueueService
+import com.innopolis.innoqueue.domain.queue.service.ToDoTaskService
+import com.innopolis.innoqueue.rest.v0.dto.SkipTaskDto
+import com.innopolis.innoqueue.rest.v0.dto.TaskDto
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.HttpStatus
@@ -21,7 +24,8 @@ import org.springframework.web.bind.annotation.*
             "sequence. It automatically tracks the order, and works with to-do tasks."
 )
 class QueueController(
-    private val service: QueueService
+    private val queueService: QueueService,
+    private val toDoService: ToDoTaskService
 ) {
 
     /**
@@ -55,7 +59,7 @@ class QueueController(
                 "- `queueColor` - the queue's label."
     )
     @GetMapping
-    fun getQueues(@RequestHeader("user-token") token: String): QueuesListDto = service.getQueues(token)
+    fun getQueues(@RequestHeader("user-token") token: String): QueuesListDto = queueService.getQueues(token)
 
     /**
      * GET endpoint for queue details
@@ -71,7 +75,7 @@ class QueueController(
     )
     @GetMapping("/{queueId}")
     fun getQueueById(@RequestHeader("user-token") token: String, @PathVariable queueId: Long): QueueDto =
-        service.getQueueById(token, queueId)
+        queueService.getQueueById(token, queueId)
 
     /**
      * GET endpoint for creating and returning queue's invite codes
@@ -91,7 +95,7 @@ class QueueController(
         @RequestHeader("user-token") token: String,
         @PathVariable queueId: Long
     ): QueueInviteCodeDto =
-        service.getQueueInviteCode(token, queueId)
+        queueService.getQueueInviteCode(token, queueId)
 
     /**
      * POST endpoint for creating new queue
@@ -101,7 +105,7 @@ class QueueController(
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
     fun createQueue(@RequestHeader("user-token") token: String, @RequestBody queue: NewQueueDto): QueueDto =
-        service.createQueue(token, queue)
+        queueService.createQueue(token, queue)
 
     /**
      * PATCH endpoint for editing existing queue
@@ -116,7 +120,7 @@ class QueueController(
     @PatchMapping
     @ResponseStatus(HttpStatus.OK)
     fun editQueue(@RequestHeader("user-token") token: String, @RequestBody queue: EditQueueDto): QueueDto =
-        service.editQueue(token, queue)
+        queueService.editQueue(token, queue)
 
     /**
      * POST endpoint for freezing a queue and making it inactive
@@ -131,7 +135,7 @@ class QueueController(
     @PostMapping("/freeze/{queueId}")
     @ResponseStatus(HttpStatus.OK)
     fun freezeQueue(@RequestHeader("user-token") token: String, @PathVariable queueId: Long) =
-        service.freezeUnFreezeQueue(token, queueId, false)
+        queueService.freezeUnFreezeQueue(token, queueId, false)
 
     /**
      * POST endpoint for unfreezing a queue and making it active
@@ -144,7 +148,7 @@ class QueueController(
     @PostMapping("/unfreeze/{queueId}")
     @ResponseStatus(HttpStatus.OK)
     fun unfreezeQueue(@RequestHeader("user-token") token: String, @PathVariable queueId: Long) =
-        service.freezeUnFreezeQueue(token, queueId, true)
+        queueService.freezeUnFreezeQueue(token, queueId, true)
 
     /**
      * DELETE endpoint for deleting or leaving a queue (depends whether a user is admin of this queue)
@@ -159,7 +163,7 @@ class QueueController(
     @DeleteMapping("/{queueId}")
     @ResponseStatus(HttpStatus.OK)
     fun deleteQueue(@RequestHeader("user-token") token: String, @PathVariable queueId: Long) =
-        service.deleteQueue(token, queueId)
+        queueService.deleteQueue(token, queueId)
 
     /**
      * POST endpoint for joining a queue
@@ -175,7 +179,7 @@ class QueueController(
     @PostMapping("/join")
     @ResponseStatus(HttpStatus.OK)
     fun joinQueue(@RequestHeader("user-token") token: String, @RequestBody queue: QueueInviteCodeDto) =
-        service.joinQueue(token, queue)
+        queueService.joinQueue(token, queue)
 
     /**
      * POST endpoint for sending notification to a user who is on duty for a particular queue
@@ -191,5 +195,37 @@ class QueueController(
     @PostMapping("/shake/{queueId}")
     @ResponseStatus(HttpStatus.OK)
     fun shakeUser(@RequestHeader("user-token") token: String, @PathVariable queueId: Long) =
-        service.shakeUser(token, queueId)
+        queueService.shakeUser(token, queueId)
+
+    /**
+     * GET endpoint for listing user to-do tasks
+     * @param token - user token
+     */
+    @Operation(
+        summary = "Get todo-tasks",
+        description = "- `is_important` - whether someone shook you (sent reminder). So, this task is urgent now.\n\n" +
+                "- Queues in which there are no participants (only you) won't be shown.\n"
+    )
+    @GetMapping("/tasks")
+    fun getToDoTasks(@RequestHeader("user-token") token: String): List<ToDoTaskDto> = toDoService.getToDoTasks(token)
+
+    /**
+     * POST endpoint for completing to-do task
+     * @param token - user token
+     */
+    @Operation(summary = "Complete a to-do task")
+    @PostMapping("/tasks/done")
+    @ResponseStatus(HttpStatus.OK)
+    fun completeTask(@RequestHeader("user-token") token: String, @RequestBody task: TaskDto) =
+        toDoService.completeTask(token, task.taskId, task.expenses)
+
+    /**
+     * POST endpoint for skipping to-do task
+     * @param token - user token
+     */
+    @Operation(summary = "Skip a to-do task")
+    @PostMapping("/tasks/skip")
+    @ResponseStatus(HttpStatus.OK)
+    fun skipTask(@RequestHeader("user-token") token: String, @RequestBody task: SkipTaskDto): Unit =
+        toDoService.skipTask(token, task.taskId)
 }
