@@ -10,6 +10,7 @@ import com.innopolis.innoqueue.util.StringGenerator
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 private const val TOKEN_LENGTH = 64
 
@@ -29,6 +30,7 @@ class UserService(
      * Return user model by it's token id
      * @param token - user token
      */
+    @Transactional
     fun findUserByToken(token: String): User =
         userRepository.findUserByToken(token) ?: throw NoSuchElementException("No such user with token: $token")
 
@@ -36,18 +38,21 @@ class UserService(
      * Return user model by its id
      * @param userId - user's id
      */
+    @Transactional
     fun findUserById(userId: Long): User? = userRepository.findByIdOrNull(userId)
 
     /**
      * Return user's name by its id
      * @param userId - user's id
      */
+    @Transactional
     fun findUserNameById(userId: Long): String? = userRepository.findByIdOrNull(userId)?.name
 
     /**
      * List user settings
      * @param token - user token
      */
+    @Transactional
     fun getUserSettings(token: String): UserDto = this.findUserByToken(token).let {
         UserDto(
             it.name!!,
@@ -64,6 +69,7 @@ class UserService(
      * Update user settings
      * @param token - user token
      */
+    @Transactional
     fun updateUserSettings(token: String, settings: UpdateUserDto): UserDto {
         val user = this.findUserByToken(token)
         settings.userName?.let {
@@ -96,6 +102,7 @@ class UserService(
      * @param userName - user's name
      * @param fcmToken - device Firebase token
      */
+    @Transactional
     fun createNewUser(userName: String, fcmToken: String): TokenDto {
         validateUserParameters(userName, fcmToken)
         val token = generateUserToken()

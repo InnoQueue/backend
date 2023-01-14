@@ -9,6 +9,7 @@ import com.innopolis.innoqueue.domain.user.service.UserService
 import com.innopolis.innoqueue.domain.userqueue.dao.UserQueueRepository
 import com.innopolis.innoqueue.domain.userqueue.model.UserQueue
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 /**
  * Service for working with queues for which user is on duty
@@ -26,6 +27,7 @@ class ToDoTaskService(
      * Lists user queues for which he is responsible right now
      * @param token - user token
      */
+    @Transactional
     fun getToDoTasks(token: String): List<ToDoTaskDto> = queueRepository
         .findToDoTasks(token)
         .map {
@@ -43,6 +45,7 @@ class ToDoTaskService(
      * @param token - user token
      * @param taskId - id of a queue
      */
+    @Transactional
     fun completeTask(token: String, taskId: Long, expenses: Long?) {
         val userQueue = userQueueRepository.findUserQueue(token, taskId)
         // If this queue requires to track expenses it should not be null or negative number
@@ -95,6 +98,7 @@ class ToDoTaskService(
      * @param token - user token
      * @param taskId - id of a queue
      */
+    @Transactional
     fun skipTask(token: String, taskId: Long) {
         val userQueueAndQueue = userQueueRepository.findUserQueue(token, taskId)
         // User can skip a task if it's his turn

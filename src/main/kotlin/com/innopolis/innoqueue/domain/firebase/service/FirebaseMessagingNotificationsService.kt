@@ -8,6 +8,7 @@ import com.google.firebase.messaging.Notification
 import com.innopolis.innoqueue.domain.firebase.util.MessagePushNotificationCreator
 import com.innopolis.innoqueue.domain.notification.enums.NotificationsType
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 /**
  * Service for working with Firebase
@@ -23,6 +24,7 @@ class FirebaseMessagingNotificationsService(
             /**
              * Sends a particular message via Firebase
              */
+    @Transactional
     fun sendNotificationsToFirebase(
         addressees: List<Pair<Long, List<String>>>,
         notificationType: NotificationsType,

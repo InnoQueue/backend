@@ -7,6 +7,7 @@ import com.innopolis.innoqueue.domain.queue.dao.specification.QueueQrCodeExpired
 import com.innopolis.innoqueue.rest.v0.dto.EmptyDto
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 
@@ -27,6 +28,7 @@ class DatabaseService(
     /**
      * Clear expired invite codes
      */
+    @Transactional
     fun clearExpiredInviteCodes(): EmptyDto {
         val currentDateTime = LocalDateTime.now(ZoneOffset.UTC)
         removeExpiredPinCodes(currentDateTime)
@@ -34,6 +36,7 @@ class DatabaseService(
         return EmptyDto("Expired invite codes were deleted")
     }
 
+    @Transactional
     fun getHost() = HostDto(devHost!!, prodHost!!)
 
     private fun removeExpiredPinCodes(currentDateTime: LocalDateTime) {

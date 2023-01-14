@@ -16,6 +16,7 @@ import com.innopolis.innoqueue.rest.v0.dto.EmptyDto
 import com.innopolis.innoqueue.rest.v0.dto.NewNotificationDto
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 
@@ -41,6 +42,7 @@ class NotificationService(
      * Lists all notifications
      * @param token - user token
      */
+    @Transactional
     fun getNotifications(token: String): NotificationsListDto {
         val (allNotifications, unreadNotifications) = notificationRepository.findAllByToken(token)
             .partition { it.isRead!! }
@@ -55,12 +57,14 @@ class NotificationService(
      * Returns boolean whether there is any unread notification
      * @param token - user token
      */
+    @Transactional
     fun anyNewNotification(token: String): NewNotificationDto =
         NewNotificationDto(notificationRepository.anyUnreadNotification(token))
 
     /**
      * Deletes notifications older than 2 weeks
      */
+    @Transactional
     fun clearOldNotifications(): EmptyDto {
         notificationRepository.deleteAll(notificationRepository.findAllExpiredNotifications())
         return EmptyDto(CLEAR_RESPONSE)
@@ -69,6 +73,7 @@ class NotificationService(
     /**
      * Saves notification in database and sends it via firebase
      */
+    @Transactional
     fun sendNotificationMessage(
         notificationType: NotificationsType,
         participantId: Long,

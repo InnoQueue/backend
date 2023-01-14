@@ -4,6 +4,7 @@ import com.innopolis.innoqueue.domain.fcmtoken.dao.FcmTokenRepository
 import com.innopolis.innoqueue.domain.fcmtoken.model.FcmToken
 import com.innopolis.innoqueue.domain.fcmtoken.model.FcmTokenId
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 
@@ -15,6 +16,7 @@ class FcmTokenService(
     private val fcmTokenRepository: FcmTokenRepository
 ) {
 
+    @Transactional
     fun saveFcmToken(userId: Long, userFcmToken: String) {
         val fcmToken = FcmToken().apply {
             this.fcmTokenId = FcmTokenId().apply {
@@ -26,6 +28,7 @@ class FcmTokenService(
         fcmTokenRepository.save(fcmToken)
     }
 
+    @Transactional
     fun findTokensForUser(userId: Long): List<String> =
         fcmTokenRepository.findAll().filter { it.fcmTokenId?.userId == userId }.map { it.fcmTokenId?.fcmToken!! }
 }

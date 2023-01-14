@@ -15,6 +15,7 @@ import com.innopolis.innoqueue.domain.userqueue.model.UserQueuesShortForm
 import com.innopolis.innoqueue.util.StringGenerator
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 import kotlin.math.abs
@@ -38,6 +39,7 @@ class QueueService(
      * Lists all queues for a particular user
      * @param token - user token
      */
+    @Transactional
     fun getQueues(token: String): QueuesListDto {
         val (activeQueues, frozenQueues) = userQueueRepository.findAllUserQueueByToken(token)
             .partition { it.getIsActive() }
@@ -49,6 +51,7 @@ class QueueService(
      * @param token - user token
      * @param queueId - id of a queue
      */
+    @Transactional
     fun getQueueById(token: String, queueId: Long): QueueDto {
         val queueOptional = queueRepository.findById(queueId)
         if (!queueOptional.isPresent) {
@@ -75,6 +78,7 @@ class QueueService(
      * @param token - user token
      * @param queueId - id of a queue
      */
+    @Transactional
     fun getQueueInviteCode(token: String, queueId: Long): QueueInviteCodeDto {
         val userQueue = userQueueRepository.findUserQueueByToken(token, queueId)
             ?: throw IllegalArgumentException("User does not belong to such queue: $queueId")
@@ -89,6 +93,7 @@ class QueueService(
      * Saves new queue
      * @param token - user token
      */
+    @Transactional
     fun createQueue(token: String, queue: NewQueueDto): QueueDto {
         val user = userService.findUserByToken(token)
         val createdQueue = saveQueueEntity(queue, user)
@@ -112,6 +117,7 @@ class QueueService(
      * @param token - user token
      */
     @Suppress("ThrowsCount")
+    @Transactional
     fun editQueue(token: String, editQueue: EditQueueDto): QueueDto {
         if (editQueue.queueId == null) {
             throw IllegalArgumentException("Queue id should be specified")
@@ -166,6 +172,7 @@ class QueueService(
     /**
      * Return user_queue model
      */
+    @Transactional
     fun getUserQueueByQueueId(user: User, queueId: Long): UserQueue {
         return userQueueRepository.findUserQueueByQueueId(queueId).firstOrNull { it.userQueueId?.userId == user.id }
             ?: throw IllegalArgumentException("User does not belong to such queue: $queueId")
@@ -174,6 +181,7 @@ class QueueService(
     /**
      * Change queue's freeze status
      */
+    @Transactional
     fun freezeUnFreezeQueue(token: String, queueId: Long, status: Boolean) {
         val user = userService.findUserByToken(token)
         val userQueue = getUserQueueByQueueId(user, queueId)
@@ -217,6 +225,7 @@ class QueueService(
      * @param token - user token
      * @param queueId - id of a queue
      */
+    @Transactional
     fun deleteQueue(token: String, queueId: Long) {
         val user = userService.findUserByToken(token)
         val userQueue = getUserQueueByQueueId(user, queueId)
@@ -266,6 +275,7 @@ class QueueService(
      * @param token - user token
      */
     @Suppress("ThrowsCount", "ReturnCount", "LongMethod")
+    @Transactional
     fun joinQueue(token: String, queueInviteCodeDTO: QueueInviteCodeDto): QueueDto {
         val user = userService.findUserByToken(token)
 
@@ -340,6 +350,7 @@ class QueueService(
      * @param token - user token who sends notification
      * @param queueId - id of a queue
      */
+    @Transactional
     fun shakeUser(token: String, queueId: Long) {
         val user = userService.findUserByToken(token)
         // Check if user joined this queue
@@ -372,6 +383,7 @@ class QueueService(
             )
         }
 
+    @Transactional
     fun transformQueueToDTO(queue: Queue?, isActive: Boolean, userId: Long): QueueDto {
         val qDTO = QueueDto(
             queueId = queue?.queueId!!,
