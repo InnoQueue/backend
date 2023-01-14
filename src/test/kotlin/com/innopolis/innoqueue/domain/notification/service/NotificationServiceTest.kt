@@ -53,6 +53,7 @@ class NotificationServiceTest : PostgresTestContainer() {
         every { notificationRepo.findAllByToken(token) } returns listOf(
             Notification()
                 .apply {
+                    id = 1L
                     isRead = true
                     messageType = NotificationsType.YOUR_TURN
                     participantId = 1

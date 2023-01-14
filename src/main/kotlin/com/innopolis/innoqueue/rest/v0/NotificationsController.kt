@@ -4,6 +4,7 @@ import com.innopolis.innoqueue.domain.notification.dto.NotificationsListDto
 import com.innopolis.innoqueue.domain.notification.service.NotificationService
 import com.innopolis.innoqueue.rest.v0.dto.EmptyDto
 import com.innopolis.innoqueue.rest.v0.dto.NewNotificationDto
+import com.innopolis.innoqueue.rest.v0.dto.ReadNotificationDto
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.HttpStatus
@@ -67,4 +68,22 @@ class NotificationsController(
     )
     @GetMapping("/clear")
     fun clearOldNotifications(): EmptyDto = notificationService.clearOldNotifications()
+
+    /**
+     * POST endpoint for marking notifications as read
+     */
+    @Operation(
+        summary = "Read notifications",
+        description = "- Open this URL to delete old notifications forcibly.\n\n" +
+                "- You don't need to provide any `user-token`.\n\n" +
+                "- `old notifications` - notifications that are older than **2 weeks**.\n\n"
+    )
+    @PostMapping
+    @Suppress("UnusedPrivateMember")
+    fun readNotifications(
+        @RequestHeader("user-token") token: String,
+        @RequestBody notificationIds: ReadNotificationDto?
+    ) {
+//        notificationService.clearOldNotifications()
+    }
 }

@@ -97,6 +97,7 @@ class NotificationService(
 
     private fun List<Notification>.toNotificationDTO() = this.map {
         NotificationDto(
+            notificationId = it.id!!,
             messageType = it.messageType!!,
             participantId = it.participantId,
             participantName = if (it.participantId == null) DELETED_USER_NAME else userService

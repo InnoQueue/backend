@@ -5,6 +5,7 @@ import com.innopolis.innoqueue.domain.queue.service.QueueService
 import com.innopolis.innoqueue.domain.queue.service.ToDoTaskService
 import com.innopolis.innoqueue.rest.v0.dto.SkipTaskDto
 import com.innopolis.innoqueue.rest.v0.dto.TaskDto
+import com.innopolis.innoqueue.rest.v0.dto.ToDoTasksListDto
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.HttpStatus
@@ -207,7 +208,8 @@ class QueueController(
                 "- Queues in which there are no participants (only you) won't be shown.\n"
     )
     @GetMapping("/tasks")
-    fun getToDoTasks(@RequestHeader("user-token") token: String): List<ToDoTaskDto> = toDoService.getToDoTasks(token)
+    fun getToDoTasks(@RequestHeader("user-token") token: String): ToDoTasksListDto =
+        ToDoTasksListDto(toDoService.getToDoTasks(token))
 
     /**
      * POST endpoint for completing to-do task

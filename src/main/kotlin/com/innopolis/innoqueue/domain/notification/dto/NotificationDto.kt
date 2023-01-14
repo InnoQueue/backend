@@ -7,6 +7,7 @@ import java.time.LocalDateTime
  * DTO for returning a notification message
  */
 data class NotificationDto(
+    val notificationId: Long,
     val messageType: NotificationsType,
     val participantId: Long?,
     val participantName: String?,
