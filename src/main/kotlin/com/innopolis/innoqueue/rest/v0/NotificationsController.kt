@@ -4,7 +4,7 @@ import com.innopolis.innoqueue.domain.notification.dto.NotificationsListDto
 import com.innopolis.innoqueue.domain.notification.service.NotificationService
 import com.innopolis.innoqueue.rest.v0.dto.EmptyDto
 import com.innopolis.innoqueue.rest.v0.dto.NewNotificationDto
-import com.innopolis.innoqueue.rest.v0.dto.ReadNotificationDto
+import com.innopolis.innoqueue.rest.v0.dto.NotificationIdsDto
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.HttpStatus
@@ -33,9 +33,7 @@ class NotificationsController(
      * @param token - user token
      */
     @Operation(
-        summary = "Get notifications",
-        description = "The server stores notifications for **2 weeks only**.\n\n" +
-                "Next time when you send this request, all `unread` messages will be in the `all` section."
+        summary = "Get list of notifications"
     )
     @GetMapping
     fun getNotifications(@RequestHeader("user-token") token: String): NotificationsListDto =
@@ -74,16 +72,16 @@ class NotificationsController(
      */
     @Operation(
         summary = "Read notifications",
-        description = "- Open this URL to delete old notifications forcibly.\n\n" +
-                "- You don't need to provide any `user-token`.\n\n" +
-                "- `old notifications` - notifications that are older than **2 weeks**.\n\n"
+        description = "Specify notification ids which should be marked as read.\n\n" +
+                "- You can specify ids in `notificationIds`. Then only these notifications will be read.\n\n" +
+                "- You can specify nothing. Then **all** notifications will be marked as read.\n\n"
     )
     @PostMapping
     @Suppress("UnusedPrivateMember")
     fun readNotifications(
         @RequestHeader("user-token") token: String,
-        @RequestBody notificationIds: ReadNotificationDto?
+        @RequestBody notificationIds: NotificationIdsDto?
     ) {
-//        notificationService.clearOldNotifications()
+        notificationService.readNotifications(token, notificationIds?.notificationIds)
     }
 }

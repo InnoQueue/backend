@@ -141,12 +141,33 @@ class NotificationServiceTest : PostgresTestContainer() {
         "/com/innopolis/innoqueue/domain/queue/service/queues.sql",
         "notification.sql"
     )
-    fun `Test getNotifications all read`() {
+    fun `Test readNotifications read specified ids`() {
         // given
         val token = "11111"
 
         // when
-        notificationService.getNotifications(token)
+        notificationService.readNotifications(token, listOf(26L, 21L))
+        val notifications = notificationService.getNotifications(token)
+
+        // then
+        assertEquals(1, notifications.unreadNotifications.size)
+        assertEquals(5, notifications.allNotifications.size)
+        assertEquals(16L, notifications.unreadNotifications[0].notificationId)
+    }
+
+    @Test
+    @Sql(
+        "/com/innopolis/innoqueue/domain/queue/service/users.sql",
+        "fcm_token.sql",
+        "/com/innopolis/innoqueue/domain/queue/service/queues.sql",
+        "notification.sql"
+    )
+    fun `Test readNotifications all read`() {
+        // given
+        val token = "11111"
+
+        // when
+        notificationService.readNotifications(token, null)
         val notifications = notificationService.getNotifications(token)
 
         // then
@@ -211,7 +232,7 @@ class NotificationServiceTest : PostgresTestContainer() {
         val token = "11111"
 
         // when
-        notificationService.getNotifications(token)
+        notificationService.readNotifications(token, null)
         val result = notificationService.anyNewNotification(token)
 
         // then

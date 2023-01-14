@@ -46,7 +46,6 @@ class NotificationService(
     fun getNotifications(token: String): NotificationsListDto {
         val (allNotifications, unreadNotifications) = notificationRepository.findAllByToken(token)
             .partition { it.isRead!! }
-        unreadNotifications.readNotifications()
         return NotificationsListDto(
             unreadNotifications = unreadNotifications.toNotificationDTO(),
             allNotifications = allNotifications.toNotificationDTO()
@@ -60,6 +59,22 @@ class NotificationService(
     @Transactional
     fun anyNewNotification(token: String): NewNotificationDto =
         NewNotificationDto(notificationRepository.anyUnreadNotification(token))
+
+    /**
+     * Marks notifications as read
+     * @param token - user token
+     */
+    @Transactional
+    fun readNotifications(token: String, notificationIds: List<Long>?) {
+        val unreadNotifications = notificationRepository
+            .findAllByToken(token)
+            .filter { it.isRead == false }
+            .let { allUnreadNotifications ->
+                if (notificationIds == null) allUnreadNotifications
+                else allUnreadNotifications.filter { it.id in notificationIds }
+            }
+        unreadNotifications.readNotifications()
+    }
 
     /**
      * Deletes notifications older than 2 weeks
