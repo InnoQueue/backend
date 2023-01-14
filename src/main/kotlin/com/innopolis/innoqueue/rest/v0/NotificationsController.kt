@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*
  * Controller with endpoints to work with notifications
  */
 @RestController
-@RequestMapping("/notifications")
+@RequestMapping("/api/v1/notifications")
 @Tag(name = "Notifications")
 class NotificationsController(
     private val notificationService: NotificationService
@@ -43,7 +43,10 @@ class NotificationsController(
      * @param token - user token
      */
     @Operation(
-        summary = "Get list of notifications"
+        summary = "Get paginated list of notifications",
+        description = "Use `page` and `size` to iterate through the list.\n\n." +
+                "- `page` - number of page >= 0.\n\n." +
+                "- `size` - number of elements per page. size > 0."
     )
     @GetMapping
     fun getNotifications(@RequestHeader("user-token") token: String, page: Int, size: Int): Page<NotificationDto> {
