@@ -8,6 +8,5 @@ data class ToDoTaskDto(
     val name: String?,
     val color: String?,
     val isImportant: Boolean?,
-    val trackExpenses: Boolean?,
-    val hashCode: Int
+    val trackExpenses: Boolean?
 )

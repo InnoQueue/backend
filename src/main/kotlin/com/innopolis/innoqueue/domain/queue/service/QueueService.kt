@@ -66,8 +66,7 @@ class QueueService(
             participants = getParticipants(queue),
             trackExpenses = queue.trackExpenses!!,
             isActive = userQueue.isActive!!,
-            isAdmin = queue.creatorId == userQueue.userQueueId?.userId,
-            hashCode = getHashCode(queueId)
+            isAdmin = queue.creatorId == userQueue.userQueueId?.userId
         )
     }
 
@@ -103,10 +102,8 @@ class QueueService(
             participants = emptyList(),
             trackExpenses = createdQueue.trackExpenses!!,
             isActive = true,
-            isAdmin = true,
-            hashCode = 0
+            isAdmin = true
         )
-        qDTO.hashCode = getHashCode(qDTO)
         return qDTO
     }
 
@@ -371,41 +368,9 @@ class QueueService(
             QueueShortDto(
                 queueId = it.getQueueId(),
                 queueName = it.getQueueName(),
-                queueColor = it.getColor(),
-                hashCode = getHashCode(it.getQueueId())
+                queueColor = it.getColor()
             )
         }
-
-    @Suppress("MagicNumber")
-    fun getHashCode(queue: QueueDto): Int {
-        val hashCodes =
-            mutableListOf(
-                queue.queueId.hashCode(),
-                queue.queueName.hashCode(),
-                queue.queueColor.hashCode(),
-                queue.currentUser.hashCode(),
-                queue.isYourTurn.hashCode(),
-                queue.trackExpenses.hashCode(),
-                queue.isActive.hashCode(),
-                queue.isAdmin.hashCode()
-            )
-        for (p in queue.participants) {
-            hashCodes.add(p.hashCode())
-        }
-
-        var hashCode = 0
-        for (h in hashCodes) {
-            hashCode = abs((((31 * hashCode) % 100000000) + (abs(h) % 100000000))) % 100000000
-        }
-
-        return hashCode
-    }
-
-    // TODO finish method
-    @Suppress("FunctionOnlyReturningConstant", "UnusedPrivateMember")
-    fun getHashCode(queueId: Long): Int {
-        return 123
-    }
 
     fun transformQueueToDTO(queue: Queue?, isActive: Boolean, userId: Long): QueueDto {
         val qDTO = QueueDto(
@@ -417,10 +382,8 @@ class QueueService(
             participants = getParticipants(queue),
             trackExpenses = queue.trackExpenses!!,
             isActive = isActive,
-            isAdmin = queue.creatorId == userId,
-            hashCode = 0
+            isAdmin = queue.creatorId == userId
         )
-        qDTO.hashCode = getHashCode(qDTO)
         return qDTO
     }
 

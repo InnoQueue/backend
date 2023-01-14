@@ -50,8 +50,6 @@ class ToDoTasksController(
     @Operation(
         summary = "Get todo-tasks",
         description = "- `is_important` - whether someone shook you (sent reminder). So, this task is urgent now.\n\n" +
-                "- `hash_code` - hash code which indicates queues details. " +
-                "So, a client will know whether he can request for queue details or use its local cache.\n\n" +
                 "- Queues in which there are no participants (only you) won't be shown.\n"
     )
     @GetMapping

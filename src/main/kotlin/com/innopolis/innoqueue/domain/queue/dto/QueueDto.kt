@@ -12,6 +12,5 @@ data class QueueDto(
     val participants: List<UserExpensesDto>,
     val trackExpenses: Boolean,
     val isActive: Boolean,
-    val isAdmin: Boolean,
-    var hashCode: Int
+    val isAdmin: Boolean
 )

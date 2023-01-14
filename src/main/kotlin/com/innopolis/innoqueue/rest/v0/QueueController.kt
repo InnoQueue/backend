@@ -52,9 +52,7 @@ class QueueController(
                 "- To change the queue's status, check `/queues/freeze` and `/queues/unfreeze` endpoints.\n\n" +
                 "- `queueId` - the queue's unique ID\n\n" +
                 "- `queueName` - the queue's name to display.\n\n" +
-                "- `queueColor` - the queue's label.\n\n" +
-                "- `hash_code` - hash code which indicates queue details. " +
-                "So, a client will know whether he can request for queue details or use its local cache."
+                "- `queueColor` - the queue's label."
     )
     @GetMapping
     fun getQueues(@RequestHeader("user-token") token: String): QueuesListDto = service.getQueues(token)
