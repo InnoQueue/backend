@@ -6,13 +6,14 @@ import com.innopolis.innoqueue.rest.v0.dto.EmptyDto
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 /**
  * Controller for managing Database
  */
-@RestController
+@RestController("/api/v1")
 @RequestMapping
 @Tag(
     name = "Backend Settings",
@@ -25,10 +26,9 @@ class BackendController(private val service: DatabaseService) {
      */
     @Operation(
         summary = "Reset invite codes",
-        description = "- Open this URL to delete expired invite codes forcibly.\n\n" +
-                "- You don't need to provide any `user-token`"
+        description = "- Open this URL to delete expired invite codes forcibly."
     )
-    @GetMapping("/clear")
+    @PostMapping("/invitations/clear")
     fun clearExpiredInviteCodes(): EmptyDto = service.clearExpiredInviteCodes()
 
     @Operation(

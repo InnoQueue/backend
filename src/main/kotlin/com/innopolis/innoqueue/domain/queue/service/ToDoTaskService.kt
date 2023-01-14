@@ -35,7 +35,7 @@ class ToDoTaskService(
                 queueId = it.getQueueId(),
                 name = it.getQueueName(),
                 color = it.getQueueColor(),
-                isImportant = it.getIsImportant(),
+                important = it.getIsImportant(),
                 trackExpenses = it.getTrackExpenses()
             )
         }

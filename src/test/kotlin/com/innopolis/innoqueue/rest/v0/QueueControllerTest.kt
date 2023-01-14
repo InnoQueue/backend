@@ -5,8 +5,8 @@ import com.innopolis.innoqueue.domain.queue.dto.NewQueueDto
 import com.innopolis.innoqueue.domain.queue.dto.QueueInviteCodeDto
 import com.innopolis.innoqueue.domain.queue.service.QueueService
 import com.innopolis.innoqueue.domain.queue.service.ToDoTaskService
-import com.innopolis.innoqueue.rest.v0.dto.SkipTaskDto
-import com.innopolis.innoqueue.rest.v0.dto.TaskDto
+import com.innopolis.innoqueue.rest.v0.dto.ExpensesDto
+import com.innopolis.innoqueue.rest.v0.dto.QueueActivityDto
 import io.mockk.mockk
 import io.mockk.verify
 import org.junit.jupiter.api.Test
@@ -80,25 +80,25 @@ class QueueControllerTest {
     fun `Test editQueue service called`() {
         // given
         val token = "token"
+        val queueId = 1L
         val queueDto = EditQueueDto(
             name = "name",
             color = "color",
             trackExpenses = false,
-            queueId = 1L,
             participants = null
         )
         val service = mockk<QueueService>(relaxed = true)
         val controller = QueueController(service, mockk())
 
         // when
-        controller.editQueue(token, queueDto)
+        controller.editQueue(token, queueId, queueDto)
 
         // then
-        verify(exactly = 1) { service.editQueue(token, queueDto) }
+        verify(exactly = 1) { service.editQueue(token, queueId, queueDto) }
     }
 
     @Test
-    fun `Test freezeQueue service called`() {
+    fun `Test freezeUnFreezeQueue service called`() {
         // given
         val token = "token"
         val queueId = 1L
@@ -106,25 +106,10 @@ class QueueControllerTest {
         val controller = QueueController(service, mockk())
 
         // when
-        controller.freezeQueue(token, queueId)
+        controller.changeQueueActivity(token, queueId, QueueActivityDto(false))
 
         // then
         verify(exactly = 1) { service.freezeUnFreezeQueue(token, queueId, false) }
-    }
-
-    @Test
-    fun `Test unfreezeQueue service called`() {
-        // given
-        val token = "token"
-        val queueId = 1L
-        val service = mockk<QueueService>(relaxed = true)
-        val controller = QueueController(service, mockk())
-
-        // when
-        controller.unfreezeQueue(token, queueId)
-
-        // then
-        verify(exactly = 1) { service.freezeUnFreezeQueue(token, queueId, true) }
     }
 
     @Test
@@ -193,34 +178,30 @@ class QueueControllerTest {
     fun `Test completeTask service called`() {
         // given
         val token = "token"
-        val taskDTO = TaskDto(
-            taskId = 1L,
-            expenses = 1000
-        )
+        val queueId = 1L
+        val expensesDTO = ExpensesDto(1000L)
         val service = mockk<ToDoTaskService>(relaxed = true)
         val controller = QueueController(mockk(), service)
 
         // when
-        controller.completeTask(token, taskDTO)
+        controller.completeTask(token, queueId, expensesDTO)
 
         // then
-        verify(exactly = 1) { service.completeTask(token, taskDTO.taskId, taskDTO.expenses) }
+        verify(exactly = 1) { service.completeTask(token, queueId, expensesDTO.expenses) }
     }
 
     @Test
     fun `Test skipTask service called`() {
         // given
         val token = "token"
-        val taskDTO = SkipTaskDto(
-            taskId = 1L
-        )
+        val queueId = 1L
         val service = mockk<ToDoTaskService>(relaxed = true)
         val controller = QueueController(mockk(), service)
 
         // when
-        controller.skipTask(token, taskDTO)
+        controller.skipTask(token, queueId)
 
         // then
-        verify(exactly = 1) { service.skipTask(token, taskDTO.taskId) }
+        verify(exactly = 1) { service.skipTask(token, queueId) }
     }
 }

@@ -57,19 +57,19 @@ class ToDoTaskServiceTest : PostgresTestContainer() {
         assertEquals(44L, result[0].queueId)
         assertEquals("Bring Water", result[0].name)
         assertEquals("BLUE", result[0].color)
-        assertEquals(true, result[0].isImportant)
+        assertEquals(true, result[0].important)
         assertEquals(false, result[0].trackExpenses)
 
         assertEquals(40L, result[1].queueId)
         assertEquals("Buy Soap", result[1].name)
         assertEquals("ORANGE", result[1].color)
-        assertEquals(false, result[1].isImportant)
+        assertEquals(false, result[1].important)
         assertEquals(true, result[1].trackExpenses)
 
         assertEquals(46L, result[2].queueId)
         assertEquals("Buy Sponge", result[2].name)
         assertEquals("PURPLE", result[2].color)
-        assertEquals(false, result[2].isImportant)
+        assertEquals(false, result[2].important)
         assertEquals(true, result[2].trackExpenses)
     }
 
@@ -83,7 +83,7 @@ class ToDoTaskServiceTest : PostgresTestContainer() {
         val result = toDoTaskService.getToDoTasks(token)
 
         // then
-        val (important, others) = result.partition { it.isImportant!! }
+        val (important, others) = result.partition { it.important!! }
         val sortedResult = important + others
 
         assertTrue(result.zip(sortedResult).all { it.first.queueId == it.second.queueId })
@@ -99,7 +99,7 @@ class ToDoTaskServiceTest : PostgresTestContainer() {
         val result = toDoTaskService.getToDoTasks(token)
 
         // then
-        val (important, others) = result.partition { it.isImportant!! }
+        val (important, others) = result.partition { it.important!! }
 
         assertTrue(important.zip(important.sortedBy { it.name!! }).all { it.first.queueId == it.second.queueId })
         assertTrue(others.zip(others.sortedBy { it.name!! }).all { it.first.queueId == it.second.queueId })

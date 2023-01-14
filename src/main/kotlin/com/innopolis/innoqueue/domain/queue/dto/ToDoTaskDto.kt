@@ -7,6 +7,6 @@ data class ToDoTaskDto(
     val queueId: Long?,
     val name: String?,
     val color: String?,
-    val isImportant: Boolean?,
+    val important: Boolean?,
     val trackExpenses: Boolean?
 )

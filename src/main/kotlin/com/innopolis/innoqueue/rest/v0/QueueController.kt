@@ -3,9 +3,7 @@ package com.innopolis.innoqueue.rest.v0
 import com.innopolis.innoqueue.domain.queue.dto.*
 import com.innopolis.innoqueue.domain.queue.service.QueueService
 import com.innopolis.innoqueue.domain.queue.service.ToDoTaskService
-import com.innopolis.innoqueue.rest.v0.dto.SkipTaskDto
-import com.innopolis.innoqueue.rest.v0.dto.TaskDto
-import com.innopolis.innoqueue.rest.v0.dto.ToDoTasksListDto
+import com.innopolis.innoqueue.rest.v0.dto.*
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.HttpStatus
@@ -91,7 +89,7 @@ class QueueController(
                 "- Pin code will be automatically destroyed after 60 mins and it's length is 6 digits.\n\n" +
                 "- QR code will be automatically destroyed after 24 hours and it's length is 48 symbols."
     )
-    @GetMapping("/invite/{queueId}")
+    @PostMapping("/{queueId}/invitation")
     fun getQueueInviteCode(
         @RequestHeader("user-token") token: String,
         @PathVariable queueId: Long
@@ -118,41 +116,36 @@ class QueueController(
                 "the same value as previously.\n\n" +
                 "The only required field is `id`."
     )
-    @PatchMapping
+    @PatchMapping("/{queueId}")
     @ResponseStatus(HttpStatus.OK)
-    fun editQueue(@RequestHeader("user-token") token: String, @RequestBody queue: EditQueueDto): QueueDto =
-        queueService.editQueue(token, queue)
+    fun editQueue(
+        @RequestHeader("user-token") token: String,
+        @PathVariable queueId: Long,
+        @RequestBody queue: EditQueueDto
+    ): QueueDto =
+        queueService.editQueue(token, queueId, queue)
 
     /**
      * POST endpoint for freezing a queue and making it inactive
      * @param token - user token
      */
     @Operation(
-        summary = "Freeze a queue",
-        description = "- The user temporarily leaves this queue.\n\n"
-                + "- The user won't participate in this queue anymore. So, there won't be any to-do task for it.\n\n"
-                + "- The user can start participate in this queue again after calling `/queues/unfreeze` endpoint.\n\n"
+        summary = "Change queue's activity",
+        description = "- If `active` = false: "
+                + "The user temporarily leaves this queue. "
+                + "The user won't participate in this queue anymore. So, there won't be any to-do task for it.\n\n"
+                + "- If `active` = true: The user can start participate in this queue again."
     )
-    @PostMapping("/freeze/{queueId}")
+    @PostMapping("/{queueId}/activity")
     @ResponseStatus(HttpStatus.OK)
-    fun freezeQueue(@RequestHeader("user-token") token: String, @PathVariable queueId: Long) =
-        queueService.freezeUnFreezeQueue(token, queueId, false)
+    fun changeQueueActivity(
+        @RequestHeader("user-token") token: String,
+        @PathVariable queueId: Long,
+        @RequestBody queueActivityDto: QueueActivityDto
+    ) = queueService.freezeUnFreezeQueue(token, queueId, queueActivityDto.active)
 
     /**
-     * POST endpoint for unfreezing a queue and making it active
-     * @param token - user token
-     */
-    @Operation(
-        summary = "Unfreeze a queue",
-        description = "Call this endpoint to resume the user's participation in this queue and get to-do task for it."
-    )
-    @PostMapping("/unfreeze/{queueId}")
-    @ResponseStatus(HttpStatus.OK)
-    fun unfreezeQueue(@RequestHeader("user-token") token: String, @PathVariable queueId: Long) =
-        queueService.freezeUnFreezeQueue(token, queueId, true)
-
-    /**
-     * DELETE endpoint for deleting or leaving a queue (depends whether a user is admin of this queue)
+     * DELETE endpoint for deleting or leaving a queue (depends on whether a user is admin of this queue)
      * @param token - user token
      */
     @Operation(
@@ -193,7 +186,7 @@ class QueueController(
                 "The user who is on duty of this queue will receive a reminder notification.\n\n" +
                 "`You can't shake yourself!`"
     )
-    @PostMapping("/shake/{queueId}")
+    @PostMapping("/{queueId}/shake")
     @ResponseStatus(HttpStatus.OK)
     fun shakeUser(@RequestHeader("user-token") token: String, @PathVariable queueId: Long) =
         queueService.shakeUser(token, queueId)
@@ -204,7 +197,7 @@ class QueueController(
      */
     @Operation(
         summary = "Get todo-tasks",
-        description = "- `is_important` - whether someone shook you (sent reminder). So, this task is urgent now.\n\n" +
+        description = "- `important` - whether someone shook you (sent reminder). So, this task is urgent now.\n\n" +
                 "- Queues in which there are no participants (only you) won't be shown.\n"
     )
     @GetMapping("/tasks")
@@ -216,18 +209,23 @@ class QueueController(
      * @param token - user token
      */
     @Operation(summary = "Complete a to-do task")
-    @PostMapping("/tasks/done")
+    @PostMapping("/{queueId}/complete")
     @ResponseStatus(HttpStatus.OK)
-    fun completeTask(@RequestHeader("user-token") token: String, @RequestBody task: TaskDto) =
-        toDoService.completeTask(token, task.taskId, task.expenses)
+    fun completeTask(
+        @RequestHeader("user-token") token: String,
+        @PathVariable queueId: Long,
+        @RequestBody expensesDto: ExpensesDto?
+    ) = toDoService.completeTask(token, queueId, expensesDto?.expenses)
 
     /**
      * POST endpoint for skipping to-do task
      * @param token - user token
      */
     @Operation(summary = "Skip a to-do task")
-    @PostMapping("/tasks/skip")
+    @PostMapping("/{queueId}/skip")
     @ResponseStatus(HttpStatus.OK)
-    fun skipTask(@RequestHeader("user-token") token: String, @RequestBody task: SkipTaskDto): Unit =
-        toDoService.skipTask(token, task.taskId)
+    fun skipTask(
+        @RequestHeader("user-token") token: String,
+        @PathVariable queueId: Long
+    ): Unit = toDoService.skipTask(token, queueId)
 }

@@ -175,7 +175,7 @@ class QueueServiceTest : PostgresTestContainer() {
                 userId = 2L,
                 userName = "Emil",
                 expenses = 0L,
-                isActive = true
+                active = true
             ), result.currentUser
         )
         assertEquals(4, result.participants.size)
@@ -184,7 +184,7 @@ class QueueServiceTest : PostgresTestContainer() {
                 userId = 3L,
                 userName = "Roman",
                 expenses = 0L,
-                isActive = true
+                active = true
             ), result.participants[0]
         )
         assertEquals(
@@ -192,7 +192,7 @@ class QueueServiceTest : PostgresTestContainer() {
                 userId = 4L,
                 userName = "Timur",
                 expenses = 0L,
-                isActive = true
+                active = true
             ), result.participants[1]
         )
         assertEquals(
@@ -200,7 +200,7 @@ class QueueServiceTest : PostgresTestContainer() {
                 userId = 5L,
                 userName = "Ivan",
                 expenses = 0L,
-                isActive = true
+                active = true
             ), result.participants[2]
         )
         assertEquals(
@@ -208,7 +208,7 @@ class QueueServiceTest : PostgresTestContainer() {
                 userId = 1L,
                 userName = "admin",
                 expenses = 0L,
-                isActive = false
+                active = false
             ), result.participants[3]
         )
     }
@@ -272,7 +272,7 @@ class QueueServiceTest : PostgresTestContainer() {
         assertEquals(queue[0].color, responseDto.queueColor)
         assertEquals(queue[0].currentUserId, responseDto.currentUser.userId)
         assertEquals(queue[0].trackExpenses, responseDto.trackExpenses)
-        assertEquals(userQueue[0].isActive, responseDto.currentUser.isActive)
+        assertEquals(userQueue[0].isActive, responseDto.currentUser.active)
         assertEquals(userQueue[0].isActive, responseDto.isActive)
 
         assertEquals(queueName, responseDto.queueName)
@@ -280,29 +280,10 @@ class QueueServiceTest : PostgresTestContainer() {
         assertEquals(trackExpenses, responseDto.trackExpenses)
         assertEquals(1L, responseDto.currentUser.userId)
         assertEquals(0, responseDto.participants.size)
-        assertEquals(true, responseDto.currentUser.isActive)
+        assertEquals(true, responseDto.currentUser.active)
         assertEquals(true, responseDto.isYourTurn)
         assertEquals(true, responseDto.isActive)
         assertEquals(true, responseDto.isAdmin)
-    }
-
-    @Test
-    @Sql("users.sql", "queues2.sql", "user_queue2.sql")
-    fun `Test editQueue exception if queueId is not specified`() {
-        // given
-        val token = "11111"
-        val queueDto = EditQueueDto(
-            queueId = null,
-            name = "queueName",
-            color = "queueColor",
-            trackExpenses = true,
-            participants = null
-        )
-
-        // when and then
-        Assertions.assertThrows(IllegalArgumentException::class.java) {
-            queueService.editQueue(token, queueDto)
-        }
     }
 
     @Test
@@ -311,7 +292,6 @@ class QueueServiceTest : PostgresTestContainer() {
         // given
         val token = "11111"
         val queueDto = EditQueueDto(
-            queueId = 6L,
             name = "queueName",
             color = "queueColor",
             trackExpenses = true,
@@ -320,7 +300,7 @@ class QueueServiceTest : PostgresTestContainer() {
 
         // when and then
         Assertions.assertThrows(IllegalArgumentException::class.java) {
-            queueService.editQueue(token, queueDto)
+            queueService.editQueue(token, 6L, queueDto)
         }
     }
 
@@ -330,7 +310,6 @@ class QueueServiceTest : PostgresTestContainer() {
         // given
         val token = "11111"
         val queueDto = EditQueueDto(
-            queueId = 6542L,
             name = "queueName",
             color = "queueColor",
             trackExpenses = true,
@@ -339,7 +318,7 @@ class QueueServiceTest : PostgresTestContainer() {
 
         // when and then
         Assertions.assertThrows(IllegalArgumentException::class.java) {
-            queueService.editQueue(token, queueDto)
+            queueService.editQueue(token, 6542L, queueDto)
         }
     }
 
@@ -349,7 +328,6 @@ class QueueServiceTest : PostgresTestContainer() {
         // given
         val token = "11111"
         val queueDto = EditQueueDto(
-            queueId = 34L,
             name = "",
             color = "queueColor",
             trackExpenses = true,
@@ -358,7 +336,7 @@ class QueueServiceTest : PostgresTestContainer() {
 
         // when and then
         Assertions.assertThrows(IllegalArgumentException::class.java) {
-            queueService.editQueue(token, queueDto)
+            queueService.editQueue(token, 34L, queueDto)
         }
     }
 
@@ -368,7 +346,6 @@ class QueueServiceTest : PostgresTestContainer() {
         // given
         val token = "11111"
         val queueDto = EditQueueDto(
-            queueId = 34L,
             name = "name",
             color = "",
             trackExpenses = true,
@@ -377,7 +354,7 @@ class QueueServiceTest : PostgresTestContainer() {
 
         // when and then
         Assertions.assertThrows(IllegalArgumentException::class.java) {
-            queueService.editQueue(token, queueDto)
+            queueService.editQueue(token, 34L, queueDto)
         }
     }
 
@@ -391,7 +368,6 @@ class QueueServiceTest : PostgresTestContainer() {
         val queueColor = "new queue color"
         val trackExpenses = false
         val queueDto = EditQueueDto(
-            queueId = queueId,
             name = queueName,
             color = queueColor,
             trackExpenses = trackExpenses,
@@ -399,7 +375,7 @@ class QueueServiceTest : PostgresTestContainer() {
         )
 
         // when
-        val responseDto = queueService.editQueue(token, queueDto)
+        val responseDto = queueService.editQueue(token, queueId, queueDto)
 
         // then
         val queue = queueRepository.findAll().first { it.queueId == queueId }

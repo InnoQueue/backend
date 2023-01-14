@@ -7,5 +7,5 @@ data class UserExpensesDto(
     val userId: Long,
     val userName: String,
     val expenses: Long?,
-    val isActive: Boolean
+    val active: Boolean
 )

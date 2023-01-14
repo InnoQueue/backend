@@ -118,19 +118,16 @@ class QueueService(
      */
     @Suppress("ThrowsCount")
     @Transactional
-    fun editQueue(token: String, editQueue: EditQueueDto): QueueDto {
-        if (editQueue.queueId == null) {
-            throw IllegalArgumentException("Queue id should be specified")
-        }
+    fun editQueue(token: String, queueId: Long, editQueue: EditQueueDto): QueueDto {
         val user = userService.findUserByToken(token)
-        val userQueue = getUserQueueByQueueId(user, editQueue.queueId)
+        val userQueue = getUserQueueByQueueId(user, queueId)
         if (queueRepository.findAll()
                 .firstOrNull { it.queueId == userQueue.userQueueId?.queueId }?.creatorId != user.id
         ) {
-            throw IllegalArgumentException("User is not an admin in this queue: ${editQueue.queueId}")
+            throw IllegalArgumentException("User is not an admin in this queue: $queueId")
         }
-        val queueEntity = queueRepository.findByIdOrNull(editQueue.queueId)
-            ?: throw IllegalArgumentException("Queue does not exist. ID: ${editQueue.queueId}")
+        val queueEntity = queueRepository.findByIdOrNull(queueId)
+            ?: throw IllegalArgumentException("Queue does not exist. ID: $queueId")
 
         var changed = false
         if (editQueue.name != null) {
