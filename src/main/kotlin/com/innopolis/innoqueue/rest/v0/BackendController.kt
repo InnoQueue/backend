@@ -1,8 +1,8 @@
-package com.innopolis.innoqueue.rest.v1
+package com.innopolis.innoqueue.rest.v0
 
 import com.innopolis.innoqueue.domain.external.dto.HostDto
 import com.innopolis.innoqueue.domain.external.service.DatabaseService
-import com.innopolis.innoqueue.rest.v1.dto.EmptyDto
+import com.innopolis.innoqueue.rest.v0.dto.EmptyDto
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.web.bind.annotation.GetMapping

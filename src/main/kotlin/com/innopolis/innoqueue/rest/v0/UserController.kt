@@ -1,10 +1,10 @@
-package com.innopolis.innoqueue.rest.v1
+package com.innopolis.innoqueue.rest.v0
 
 import com.innopolis.innoqueue.domain.user.dto.TokenDto
 import com.innopolis.innoqueue.domain.user.dto.UpdateUserDto
 import com.innopolis.innoqueue.domain.user.dto.UserDto
 import com.innopolis.innoqueue.domain.user.service.UserService
-import com.innopolis.innoqueue.rest.v1.dto.NewUserDto
+import com.innopolis.innoqueue.rest.v0.dto.NewUserDto
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.HttpStatus

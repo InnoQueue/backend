@@ -1,8 +1,8 @@
-package com.innopolis.innoqueue.rest.v1
+package com.innopolis.innoqueue.rest.v0
 
 import com.innopolis.innoqueue.domain.queue.service.ToDoTaskService
-import com.innopolis.innoqueue.rest.v1.dto.SkipTaskDto
-import com.innopolis.innoqueue.rest.v1.dto.TaskDto
+import com.innopolis.innoqueue.rest.v0.dto.SkipTaskDto
+import com.innopolis.innoqueue.rest.v0.dto.TaskDto
 import io.mockk.mockk
 import io.mockk.verify
 import org.junit.jupiter.api.Test

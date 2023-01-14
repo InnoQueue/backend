@@ -1,9 +1,9 @@
-package com.innopolis.innoqueue.rest.v1
+package com.innopolis.innoqueue.rest.v0
 
 import com.innopolis.innoqueue.domain.queue.dto.ToDoTaskDto
 import com.innopolis.innoqueue.domain.queue.service.ToDoTaskService
-import com.innopolis.innoqueue.rest.v1.dto.SkipTaskDto
-import com.innopolis.innoqueue.rest.v1.dto.TaskDto
+import com.innopolis.innoqueue.rest.v0.dto.SkipTaskDto
+import com.innopolis.innoqueue.rest.v0.dto.TaskDto
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.HttpStatus

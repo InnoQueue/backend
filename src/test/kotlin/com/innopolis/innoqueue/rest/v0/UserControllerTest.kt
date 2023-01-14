@@ -1,8 +1,8 @@
-package com.innopolis.innoqueue.rest.v1
+package com.innopolis.innoqueue.rest.v0
 
 import com.innopolis.innoqueue.domain.user.dto.UpdateUserDto
 import com.innopolis.innoqueue.domain.user.service.UserService
-import com.innopolis.innoqueue.rest.v1.dto.NewUserDto
+import com.innopolis.innoqueue.rest.v0.dto.NewUserDto
 import io.mockk.mockk
 import io.mockk.verify
 import org.junit.jupiter.api.Test

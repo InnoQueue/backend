@@ -1,9 +1,9 @@
-package com.innopolis.innoqueue.rest.v1
+package com.innopolis.innoqueue.rest.v0
 
 import com.innopolis.innoqueue.domain.notification.dto.NotificationsListDto
 import com.innopolis.innoqueue.domain.notification.service.NotificationService
-import com.innopolis.innoqueue.rest.v1.dto.EmptyDto
-import com.innopolis.innoqueue.rest.v1.dto.NewNotificationDto
+import com.innopolis.innoqueue.rest.v0.dto.EmptyDto
+import com.innopolis.innoqueue.rest.v0.dto.NewNotificationDto
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.HttpStatus

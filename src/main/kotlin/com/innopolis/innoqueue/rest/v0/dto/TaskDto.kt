@@ -1,4 +1,4 @@
-package com.innopolis.innoqueue.rest.v1.dto
+package com.innopolis.innoqueue.rest.v0.dto
 
 /**
  * DTO for completing a particular queue

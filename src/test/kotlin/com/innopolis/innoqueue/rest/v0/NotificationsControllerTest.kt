@@ -1,4 +1,4 @@
-package com.innopolis.innoqueue.rest.v1
+package com.innopolis.innoqueue.rest.v0
 
 import com.innopolis.innoqueue.domain.notification.service.NotificationService
 import io.mockk.mockk

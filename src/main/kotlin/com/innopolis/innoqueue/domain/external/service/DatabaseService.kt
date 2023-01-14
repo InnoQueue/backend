@@ -4,7 +4,7 @@ import com.innopolis.innoqueue.domain.external.dto.HostDto
 import com.innopolis.innoqueue.domain.queue.dao.QueueRepository
 import com.innopolis.innoqueue.domain.queue.dao.specification.QueuePinCodeExpiredSpecification
 import com.innopolis.innoqueue.domain.queue.dao.specification.QueueQrCodeExpiredSpecification
-import com.innopolis.innoqueue.rest.v1.dto.EmptyDto
+import com.innopolis.innoqueue.rest.v0.dto.EmptyDto
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
