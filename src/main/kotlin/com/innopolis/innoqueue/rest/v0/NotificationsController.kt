@@ -55,17 +55,17 @@ class NotificationsController(
     fun anyNewNotification(@RequestHeader("user-token") token: String): NewNotificationDto =
         notificationService.anyNewNotification(token)
 
-    /**
-     * GET endpoint for deleting notifications older than 2 weeks
-     */
-    @Operation(
-        summary = "Clear old notifications",
-        description = "- Open this URL to delete old notifications forcibly.\n\n" +
-                "- You don't need to provide any `user-token`.\n\n" +
-                "- `old notifications` - notifications that are older than **2 weeks**.\n\n"
-    )
-    @GetMapping("/clear")
-    fun clearOldNotifications(): EmptyDto = notificationService.clearOldNotifications()
+//    /**
+//     * GET endpoint for deleting notifications older than 2 weeks
+//     */
+//    @Operation(
+//        summary = "Clear old notifications",
+//        description = "- Open this URL to delete old notifications forcibly.\n\n" +
+//                "- You don't need to provide any `user-token`.\n\n" +
+//                "- `old notifications` - notifications that are older than **2 weeks**.\n\n"
+//    )
+//    @GetMapping("/clear")
+//    fun clearOldNotifications(): EmptyDto = notificationService.clearOldNotifications()
 
     /**
      * POST endpoint for marking notifications as read
@@ -77,11 +77,42 @@ class NotificationsController(
                 "- You can specify nothing. Then **all** notifications will be marked as read.\n\n"
     )
     @PostMapping
-    @Suppress("UnusedPrivateMember")
     fun readNotifications(
         @RequestHeader("user-token") token: String,
         @RequestBody notificationIds: NotificationIdsDto?
     ) {
         notificationService.readNotifications(token, notificationIds?.notificationIds)
+    }
+
+    /**
+     * POST endpoint for deleting notifications
+     */
+    @Operation(
+        summary = "Delete notifications",
+        description = "Specify notification ids which should be deleted.\n\n" +
+                "- You can specify ids in `notificationIds`. Then only these notifications will be deleted.\n\n" +
+                "- You can specify nothing. Then **all** notifications will be deleted.\n\n"
+    )
+    @PostMapping("/delete")
+    fun deleteNotifications(
+        @RequestHeader("user-token") token: String,
+        @RequestBody notificationIds: NotificationIdsDto?
+    ) {
+        notificationService.deleteNotifications(token, notificationIds?.notificationIds)
+    }
+
+    /**
+     * DELETE endpoint for deleting specified notification
+     */
+    @Operation(
+        summary = "Delete notification by id",
+        description = "Specify notification id which should be deleted."
+    )
+    @DeleteMapping("{notificationId}")
+    fun deleteNotificationById(
+        @RequestHeader("user-token") token: String,
+        @PathVariable notificationId: Long
+    ) {
+        notificationService.deleteNotificationById(token, notificationId)
     }
 }

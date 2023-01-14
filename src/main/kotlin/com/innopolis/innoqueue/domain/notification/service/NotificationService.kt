@@ -65,7 +65,7 @@ class NotificationService(
      * @param token - user token
      */
     @Transactional
-    fun readNotifications(token: String, notificationIds: List<Long>?) {
+    fun readNotifications(token: String, notificationIds: List<Long>? = null) {
         val unreadNotifications = notificationRepository
             .findAllByToken(token)
             .filter { it.isRead == false }
@@ -77,12 +77,40 @@ class NotificationService(
     }
 
     /**
-     * Deletes notifications older than 2 weeks
+     * Delete notifications older than 2 weeks
      */
     @Transactional
     fun clearOldNotifications(): EmptyDto {
         notificationRepository.deleteAll(notificationRepository.findAllExpiredNotifications())
         return EmptyDto(CLEAR_RESPONSE)
+    }
+
+    /**
+     * Delete specified by id notifications
+     */
+    @Transactional
+    fun deleteNotifications(token: String, notificationIds: List<Long>? = null) {
+        notificationRepository.deleteAll(
+            notificationRepository
+                .findAllByToken(token)
+                .let { notifications ->
+                    if (notificationIds == null) notifications
+                    else notifications.filter { it.id in notificationIds }
+                }
+        )
+    }
+
+    /**
+     * Delete notification by id
+     */
+    @Transactional
+    fun deleteNotificationById(token: String, notificationId: Long) {
+        notificationRepository
+            .findAllByToken(token)
+            .firstOrNull { it.id == notificationId }
+            ?.let {
+                notificationRepository.delete(it)
+            }
     }
 
     /**

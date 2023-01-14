@@ -34,17 +34,4 @@ class NotificationsControllerTest {
         // then
         verify(exactly = 1) { service.anyNewNotification(token) }
     }
-
-    @Test
-    fun `Test clearOldNotifications service called`() {
-        // given
-        val service = mockk<NotificationService>(relaxed = true)
-        val controller = NotificationsController(service)
-
-        // when
-        controller.clearOldNotifications()
-
-        // then
-        verify(exactly = 1) { service.clearOldNotifications() }
-    }
 }

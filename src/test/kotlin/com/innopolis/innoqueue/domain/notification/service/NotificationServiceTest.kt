@@ -227,12 +227,12 @@ class NotificationServiceTest : PostgresTestContainer() {
         "/com/innopolis/innoqueue/domain/queue/service/queues.sql",
         "notification.sql"
     )
-    fun `Test anyNewNotification all read`() {
+    fun `Test anyNewNotification read all`() {
         // given
         val token = "11111"
 
         // when
-        notificationService.readNotifications(token, null)
+        notificationService.readNotifications(token)
         val result = notificationService.anyNewNotification(token)
 
         // then
@@ -281,6 +281,76 @@ class NotificationServiceTest : PostgresTestContainer() {
         assertEquals("Old notifications were deleted", resultDto.result)
         assertEquals(21, notifications.size)
         assertTrue(notifications.none { it.date!! <= LocalDateTime.now().minusWeeks(2) })
+    }
+
+    @Test
+    @Sql(
+        "/com/innopolis/innoqueue/domain/queue/service/users.sql",
+        "fcm_token.sql",
+        "/com/innopolis/innoqueue/domain/queue/service/queues.sql",
+        "notification.sql"
+    )
+    fun `Test deleteNotifications delete specified ids`() {
+        // given
+        val token = "11111"
+        val deletedNotificationIds = listOf(26L, 21L)
+
+        // when
+        notificationService.deleteNotifications(token, listOf(26L, 21L))
+        val notifications = notificationService.getNotifications(token)
+
+        // then
+        assertEquals(1, notifications.unreadNotifications.size)
+        assertEquals(3, notifications.allNotifications.size)
+        assertTrue(
+            (notifications.unreadNotifications + notifications.allNotifications)
+                .none { it.notificationId in deletedNotificationIds }
+        )
+    }
+
+    @Test
+    @Sql(
+        "/com/innopolis/innoqueue/domain/queue/service/users.sql",
+        "fcm_token.sql",
+        "/com/innopolis/innoqueue/domain/queue/service/queues.sql",
+        "notification.sql"
+    )
+    fun `Test deleteNotifications delete all`() {
+        // given
+        val token = "11111"
+
+        // when
+        notificationService.deleteNotifications(token)
+        val notifications = notificationService.getNotifications(token)
+
+        // then
+        assertEquals(0, notifications.unreadNotifications.size)
+        assertEquals(0, notifications.allNotifications.size)
+    }
+
+    @Test
+    @Sql(
+        "/com/innopolis/innoqueue/domain/queue/service/users.sql",
+        "fcm_token.sql",
+        "/com/innopolis/innoqueue/domain/queue/service/queues.sql",
+        "notification.sql"
+    )
+    fun `Test deleteNotificationById`() {
+        // given
+        val token = "11111"
+        val deletedNotificationId = 26L
+
+        // when
+        notificationService.deleteNotificationById(token, deletedNotificationId)
+        val notifications = notificationService.getNotifications(token)
+
+        // then
+        assertEquals(2, notifications.unreadNotifications.size)
+        assertEquals(3, notifications.allNotifications.size)
+        assertTrue(
+            (notifications.unreadNotifications + notifications.allNotifications)
+                .none { it.notificationId == deletedNotificationId }
+        )
     }
 
     @Test
