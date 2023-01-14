@@ -14,4 +14,5 @@ data class NotificationDto(
     val queueId: Long?,
     val queueName: String,
     val date: LocalDateTime,
+    val read: Boolean
 )

@@ -4,7 +4,6 @@ import com.innopolis.innoqueue.domain.fcmtoken.service.FcmTokenService
 import com.innopolis.innoqueue.domain.firebase.service.FirebaseMessagingNotificationsService
 import com.innopolis.innoqueue.domain.notification.dao.NotificationRepository
 import com.innopolis.innoqueue.domain.notification.dto.NotificationDto
-import com.innopolis.innoqueue.domain.notification.dto.NotificationsListDto
 import com.innopolis.innoqueue.domain.notification.enums.NotificationsType
 import com.innopolis.innoqueue.domain.notification.model.Notification
 import com.innopolis.innoqueue.domain.queue.dao.QueueRepository
@@ -14,6 +13,8 @@ import com.innopolis.innoqueue.domain.userqueue.dao.UserQueueRepository
 import com.innopolis.innoqueue.domain.userqueue.model.UserQueue
 import com.innopolis.innoqueue.rest.v0.dto.EmptyDto
 import com.innopolis.innoqueue.rest.v0.dto.NewNotificationDto
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -38,19 +39,15 @@ class NotificationService(
     private val notificationRepository: NotificationRepository
 ) {
 
+
     /**
      * Lists all notifications
      * @param token - user token
      */
     @Transactional
-    fun getNotifications(token: String): NotificationsListDto {
-        val (allNotifications, unreadNotifications) = notificationRepository.findAllByToken(token)
-            .partition { it.isRead!! }
-        return NotificationsListDto(
-            unreadNotifications = unreadNotifications.toNotificationDTO(),
-            allNotifications = allNotifications.toNotificationDTO()
-        )
-    }
+    fun getNotifications(token: String, pageable: Pageable): Page<NotificationDto> = notificationRepository
+        .findAllByToken(token, pageable)
+        .toNotificationDTO()
 
     /**
      * Returns boolean whether there is any unread notification
@@ -143,7 +140,7 @@ class NotificationService(
         notificationRepository.saveAll(this)
     }
 
-    private fun List<Notification>.toNotificationDTO() = this.map {
+    private fun Page<Notification>.toNotificationDTO() = this.map {
         NotificationDto(
             notificationId = it.id!!,
             messageType = it.messageType!!,
@@ -154,7 +151,8 @@ class NotificationService(
             queueName = if (it.queueId == null) DELETED_QUEUE_NAME else queueRepository
                 .findByIdOrNull(it.queueId!!)?.name
                 ?: DELETED_QUEUE_NAME,
-            date = it.date!!
+            date = it.date!!,
+            read = it.isRead!!
         )
     }
 

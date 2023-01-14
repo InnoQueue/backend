@@ -1,12 +1,15 @@
 package com.innopolis.innoqueue.rest.v0
 
-import com.innopolis.innoqueue.domain.notification.dto.NotificationsListDto
+import com.innopolis.innoqueue.domain.notification.dto.NotificationDto
 import com.innopolis.innoqueue.domain.notification.service.NotificationService
-import com.innopolis.innoqueue.rest.v0.dto.EmptyDto
 import com.innopolis.innoqueue.rest.v0.dto.NewNotificationDto
 import com.innopolis.innoqueue.rest.v0.dto.NotificationIdsDto
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Pageable
+import org.springframework.data.domain.Sort
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -29,6 +32,13 @@ class NotificationsController(
         ResponseEntity(e.message, HttpStatus.NOT_FOUND)
 
     /**
+     * Exception handler
+     */
+    @ExceptionHandler(IllegalArgumentException::class)
+    fun handleNotFound(e: IllegalArgumentException): ResponseEntity<String> =
+        ResponseEntity(e.message, HttpStatus.BAD_REQUEST)
+
+    /**
      * GET endpoint for listing all notifications
      * @param token - user token
      */
@@ -36,8 +46,15 @@ class NotificationsController(
         summary = "Get list of notifications"
     )
     @GetMapping
-    fun getNotifications(@RequestHeader("user-token") token: String): NotificationsListDto =
-        notificationService.getNotifications(token)
+    fun getNotifications(@RequestHeader("user-token") token: String, page: Int, size: Int): Page<NotificationDto> {
+        validatePaginationArgs(page, size)
+        val pageable: Pageable = PageRequest.of(
+            page,
+            size,
+            Sort.by("is_read").and(Sort.by("date").descending())
+        )
+        return notificationService.getNotifications(token, pageable)
+    }
 
     /**
      * GET endpoint for indicating whether there is any unread notification
@@ -114,5 +131,10 @@ class NotificationsController(
         @PathVariable notificationId: Long
     ) {
         notificationService.deleteNotificationById(token, notificationId)
+    }
+
+    private fun validatePaginationArgs(page: Int, size: Int) {
+        require(page >= 0) { "Page should be >= 0. Provided: $page" }
+        require(size > 0) { "Size should be > 0. Provided: $size" }
     }
 }

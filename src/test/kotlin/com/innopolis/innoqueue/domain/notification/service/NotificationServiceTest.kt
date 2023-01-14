@@ -19,7 +19,9 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.data.repository.findByIdOrNull
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Pageable
+import org.springframework.data.domain.Sort
 import org.springframework.test.context.jdbc.Sql
 import java.time.LocalDateTime
 
@@ -37,18 +39,16 @@ class NotificationServiceTest : PostgresTestContainer() {
     @Autowired
     private lateinit var userRepository: UserRepository
 
+    val pageable: Pageable = PageRequest.of(
+        0,
+        100,
+        Sort.by("is_read").and(Sort.by("date").descending())
+    )
+
     @Test
     fun `Test getNotifications repos were called`() {
         // given
         val token = "11111"
-        val firebaseMessagingService = mockk<FirebaseMessagingNotificationsService>(relaxed = true)
-        val userService = mockk<UserService>(relaxed = true)
-        every { userService.findUserNameById(any()) } returns null
-        val fcmService = mockk<FcmTokenService>(relaxed = true)
-        every { fcmService.findTokensForUser(any()) } returns emptyList()
-        val queueRepository = mockk<QueueRepository>(relaxed = true)
-        every { queueRepository.findByIdOrNull(any()) } returns null
-        val userQueueRepository = mockk<UserQueueRepository>(relaxed = true)
         val notificationRepo = mockk<NotificationRepository>(relaxed = true)
         every { notificationRepo.findAllByToken(token) } returns listOf(
             Notification()
@@ -61,20 +61,19 @@ class NotificationServiceTest : PostgresTestContainer() {
                     date = LocalDateTime.now()
                 })
         val service = NotificationService(
-            firebaseMessagingService,
-            userService,
-            fcmService,
-            queueRepository,
-            userQueueRepository,
+            mockk(),
+            mockk(),
+            mockk(),
+            mockk(),
+            mockk(),
             notificationRepo
         )
 
         // when
-        service.getNotifications(token)
+        service.getNotifications(token, pageable)
 
         // then
-        verify(atLeast = 1) { userService.findUserNameById(any()) }
-        verify(atLeast = 1) { queueRepository.findByIdOrNull(any()) }
+        verify(exactly = 1) { notificationRepo.findAllByToken(token, pageable) }
     }
 
     @Test
@@ -91,47 +90,64 @@ class NotificationServiceTest : PostgresTestContainer() {
         // when
         queueRepository.deleteById(40L)
         userRepository.deleteById(3L)
-        val notifications = notificationService.getNotifications(token)
+        val notifications = notificationService.getNotifications(token, pageable).content
 
         // then
-        assertEquals(3, notifications.unreadNotifications.size)
-        assertEquals(3, notifications.allNotifications.size)
+        assertEquals(6, notifications.size)
 
-        assertEquals(NotificationsType.SHOOK, notifications.unreadNotifications[0].messageType)
-        assertEquals(1, notifications.unreadNotifications[0].participantId)
-        assertEquals("admin", notifications.unreadNotifications[0].participantName)
-        assertEquals(39, notifications.unreadNotifications[0].queueId)
-        assertEquals("Trash", notifications.unreadNotifications[0].queueName)
+        with(notifications[0]) {
+            assertEquals(NotificationsType.SHOOK, messageType)
+            assertEquals(1, participantId)
+            assertEquals("admin", participantName)
+            assertEquals(39, queueId)
+            assertEquals("Trash", queueName)
+            assertEquals(false, read)
+        }
 
-        assertEquals(NotificationsType.YOUR_TURN, notifications.unreadNotifications[1].messageType)
-        assertEquals(1, notifications.unreadNotifications[1].participantId)
-        assertEquals("admin", notifications.unreadNotifications[1].participantName)
-        assertEquals(39, notifications.unreadNotifications[1].queueId)
-        assertEquals("Trash", notifications.unreadNotifications[1].queueName)
+        with(notifications[1]) {
+            assertEquals(NotificationsType.YOUR_TURN, messageType)
+            assertEquals(1, participantId)
+            assertEquals("admin", participantName)
+            assertEquals(39, queueId)
+            assertEquals("Trash", queueName)
+            assertEquals(false, read)
+        }
 
-        assertEquals(NotificationsType.COMPLETED, notifications.unreadNotifications[2].messageType)
-        assertEquals(5, notifications.unreadNotifications[2].participantId)
-        assertEquals("Ivan", notifications.unreadNotifications[2].participantName)
-        assertEquals(39, notifications.unreadNotifications[2].queueId)
-        assertEquals("Trash", notifications.unreadNotifications[2].queueName)
+        with(notifications[2]) {
+            assertEquals(NotificationsType.COMPLETED, messageType)
+            assertEquals(5, participantId)
+            assertEquals("Ivan", participantName)
+            assertEquals(39, queueId)
+            assertEquals("Trash", queueName)
+            assertEquals(false, read)
+        }
 
-        assertEquals(NotificationsType.COMPLETED, notifications.allNotifications[0].messageType)
-        assertEquals(2, notifications.allNotifications[0].participantId)
-        assertEquals("Emil", notifications.allNotifications[0].participantName)
-        assertEquals(44, notifications.allNotifications[0].queueId)
-        assertEquals("Bring Water", notifications.allNotifications[0].queueName)
+        with(notifications[3]) {
+            assertEquals(NotificationsType.COMPLETED, messageType)
+            assertEquals(2, participantId)
+            assertEquals("Emil", participantName)
+            assertEquals(44, queueId)
+            assertEquals("Bring Water", queueName)
+            assertEquals(true, read)
+        }
 
-        assertEquals(NotificationsType.SKIPPED, notifications.allNotifications[1].messageType)
-        assertEquals(null, notifications.allNotifications[1].participantId)
-        assertEquals("Deleted user", notifications.allNotifications[1].participantName)
-        assertEquals(null, notifications.allNotifications[1].queueId)
-        assertEquals("Deleted queue", notifications.allNotifications[1].queueName)
+        with(notifications[4]) {
+            assertEquals(NotificationsType.SKIPPED, messageType)
+            assertEquals(null, participantId)
+            assertEquals("Deleted user", participantName)
+            assertEquals(null, queueId)
+            assertEquals("Deleted queue", queueName)
+            assertEquals(true, read)
+        }
 
-        assertEquals(NotificationsType.JOINED_QUEUE, notifications.allNotifications[2].messageType)
-        assertEquals(5, notifications.allNotifications[2].participantId)
-        assertEquals("Ivan", notifications.allNotifications[2].participantName)
-        assertEquals(44, notifications.allNotifications[2].queueId)
-        assertEquals("Bring Water", notifications.allNotifications[2].queueName)
+        with(notifications[5]) {
+            assertEquals(NotificationsType.JOINED_QUEUE, messageType)
+            assertEquals(5, participantId)
+            assertEquals("Ivan", participantName)
+            assertEquals(44, queueId)
+            assertEquals("Bring Water", queueName)
+            assertEquals(true, read)
+        }
     }
 
     @Test
@@ -144,15 +160,14 @@ class NotificationServiceTest : PostgresTestContainer() {
     fun `Test readNotifications read specified ids`() {
         // given
         val token = "11111"
+        val notificationIds = listOf(26L, 21L)
 
         // when
-        notificationService.readNotifications(token, listOf(26L, 21L))
-        val notifications = notificationService.getNotifications(token)
+        notificationService.readNotifications(token, notificationIds)
+        val notifications = notificationService.getNotifications(token, pageable).content
 
         // then
-        assertEquals(1, notifications.unreadNotifications.size)
-        assertEquals(5, notifications.allNotifications.size)
-        assertEquals(16L, notifications.unreadNotifications[0].notificationId)
+        assertTrue(notifications.none { it.notificationId in notificationIds && !it.read })
     }
 
     @Test
@@ -168,11 +183,10 @@ class NotificationServiceTest : PostgresTestContainer() {
 
         // when
         notificationService.readNotifications(token, null)
-        val notifications = notificationService.getNotifications(token)
+        val notifications = notificationService.getNotifications(token, pageable).content
 
         // then
-        assertEquals(0, notifications.unreadNotifications.size)
-        assertEquals(6, notifications.allNotifications.size)
+        assertTrue(notifications.none { !it.read })
     }
 
     @Test
@@ -297,15 +311,10 @@ class NotificationServiceTest : PostgresTestContainer() {
 
         // when
         notificationService.deleteNotifications(token, listOf(26L, 21L))
-        val notifications = notificationService.getNotifications(token)
+        val notifications = notificationService.getNotifications(token, pageable).content
 
         // then
-        assertEquals(1, notifications.unreadNotifications.size)
-        assertEquals(3, notifications.allNotifications.size)
-        assertTrue(
-            (notifications.unreadNotifications + notifications.allNotifications)
-                .none { it.notificationId in deletedNotificationIds }
-        )
+        assertTrue(notifications.none { it.notificationId in deletedNotificationIds })
     }
 
     @Test
@@ -321,11 +330,10 @@ class NotificationServiceTest : PostgresTestContainer() {
 
         // when
         notificationService.deleteNotifications(token)
-        val notifications = notificationService.getNotifications(token)
+        val notifications = notificationService.getNotifications(token, pageable).content
 
         // then
-        assertEquals(0, notifications.unreadNotifications.size)
-        assertEquals(0, notifications.allNotifications.size)
+        assertEquals(0, notifications.size)
     }
 
     @Test
@@ -342,15 +350,10 @@ class NotificationServiceTest : PostgresTestContainer() {
 
         // when
         notificationService.deleteNotificationById(token, deletedNotificationId)
-        val notifications = notificationService.getNotifications(token)
+        val notifications = notificationService.getNotifications(token, pageable).content
 
         // then
-        assertEquals(2, notifications.unreadNotifications.size)
-        assertEquals(3, notifications.allNotifications.size)
-        assertTrue(
-            (notifications.unreadNotifications + notifications.allNotifications)
-                .none { it.notificationId == deletedNotificationId }
-        )
+        assertTrue(notifications.none { it.notificationId == deletedNotificationId })
     }
 
     @Test
