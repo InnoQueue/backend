@@ -5,7 +5,7 @@ import com.innopolis.innoqueue.domain.queue.dao.QueueRepository
 import com.innopolis.innoqueue.domain.queue.dto.EditQueueDto
 import com.innopolis.innoqueue.domain.queue.dto.NewQueueDto
 import com.innopolis.innoqueue.domain.queue.dto.QueueInviteCodeDto
-import com.innopolis.innoqueue.domain.queue.dto.UserExpensesDto
+import com.innopolis.innoqueue.domain.queue.dto.QueueParticipantDto
 import com.innopolis.innoqueue.domain.user.service.UserService
 import com.innopolis.innoqueue.domain.userqueue.dao.UserQueueRepository
 import com.innopolis.innoqueue.testcontainer.PostgresTestContainer
@@ -64,7 +64,7 @@ class QueueServiceTest : PostgresTestContainer() {
             assertEquals(44L, queueId)
             assertEquals("Bring Water", queueName)
             assertEquals("BLUE", queueColor)
-            assertEquals("admin", onDutyUser)
+            assertEquals("admin", onDutyUserName)
             assertEquals(true, active)
         }
 
@@ -72,7 +72,7 @@ class QueueServiceTest : PostgresTestContainer() {
             assertEquals(34L, queueId)
             assertEquals("Buy Dishwashing Soap", queueName)
             assertEquals("GREEN", queueColor)
-            assertEquals("Emil", onDutyUser)
+            assertEquals("Emil", onDutyUserName)
             assertEquals(false, active)
         }
 
@@ -80,7 +80,7 @@ class QueueServiceTest : PostgresTestContainer() {
             assertEquals(40L, queueId)
             assertEquals("Buy Soap", queueName)
             assertEquals("ORANGE", queueColor)
-            assertEquals("admin", onDutyUser)
+            assertEquals("admin", onDutyUserName)
             assertEquals(true, active)
         }
 
@@ -88,7 +88,7 @@ class QueueServiceTest : PostgresTestContainer() {
             assertEquals(46L, queueId)
             assertEquals("Buy Sponge", queueName)
             assertEquals("PURPLE", queueColor)
-            assertEquals("admin", onDutyUser)
+            assertEquals("admin", onDutyUserName)
             assertEquals(true, active)
         }
 
@@ -96,7 +96,7 @@ class QueueServiceTest : PostgresTestContainer() {
             assertEquals(6L, queueId)
             assertEquals("Buy Toilet Paper", queueName)
             assertEquals("RED", queueColor)
-            assertEquals("Emil", onDutyUser)
+            assertEquals("Emil", onDutyUserName)
             assertEquals(false, active)
         }
 
@@ -104,7 +104,7 @@ class QueueServiceTest : PostgresTestContainer() {
             assertEquals(39L, queueId)
             assertEquals("Trash", queueName)
             assertEquals("YELLOW", queueColor)
-            assertEquals("admin", onDutyUser)
+            assertEquals("admin", onDutyUserName)
             assertEquals(true, active)
         }
     }
@@ -162,50 +162,63 @@ class QueueServiceTest : PostgresTestContainer() {
         assertEquals(queueId, result.queueId)
         assertEquals("Buy Toilet Paper", result.queueName)
         assertEquals("RED", result.queueColor)
-        assertEquals(false, result.isYourTurn)
+//        assertEquals(false, result.yourTurn)
         assertEquals(true, result.trackExpenses)
-        assertEquals(false, result.isActive)
-        assertEquals(false, result.isAdmin)
+        assertEquals(false, result.active)
+        assertEquals(false, result.admin)
+//        assertEquals(
+//            QueueParticipantDto(
+//                userId = 2L,
+//                userName = "Emil",
+//                expenses = 0L,
+//                active = true
+//            ), result.currentUser
+//        )
+        assertEquals(5, result.participants.size)
         assertEquals(
-            UserExpensesDto(
+            QueueParticipantDto(
                 userId = 2L,
                 userName = "Emil",
                 expenses = 0L,
-                active = true
-            ), result.currentUser
-        )
-        assertEquals(4, result.participants.size)
-        assertEquals(
-            UserExpensesDto(
-                userId = 3L,
-                userName = "Roman",
-                expenses = 0L,
-                active = true
+                active = true,
+                onDuty = true
             ), result.participants[0]
         )
         assertEquals(
-            UserExpensesDto(
-                userId = 4L,
-                userName = "Timur",
+            QueueParticipantDto(
+                userId = 3L,
+                userName = "Roman",
                 expenses = 0L,
-                active = true
+                active = true,
+                onDuty = false
             ), result.participants[1]
         )
         assertEquals(
-            UserExpensesDto(
-                userId = 5L,
-                userName = "Ivan",
+            QueueParticipantDto(
+                userId = 4L,
+                userName = "Timur",
                 expenses = 0L,
-                active = true
+                active = true,
+                onDuty = false
             ), result.participants[2]
         )
         assertEquals(
-            UserExpensesDto(
+            QueueParticipantDto(
+                userId = 5L,
+                userName = "Ivan",
+                expenses = 0L,
+                active = true,
+                onDuty = false
+            ), result.participants[3]
+        )
+        assertEquals(
+            QueueParticipantDto(
                 userId = 1L,
                 userName = "admin",
                 expenses = 0L,
-                active = false
-            ), result.participants[3]
+                active = false,
+                onDuty = false
+            ), result.participants[4]
         )
     }
 
@@ -248,8 +261,8 @@ class QueueServiceTest : PostgresTestContainer() {
         val queueColor = "queueColor"
         val trackExpenses = true
         val queueDto = NewQueueDto(
-            name = queueName,
-            color = queueColor,
+            queueName = queueName,
+            queueColor = queueColor,
             trackExpenses = trackExpenses
         )
 
@@ -266,20 +279,20 @@ class QueueServiceTest : PostgresTestContainer() {
         assertEquals(queue[0].queueId, responseDto.queueId)
         assertEquals(queue[0].name, responseDto.queueName)
         assertEquals(queue[0].color, responseDto.queueColor)
-        assertEquals(queue[0].currentUserId, responseDto.currentUser.userId)
+        assertEquals(queue[0].currentUserId, responseDto.participants[0].userId)
         assertEquals(queue[0].trackExpenses, responseDto.trackExpenses)
-        assertEquals(userQueue[0].isActive, responseDto.currentUser.active)
-        assertEquals(userQueue[0].isActive, responseDto.isActive)
+        assertEquals(userQueue[0].isActive, responseDto.participants[0].active)
+        assertEquals(userQueue[0].isActive, responseDto.active)
 
         assertEquals(queueName, responseDto.queueName)
         assertEquals(queueColor, responseDto.queueColor)
         assertEquals(trackExpenses, responseDto.trackExpenses)
-        assertEquals(1L, responseDto.currentUser.userId)
-        assertEquals(0, responseDto.participants.size)
-        assertEquals(true, responseDto.currentUser.active)
-        assertEquals(true, responseDto.isYourTurn)
-        assertEquals(true, responseDto.isActive)
-        assertEquals(true, responseDto.isAdmin)
+        assertEquals(1L, responseDto.participants[0].userId)
+        assertEquals(1, responseDto.participants.size)
+        assertEquals(true, responseDto.participants[0].active)
+//        assertEquals(true, responseDto.yourTurn)
+        assertEquals(true, responseDto.active)
+        assertEquals(true, responseDto.admin)
     }
 
     @Test
@@ -288,8 +301,8 @@ class QueueServiceTest : PostgresTestContainer() {
         // given
         val token = "11111"
         val queueDto = EditQueueDto(
-            name = "queueName",
-            color = "queueColor",
+            queueName = "queueName",
+            queueColor = "queueColor",
             trackExpenses = true,
             participants = null
         )
@@ -306,8 +319,8 @@ class QueueServiceTest : PostgresTestContainer() {
         // given
         val token = "11111"
         val queueDto = EditQueueDto(
-            name = "queueName",
-            color = "queueColor",
+            queueName = "queueName",
+            queueColor = "queueColor",
             trackExpenses = true,
             participants = null
         )
@@ -324,8 +337,8 @@ class QueueServiceTest : PostgresTestContainer() {
         // given
         val token = "11111"
         val queueDto = EditQueueDto(
-            name = "",
-            color = "queueColor",
+            queueName = "",
+            queueColor = "queueColor",
             trackExpenses = true,
             participants = null
         )
@@ -342,8 +355,8 @@ class QueueServiceTest : PostgresTestContainer() {
         // given
         val token = "11111"
         val queueDto = EditQueueDto(
-            name = "name",
-            color = "",
+            queueName = "name",
+            queueColor = "",
             trackExpenses = true,
             participants = null
         )
@@ -364,8 +377,8 @@ class QueueServiceTest : PostgresTestContainer() {
         val queueColor = "new queue color"
         val trackExpenses = false
         val queueDto = EditQueueDto(
-            name = queueName,
-            color = queueColor,
+            queueName = queueName,
+            queueColor = queueColor,
             trackExpenses = trackExpenses,
             participants = listOf(2L, 3L)
         )
@@ -384,7 +397,7 @@ class QueueServiceTest : PostgresTestContainer() {
         assertEquals(queue.name, responseDto.queueName)
         assertEquals(queue.color, responseDto.queueColor)
         assertEquals(queue.trackExpenses, responseDto.trackExpenses)
-        assertEquals(2, responseDto.participants.size)
+        assertEquals(3, responseDto.participants.size)
         assertEquals(3, userQueueList.filter { it.userQueueId?.queueId == queueId }.size)
         assertTrue(userQueueList.filter { it.userQueueId?.queueId == queueId }.map { it.userQueueId?.userId }
             .all { it in listOf(1L, 2L, 3L) })

@@ -3,14 +3,14 @@ package com.innopolis.innoqueue.domain.queue.dto
 /**
  * DTO for returning queue details
  */
-data class QueueDto(
+data class QueueDetailsDto(
     val queueId: Long,
     val queueName: String,
     val queueColor: String,
-    val currentUser: UserExpensesDto,
-    val isYourTurn: Boolean,
-    val participants: List<UserExpensesDto>,
+//    val currentUser: UserExpensesDto,
+//    val yourTurn: Boolean,
+    val participants: List<QueueParticipantDto>,
     val trackExpenses: Boolean,
-    val isActive: Boolean,
-    val isAdmin: Boolean
+    val active: Boolean,
+    val admin: Boolean
 )

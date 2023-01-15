@@ -62,8 +62,8 @@ class QueueControllerTest {
         // given
         val token = "token"
         val queueDto = NewQueueDto(
-            name = "name",
-            color = "color",
+            queueName = "name",
+            queueColor = "color",
             trackExpenses = false
         )
         val service = mockk<QueueService>(relaxed = true)
@@ -82,8 +82,8 @@ class QueueControllerTest {
         val token = "token"
         val queueId = 1L
         val queueDto = EditQueueDto(
-            name = "name",
-            color = "color",
+            queueName = "name",
+            queueColor = "color",
             trackExpenses = false,
             participants = null
         )

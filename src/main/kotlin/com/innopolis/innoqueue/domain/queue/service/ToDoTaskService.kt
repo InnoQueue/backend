@@ -33,8 +33,8 @@ class ToDoTaskService(
         .map {
             ToDoTaskDto(
                 queueId = it.getQueueId(),
-                name = it.getQueueName(),
-                color = it.getQueueColor(),
+                queueName = it.getQueueName(),
+                queueColor = it.getQueueColor(),
                 important = it.getIsImportant(),
                 trackExpenses = it.getTrackExpenses()
             )

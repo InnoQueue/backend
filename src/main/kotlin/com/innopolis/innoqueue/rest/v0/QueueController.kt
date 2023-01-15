@@ -76,7 +76,7 @@ class QueueController(
                 "They are sorted in terms who is next will be forced to be responsible for a queue."
     )
     @GetMapping("/{queueId}")
-    fun getQueueById(@RequestHeader("user-token") token: String, @PathVariable queueId: Long): QueueDto =
+    fun getQueueById(@RequestHeader("user-token") token: String, @PathVariable queueId: Long): QueueDetailsDto =
         queueService.getQueueById(token, queueId)
 
     /**
@@ -106,7 +106,7 @@ class QueueController(
     @Operation(summary = "Create a queue")
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
-    fun createQueue(@RequestHeader("user-token") token: String, @RequestBody queue: NewQueueDto): QueueDto =
+    fun createQueue(@RequestHeader("user-token") token: String, @RequestBody queue: NewQueueDto): QueueDetailsDto =
         queueService.createQueue(token, queue)
 
     /**
@@ -125,7 +125,7 @@ class QueueController(
         @RequestHeader("user-token") token: String,
         @PathVariable queueId: Long,
         @RequestBody queue: EditQueueDto
-    ): QueueDto =
+    ): QueueDetailsDto =
         queueService.editQueue(token, queueId, queue)
 
     /**

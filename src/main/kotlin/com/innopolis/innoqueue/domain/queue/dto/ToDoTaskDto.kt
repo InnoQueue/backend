@@ -5,8 +5,8 @@ package com.innopolis.innoqueue.domain.queue.dto
  */
 data class ToDoTaskDto(
     val queueId: Long?,
-    val name: String?,
-    val color: String?,
+    val queueName: String?,
+    val queueColor: String?,
     val important: Boolean?,
     val trackExpenses: Boolean?
 )

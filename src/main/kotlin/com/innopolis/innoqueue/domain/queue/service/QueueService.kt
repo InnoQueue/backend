@@ -66,7 +66,7 @@ class QueueService(
      * @param queueId - id of a queue
      */
     @Transactional
-    fun getQueueById(token: String, queueId: Long): QueueDto {
+    fun getQueueById(token: String, queueId: Long): QueueDetailsDto {
         val queueOptional = queueRepository.findById(queueId)
         if (!queueOptional.isPresent) {
             throw IllegalArgumentException("User does not belong to such queue: $queueId")
@@ -74,16 +74,20 @@ class QueueService(
         val userQueue = userQueueRepository.findUserQueueByToken(token, queueId)
             ?: throw IllegalArgumentException("User does not belong to such queue: $queueId")
         val queue = queueOptional.get()
-        return QueueDto(
+        return QueueDetailsDto(
             queueId = queue.queueId!!,
             queueName = queue.name!!,
             queueColor = queue.color!!,
-            currentUser = transformUserToUserExpensesDTO(queue.currentUserId, queue),
-            isYourTurn = queue.currentUserId == userQueue.userQueueId?.userId,
-            participants = getParticipants(queue),
+//            currentUser = transformUserToUserExpensesDTO(queue.currentUserId, queue, true),
+//            yourTurn = queue.currentUserId == userQueue.userQueueId?.userId,
+            participants = listOf(
+                transformUserToUserExpensesDTO(queue.currentUserId, queue, true)
+            ) + getParticipants(
+                queue
+            ),
             trackExpenses = queue.trackExpenses!!,
-            isActive = userQueue.isActive!!,
-            isAdmin = queue.creatorId == userQueue.userQueueId?.userId
+            active = userQueue.isActive!!,
+            admin = queue.creatorId == userQueue.userQueueId?.userId
         )
     }
 
@@ -108,20 +112,22 @@ class QueueService(
      * @param token - user token
      */
     @Transactional
-    fun createQueue(token: String, queue: NewQueueDto): QueueDto {
+    fun createQueue(token: String, queue: NewQueueDto): QueueDetailsDto {
         val user = userService.findUserByToken(token)
         val createdQueue = saveQueueEntity(queue, user)
         saveUserQueueEntity(createdQueue, user)
-        val qDTO = QueueDto(
+        val qDTO = QueueDetailsDto(
             queueId = createdQueue.queueId!!,
             queueName = createdQueue.name!!,
             queueColor = createdQueue.color!!,
-            currentUser = transformUserToUserExpensesDTO(createdQueue.currentUserId, createdQueue),
-            isYourTurn = true,
-            participants = emptyList(),
+//            currentUser = transformUserToUserExpensesDTO(createdQueue.currentUserId, createdQueue, true),
+//            yourTurn = true,
+            participants = listOf(
+                transformUserToUserExpensesDTO(createdQueue.currentUserId, createdQueue, true)
+            ),
             trackExpenses = createdQueue.trackExpenses!!,
-            isActive = true,
-            isAdmin = true
+            active = true,
+            admin = true
         )
         return qDTO
     }
@@ -132,7 +138,7 @@ class QueueService(
      */
     @Suppress("ThrowsCount")
     @Transactional
-    fun editQueue(token: String, queueId: Long, editQueue: EditQueueDto): QueueDto {
+    fun editQueue(token: String, queueId: Long, editQueue: EditQueueDto): QueueDetailsDto {
         val user = userService.findUserByToken(token)
         val userQueue = getUserQueueByQueueId(user, queueId)
         if (queueRepository.findAll()
@@ -144,18 +150,18 @@ class QueueService(
             ?: throw IllegalArgumentException("Queue does not exist. ID: $queueId")
 
         var changed = false
-        if (editQueue.name != null) {
-            if (editQueue.name.isEmpty()) {
+        if (editQueue.queueName != null) {
+            if (editQueue.queueName.isEmpty()) {
                 throw IllegalArgumentException("Queue name can't be an empty string")
             }
-            queueEntity.name = editQueue.name
+            queueEntity.name = editQueue.queueName
             changed = true
         }
-        if (editQueue.color != null) {
-            if (editQueue.color.isEmpty()) {
+        if (editQueue.queueColor != null) {
+            if (editQueue.queueColor.isEmpty()) {
                 throw IllegalArgumentException("Queue color can't be an empty string")
             }
-            queueEntity.color = editQueue.color
+            queueEntity.color = editQueue.queueColor
             changed = true
         }
         if (editQueue.trackExpenses != null) {
@@ -287,7 +293,7 @@ class QueueService(
      */
     @Suppress("ThrowsCount", "ReturnCount", "LongMethod")
     @Transactional
-    fun joinQueue(token: String, queueInviteCodeDTO: QueueInviteCodeDto): QueueDto {
+    fun joinQueue(token: String, queueInviteCodeDTO: QueueInviteCodeDto): QueueDetailsDto {
         val user = userService.findUserByToken(token)
 
         if (queueInviteCodeDTO.pinCode != null) {
@@ -391,28 +397,30 @@ class QueueService(
                 queueId = it.getQueueId(),
                 queueName = it.getQueueName(),
                 queueColor = it.getColor(),
-                onDutyUser = it.getOnDutyUserName(),
+                onDutyUserName = it.getOnDutyUserName(),
                 active = it.getIsActive()
             )
         }
 
     @Transactional
-    fun transformQueueToDTO(queue: Queue?, isActive: Boolean, userId: Long): QueueDto {
-        val qDTO = QueueDto(
+    fun transformQueueToDTO(queue: Queue?, isActive: Boolean, userId: Long): QueueDetailsDto {
+        val qDTO = QueueDetailsDto(
             queueId = queue?.queueId!!,
             queueName = queue.name!!,
             queueColor = queue.color!!,
-            currentUser = transformUserToUserExpensesDTO(queue.currentUserId, queue),
-            isYourTurn = queue.currentUserId == userId,
-            participants = getParticipants(queue),
+//            currentUser = transformUserToUserExpensesDTO(queue.currentUserId, queue, true),
+//            yourTurn = queue.currentUserId == userId,
+            participants = listOf(
+                transformUserToUserExpensesDTO(queue.currentUserId, queue, true)
+            ) + getParticipants(queue),
             trackExpenses = queue.trackExpenses!!,
-            isActive = isActive,
-            isAdmin = queue.creatorId == userId
+            active = isActive,
+            admin = queue.creatorId == userId
         )
         return qDTO
     }
 
-    private fun getParticipants(queue: Queue): List<UserExpensesDto> {
+    private fun getParticipants(queue: Queue): List<QueueParticipantDto> {
         val userQueueParticipants =
             userQueueRepository.findAll().filter { it.userQueueId?.queueId == queue.queueId }.sortedBy { it.dateJoined }
 
@@ -436,37 +444,39 @@ class QueueService(
         return participantsResult.map { userQueue ->
             transformUserToUserExpensesDTO(
                 userQueue.userQueueId?.userId!!,
-                queue
+                queue,
+                false
             )
         }
     }
 
-    private fun transformUserToUserExpensesDTO(userId: Long?, queue: Queue): UserExpensesDto {
+    private fun transformUserToUserExpensesDTO(userId: Long?, queue: Queue, isOnDuty: Boolean): QueueParticipantDto {
         val user = userService.findUserById(userId!!)
         val isActive = userQueueRepository.findAll()
             .firstOrNull { it.userQueueId?.queueId == queue.queueId && it.userQueueId?.userId == user?.id }?.isActive
             ?: true
-        return UserExpensesDto(
+        return QueueParticipantDto(
             user?.id!!,
             user.name!!,
             userQueueRepository.findAll()
                 .firstOrNull {
                     it.userQueueId?.queueId == queue.queueId && it.userQueueId?.userId == user.id
                 }?.expenses,
-            isActive
+            isActive,
+            isOnDuty
         )
     }
 
     private fun saveQueueEntity(queue: NewQueueDto, user: User): Queue {
-        if (queue.name.isEmpty()) {
+        if (queue.queueName.isEmpty()) {
             throw IllegalArgumentException("Queue name can't be an empty string")
         }
-        if (queue.color.isEmpty()) {
+        if (queue.queueColor.isEmpty()) {
             throw IllegalArgumentException("Queue color can't be an empty string")
         }
         val queueEntity = Queue()
-        queueEntity.name = queue.name
-        queueEntity.color = queue.color
+        queueEntity.name = queue.queueName
+        queueEntity.color = queue.queueColor
         queueEntity.creatorId = user.id
         queueEntity.trackExpenses = queue.trackExpenses
         queueEntity.currentUserId = user.id

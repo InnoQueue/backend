@@ -1,4 +1,4 @@
-package com.innopolis.innoqueue.rest.v0
+package com.innopolis.innoqueue.rest.v1
 
 import com.innopolis.innoqueue.domain.external.dto.HostDto
 import com.innopolis.innoqueue.domain.external.service.DatabaseService
@@ -13,11 +13,11 @@ import org.springframework.web.bind.annotation.RestController
 /**
  * Controller for managing Database
  */
-@RestController("/api/v1")
-@RequestMapping
+@RestController
+@RequestMapping("/api/v1")
 @Tag(
     name = "Backend Settings",
-    description = "Requests to manipulate with the database"
+    description = "Requests to manipulate with the Backend and the Database"
 )
 class BackendController(private val service: DatabaseService) {
 
@@ -25,8 +25,8 @@ class BackendController(private val service: DatabaseService) {
      * Endpoint for deleting expired invite codes
      */
     @Operation(
-        summary = "Reset invite codes",
-        description = "- Open this URL to delete expired invite codes forcibly."
+        summary = "Reset invite QR and PIN codes",
+        description = "- Delete expired invite codes which are older than 2 weeks forcibly."
     )
     @PostMapping("/invitations/clear")
     fun clearExpiredInviteCodes(): EmptyDto = service.clearExpiredInviteCodes()
