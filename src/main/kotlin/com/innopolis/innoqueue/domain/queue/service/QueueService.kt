@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
 import java.time.ZoneOffset
-import kotlin.math.abs
 
 private const val PIN_CODE_LENGTH: Int = 6
 private const val QR_CODE_LENGTH: Int = 48
@@ -40,11 +39,8 @@ class QueueService(
      * @param token - user token
      */
     @Transactional
-    fun getQueues(token: String): QueuesListDto {
-        val (activeQueues, frozenQueues) = userQueueRepository.findAllUserQueueByToken(token)
-            .partition { it.getIsActive() }
-        return QueuesListDto(activeQueues.convertToQueueShortDTO(), frozenQueues.convertToQueueShortDTO())
-    }
+    fun getQueues(token: String): QueuesListDto =
+        QueuesListDto(userQueueRepository.findAllUserQueueByToken(token).convertToQueueShortDTO())
 
     /**
      * Lists queue details
@@ -376,7 +372,8 @@ class QueueService(
             QueueShortDto(
                 queueId = it.getQueueId(),
                 queueName = it.getQueueName(),
-                queueColor = it.getColor()
+                queueColor = it.getColor(),
+                active = it.getIsActive()
             )
         }
 

@@ -50,80 +50,70 @@ class QueueServiceTest : PostgresTestContainer() {
 
     @Test
     @Sql("users.sql", "queues2.sql", "user_queue3.sql")
-    fun `Test getQueues activeQueues`() {
+    fun `Test getQueues`() {
         // given
         val token = "11111"
 
         // when
-        val activeQueues = queueService.getQueues(token).activeQueues
+        val queues = queueService.getQueues(token).queues
 
         // then
-        assertEquals(4, activeQueues.size)
+        assertEquals(6, queues.size)
 
-        assertEquals(44L, activeQueues[0].queueId)
-        assertEquals("Bring Water", activeQueues[0].queueName)
-        assertEquals("BLUE", activeQueues[0].queueColor)
+        with(queues[0]) {
+            assertEquals(44L, queueId)
+            assertEquals("Bring Water", queueName)
+            assertEquals("BLUE", queueColor)
+            assertEquals(true, active)
+        }
 
-        assertEquals(40L, activeQueues[1].queueId)
-        assertEquals("Buy Soap", activeQueues[1].queueName)
-        assertEquals("ORANGE", activeQueues[1].queueColor)
+        with(queues[1]) {
+            assertEquals(34L, queueId)
+            assertEquals("Buy Dishwashing Soap", queueName)
+            assertEquals("GREEN", queueColor)
+            assertEquals(false, active)
+        }
 
-        assertEquals(46L, activeQueues[2].queueId)
-        assertEquals("Buy Sponge", activeQueues[2].queueName)
-        assertEquals("PURPLE", activeQueues[2].queueColor)
+        with(queues[2]) {
+            assertEquals(40L, queueId)
+            assertEquals("Buy Soap", queueName)
+            assertEquals("ORANGE", queueColor)
+            assertEquals(true, active)
+        }
 
-        assertEquals(39L, activeQueues[3].queueId)
-        assertEquals("Trash", activeQueues[3].queueName)
-        assertEquals("YELLOW", activeQueues[3].queueColor)
+        with(queues[3]) {
+            assertEquals(46L, queueId)
+            assertEquals("Buy Sponge", queueName)
+            assertEquals("PURPLE", queueColor)
+            assertEquals(true, active)
+        }
+
+        with(queues[4]) {
+            assertEquals(6L, queueId)
+            assertEquals("Buy Toilet Paper", queueName)
+            assertEquals("RED", queueColor)
+            assertEquals(false, active)
+        }
+
+        with(queues[5]) {
+            assertEquals(39L, queueId)
+            assertEquals("Trash", queueName)
+            assertEquals("YELLOW", queueColor)
+            assertEquals(true, active)
+        }
     }
 
     @Test
     @Sql("users.sql", "queues2.sql", "user_queue3.sql")
-    fun `Test getQueues frozenQueues`() {
+    fun `Test getQueues are sorted by name`() {
         // given
         val token = "11111"
 
         // when
-        val frozenQueues = queueService.getQueues(token).frozenQueues
+        val queues = queueService.getQueues(token).queues
 
         // then
-        assertEquals(2, frozenQueues.size)
-
-        assertEquals(34L, frozenQueues[0].queueId)
-        assertEquals("Buy Dishwashing Soap", frozenQueues[0].queueName)
-        assertEquals("GREEN", frozenQueues[0].queueColor)
-
-        assertEquals(6L, frozenQueues[1].queueId)
-        assertEquals("Buy Toilet Paper", frozenQueues[1].queueName)
-        assertEquals("RED", frozenQueues[1].queueColor)
-    }
-
-    @Test
-    @Sql("users.sql", "queues2.sql", "user_queue3.sql")
-    fun `Test getQueues activeQueues are sorted by name`() {
-        // given
-        val token = "11111"
-
-        // when
-        val activeQueues = queueService.getQueues(token).activeQueues
-
-        // then
-        assertTrue(
-            activeQueues.sortedBy { it.queueName }.zip(activeQueues).all { it.first.queueId == it.second.queueId })
-    }
-
-    @Test
-    @Sql("users.sql", "queues2.sql", "user_queue3.sql")
-    fun `Test getQueues frozenQueues are sorted by name`() {
-        // given
-        val token = "11111"
-
-        // when
-        val frozenQueues = queueService.getQueues(token).frozenQueues
-
-        // then
-        assertTrue(
-            frozenQueues.sortedBy { it.queueName }.zip(frozenQueues).all { it.first.queueId == it.second.queueId })
+        assertTrue(queues.sortedBy { it.queueName }.zip(queues).all { it.first.queueId == it.second.queueId })
     }
 
     @Test
