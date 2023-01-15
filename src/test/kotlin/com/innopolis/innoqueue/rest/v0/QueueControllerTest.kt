@@ -21,10 +21,10 @@ class QueueControllerTest {
         val controller = QueueController(service, mockk())
 
         // when
-        controller.getQueues(token)
+        controller.getQueues(token, null)
 
         // then
-        verify(exactly = 1) { service.getQueues(token) }
+        verify(exactly = 1) { service.getQueues(token, null) }
     }
 
     @Test

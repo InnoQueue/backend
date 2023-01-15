@@ -39,8 +39,26 @@ class QueueService(
      * @param token - user token
      */
     @Transactional
-    fun getQueues(token: String): QueuesListDto =
-        QueuesListDto(userQueueRepository.findAllUserQueueByToken(token).convertToQueueShortDTO())
+    fun getQueues(token: String, sortOption: String? = null): QueuesListDto {
+        return when (sortOption) {
+            null, "queue" -> QueuesListDto(userQueueRepository.findAllUserQueueByToken(token).convertToQueueShortDTO())
+            "participant" -> QueuesListDto(
+                userQueueRepository.findAllUserQueueByToken(token)
+                    .sortedBy { it.getOnDutyUserName() }
+                    .convertToQueueShortDTO()
+            )
+
+            "date" -> QueuesListDto(
+                userQueueRepository.findAllUserQueueByToken(token).sortedBy { it.getDateJoined() }
+                    .convertToQueueShortDTO()
+            )
+            // TODO finish method
+            "todo" -> QueuesListDto(userQueueRepository.findAllUserQueueByToken(token).convertToQueueShortDTO())
+            else -> throw IllegalArgumentException(
+                "Sort option should be: 'queue', 'participant', 'date' or 'todo'. Provided: $this"
+            )
+        }
+    }
 
     /**
      * Lists queue details
@@ -373,7 +391,7 @@ class QueueService(
                 queueId = it.getQueueId(),
                 queueName = it.getQueueName(),
                 queueColor = it.getColor(),
-                onDutyUser = it.getUserName(),
+                onDutyUser = it.getOnDutyUserName(),
                 active = it.getIsActive()
             )
         }

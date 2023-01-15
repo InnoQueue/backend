@@ -58,7 +58,10 @@ class QueueController(
                 "- `queueColor` - the queue's label."
     )
     @GetMapping
-    fun getQueues(@RequestHeader("user-token") token: String): QueuesListDto = queueService.getQueues(token)
+    fun getQueues(@RequestHeader("user-token") token: String, sort: String?): QueuesListDto {
+        sort.validateSortParameter()
+        return queueService.getQueues(token, sort)
+    }
 
     /**
      * GET endpoint for queue details
@@ -228,4 +231,15 @@ class QueueController(
         @RequestHeader("user-token") token: String,
         @PathVariable queueId: Long
     ): Unit = toDoService.skipTask(token, queueId)
+
+    private fun String?.validateSortParameter() {
+        if (this != null) {
+            when (this) {
+                "queue", "participant", "date", "todo" -> return
+                else -> throw IllegalArgumentException(
+                    "Sort option should be: 'queue', 'participant', 'date' or 'todo'. Provided: $this"
+                )
+            }
+        }
+    }
 }
