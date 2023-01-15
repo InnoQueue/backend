@@ -8,4 +8,5 @@ interface UserQueuesShortForm {
     fun getQueueName(): String
     fun getColor(): String
     fun getIsActive(): Boolean
+    fun getUserName(): String
 }

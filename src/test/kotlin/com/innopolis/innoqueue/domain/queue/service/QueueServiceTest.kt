@@ -64,6 +64,7 @@ class QueueServiceTest : PostgresTestContainer() {
             assertEquals(44L, queueId)
             assertEquals("Bring Water", queueName)
             assertEquals("BLUE", queueColor)
+            assertEquals("admin", onDutyUser)
             assertEquals(true, active)
         }
 
@@ -71,6 +72,7 @@ class QueueServiceTest : PostgresTestContainer() {
             assertEquals(34L, queueId)
             assertEquals("Buy Dishwashing Soap", queueName)
             assertEquals("GREEN", queueColor)
+            assertEquals("Emil", onDutyUser)
             assertEquals(false, active)
         }
 
@@ -78,6 +80,7 @@ class QueueServiceTest : PostgresTestContainer() {
             assertEquals(40L, queueId)
             assertEquals("Buy Soap", queueName)
             assertEquals("ORANGE", queueColor)
+            assertEquals("admin", onDutyUser)
             assertEquals(true, active)
         }
 
@@ -85,6 +88,7 @@ class QueueServiceTest : PostgresTestContainer() {
             assertEquals(46L, queueId)
             assertEquals("Buy Sponge", queueName)
             assertEquals("PURPLE", queueColor)
+            assertEquals("admin", onDutyUser)
             assertEquals(true, active)
         }
 
@@ -92,6 +96,7 @@ class QueueServiceTest : PostgresTestContainer() {
             assertEquals(6L, queueId)
             assertEquals("Buy Toilet Paper", queueName)
             assertEquals("RED", queueColor)
+            assertEquals("Emil", onDutyUser)
             assertEquals(false, active)
         }
 
@@ -99,6 +104,7 @@ class QueueServiceTest : PostgresTestContainer() {
             assertEquals(39L, queueId)
             assertEquals("Trash", queueName)
             assertEquals("YELLOW", queueColor)
+            assertEquals("admin", onDutyUser)
             assertEquals(true, active)
         }
     }

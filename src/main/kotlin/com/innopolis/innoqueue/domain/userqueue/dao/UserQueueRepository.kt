@@ -39,16 +39,19 @@ WHERE user_queue.queue_id = :queueId ;
 """
 
 private const val GET_ALL_USER_QUEUE_BY_TOKEN = """
-SELECT user_queue.queue_id queueId,
-       queue.name queueName,
-       queue.color,
-       user_queue.is_active isActive
-FROM user_queue
-         JOIN queue ON user_queue.queue_id = queue.queue_id
-WHERE user_id = (SELECT user_id
-                 FROM "user"
-                 WHERE token = :token)
-ORDER BY queue.name;
+SELECT queueId, queueName, color, isActive, name userName
+FROM (SELECT user_queue.queue_id   queueId,
+             queue.name            queueName,
+             queue.color,
+             user_queue.is_active  isActive,
+             queue.current_user_id currentUserId
+      FROM user_queue
+               JOIN queue ON user_queue.queue_id = queue.queue_id
+      WHERE user_id = (SELECT user_id
+                       FROM "user"
+                       WHERE token = :token)) queue_details
+         JOIN "user" ON currentUserId = "user".user_id
+ORDER BY queueName;
 """
 
 private const val GET_QUEUE_PARTICIPANTS = """

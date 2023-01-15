@@ -373,6 +373,7 @@ class QueueService(
                 queueId = it.getQueueId(),
                 queueName = it.getQueueName(),
                 queueColor = it.getColor(),
+                onDutyUser = it.getUserName(),
                 active = it.getIsActive()
             )
         }
