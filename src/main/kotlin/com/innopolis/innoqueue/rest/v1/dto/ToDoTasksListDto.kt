@@ -1,4 +1,4 @@
-package com.innopolis.innoqueue.rest.v0.dto
+package com.innopolis.innoqueue.rest.v1.dto
 
 import com.innopolis.innoqueue.domain.queue.dto.ToDoTaskDto
 

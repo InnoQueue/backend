@@ -1,9 +1,11 @@
-package com.innopolis.innoqueue.rest.v0
+package com.innopolis.innoqueue.rest.v1
 
 import com.innopolis.innoqueue.domain.queue.dto.*
 import com.innopolis.innoqueue.domain.queue.service.QueueService
 import com.innopolis.innoqueue.domain.queue.service.ToDoTaskService
-import com.innopolis.innoqueue.rest.v0.dto.*
+import com.innopolis.innoqueue.rest.v1.dto.ExpensesDto
+import com.innopolis.innoqueue.rest.v1.dto.QueueActivityDto
+import com.innopolis.innoqueue.rest.v1.dto.ToDoTasksListDto
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.HttpStatus
@@ -48,14 +50,16 @@ class QueueController(
     @Operation(
         summary = "Get queues",
         description = "- List all queues which the user joined.\n\n" +
-                "- `activeQueues` - queues in which a user actively participates. " +
-                "The user should contribute to these queues.\n\n" +
-                "- `frozenQueues` - queues which a user temporarily left. " +
-                "These queues won't appear in user's To-do tasks since he/she does not participate in them.\n\n" +
-                "- To change the queue's status, check `/queues/freeze` and `/queues/unfreeze` endpoints.\n\n" +
                 "- `queueId` - the queue's unique ID\n\n" +
                 "- `queueName` - the queue's name to display.\n\n" +
-                "- `queueColor` - the queue's label."
+                "- `queueColor` - the queue's label.\n\n" +
+                "- `onDutyUserName` - the name of the user who is responsible for this queue.\n\n" +
+                "- `active` - shows whether you participate in this queue or not.\n\n" +
+                "- `active=true` means that you should contribute to this queue. " +
+                "Sometimes this queue will appear in to-dos list\n\n" +
+                "- `active=false` means that you temporarily left this queue and don't participate in it. " +
+                "This queue won't appear in user's to-do tasks.\n\n" +
+                "- To change the queue's `activity` status, check `/queues/{queueId}/activity` endpoint.\n\n"
     )
     @GetMapping
     fun getQueues(@RequestHeader("user-token") token: String, sort: String?): QueuesListDto {
@@ -70,10 +74,15 @@ class QueueController(
     @Operation(
         summary = "Get a queue by id",
         description = "Get the full information about a queue by its id.\n\n" +
-                "- `on_duty` - the user who is responsible for this queue now.\n\n" +
-                "- `is_on_duty` - shows whether it is your turn of this queue.\n\n" +
+                "- `queueId` - the queue's unique ID\n\n" +
+                "- `queueName` - the queue's name to display.\n\n" +
+                "- `queueColor` - the queue's label.\n\n" +
+                "- `trackExpenses` - indicates whether this queue tracks expenses in contribution.\n\n" +
+                "- `admin` - indicates whether your are an admin for this queue.\n\n" +
                 "- `participants` - users who joined this queue and participate in it. " +
-                "They are sorted in terms who is next will be forced to be responsible for a queue."
+                "They are sorted in terms who is next will be forced to be responsible for a queue.\n\n" +
+                "- `participants.active` - if a user participates in this queue or temporarily left it.\n\n" +
+                "- `participants.onDuty` - if a user is currentrly responsible for this queue."
     )
     @GetMapping("/{queueId}")
     fun getQueueById(@RequestHeader("user-token") token: String, @PathVariable queueId: Long): QueueDetailsDto =
@@ -87,10 +96,10 @@ class QueueController(
     @Operation(
         summary = "Invite to a queue by id",
         description = "Provide a queue's id to get an invitation pin and QR code.\n\n" +
-                "- `pin_code` - use this code in **POST** `/queues/join` request.\n\n" +
-                "- `qr_code` - use this code in **POST** `/queues/join` request.\n\n" +
-                "- Pin code will be automatically destroyed after 60 mins and it's length is 6 digits.\n\n" +
-                "- QR code will be automatically destroyed after 24 hours and it's length is 48 symbols."
+                "- `pinCode` - provide this code in **POST** `/queues/join` request. " +
+                "It's length is 6 digits. Pin code will be automatically erased after 60 minutes.\n\n" +
+                "- `qrCode` - provide this code in **POST** `/queues/join` request. " +
+                "It's length is 48 symbols. QR code will be automatically erased after 24 hours\n\n"
     )
     @PostMapping("/{queueId}/invitation")
     fun getQueueInviteCode(
@@ -116,8 +125,9 @@ class QueueController(
     @Operation(
         summary = "Edit a queue",
         description = "You can specify only such fields which you want to modify. Other fields will have " +
-                "the same value as previously.\n\n" +
-                "The only required field is `id`."
+                "the same value as previously. You can edit a queue only if you are an **admin**.\n\n" +
+                "- `participants` - if you want to remove a participant, provide new list with users ids who" +
+                "should contribute.\n\n"
     )
     @PatchMapping("/{queueId}")
     @ResponseStatus(HttpStatus.OK)
@@ -134,10 +144,10 @@ class QueueController(
      */
     @Operation(
         summary = "Change queue's activity",
-        description = "- If `active` = false: "
+        description = "- If `active=false`: "
                 + "The user temporarily leaves this queue. "
                 + "The user won't participate in this queue anymore. So, there won't be any to-do task for it.\n\n"
-                + "- If `active` = true: The user can start participate in this queue again."
+                + "- If `active=true`: The user can start participate in this queue again."
     )
     @PostMapping("/{queueId}/activity")
     @ResponseStatus(HttpStatus.OK)
@@ -168,8 +178,8 @@ class QueueController(
      */
     @Operation(
         summary = "Join a queue",
-        description = "Use either `pin_code` or `qr_code` field.\n" +
-                "If the code is correct you will get the queue description as a result.\n" +
+        description = "Provide either `pinCode` or `qrCode` field.\n" +
+                "If the code is correct you will receive the queue's description as a result.\n" +
                 "No matter whether you joined this queue earlier.\n\n" +
                 "In case you provided invalid code, you will get the **Bad Request, 400 response**."
     )
@@ -184,10 +194,10 @@ class QueueController(
      */
     @Operation(
         summary = "Shake user",
-        description = "Shake the user who is currently responsible in the queue." +
-                "Provide a queue's id to send a shake reminder.\n" +
+        description = "Shake the user who is currently responsible for the queue. " +
+                "Provide a queue's id to send a shake reminder.\n\n" +
                 "The user who is on duty of this queue will receive a reminder notification.\n\n" +
-                "`You can't shake yourself!`"
+                "**You can't shake yourself!**"
     )
     @PostMapping("/{queueId}/shake")
     @ResponseStatus(HttpStatus.OK)
@@ -200,7 +210,8 @@ class QueueController(
      */
     @Operation(
         summary = "Get todo-tasks",
-        description = "- `important` - whether someone shook you (sent reminder). So, this task is urgent now.\n\n" +
+        description = "List queues for which your are on duty right now.\n\n" +
+                "- `important` - whether someone shook you (sent reminder). So, this task is urgent now.\n\n" +
                 "- Queues in which there are no participants (only you) won't be shown.\n"
     )
     @GetMapping("/tasks")
@@ -211,7 +222,14 @@ class QueueController(
      * POST endpoint for completing to-do task
      * @param token - user token
      */
-    @Operation(summary = "Complete a to-do task")
+    @Operation(
+        summary = "Complete a to-do task.",
+        description = "- You should complete a queue for which you are on duty (it's in to-do tasks)\n\n" +
+                "- However, you can also add your progress to a queue even if you are not on duty. " +
+                "In this case, you'll add +1 contribution to this queue. " +
+                "Next time, your turn in to-dos will be skipped." +
+                "- `expenses` - provide expenses in pennies if this queue tracks expenses."
+    )
     @PostMapping("/{queueId}/complete")
     @ResponseStatus(HttpStatus.OK)
     fun completeTask(

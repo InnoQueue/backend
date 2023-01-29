@@ -7,10 +7,10 @@ data class QueueDetailsDto(
     val queueId: Long,
     val queueName: String,
     val queueColor: String,
+    val trackExpenses: Boolean,
+    val admin: Boolean,
+    val participants: List<QueueParticipantDto>,
 //    val currentUser: UserExpensesDto,
 //    val yourTurn: Boolean,
-    val participants: List<QueueParticipantDto>,
-    val trackExpenses: Boolean,
-    val active: Boolean,
-    val admin: Boolean
+//    val active: Boolean,
 )

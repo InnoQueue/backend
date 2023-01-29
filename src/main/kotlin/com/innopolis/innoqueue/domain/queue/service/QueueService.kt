@@ -86,7 +86,6 @@ class QueueService(
                 queue
             ),
             trackExpenses = queue.trackExpenses!!,
-            active = userQueue.isActive!!,
             admin = queue.creatorId == userQueue.userQueueId?.userId
         )
     }
@@ -126,7 +125,6 @@ class QueueService(
                 transformUserToUserExpensesDTO(createdQueue.currentUserId, createdQueue, true)
             ),
             trackExpenses = createdQueue.trackExpenses!!,
-            active = true,
             admin = true
         )
         return qDTO
@@ -309,7 +307,7 @@ class QueueService(
                 val queueEntity = queueRepository.findAll().firstOrNull { it.queueId == queue.queueId }
                     ?: throw IllegalArgumentException("The pin code for queue is invalid: $pinCode")
 
-                val newUserQueue = userQueueRepository.save(createUserQueueEntity(user, queueEntity))
+                userQueueRepository.save(createUserQueueEntity(user, queueEntity))
                 notificationService.sendNotificationMessage(
                     NotificationsType.JOINED_QUEUE,
                     user.id!!,
@@ -320,13 +318,11 @@ class QueueService(
 
                 return transformQueueToDTO(
                     queue = queueEntity,
-                    isActive = newUserQueue.isActive!!,
                     userId = user.id!!
                 )
             }
             return transformQueueToDTO(
                 queue = queue,
-                isActive = userQueue.isActive!!,
                 userId = user.id!!
             )
         } else if (queueInviteCodeDTO.qrCode != null) {
@@ -338,7 +334,7 @@ class QueueService(
             if (userQueue == null) {
                 val queueEntity = queueRepository.findAll().firstOrNull { it.queueId == queue.queueId }
                     ?: throw IllegalArgumentException("The QR code for queue is invalid: $qrCode")
-                val newUserQueue = userQueueRepository.save(createUserQueueEntity(user, queueEntity))
+                userQueueRepository.save(createUserQueueEntity(user, queueEntity))
                 notificationService.sendNotificationMessage(
                     NotificationsType.JOINED_QUEUE,
                     user.id!!,
@@ -348,13 +344,11 @@ class QueueService(
                 )
                 return transformQueueToDTO(
                     queue = queueEntity,
-                    isActive = newUserQueue.isActive!!,
                     userId = user.id!!
                 )
             }
             return transformQueueToDTO(
                 queue = queue,
-                isActive = userQueue.isActive!!,
                 userId = user.id!!
             )
         } else {
@@ -403,7 +397,7 @@ class QueueService(
         }
 
     @Transactional
-    fun transformQueueToDTO(queue: Queue?, isActive: Boolean, userId: Long): QueueDetailsDto {
+    fun transformQueueToDTO(queue: Queue?, userId: Long): QueueDetailsDto {
         val qDTO = QueueDetailsDto(
             queueId = queue?.queueId!!,
             queueName = queue.name!!,
@@ -414,7 +408,6 @@ class QueueService(
                 transformUserToUserExpensesDTO(queue.currentUserId, queue, true)
             ) + getParticipants(queue),
             trackExpenses = queue.trackExpenses!!,
-            active = isActive,
             admin = queue.creatorId == userId
         )
         return qDTO

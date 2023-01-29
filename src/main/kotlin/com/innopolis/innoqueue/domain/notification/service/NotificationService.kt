@@ -11,7 +11,7 @@ import com.innopolis.innoqueue.domain.user.model.User
 import com.innopolis.innoqueue.domain.user.service.UserService
 import com.innopolis.innoqueue.domain.userqueue.dao.UserQueueRepository
 import com.innopolis.innoqueue.domain.userqueue.model.UserQueue
-import com.innopolis.innoqueue.rest.v0.dto.EmptyDto
+import com.innopolis.innoqueue.rest.v1.dto.EmptyDto
 import com.innopolis.innoqueue.rest.v1.dto.NewNotificationDto
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable

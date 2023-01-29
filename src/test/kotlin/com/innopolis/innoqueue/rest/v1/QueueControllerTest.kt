@@ -1,12 +1,13 @@
-package com.innopolis.innoqueue.rest.v0
+package com.innopolis.innoqueue.rest.v1
 
 import com.innopolis.innoqueue.domain.queue.dto.EditQueueDto
 import com.innopolis.innoqueue.domain.queue.dto.NewQueueDto
 import com.innopolis.innoqueue.domain.queue.dto.QueueInviteCodeDto
 import com.innopolis.innoqueue.domain.queue.service.QueueService
 import com.innopolis.innoqueue.domain.queue.service.ToDoTaskService
-import com.innopolis.innoqueue.rest.v0.dto.ExpensesDto
-import com.innopolis.innoqueue.rest.v0.dto.QueueActivityDto
+import com.innopolis.innoqueue.rest.v1.dto.ExpensesDto
+import com.innopolis.innoqueue.rest.v1.dto.QueueActivityDto
+import com.innopolis.innoqueue.rest.v1.QueueController
 import io.mockk.mockk
 import io.mockk.verify
 import org.junit.jupiter.api.Test

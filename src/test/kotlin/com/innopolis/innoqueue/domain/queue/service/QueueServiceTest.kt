@@ -164,7 +164,6 @@ class QueueServiceTest : PostgresTestContainer() {
         assertEquals("RED", result.queueColor)
 //        assertEquals(false, result.yourTurn)
         assertEquals(true, result.trackExpenses)
-        assertEquals(false, result.active)
         assertEquals(false, result.admin)
 //        assertEquals(
 //            QueueParticipantDto(
@@ -282,7 +281,6 @@ class QueueServiceTest : PostgresTestContainer() {
         assertEquals(queue[0].currentUserId, responseDto.participants[0].userId)
         assertEquals(queue[0].trackExpenses, responseDto.trackExpenses)
         assertEquals(userQueue[0].isActive, responseDto.participants[0].active)
-        assertEquals(userQueue[0].isActive, responseDto.active)
 
         assertEquals(queueName, responseDto.queueName)
         assertEquals(queueColor, responseDto.queueColor)
@@ -291,7 +289,6 @@ class QueueServiceTest : PostgresTestContainer() {
         assertEquals(1, responseDto.participants.size)
         assertEquals(true, responseDto.participants[0].active)
 //        assertEquals(true, responseDto.yourTurn)
-        assertEquals(true, responseDto.active)
         assertEquals(true, responseDto.admin)
     }
 
