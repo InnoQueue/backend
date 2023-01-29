@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*
  */
 @Suppress("TooManyFunctions")
 @RestController
-@RequestMapping("/queues")
+@RequestMapping("/api/v1/queues")
 @Tag(
     name = "Queue",
     description = "Controller responsible for handling work with Queues. " +
