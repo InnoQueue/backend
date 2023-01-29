@@ -1,12 +1,12 @@
 package com.innopolis.innoqueue.domain.firebase.util
 
-import com.innopolis.innoqueue.domain.notification.enums.NotificationsType
+import com.innopolis.innoqueue.domain.notification.enums.NotificationType
 
 /**
  * Util class for building notification message text
  */
 class MessagePushNotificationCreator(
-    private val notificationType: NotificationsType,
+    private val notificationType: NotificationType,
     private val queueName: String,
     private val isPersonal: Boolean,
     private val participantName: String
@@ -22,123 +22,131 @@ class MessagePushNotificationCreator(
 
     @Suppress("ComplexMethod")
     private fun prepareTitleForNotificationMessage(
-        notificationType: NotificationsType, participantName: String, queueName: String, isPersonal: Boolean
+        notificationType: NotificationType, participantName: String, queueName: String, isPersonal: Boolean
     ): String? {
         return when (notificationType) {
-            NotificationsType.YOUR_TURN -> if (isPersonal) {
+            NotificationType.YOUR_TURN -> if (isPersonal) {
                 "It' your turn!"
             } else {
                 "Next in $queueName"
             }
 
-            NotificationsType.COMPLETED -> if (isPersonal) {
+            NotificationType.COMPLETED -> if (isPersonal) {
                 null
             } else {
                 "Progress in $queueName"
             }
 
-            NotificationsType.SKIPPED -> if (isPersonal) {
+            NotificationType.SKIPPED -> if (isPersonal) {
                 null
             } else {
                 "Skip in $queueName"
             }
 
-            NotificationsType.SHOOK -> if (isPersonal) {
+            NotificationType.SHOOK -> if (isPersonal) {
                 "Don't forget about $queueName"
             } else {
                 null
             }
 
-            NotificationsType.FROZEN -> if (isPersonal) {
+            NotificationType.FROZEN -> if (isPersonal) {
                 null
             } else {
                 "$participantName frozen a queue"
             }
 
-            NotificationsType.UNFROZEN -> if (isPersonal) {
+            NotificationType.UNFROZEN -> if (isPersonal) {
                 null
             } else {
                 "$participantName unfrozen a queue"
             }
 
-            NotificationsType.JOINED_QUEUE -> if (isPersonal) {
+            NotificationType.JOINED_QUEUE -> if (isPersonal) {
                 null
             } else {
                 "Join in the queue"
             }
 
-            NotificationsType.LEFT_QUEUE -> if (isPersonal) {
+            NotificationType.LEFT_QUEUE -> if (isPersonal) {
                 null
             } else {
                 "Left the queue"
             }
 
-            NotificationsType.DELETE_QUEUE -> if (isPersonal) {
+            NotificationType.DELETE_QUEUE -> if (isPersonal) {
                 null
             } else {
                 "The queue was deleted"
             }
+
+            NotificationType.UPDATE -> "Update your App!"
+
+            NotificationType.OTHER -> "New notification"
         }
     }
 
     @Suppress("ComplexMethod")
     private fun prepareBodyForNotificationMessage(
-        notificationType: NotificationsType, participantName: String, queueName: String, isPersonal: Boolean
+        notificationType: NotificationType, participantName: String, queueName: String, isPersonal: Boolean
     ): String? {
         return when (notificationType) {
-            NotificationsType.YOUR_TURN -> if (isPersonal) {
+            NotificationType.YOUR_TURN -> if (isPersonal) {
                 "It’s now your turn in queue $queueName"
             } else {
                 "$participantName is now responsible for a queue $queueName"
             }
 
-            NotificationsType.COMPLETED -> if (isPersonal) {
+            NotificationType.COMPLETED -> if (isPersonal) {
                 null
             } else {
                 "$participantName completed $queueName"
             }
 
-            NotificationsType.SKIPPED -> if (isPersonal) {
+            NotificationType.SKIPPED -> if (isPersonal) {
                 null
             } else {
                 "$participantName skipped his/her turn in $queueName"
             }
 
-            NotificationsType.SHOOK -> if (isPersonal) {
+            NotificationType.SHOOK -> if (isPersonal) {
                 "You were shook by roommate to remind you that it is your turn in $queueName!"
             } else {
                 null
             }
 
-            NotificationsType.FROZEN -> if (isPersonal) {
+            NotificationType.FROZEN -> if (isPersonal) {
                 null
             } else {
                 "$participantName has frozen a queue $queueName"
             }
 
-            NotificationsType.UNFROZEN -> if (isPersonal) {
+            NotificationType.UNFROZEN -> if (isPersonal) {
                 null
             } else {
                 "$participantName has unfrozen a queue $queueName"
             }
 
-            NotificationsType.JOINED_QUEUE -> if (isPersonal) {
+            NotificationType.JOINED_QUEUE -> if (isPersonal) {
                 "$participantName joined in queue $queueName"
             } else {
                 null
             }
 
-            NotificationsType.LEFT_QUEUE -> if (isPersonal) {
+            NotificationType.LEFT_QUEUE -> if (isPersonal) {
                 null
             } else {
                 "$participantName left the queue $queueName"
             }
 
-            NotificationsType.DELETE_QUEUE -> if (isPersonal) {
+            NotificationType.DELETE_QUEUE -> if (isPersonal) {
                 null
             } else {
                 "$participantName deleted the queue $queueName"
             }
+
+            NotificationType.UPDATE -> "Update your App!"
+
+            NotificationType.OTHER -> "New notification"
         }
     }
 }

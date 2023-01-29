@@ -3,7 +3,7 @@ package com.innopolis.innoqueue.domain.notification.service
 import com.innopolis.innoqueue.domain.fcmtoken.service.FcmTokenService
 import com.innopolis.innoqueue.domain.firebase.service.FirebaseMessagingNotificationsService
 import com.innopolis.innoqueue.domain.notification.dao.NotificationRepository
-import com.innopolis.innoqueue.domain.notification.enums.NotificationsType
+import com.innopolis.innoqueue.domain.notification.enums.NotificationType
 import com.innopolis.innoqueue.domain.notification.model.Notification
 import com.innopolis.innoqueue.domain.queue.dao.QueueRepository
 import com.innopolis.innoqueue.domain.queue.model.Queue
@@ -55,7 +55,7 @@ class NotificationServiceTest : PostgresTestContainer() {
                 .apply {
                     id = 1L
                     isRead = true
-                    messageType = NotificationsType.YOUR_TURN
+                    messageType = NotificationType.YOUR_TURN
                     participantId = 1
                     queueId = 1
                     date = LocalDateTime.now()
@@ -96,7 +96,7 @@ class NotificationServiceTest : PostgresTestContainer() {
         assertEquals(6, notifications.size)
 
         with(notifications[0]) {
-            assertEquals(NotificationsType.SHOOK, messageType)
+            assertEquals(NotificationType.SHOOK, messageType)
             assertEquals(1, participantId)
             assertEquals("admin", participantName)
             assertEquals(39, queueId)
@@ -105,7 +105,7 @@ class NotificationServiceTest : PostgresTestContainer() {
         }
 
         with(notifications[1]) {
-            assertEquals(NotificationsType.YOUR_TURN, messageType)
+            assertEquals(NotificationType.YOUR_TURN, messageType)
             assertEquals(1, participantId)
             assertEquals("admin", participantName)
             assertEquals(39, queueId)
@@ -114,7 +114,7 @@ class NotificationServiceTest : PostgresTestContainer() {
         }
 
         with(notifications[2]) {
-            assertEquals(NotificationsType.COMPLETED, messageType)
+            assertEquals(NotificationType.COMPLETED, messageType)
             assertEquals(5, participantId)
             assertEquals("Ivan", participantName)
             assertEquals(39, queueId)
@@ -123,7 +123,7 @@ class NotificationServiceTest : PostgresTestContainer() {
         }
 
         with(notifications[3]) {
-            assertEquals(NotificationsType.COMPLETED, messageType)
+            assertEquals(NotificationType.COMPLETED, messageType)
             assertEquals(2, participantId)
             assertEquals("Emil", participantName)
             assertEquals(44, queueId)
@@ -132,7 +132,7 @@ class NotificationServiceTest : PostgresTestContainer() {
         }
 
         with(notifications[4]) {
-            assertEquals(NotificationsType.SKIPPED, messageType)
+            assertEquals(NotificationType.SKIPPED, messageType)
             assertEquals(null, participantId)
             assertEquals("Deleted user", participantName)
             assertEquals(null, queueId)
@@ -141,7 +141,7 @@ class NotificationServiceTest : PostgresTestContainer() {
         }
 
         with(notifications[5]) {
-            assertEquals(NotificationsType.JOINED_QUEUE, messageType)
+            assertEquals(NotificationType.JOINED_QUEUE, messageType)
             assertEquals(5, participantId)
             assertEquals("Ivan", participantName)
             assertEquals(44, queueId)
@@ -365,7 +365,7 @@ class NotificationServiceTest : PostgresTestContainer() {
     )
     fun `Test sendNotificationMessage YOUR_TURN`() {
         // given
-        val notificationType = NotificationsType.YOUR_TURN
+        val notificationType = NotificationType.YOUR_TURN
         val participantModel = getUser()
         val queueModel = getQueueModel(participantModel)
 
@@ -381,7 +381,7 @@ class NotificationServiceTest : PostgresTestContainer() {
         // then
         val notifications = notificationRepository.findAll().toList()
         assertEquals(4, notifications.size)
-        assertTrue(notifications.all { it.messageType == NotificationsType.YOUR_TURN })
+        assertTrue(notifications.all { it.messageType == NotificationType.YOUR_TURN })
         assertTrue(notifications.all { it.participantId == 1L })
         assertTrue(notifications.none { it.user?.id == 4L })
     }
@@ -395,7 +395,7 @@ class NotificationServiceTest : PostgresTestContainer() {
     )
     fun `Test sendNotificationMessage COMPLETED`() {
         // given
-        val notificationType = NotificationsType.COMPLETED
+        val notificationType = NotificationType.COMPLETED
         val participantModel = getUser()
         val queueModel = getQueueModel(participantModel)
 
@@ -411,7 +411,7 @@ class NotificationServiceTest : PostgresTestContainer() {
         // then
         val notifications = notificationRepository.findAll().toList()
         assertEquals(4, notifications.size)
-        assertTrue(notifications.all { it.messageType == NotificationsType.COMPLETED })
+        assertTrue(notifications.all { it.messageType == NotificationType.COMPLETED })
         assertTrue(notifications.all { it.participantId == 1L })
         assertTrue(notifications.none { it.user?.id == 4L })
     }
@@ -425,7 +425,7 @@ class NotificationServiceTest : PostgresTestContainer() {
     )
     fun `Test sendNotificationMessage SKIPPED`() {
         // given
-        val notificationType = NotificationsType.SKIPPED
+        val notificationType = NotificationType.SKIPPED
         val participantModel = getUser()
         val queueModel = getQueueModel(participantModel)
 
@@ -441,7 +441,7 @@ class NotificationServiceTest : PostgresTestContainer() {
         // then
         val notifications = notificationRepository.findAll().toList()
         assertEquals(4, notifications.size)
-        assertTrue(notifications.all { it.messageType == NotificationsType.SKIPPED })
+        assertTrue(notifications.all { it.messageType == NotificationType.SKIPPED })
         assertTrue(notifications.all { it.participantId == 1L })
         assertTrue(notifications.none { it.user?.id == 4L })
     }
@@ -455,7 +455,7 @@ class NotificationServiceTest : PostgresTestContainer() {
     )
     fun `Test sendNotificationMessage SHOOK`() {
         // given
-        val notificationType = NotificationsType.SHOOK
+        val notificationType = NotificationType.SHOOK
         val participantModel = getUser()
         val queueModel = getQueueModel(participantModel)
 
@@ -471,7 +471,7 @@ class NotificationServiceTest : PostgresTestContainer() {
         // then
         val notifications = notificationRepository.findAll().toList()
         assertEquals(1, notifications.size)
-        assertTrue(notifications.all { it.messageType == NotificationsType.SHOOK })
+        assertTrue(notifications.all { it.messageType == NotificationType.SHOOK })
         assertTrue(notifications.all { it.participantId == 1L })
     }
 
@@ -484,7 +484,7 @@ class NotificationServiceTest : PostgresTestContainer() {
     )
     fun `Test sendNotificationMessage FROZEN`() {
         // given
-        val notificationType = NotificationsType.FROZEN
+        val notificationType = NotificationType.FROZEN
         val participantModel = getUser()
         val queueModel = getQueueModel(participantModel)
 
@@ -500,7 +500,7 @@ class NotificationServiceTest : PostgresTestContainer() {
         // then
         val notifications = notificationRepository.findAll().toList()
         assertEquals(4, notifications.size)
-        assertTrue(notifications.all { it.messageType == NotificationsType.FROZEN })
+        assertTrue(notifications.all { it.messageType == NotificationType.FROZEN })
         assertTrue(notifications.all { it.participantId == 1L })
         assertTrue(notifications.none { it.user?.id == 4L })
     }
@@ -514,7 +514,7 @@ class NotificationServiceTest : PostgresTestContainer() {
     )
     fun `Test sendNotificationMessage UNFROZEN`() {
         // given
-        val notificationType = NotificationsType.UNFROZEN
+        val notificationType = NotificationType.UNFROZEN
         val participantModel = getUser()
         val queueModel = getQueueModel(participantModel)
 
@@ -530,7 +530,7 @@ class NotificationServiceTest : PostgresTestContainer() {
         // then
         val notifications = notificationRepository.findAll().toList()
         assertEquals(4, notifications.size)
-        assertTrue(notifications.all { it.messageType == NotificationsType.UNFROZEN })
+        assertTrue(notifications.all { it.messageType == NotificationType.UNFROZEN })
         assertTrue(notifications.all { it.participantId == 1L })
         assertTrue(notifications.none { it.user?.id == 4L })
     }
@@ -544,7 +544,7 @@ class NotificationServiceTest : PostgresTestContainer() {
     )
     fun `Test sendNotificationMessage JOINED_QUEUE`() {
         // given
-        val notificationType = NotificationsType.JOINED_QUEUE
+        val notificationType = NotificationType.JOINED_QUEUE
         val participantModel = getUser()
         val queueModel = getQueueModel(participantModel)
 
@@ -560,7 +560,7 @@ class NotificationServiceTest : PostgresTestContainer() {
         // then
         val notifications = notificationRepository.findAll().toList()
         assertEquals(4, notifications.size)
-        assertTrue(notifications.all { it.messageType == NotificationsType.JOINED_QUEUE })
+        assertTrue(notifications.all { it.messageType == NotificationType.JOINED_QUEUE })
         assertTrue(notifications.all { it.participantId == 1L })
         assertTrue(notifications.none { it.user?.id == 4L })
     }
@@ -574,7 +574,7 @@ class NotificationServiceTest : PostgresTestContainer() {
     )
     fun `Test sendNotificationMessage LEFT_QUEUE`() {
         // given
-        val notificationType = NotificationsType.LEFT_QUEUE
+        val notificationType = NotificationType.LEFT_QUEUE
         val participantModel = getUser()
         val queueModel = getQueueModel(participantModel)
 
@@ -590,7 +590,7 @@ class NotificationServiceTest : PostgresTestContainer() {
         // then
         val notifications = notificationRepository.findAll().toList()
         assertEquals(4, notifications.size)
-        assertTrue(notifications.all { it.messageType == NotificationsType.LEFT_QUEUE })
+        assertTrue(notifications.all { it.messageType == NotificationType.LEFT_QUEUE })
         assertTrue(notifications.all { it.participantId == 1L })
         assertTrue(notifications.none { it.user?.id == 4L })
     }
@@ -604,7 +604,7 @@ class NotificationServiceTest : PostgresTestContainer() {
     )
     fun `Test sendNotificationMessage DELETE_QUEUE`() {
         // given
-        val notificationType = NotificationsType.DELETE_QUEUE
+        val notificationType = NotificationType.DELETE_QUEUE
         val participantModel = getUser()
         val queueModel = getQueueModel(participantModel)
 
@@ -620,7 +620,7 @@ class NotificationServiceTest : PostgresTestContainer() {
         // then
         val notifications = notificationRepository.findAll().toList()
         assertEquals(5, notifications.size)
-        assertTrue(notifications.all { it.messageType == NotificationsType.DELETE_QUEUE })
+        assertTrue(notifications.all { it.messageType == NotificationType.DELETE_QUEUE })
         assertTrue(notifications.all { it.participantId == 1L })
     }
 

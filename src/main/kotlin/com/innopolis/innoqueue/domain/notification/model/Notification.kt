@@ -1,6 +1,6 @@
 package com.innopolis.innoqueue.domain.notification.model
 
-import com.innopolis.innoqueue.domain.notification.enums.NotificationsType
+import com.innopolis.innoqueue.domain.notification.enums.NotificationType
 import com.innopolis.innoqueue.domain.user.model.User
 import java.time.LocalDateTime
 import javax.persistence.*
@@ -23,7 +23,10 @@ class Notification {
 
     @Column(name = "message_type", nullable = false, length = 32)
     @Enumerated(EnumType.STRING)
-    var messageType: NotificationsType? = null
+    var messageType: NotificationType? = null
+
+    @Column(name = "message")
+    var message: String? = null
 
     @Column(name = "participant_id")
     var participantId: Long? = null

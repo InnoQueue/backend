@@ -4,7 +4,7 @@ import com.innopolis.innoqueue.domain.fcmtoken.service.FcmTokenService
 import com.innopolis.innoqueue.domain.firebase.service.FirebaseMessagingNotificationsService
 import com.innopolis.innoqueue.domain.notification.dao.NotificationRepository
 import com.innopolis.innoqueue.domain.notification.dto.NotificationDto
-import com.innopolis.innoqueue.domain.notification.enums.NotificationsType
+import com.innopolis.innoqueue.domain.notification.enums.NotificationType
 import com.innopolis.innoqueue.domain.notification.model.Notification
 import com.innopolis.innoqueue.domain.queue.dao.QueueRepository
 import com.innopolis.innoqueue.domain.user.model.User
@@ -115,7 +115,7 @@ class NotificationService(
      */
     @Transactional
     fun sendNotificationMessage(
-        notificationType: NotificationsType,
+        notificationType: NotificationType,
         participantId: Long,
         participantName: String,
         queueId: Long,
@@ -141,32 +141,47 @@ class NotificationService(
     }
 
     private fun Page<Notification>.toNotificationDTO() = this.map {
-        NotificationDto(
-            notificationId = it.id!!,
-            messageType = it.messageType!!,
-            participantId = it.participantId,
-            participantName = if (it.participantId == null) DELETED_USER_NAME else userService
-                .findUserNameById(it.participantId!!) ?: DELETED_USER_NAME,
-            queueId = it.queueId,
-            queueName = if (it.queueId == null) DELETED_QUEUE_NAME else queueRepository
-                .findByIdOrNull(it.queueId!!)?.name
-                ?: DELETED_QUEUE_NAME,
-            date = it.date!!,
-            read = it.isRead!!
-        )
+        when (it.messageType!!) {
+            NotificationType.UPDATE, NotificationType.OTHER -> NotificationDto(
+                notificationId = it.id!!,
+                messageType = it.messageType!!,
+                message = it.message,
+                participantId = null,
+                participantName = null,
+                queueId = null,
+                queueName = null,
+                date = it.date!!,
+                read = it.isRead!!
+            )
+
+            else -> NotificationDto(
+                notificationId = it.id!!,
+                messageType = it.messageType!!,
+                message = it.message,
+                participantId = it.participantId,
+                participantName = if (it.participantId == null) DELETED_USER_NAME else userService
+                    .findUserNameById(it.participantId!!) ?: DELETED_USER_NAME,
+                queueId = it.queueId,
+                queueName = if (it.queueId == null) DELETED_QUEUE_NAME else queueRepository
+                    .findByIdOrNull(it.queueId!!)?.name
+                    ?: DELETED_QUEUE_NAME,
+                date = it.date!!,
+                read = it.isRead!!
+            )
+        }
     }
 
     private fun prepareNotificationsListToSend(
-        notificationType: NotificationsType,
+        notificationType: NotificationType,
         participantId: Long,
         queueId: Long,
     ): List<Notification> = when (notificationType) {
-        NotificationsType.SHOOK -> {
+        NotificationType.SHOOK -> {
             listOf(
                 createNotification(
                     recipientUserId = participantId,
                     participantUserId = participantId,
-                    notificationsType = notificationType,
+                    notificationType = notificationType,
                     referredQueueId = queueId
                 )
             )
@@ -179,7 +194,7 @@ class NotificationService(
                     createNotification(
                         recipientUserId = it.userQueueId?.userId!!,
                         participantUserId = participantId,
-                        notificationsType = notificationType,
+                        notificationType = notificationType,
                         referredQueueId = queueId
                     )
                 }
@@ -189,43 +204,47 @@ class NotificationService(
     private fun createNotification(
         recipientUserId: Long,
         participantUserId: Long,
-        notificationsType: NotificationsType,
+        notificationType: NotificationType,
         referredQueueId: Long
     ): Notification = Notification().apply {
         user = userService.findUserById(recipientUserId)
         participantId = participantUserId
-        messageType = notificationsType
+        messageType = notificationType
         queueId = referredQueueId
         isRead = false
         date = LocalDateTime.now(ZoneOffset.UTC)
     }
 
     private fun UserQueue.shouldSendMessage(
-        notificationsType: NotificationsType,
+        notificationType: NotificationType,
         participantId: Long
-    ): Boolean = if (notificationsType.isRequiredNotification()) {
+    ): Boolean = if (notificationType.isRequiredNotification()) {
         true
     } else {
-        userService.findUserById(this.userQueueId?.userId!!)!!.isUserSubscribed(notificationsType, participantId)
+        userService.findUserById(this.userQueueId?.userId!!)!!.isUserSubscribed(notificationType, participantId)
     }
 
-    private fun NotificationsType.isRequiredNotification(): Boolean =
+    private fun NotificationType.isRequiredNotification(): Boolean =
         when (this) {
-            NotificationsType.SHOOK, NotificationsType.DELETE_QUEUE -> true
+            NotificationType.SHOOK,
+            NotificationType.DELETE_QUEUE,
+            NotificationType.UPDATE,
+            NotificationType.OTHER -> true
+
             else -> false
         }
 
-    private fun User.isUserSubscribed(notificationType: NotificationsType, participantId: Long): Boolean =
+    private fun User.isUserSubscribed(notificationType: NotificationType, participantId: Long): Boolean =
         if (this.id == participantId) {
             true
         } else {
             when (notificationType) {
-                NotificationsType.COMPLETED -> this.completed!!
-                NotificationsType.SKIPPED -> this.skipped!!
-                NotificationsType.JOINED_QUEUE -> this.joinedQueue!!
-                NotificationsType.FROZEN, NotificationsType.UNFROZEN -> this.freeze!!
-                NotificationsType.LEFT_QUEUE -> this.leftQueue!!
-                NotificationsType.YOUR_TURN -> this.yourTurn!!
+                NotificationType.COMPLETED -> this.completed!!
+                NotificationType.SKIPPED -> this.skipped!!
+                NotificationType.JOINED_QUEUE -> this.joinedQueue!!
+                NotificationType.FROZEN, NotificationType.UNFROZEN -> this.freeze!!
+                NotificationType.LEFT_QUEUE -> this.leftQueue!!
+                NotificationType.YOUR_TURN -> this.yourTurn!!
                 else -> true
             }
         }

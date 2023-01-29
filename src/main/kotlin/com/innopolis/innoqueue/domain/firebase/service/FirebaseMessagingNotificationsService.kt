@@ -6,7 +6,7 @@ import com.google.firebase.messaging.FirebaseMessagingException
 import com.google.firebase.messaging.Message
 import com.google.firebase.messaging.Notification
 import com.innopolis.innoqueue.domain.firebase.util.MessagePushNotificationCreator
-import com.innopolis.innoqueue.domain.notification.enums.NotificationsType
+import com.innopolis.innoqueue.domain.notification.enums.NotificationType
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -27,7 +27,7 @@ class FirebaseMessagingNotificationsService(
     @Transactional
     fun sendNotificationsToFirebase(
         addressees: List<Pair<Long, List<String>>>,
-        notificationType: NotificationsType,
+        notificationType: NotificationType,
         participant: Pair<Long, String>,
         queue: Pair<Long, String>,
     ) = addressees.forEach { addressee ->

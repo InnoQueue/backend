@@ -1,6 +1,6 @@
 package com.innopolis.innoqueue.domain.notification.dto
 
-import com.innopolis.innoqueue.domain.notification.enums.NotificationsType
+import com.innopolis.innoqueue.domain.notification.enums.NotificationType
 import java.time.LocalDateTime
 
 /**
@@ -8,11 +8,12 @@ import java.time.LocalDateTime
  */
 data class NotificationDto(
     val notificationId: Long,
-    val messageType: NotificationsType,
+    val messageType: NotificationType,
+    val message: String?,
     val participantId: Long?,
     val participantName: String?,
     val queueId: Long?,
-    val queueName: String,
+    val queueName: String?,
     val date: LocalDateTime,
     val read: Boolean
 )

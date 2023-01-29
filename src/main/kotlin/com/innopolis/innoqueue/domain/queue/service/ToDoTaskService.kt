@@ -1,6 +1,6 @@
 package com.innopolis.innoqueue.domain.queue.service
 
-import com.innopolis.innoqueue.domain.notification.enums.NotificationsType
+import com.innopolis.innoqueue.domain.notification.enums.NotificationType
 import com.innopolis.innoqueue.domain.notification.service.NotificationService
 import com.innopolis.innoqueue.domain.queue.dao.QueueRepository
 import com.innopolis.innoqueue.domain.queue.dto.ToDoTaskDto
@@ -82,7 +82,7 @@ class ToDoTaskService(
                     val nextUser = UsersQueueLogic.assignNextUser(it, userService, userQueueRepository, queueRepository)
                     val queue = queueRepository.findAll().firstOrNull { q -> q.queueId == it.userQueueId?.queueId }!!
                     notificationService.sendNotificationMessage(
-                        NotificationsType.YOUR_TURN,
+                        NotificationType.YOUR_TURN,
                         nextUser.id!!,
                         nextUser.name!!,
                         queue.queueId!!,
@@ -110,7 +110,7 @@ class ToDoTaskService(
             userQueueRepository.save(userQueue)
             val queue = queueRepository.findAll().firstOrNull { it.queueId == userQueue.userQueueId?.queueId }!!
             notificationService.sendNotificationMessage(
-                NotificationsType.SKIPPED,
+                NotificationType.SKIPPED,
                 user.id!!,
                 user.name!!,
                 queue.queueId!!,
@@ -118,7 +118,7 @@ class ToDoTaskService(
             )
             val nextUser = UsersQueueLogic.assignNextUser(userQueue, userService, userQueueRepository, queueRepository)
             notificationService.sendNotificationMessage(
-                NotificationsType.YOUR_TURN,
+                NotificationType.YOUR_TURN,
                 nextUser.id!!,
                 nextUser.name!!,
                 queue.queueId!!,
@@ -142,7 +142,7 @@ class ToDoTaskService(
         queueRepository.save(queue)
         userQueueRepository.save(userQueue)
         notificationService.sendNotificationMessage(
-            NotificationsType.COMPLETED,
+            NotificationType.COMPLETED,
             userQueue.userQueueId?.userId!!,
             userService.findUserNameById(userQueue.userQueueId?.userId!!)!!,
             queue.queueId!!,

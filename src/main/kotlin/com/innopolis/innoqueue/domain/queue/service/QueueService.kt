@@ -1,6 +1,6 @@
 package com.innopolis.innoqueue.domain.queue.service
 
-import com.innopolis.innoqueue.domain.notification.enums.NotificationsType
+import com.innopolis.innoqueue.domain.notification.enums.NotificationType
 import com.innopolis.innoqueue.domain.notification.service.NotificationService
 import com.innopolis.innoqueue.domain.queue.dao.QueueRepository
 import com.innopolis.innoqueue.domain.queue.dto.*
@@ -206,7 +206,7 @@ class QueueService(
                     userQueue.isActive = true
                     userQueueRepository.save(userQueue)
                     notificationService.sendNotificationMessage(
-                        NotificationsType.UNFROZEN,
+                        NotificationType.UNFROZEN,
                         user.id!!,
                         user.name!!,
                         userQueue.userQueueId?.queueId!!,
@@ -223,7 +223,7 @@ class QueueService(
                         userQueue.isActive = false
                         userQueueRepository.save(userQueue)
                         notificationService.sendNotificationMessage(
-                            NotificationsType.FROZEN,
+                            NotificationType.FROZEN,
                             user.id!!,
                             user.name!!,
                             queue.queueId!!,
@@ -248,7 +248,7 @@ class QueueService(
         val queue = queueRepository.findAll().firstOrNull { it.queueId == userQueue.userQueueId?.queueId }!!
         if (queue.creatorId == user.id) {
             notificationService.sendNotificationMessage(
-                NotificationsType.DELETE_QUEUE,
+                NotificationType.DELETE_QUEUE,
                 user.id!!,
                 user.name!!,
                 queue.queueId!!,
@@ -258,7 +258,7 @@ class QueueService(
         } // Leave queue
         else {
             notificationService.sendNotificationMessage(
-                NotificationsType.LEFT_QUEUE,
+                NotificationType.LEFT_QUEUE,
                 user.id!!,
                 user.name!!,
                 queue.queueId!!,
@@ -274,7 +274,7 @@ class QueueService(
                     queueRepository
                 )
                 notificationService.sendNotificationMessage(
-                    NotificationsType.YOUR_TURN,
+                    NotificationType.YOUR_TURN,
                     nextUser.id!!,
                     nextUser.name!!,
                     queue.queueId!!,
@@ -309,7 +309,7 @@ class QueueService(
 
                 userQueueRepository.save(createUserQueueEntity(user, queueEntity))
                 notificationService.sendNotificationMessage(
-                    NotificationsType.JOINED_QUEUE,
+                    NotificationType.JOINED_QUEUE,
                     user.id!!,
                     user.name!!,
                     queueEntity.queueId!!,
@@ -336,7 +336,7 @@ class QueueService(
                     ?: throw IllegalArgumentException("The QR code for queue is invalid: $qrCode")
                 userQueueRepository.save(createUserQueueEntity(user, queueEntity))
                 notificationService.sendNotificationMessage(
-                    NotificationsType.JOINED_QUEUE,
+                    NotificationType.JOINED_QUEUE,
                     user.id!!,
                     user.name!!,
                     queueEntity.queueId!!,
@@ -376,7 +376,7 @@ class QueueService(
             queue.isImportant = true
             queueRepository.save(queue)
             notificationService.sendNotificationMessage(
-                NotificationsType.SHOOK,
+                NotificationType.SHOOK,
                 it,
                 userService.findUserNameById(it)!!,
                 queue.queueId!!,
