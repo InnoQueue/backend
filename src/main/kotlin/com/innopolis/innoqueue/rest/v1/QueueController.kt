@@ -126,7 +126,7 @@ class QueueController(
         summary = "Edit a queue",
         description = "You can specify only such fields which you want to modify. Other fields will have " +
                 "the same value as previously. You can edit a queue only if you are an **admin**.\n\n" +
-                "- `participants` - if you want to remove a participant, provide new list with users ids who" +
+                "- `participants` - if you want to remove a participant, provide new list with users ids who " +
                 "should contribute.\n\n"
     )
     @PatchMapping("/{queueId}")

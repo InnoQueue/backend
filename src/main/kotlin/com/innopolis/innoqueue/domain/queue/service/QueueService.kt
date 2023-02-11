@@ -171,13 +171,23 @@ class QueueService(
             false -> queueEntity
         }
         if (editQueue.participants != null) {
-            val userToDelete = userQueueRepository
+            val usersToDelete = userQueueRepository
                 .findAll()
                 .filter { it.userQueueId?.queueId == updatedQueue.queueId }
                 .filter { it.userQueueId?.userId !in editQueue.participants }
                 .filter { it.userQueueId?.userId != user.id }
-            if (userToDelete.isNotEmpty()) {
-                userQueueRepository.deleteAll(userToDelete)
+            if (usersToDelete.isNotEmpty()) {
+                if (updatedQueue.currentUserId in usersToDelete.mapNotNull { it.userQueueId?.userId }) {
+                    userQueueRepository.deleteAll(usersToDelete)
+                    val nextUserId = userQueueRepository
+                        .findAll()
+                        .filter { it.userQueueId?.queueId == updatedQueue.queueId }
+                        .firstNotNullOfOrNull { it.userQueueId?.userId }
+                    updatedQueue.currentUserId = nextUserId
+                    queueRepository.save(updatedQueue)
+                } else {
+                    userQueueRepository.deleteAll(usersToDelete)
+                }
             }
         }
 
