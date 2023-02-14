@@ -68,9 +68,7 @@ class QueueService(
     @Transactional
     fun getQueueById(token: String, queueId: Long): QueueDetailsDto {
         val queueOptional = queueRepository.findById(queueId)
-        if (!queueOptional.isPresent) {
-            throw IllegalArgumentException("User does not belong to such queue: $queueId")
-        }
+        require(queueOptional.isPresent) { "User does not belong to such queue: $queueId" }
         val userQueue = userQueueRepository.findUserQueueByToken(token, queueId)
             ?: throw IllegalArgumentException("User does not belong to such queue: $queueId")
         val queue = queueOptional.get()
@@ -139,26 +137,21 @@ class QueueService(
     fun editQueue(token: String, queueId: Long, editQueue: EditQueueDto): QueueDetailsDto {
         val user = userService.findUserByToken(token)
         val userQueue = getUserQueueByQueueId(user, queueId)
-        if (queueRepository.findAll()
-                .firstOrNull { it.queueId == userQueue.userQueueId?.queueId }?.creatorId != user.id
-        ) {
-            throw IllegalArgumentException("User is not an admin in this queue: $queueId")
-        }
+        require(
+            queueRepository.findAll()
+                .firstOrNull { it.queueId == userQueue.userQueueId?.queueId }?.creatorId == user.id
+        ) { "User is not an admin in this queue: $queueId" }
         val queueEntity = queueRepository.findByIdOrNull(queueId)
             ?: throw IllegalArgumentException("Queue does not exist. ID: $queueId")
 
         var changed = false
         if (editQueue.queueName != null) {
-            if (editQueue.queueName.isEmpty()) {
-                throw IllegalArgumentException("Queue name can't be an empty string")
-            }
+            require(editQueue.queueName.isNotEmpty()) { "Queue name can't be an empty string" }
             queueEntity.name = editQueue.queueName
             changed = true
         }
         if (editQueue.queueColor != null) {
-            if (editQueue.queueColor.isEmpty()) {
-                throw IllegalArgumentException("Queue color can't be an empty string")
-            }
+            require(editQueue.queueColor.isNotEmpty()) { "Queue color can't be an empty string" }
             queueEntity.color = editQueue.queueColor
             changed = true
         }
@@ -304,6 +297,9 @@ class QueueService(
     fun joinQueue(token: String, queueInviteCodeDTO: QueueInviteCodeDto): QueueDetailsDto {
         val user = userService.findUserByToken(token)
 
+        require(queueInviteCodeDTO.pinCode != null || queueInviteCodeDTO.qrCode != null) {
+            "Provide qrCode or pinCode!"
+        }
         if (queueInviteCodeDTO.pinCode != null) {
             val pinCode = queueInviteCodeDTO.pinCode
             val queue = queueRepository.findAll().firstOrNull { it.pinCode == pinCode }
@@ -335,7 +331,7 @@ class QueueService(
                 queue = queue,
                 userId = user.id!!
             )
-        } else if (queueInviteCodeDTO.qrCode != null) {
+        } else {
             val qrCode = queueInviteCodeDTO.qrCode
             val queue = queueRepository.findAll().firstOrNull { it.qrCode == qrCode }
                 ?: throw IllegalArgumentException("The QR code for queue is invalid: $qrCode")
@@ -361,8 +357,6 @@ class QueueService(
                 queue = queue,
                 userId = user.id!!
             )
-        } else {
-            throw IllegalArgumentException("Provide qr_code or pin_code!")
         }
     }
 
@@ -378,9 +372,7 @@ class QueueService(
         getUserQueueByQueueId(user, queueId)
         val queue = queueRepository.findAll().firstOrNull { it?.queueId == queueId }
             ?: throw IllegalArgumentException("The queueId is invalid")
-        if (queue.currentUserId == user.id) {
-            throw IllegalArgumentException("You can't shake yourself!")
-        }
+        require(queue.currentUserId != user.id) { "You can't shake yourself!" }
         val currentUserQueue = queue.currentUserId
         currentUserQueue?.let {
             queue.isImportant = true
@@ -471,12 +463,8 @@ class QueueService(
     }
 
     private fun saveQueueEntity(queue: NewQueueDto, user: User): Queue {
-        if (queue.queueName.isEmpty()) {
-            throw IllegalArgumentException("Queue name can't be an empty string")
-        }
-        if (queue.queueColor.isEmpty()) {
-            throw IllegalArgumentException("Queue color can't be an empty string")
-        }
+        require(queue.queueName.isNotEmpty()) { "Queue name can't be an empty string" }
+        require(queue.queueColor.isNotEmpty()) { "Queue color can't be an empty string" }
         val queueEntity = Queue()
         queueEntity.name = queue.queueName
         queueEntity.color = queue.queueColor

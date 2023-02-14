@@ -73,9 +73,7 @@ class UserService(
     fun updateUserSettings(token: String, settings: UpdateUserDto): UserDto {
         val user = this.findUserByToken(token)
         settings.userName?.let {
-            if (it.isEmpty()) {
-                throw IllegalArgumentException("Username can't be an empty string")
-            }
+            require(it.isNotEmpty()) { "Username can't be an empty string" }
             user.name = it
         }
         settings.completed?.let { user.completed = it }
@@ -123,12 +121,8 @@ class UserService(
     }
 
     private fun validateUserParameters(userName: String, fcmToken: String) {
-        if (userName.isEmpty()) {
-            throw IllegalArgumentException("Username can't be an empty string")
-        }
-        if (fcmToken.isEmpty()) {
-            throw IllegalArgumentException("fcmToken can't be an empty string")
-        }
+        require(userName.isNotEmpty()) { "Username can't be an empty string" }
+        require(fcmToken.isNotEmpty()) { "fcmToken can't be an empty string" }
     }
 
     private fun generateUserToken(): String {

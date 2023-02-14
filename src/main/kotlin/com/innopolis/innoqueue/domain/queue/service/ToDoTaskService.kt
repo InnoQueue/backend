@@ -49,8 +49,8 @@ class ToDoTaskService(
     fun completeTask(token: String, taskId: Long, expenses: Long?) {
         val userQueue = userQueueRepository.findUserQueue(token, taskId)
         // If this queue requires to track expenses it should not be null or negative number
-        if (userQueue.getTrackExpenses() && (expenses == null || expenses < 0)) {
-            throw IllegalArgumentException("Expenses should be a non negative number")
+        if (userQueue.getTrackExpenses()) {
+            require(expenses != null && expenses >= 0) { "Expenses should be a non negative number" }
         }
         // TODO validate if active participants > 1
         // TODO rewrite the logic
