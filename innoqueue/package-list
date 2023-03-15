@@ -1,8 +1,100 @@
 $dokka.format:html-v1
 $dokka.linkExtension:html
+$dokka.location:com.innopolis.innoqueue.domain.fcmtoken.dao////PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.fcmtoken.dao/index.html
+$dokka.location:com.innopolis.innoqueue.domain.fcmtoken.dao/FcmTokenRepository///PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.fcmtoken.dao/-fcm-token-repository/index.html
+$dokka.location:com.innopolis.innoqueue.domain.fcmtoken.model////PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.fcmtoken.model/index.html
+$dokka.location:com.innopolis.innoqueue.domain.fcmtoken.model/FcmToken///PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.fcmtoken.model/-fcm-token/index.html
+$dokka.location:com.innopolis.innoqueue.domain.fcmtoken.model/FcmToken/FcmToken/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.fcmtoken.model/-fcm-token/-fcm-token.html
+$dokka.location:com.innopolis.innoqueue.domain.fcmtoken.model/FcmToken/dateCreated/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.fcmtoken.model/-fcm-token/date-created.html
+$dokka.location:com.innopolis.innoqueue.domain.fcmtoken.model/FcmToken/fcmTokenId/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.fcmtoken.model/-fcm-token/fcm-token-id.html
+$dokka.location:com.innopolis.innoqueue.domain.fcmtoken.model/FcmTokenId.Companion///PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.fcmtoken.model/-fcm-token-id/-companion/index.html
+$dokka.location:com.innopolis.innoqueue.domain.fcmtoken.model/FcmTokenId.Companion/serialVersionUID/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.fcmtoken.model/-fcm-token-id/-companion/serial-version-u-i-d.html
+$dokka.location:com.innopolis.innoqueue.domain.fcmtoken.model/FcmTokenId///PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.fcmtoken.model/-fcm-token-id/index.html
+$dokka.location:com.innopolis.innoqueue.domain.fcmtoken.model/FcmTokenId/FcmTokenId/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.fcmtoken.model/-fcm-token-id/-fcm-token-id.html
+$dokka.location:com.innopolis.innoqueue.domain.fcmtoken.model/FcmTokenId/fcmToken/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.fcmtoken.model/-fcm-token-id/fcm-token.html
+$dokka.location:com.innopolis.innoqueue.domain.fcmtoken.model/FcmTokenId/userId/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.fcmtoken.model/-fcm-token-id/user-id.html
+$dokka.location:com.innopolis.innoqueue.domain.fcmtoken.service////PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.fcmtoken.service/index.html
+$dokka.location:com.innopolis.innoqueue.domain.fcmtoken.service/FcmTokenService///PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.fcmtoken.service/-fcm-token-service/index.html
+$dokka.location:com.innopolis.innoqueue.domain.fcmtoken.service/FcmTokenService/FcmTokenService/#com.innopolis.innoqueue.domain.fcmtoken.dao.FcmTokenRepository/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.fcmtoken.service/-fcm-token-service/-fcm-token-service.html
+$dokka.location:com.innopolis.innoqueue.domain.fcmtoken.service/FcmTokenService/findTokensForUser/#kotlin.Long/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.fcmtoken.service/-fcm-token-service/find-tokens-for-user.html
+$dokka.location:com.innopolis.innoqueue.domain.fcmtoken.service/FcmTokenService/saveFcmToken/#kotlin.Long#kotlin.String/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.fcmtoken.service/-fcm-token-service/save-fcm-token.html
+$dokka.location:com.innopolis.innoqueue.domain.user.dao////PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.user.dao/index.html
+$dokka.location:com.innopolis.innoqueue.domain.user.dao/UserRepository///PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.user.dao/-user-repository/index.html
+$dokka.location:com.innopolis.innoqueue.domain.user.dao/UserRepository/findUserByToken/#kotlin.String/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.user.dao/-user-repository/find-user-by-token.html
+$dokka.location:com.innopolis.innoqueue.domain.user.dto////PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.user.dto/index.html
+$dokka.location:com.innopolis.innoqueue.domain.user.dto/TokenDto///PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.user.dto/-token-dto/index.html
+$dokka.location:com.innopolis.innoqueue.domain.user.dto/TokenDto/TokenDto/#kotlin.String#kotlin.Long/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.user.dto/-token-dto/-token-dto.html
+$dokka.location:com.innopolis.innoqueue.domain.user.dto/TokenDto/token/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.user.dto/-token-dto/token.html
+$dokka.location:com.innopolis.innoqueue.domain.user.dto/TokenDto/userId/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.user.dto/-token-dto/user-id.html
+$dokka.location:com.innopolis.innoqueue.domain.user.dto/UpdateUserDto///PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.user.dto/-update-user-dto/index.html
+$dokka.location:com.innopolis.innoqueue.domain.user.dto/UpdateUserDto/UpdateUserDto/#kotlin.String?#kotlin.Boolean?#kotlin.Boolean?#kotlin.Boolean?#kotlin.Boolean?#kotlin.Boolean?#kotlin.Boolean?/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.user.dto/-update-user-dto/-update-user-dto.html
+$dokka.location:com.innopolis.innoqueue.domain.user.dto/UpdateUserDto/completed/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.user.dto/-update-user-dto/completed.html
+$dokka.location:com.innopolis.innoqueue.domain.user.dto/UpdateUserDto/freeze/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.user.dto/-update-user-dto/freeze.html
+$dokka.location:com.innopolis.innoqueue.domain.user.dto/UpdateUserDto/joinedQueue/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.user.dto/-update-user-dto/joined-queue.html
+$dokka.location:com.innopolis.innoqueue.domain.user.dto/UpdateUserDto/leftQueue/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.user.dto/-update-user-dto/left-queue.html
+$dokka.location:com.innopolis.innoqueue.domain.user.dto/UpdateUserDto/skipped/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.user.dto/-update-user-dto/skipped.html
+$dokka.location:com.innopolis.innoqueue.domain.user.dto/UpdateUserDto/userName/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.user.dto/-update-user-dto/user-name.html
+$dokka.location:com.innopolis.innoqueue.domain.user.dto/UpdateUserDto/yourTurn/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.user.dto/-update-user-dto/your-turn.html
+$dokka.location:com.innopolis.innoqueue.domain.user.dto/UserDto///PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.user.dto/-user-dto/index.html
+$dokka.location:com.innopolis.innoqueue.domain.user.dto/UserDto/UserDto/#kotlin.String#kotlin.Boolean#kotlin.Boolean#kotlin.Boolean#kotlin.Boolean#kotlin.Boolean#kotlin.Boolean/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.user.dto/-user-dto/-user-dto.html
+$dokka.location:com.innopolis.innoqueue.domain.user.dto/UserDto/completed/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.user.dto/-user-dto/completed.html
+$dokka.location:com.innopolis.innoqueue.domain.user.dto/UserDto/freeze/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.user.dto/-user-dto/freeze.html
+$dokka.location:com.innopolis.innoqueue.domain.user.dto/UserDto/joinedQueue/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.user.dto/-user-dto/joined-queue.html
+$dokka.location:com.innopolis.innoqueue.domain.user.dto/UserDto/leftQueue/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.user.dto/-user-dto/left-queue.html
+$dokka.location:com.innopolis.innoqueue.domain.user.dto/UserDto/skipped/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.user.dto/-user-dto/skipped.html
+$dokka.location:com.innopolis.innoqueue.domain.user.dto/UserDto/userName/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.user.dto/-user-dto/user-name.html
+$dokka.location:com.innopolis.innoqueue.domain.user.dto/UserDto/yourTurn/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.user.dto/-user-dto/your-turn.html
+$dokka.location:com.innopolis.innoqueue.domain.user.model////PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.user.model/index.html
+$dokka.location:com.innopolis.innoqueue.domain.user.model/User///PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.user.model/-user/index.html
+$dokka.location:com.innopolis.innoqueue.domain.user.model/User/User/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.user.model/-user/-user.html
+$dokka.location:com.innopolis.innoqueue.domain.user.model/User/completed/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.user.model/-user/completed.html
+$dokka.location:com.innopolis.innoqueue.domain.user.model/User/freeze/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.user.model/-user/freeze.html
+$dokka.location:com.innopolis.innoqueue.domain.user.model/User/id/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.user.model/-user/id.html
+$dokka.location:com.innopolis.innoqueue.domain.user.model/User/joinedQueue/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.user.model/-user/joined-queue.html
+$dokka.location:com.innopolis.innoqueue.domain.user.model/User/leftQueue/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.user.model/-user/left-queue.html
+$dokka.location:com.innopolis.innoqueue.domain.user.model/User/name/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.user.model/-user/name.html
+$dokka.location:com.innopolis.innoqueue.domain.user.model/User/skipped/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.user.model/-user/skipped.html
+$dokka.location:com.innopolis.innoqueue.domain.user.model/User/token/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.user.model/-user/token.html
+$dokka.location:com.innopolis.innoqueue.domain.user.model/User/yourTurn/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.user.model/-user/your-turn.html
+$dokka.location:com.innopolis.innoqueue.domain.user.service////PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.user.service/index.html
+$dokka.location:com.innopolis.innoqueue.domain.user.service/UserService///PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.user.service/-user-service/index.html
+$dokka.location:com.innopolis.innoqueue.domain.user.service/UserService/UserService/#com.innopolis.innoqueue.domain.user.dao.UserRepository#com.innopolis.innoqueue.domain.fcmtoken.service.FcmTokenService/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.user.service/-user-service/-user-service.html
+$dokka.location:com.innopolis.innoqueue.domain.user.service/UserService/createNewUser/#kotlin.String#kotlin.String/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.user.service/-user-service/create-new-user.html
+$dokka.location:com.innopolis.innoqueue.domain.user.service/UserService/findUserById/#kotlin.Long/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.user.service/-user-service/find-user-by-id.html
+$dokka.location:com.innopolis.innoqueue.domain.user.service/UserService/findUserByToken/#kotlin.String/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.user.service/-user-service/find-user-by-token.html
+$dokka.location:com.innopolis.innoqueue.domain.user.service/UserService/findUserNameById/#kotlin.Long/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.user.service/-user-service/find-user-name-by-id.html
+$dokka.location:com.innopolis.innoqueue.domain.user.service/UserService/getUserSettings/#kotlin.String/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.user.service/-user-service/get-user-settings.html
+$dokka.location:com.innopolis.innoqueue.domain.user.service/UserService/updateUserSettings/#kotlin.String#com.innopolis.innoqueue.domain.user.dto.UpdateUserDto/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.user.service/-user-service/update-user-settings.html
+$dokka.location:com.innopolis.innoqueue.rest.v1.dto////PointingToDeclaration/innoqueue/com.innopolis.innoqueue.rest.v1.dto/index.html
+$dokka.location:com.innopolis.innoqueue.rest.v1.dto/NewUserDto///PointingToDeclaration/innoqueue/com.innopolis.innoqueue.rest.v1.dto/-new-user-dto/index.html
+$dokka.location:com.innopolis.innoqueue.rest.v1.dto/NewUserDto/NewUserDto/#kotlin.String#kotlin.String/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.rest.v1.dto/-new-user-dto/-new-user-dto.html
+$dokka.location:com.innopolis.innoqueue.rest.v1.dto/NewUserDto/fcmToken/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.rest.v1.dto/-new-user-dto/fcm-token.html
+$dokka.location:com.innopolis.innoqueue.rest.v1.dto/NewUserDto/userName/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.rest.v1.dto/-new-user-dto/user-name.html
+$dokka.location:com.innopolis.innoqueue.rest.v1////PointingToDeclaration/innoqueue/com.innopolis.innoqueue.rest.v1/index.html
+$dokka.location:com.innopolis.innoqueue.rest.v1/UserController///PointingToDeclaration/innoqueue/com.innopolis.innoqueue.rest.v1/-user-controller/index.html
+$dokka.location:com.innopolis.innoqueue.rest.v1/UserController/UserController/#com.innopolis.innoqueue.domain.user.service.UserService/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.rest.v1/-user-controller/-user-controller.html
+$dokka.location:com.innopolis.innoqueue.rest.v1/UserController/createNewUser/#com.innopolis.innoqueue.rest.v1.dto.NewUserDto/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.rest.v1/-user-controller/create-new-user.html
+$dokka.location:com.innopolis.innoqueue.rest.v1/UserController/getUserSettings/#kotlin.String/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.rest.v1/-user-controller/get-user-settings.html
+$dokka.location:com.innopolis.innoqueue.rest.v1/UserController/handleBadRequest/#java.lang.IllegalArgumentException/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.rest.v1/-user-controller/handle-bad-request.html
+$dokka.location:com.innopolis.innoqueue.rest.v1/UserController/handleNotFound/#java.util.NoSuchElementException/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.rest.v1/-user-controller/handle-not-found.html
+$dokka.location:com.innopolis.innoqueue.rest.v1/UserController/updateUserSettings/#kotlin.String#com.innopolis.innoqueue.domain.user.dto.UpdateUserDto/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.rest.v1/-user-controller/update-user-settings.html
+$dokka.location:com.innopolis.innoqueue.util////PointingToDeclaration/innoqueue/com.innopolis.innoqueue.util/index.html
+$dokka.location:com.innopolis.innoqueue.util/StringGenerator///PointingToDeclaration/innoqueue/com.innopolis.innoqueue.util/-string-generator/index.html
+$dokka.location:com.innopolis.innoqueue.util/StringGenerator/StringGenerator/#kotlin.Int#kotlin.collections.List[kotlin.String]/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.util/-string-generator/-string-generator.html
+$dokka.location:com.innopolis.innoqueue.util/StringGenerator/generateString/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.util/-string-generator/generate-string.html
 $dokka.location:com.innopolis.innoqueue////PointingToDeclaration/innoqueue/com.innopolis.innoqueue/index.html
 $dokka.location:com.innopolis.innoqueue//main/#kotlin.Array[kotlin.String]/PointingToDeclaration/innoqueue/com.innopolis.innoqueue/main.html
 $dokka.location:com.innopolis.innoqueue/InnoQueueApplication///PointingToDeclaration/innoqueue/com.innopolis.innoqueue/-inno-queue-application/index.html
 $dokka.location:com.innopolis.innoqueue/InnoQueueApplication/InnoQueueApplication/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue/-inno-queue-application/-inno-queue-application.html
 com.innopolis.innoqueue
+com.innopolis.innoqueue.domain.fcmtoken.dao
+com.innopolis.innoqueue.domain.fcmtoken.model
+com.innopolis.innoqueue.domain.fcmtoken.service
+com.innopolis.innoqueue.domain.user.dao
+com.innopolis.innoqueue.domain.user.dto
+com.innopolis.innoqueue.domain.user.model
+com.innopolis.innoqueue.domain.user.service
+com.innopolis.innoqueue.rest.v1
+com.innopolis.innoqueue.rest.v1.dto
+com.innopolis.innoqueue.util
 
