@@ -1,6 +1,0 @@
-spring:
-  datasource:
-    username: postgres
-    password: postgres
-  flyway:
-    enabled: true
