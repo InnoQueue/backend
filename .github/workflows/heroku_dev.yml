@@ -1,0 +1,46 @@
+name: Deploy DEV
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy_heroku:
+    name: Manual Deploy on Heroku DEV
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Wait for Build to succeed
+        uses: lewagon/wait-on-check-action@v1.0.0
+        with:
+          ref: ${{ github.ref }}
+          check-name: 'Run Gradle Build (ubuntu-latest)'
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          wait-interval: 10
+      - uses: akhileshns/heroku-deploy@v3.12.12
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: innoqueue-dev
+          heroku_email: ${{secrets.EMAIL}}
+  telegram_result:
+    name: Telegram status send
+    timeout-minutes: 5
+    needs: [ deploy_heroku ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send telegram message on build status
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: |
+            {{#success build.status}}
+            Status: build completed successful
+            {{else}}
+            Status: build failed
+            {{/success}}
+            ${{ github.actor }} deployed application
+            
+            Repository: ${{ github.repository }}
+            
+            See changes: https://github.com/${{ github.repository }}/commit/${{github.sha}}
+
