@@ -18,6 +18,108 @@ $dokka.location:com.innopolis.innoqueue.domain.fcmtoken.service/FcmTokenService/
 $dokka.location:com.innopolis.innoqueue.domain.fcmtoken.service/FcmTokenService/FcmTokenService/#com.innopolis.innoqueue.domain.fcmtoken.dao.FcmTokenRepository/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.fcmtoken.service/-fcm-token-service/-fcm-token-service.html
 $dokka.location:com.innopolis.innoqueue.domain.fcmtoken.service/FcmTokenService/findTokensForUser/#kotlin.Long/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.fcmtoken.service/-fcm-token-service/find-tokens-for-user.html
 $dokka.location:com.innopolis.innoqueue.domain.fcmtoken.service/FcmTokenService/saveFcmToken/#kotlin.Long#kotlin.String/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.fcmtoken.service/-fcm-token-service/save-fcm-token.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.dao.specification////PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.dao.specification/index.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.dao.specification/QueuePinCodeExpiredSpecification///PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.dao.specification/-queue-pin-code-expired-specification/index.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.dao.specification/QueuePinCodeExpiredSpecification/QueuePinCodeExpiredSpecification/#java.time.LocalDateTime/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.dao.specification/-queue-pin-code-expired-specification/-queue-pin-code-expired-specification.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.dao.specification/QueuePinCodeExpiredSpecification/toPredicate/#javax.persistence.criteria.Root[com.innopolis.innoqueue.domain.queue.model.Queue]#javax.persistence.criteria.CriteriaQuery[*]#javax.persistence.criteria.CriteriaBuilder/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.dao.specification/-queue-pin-code-expired-specification/to-predicate.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.dao.specification/QueueQrCodeExpiredSpecification///PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.dao.specification/-queue-qr-code-expired-specification/index.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.dao.specification/QueueQrCodeExpiredSpecification/QueueQrCodeExpiredSpecification/#java.time.LocalDateTime/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.dao.specification/-queue-qr-code-expired-specification/-queue-qr-code-expired-specification.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.dao.specification/QueueQrCodeExpiredSpecification/toPredicate/#javax.persistence.criteria.Root[com.innopolis.innoqueue.domain.queue.model.Queue]#javax.persistence.criteria.CriteriaQuery[*]#javax.persistence.criteria.CriteriaBuilder/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.dao.specification/-queue-qr-code-expired-specification/to-predicate.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.dao////PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.dao/index.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.dao/QueueRepository///PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.dao/-queue-repository/index.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.dao/QueueRepository/findPinCodes/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.dao/-queue-repository/find-pin-codes.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.dao/QueueRepository/findQrCodes/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.dao/-queue-repository/find-qr-codes.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.dao/QueueRepository/findToDoTasks/#kotlin.String/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.dao/-queue-repository/find-to-do-tasks.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.dto////PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.dto/index.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.dto/EditQueueDto///PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.dto/-edit-queue-dto/index.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.dto/EditQueueDto/EditQueueDto/#kotlin.String?#kotlin.String?#kotlin.Boolean?#kotlin.collections.List[kotlin.Long]?/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.dto/-edit-queue-dto/-edit-queue-dto.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.dto/EditQueueDto/participants/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.dto/-edit-queue-dto/participants.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.dto/EditQueueDto/queueColor/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.dto/-edit-queue-dto/queue-color.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.dto/EditQueueDto/queueName/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.dto/-edit-queue-dto/queue-name.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.dto/EditQueueDto/trackExpenses/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.dto/-edit-queue-dto/track-expenses.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.dto/NewQueueDto///PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.dto/-new-queue-dto/index.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.dto/NewQueueDto/NewQueueDto/#kotlin.String#kotlin.String#kotlin.Boolean/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.dto/-new-queue-dto/-new-queue-dto.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.dto/NewQueueDto/queueColor/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.dto/-new-queue-dto/queue-color.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.dto/NewQueueDto/queueName/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.dto/-new-queue-dto/queue-name.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.dto/NewQueueDto/trackExpenses/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.dto/-new-queue-dto/track-expenses.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.dto/QueueDetailsDto///PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.dto/-queue-details-dto/index.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.dto/QueueDetailsDto/QueueDetailsDto/#kotlin.Long#kotlin.String#kotlin.String#kotlin.Boolean#kotlin.Boolean#kotlin.collections.List[com.innopolis.innoqueue.domain.queue.dto.QueueParticipantDto]/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.dto/-queue-details-dto/-queue-details-dto.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.dto/QueueDetailsDto/admin/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.dto/-queue-details-dto/admin.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.dto/QueueDetailsDto/participants/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.dto/-queue-details-dto/participants.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.dto/QueueDetailsDto/queueColor/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.dto/-queue-details-dto/queue-color.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.dto/QueueDetailsDto/queueId/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.dto/-queue-details-dto/queue-id.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.dto/QueueDetailsDto/queueName/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.dto/-queue-details-dto/queue-name.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.dto/QueueDetailsDto/trackExpenses/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.dto/-queue-details-dto/track-expenses.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.dto/QueueInviteCodeDto///PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.dto/-queue-invite-code-dto/index.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.dto/QueueInviteCodeDto/QueueInviteCodeDto/#kotlin.String?#kotlin.String?/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.dto/-queue-invite-code-dto/-queue-invite-code-dto.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.dto/QueueInviteCodeDto/pinCode/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.dto/-queue-invite-code-dto/pin-code.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.dto/QueueInviteCodeDto/qrCode/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.dto/-queue-invite-code-dto/qr-code.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.dto/QueueParticipantDto///PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.dto/-queue-participant-dto/index.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.dto/QueueParticipantDto/QueueParticipantDto/#kotlin.Long#kotlin.String#kotlin.Long?#kotlin.Boolean#kotlin.Boolean/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.dto/-queue-participant-dto/-queue-participant-dto.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.dto/QueueParticipantDto/active/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.dto/-queue-participant-dto/active.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.dto/QueueParticipantDto/expenses/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.dto/-queue-participant-dto/expenses.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.dto/QueueParticipantDto/onDuty/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.dto/-queue-participant-dto/on-duty.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.dto/QueueParticipantDto/userId/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.dto/-queue-participant-dto/user-id.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.dto/QueueParticipantDto/userName/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.dto/-queue-participant-dto/user-name.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.dto/QueueShortDto///PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.dto/-queue-short-dto/index.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.dto/QueueShortDto/QueueShortDto/#kotlin.Long#kotlin.String#kotlin.String#kotlin.String#kotlin.Boolean/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.dto/-queue-short-dto/-queue-short-dto.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.dto/QueueShortDto/active/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.dto/-queue-short-dto/active.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.dto/QueueShortDto/onDutyUserName/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.dto/-queue-short-dto/on-duty-user-name.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.dto/QueueShortDto/queueColor/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.dto/-queue-short-dto/queue-color.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.dto/QueueShortDto/queueId/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.dto/-queue-short-dto/queue-id.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.dto/QueueShortDto/queueName/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.dto/-queue-short-dto/queue-name.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.dto/QueuesListDto///PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.dto/-queues-list-dto/index.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.dto/QueuesListDto/QueuesListDto/#kotlin.collections.List[com.innopolis.innoqueue.domain.queue.dto.QueueShortDto]/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.dto/-queues-list-dto/-queues-list-dto.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.dto/QueuesListDto/queues/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.dto/-queues-list-dto/queues.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.dto/ToDoTaskDto///PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.dto/-to-do-task-dto/index.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.dto/ToDoTaskDto/ToDoTaskDto/#kotlin.Long?#kotlin.String?#kotlin.String?#kotlin.Boolean?#kotlin.Boolean?/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.dto/-to-do-task-dto/-to-do-task-dto.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.dto/ToDoTaskDto/important/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.dto/-to-do-task-dto/important.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.dto/ToDoTaskDto/queueColor/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.dto/-to-do-task-dto/queue-color.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.dto/ToDoTaskDto/queueId/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.dto/-to-do-task-dto/queue-id.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.dto/ToDoTaskDto/queueName/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.dto/-to-do-task-dto/queue-name.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.dto/ToDoTaskDto/trackExpenses/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.dto/-to-do-task-dto/track-expenses.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.model////PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.model/index.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.model/Queue///PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.model/-queue/index.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.model/Queue/Queue/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.model/-queue/-queue.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.model/Queue/color/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.model/-queue/color.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.model/Queue/creatorId/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.model/-queue/creator-id.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.model/Queue/currentUserId/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.model/-queue/current-user-id.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.model/Queue/isImportant/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.model/-queue/is-important.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.model/Queue/name/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.model/-queue/name.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.model/Queue/pinCode/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.model/-queue/pin-code.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.model/Queue/pinDateCreated/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.model/-queue/pin-date-created.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.model/Queue/qrCode/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.model/-queue/qr-code.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.model/Queue/qrDateCreated/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.model/-queue/qr-date-created.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.model/Queue/queueId/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.model/-queue/queue-id.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.model/Queue/trackExpenses/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.model/-queue/track-expenses.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.model/QueueAndUserQueue///PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.model/-queue-and-user-queue/index.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.model/QueueAndUserQueue/getIsImportant/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.model/-queue-and-user-queue/get-is-important.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.model/QueueAndUserQueue/getQueueColor/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.model/-queue-and-user-queue/get-queue-color.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.model/QueueAndUserQueue/getQueueId/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.model/-queue-and-user-queue/get-queue-id.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.model/QueueAndUserQueue/getQueueName/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.model/-queue-and-user-queue/get-queue-name.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.model/QueueAndUserQueue/getTrackExpenses/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.model/-queue-and-user-queue/get-track-expenses.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.service////PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.service/index.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.service/QueueService///PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.service/-queue-service/index.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.service/QueueService/QueueService/#com.innopolis.innoqueue.domain.user.service.UserService#com.innopolis.innoqueue.domain.userqueue.dao.UserQueueRepository#com.innopolis.innoqueue.domain.queue.dao.QueueRepository/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.service/-queue-service/-queue-service.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.service/QueueService/createQueue/#kotlin.String#com.innopolis.innoqueue.domain.queue.dto.NewQueueDto/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.service/-queue-service/create-queue.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.service/QueueService/deleteQueue/#kotlin.String#kotlin.Long/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.service/-queue-service/delete-queue.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.service/QueueService/editQueue/#kotlin.String#kotlin.Long#com.innopolis.innoqueue.domain.queue.dto.EditQueueDto/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.service/-queue-service/edit-queue.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.service/QueueService/freezeUnFreezeQueue/#kotlin.String#kotlin.Long#kotlin.Boolean/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.service/-queue-service/freeze-un-freeze-queue.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.service/QueueService/getQueueById/#kotlin.String#kotlin.Long/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.service/-queue-service/get-queue-by-id.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.service/QueueService/getQueueInviteCode/#kotlin.String#kotlin.Long/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.service/-queue-service/get-queue-invite-code.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.service/QueueService/getQueues/#kotlin.String#kotlin.String?/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.service/-queue-service/get-queues.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.service/QueueService/getUserQueueByQueueId/#com.innopolis.innoqueue.domain.user.model.User#kotlin.Long/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.service/-queue-service/get-user-queue-by-queue-id.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.service/QueueService/joinQueue/#kotlin.String#com.innopolis.innoqueue.domain.queue.dto.QueueInviteCodeDto/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.service/-queue-service/join-queue.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.service/QueueService/shakeUser/#kotlin.String#kotlin.Long/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.service/-queue-service/shake-user.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.service/QueueService/transformQueueToDTO/#com.innopolis.innoqueue.domain.queue.model.Queue?#kotlin.Long/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.service/-queue-service/transform-queue-to-d-t-o.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.service/ToDoTaskService///PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.service/-to-do-task-service/index.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.service/ToDoTaskService/ToDoTaskService/#com.innopolis.innoqueue.domain.user.service.UserService#com.innopolis.innoqueue.domain.queue.service.QueueService#com.innopolis.innoqueue.domain.queue.dao.QueueRepository#com.innopolis.innoqueue.domain.userqueue.dao.UserQueueRepository/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.service/-to-do-task-service/-to-do-task-service.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.service/ToDoTaskService/completeTask/#kotlin.String#kotlin.Long#kotlin.Long?/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.service/-to-do-task-service/complete-task.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.service/ToDoTaskService/getToDoTasks/#kotlin.String/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.service/-to-do-task-service/get-to-do-tasks.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.service/ToDoTaskService/skipTask/#kotlin.String#kotlin.Long/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.service/-to-do-task-service/skip-task.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.util////PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.util/index.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.util/UsersQueueLogic///PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.util/-users-queue-logic/index.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.util/UsersQueueLogic/assignNextUser/#com.innopolis.innoqueue.domain.userqueue.model.UserQueue#com.innopolis.innoqueue.domain.user.service.UserService#com.innopolis.innoqueue.domain.userqueue.dao.UserQueueRepository#com.innopolis.innoqueue.domain.queue.dao.QueueRepository/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.util/-users-queue-logic/assign-next-user.html
 $dokka.location:com.innopolis.innoqueue.domain.user.dao////PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.user.dao/index.html
 $dokka.location:com.innopolis.innoqueue.domain.user.dao/UserRepository///PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.user.dao/-user-repository/index.html
 $dokka.location:com.innopolis.innoqueue.domain.user.dao/UserRepository/findUserByToken/#kotlin.String/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.user.dao/-user-repository/find-user-by-token.html
@@ -65,12 +167,85 @@ $dokka.location:com.innopolis.innoqueue.domain.user.service/UserService/findUser
 $dokka.location:com.innopolis.innoqueue.domain.user.service/UserService/findUserNameById/#kotlin.Long/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.user.service/-user-service/find-user-name-by-id.html
 $dokka.location:com.innopolis.innoqueue.domain.user.service/UserService/getUserSettings/#kotlin.String/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.user.service/-user-service/get-user-settings.html
 $dokka.location:com.innopolis.innoqueue.domain.user.service/UserService/updateUserSettings/#kotlin.String#com.innopolis.innoqueue.domain.user.dto.UpdateUserDto/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.user.service/-user-service/update-user-settings.html
+$dokka.location:com.innopolis.innoqueue.domain.userqueue.dao////PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.userqueue.dao/index.html
+$dokka.location:com.innopolis.innoqueue.domain.userqueue.dao/UserQueueRepository///PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.userqueue.dao/-user-queue-repository/index.html
+$dokka.location:com.innopolis.innoqueue.domain.userqueue.dao/UserQueueRepository/findAllUserQueueByToken/#kotlin.String/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.userqueue.dao/-user-queue-repository/find-all-user-queue-by-token.html
+$dokka.location:com.innopolis.innoqueue.domain.userqueue.dao/UserQueueRepository/findQueueParticipants/#kotlin.Long/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.userqueue.dao/-user-queue-repository/find-queue-participants.html
+$dokka.location:com.innopolis.innoqueue.domain.userqueue.dao/UserQueueRepository/findUserQueue/#kotlin.String#kotlin.Long/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.userqueue.dao/-user-queue-repository/find-user-queue.html
+$dokka.location:com.innopolis.innoqueue.domain.userqueue.dao/UserQueueRepository/findUserQueueByQueueId/#kotlin.Long/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.userqueue.dao/-user-queue-repository/find-user-queue-by-queue-id.html
+$dokka.location:com.innopolis.innoqueue.domain.userqueue.dao/UserQueueRepository/findUserQueueByToken/#kotlin.String#kotlin.Long/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.userqueue.dao/-user-queue-repository/find-user-queue-by-token.html
+$dokka.location:com.innopolis.innoqueue.domain.userqueue.model////PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.userqueue.model/index.html
+$dokka.location:com.innopolis.innoqueue.domain.userqueue.model/QueueParticipants///PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.userqueue.model/-queue-participants/index.html
+$dokka.location:com.innopolis.innoqueue.domain.userqueue.model/QueueParticipants/getExpenses/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.userqueue.model/-queue-participants/get-expenses.html
+$dokka.location:com.innopolis.innoqueue.domain.userqueue.model/QueueParticipants/getIsActive/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.userqueue.model/-queue-participants/get-is-active.html
+$dokka.location:com.innopolis.innoqueue.domain.userqueue.model/QueueParticipants/getUserId/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.userqueue.model/-queue-participants/get-user-id.html
+$dokka.location:com.innopolis.innoqueue.domain.userqueue.model/QueueParticipants/getUserName/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.userqueue.model/-queue-participants/get-user-name.html
+$dokka.location:com.innopolis.innoqueue.domain.userqueue.model/UserQueue///PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.userqueue.model/-user-queue/index.html
+$dokka.location:com.innopolis.innoqueue.domain.userqueue.model/UserQueue/UserQueue/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.userqueue.model/-user-queue/-user-queue.html
+$dokka.location:com.innopolis.innoqueue.domain.userqueue.model/UserQueue/completes/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.userqueue.model/-user-queue/completes.html
+$dokka.location:com.innopolis.innoqueue.domain.userqueue.model/UserQueue/dateJoined/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.userqueue.model/-user-queue/date-joined.html
+$dokka.location:com.innopolis.innoqueue.domain.userqueue.model/UserQueue/expenses/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.userqueue.model/-user-queue/expenses.html
+$dokka.location:com.innopolis.innoqueue.domain.userqueue.model/UserQueue/isActive/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.userqueue.model/-user-queue/is-active.html
+$dokka.location:com.innopolis.innoqueue.domain.userqueue.model/UserQueue/progress/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.userqueue.model/-user-queue/progress.html
+$dokka.location:com.innopolis.innoqueue.domain.userqueue.model/UserQueue/skips/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.userqueue.model/-user-queue/skips.html
+$dokka.location:com.innopolis.innoqueue.domain.userqueue.model/UserQueue/userQueueId/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.userqueue.model/-user-queue/user-queue-id.html
+$dokka.location:com.innopolis.innoqueue.domain.userqueue.model/UserQueueAndQueue///PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.userqueue.model/-user-queue-and-queue/index.html
+$dokka.location:com.innopolis.innoqueue.domain.userqueue.model/UserQueueAndQueue/getCompletes/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.userqueue.model/-user-queue-and-queue/get-completes.html
+$dokka.location:com.innopolis.innoqueue.domain.userqueue.model/UserQueueAndQueue/getCurrentUserId/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.userqueue.model/-user-queue-and-queue/get-current-user-id.html
+$dokka.location:com.innopolis.innoqueue.domain.userqueue.model/UserQueueAndQueue/getExpenses/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.userqueue.model/-user-queue-and-queue/get-expenses.html
+$dokka.location:com.innopolis.innoqueue.domain.userqueue.model/UserQueueAndQueue/getIsActive/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.userqueue.model/-user-queue-and-queue/get-is-active.html
+$dokka.location:com.innopolis.innoqueue.domain.userqueue.model/UserQueueAndQueue/getProgress/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.userqueue.model/-user-queue-and-queue/get-progress.html
+$dokka.location:com.innopolis.innoqueue.domain.userqueue.model/UserQueueAndQueue/getQueueId/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.userqueue.model/-user-queue-and-queue/get-queue-id.html
+$dokka.location:com.innopolis.innoqueue.domain.userqueue.model/UserQueueAndQueue/getSkips/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.userqueue.model/-user-queue-and-queue/get-skips.html
+$dokka.location:com.innopolis.innoqueue.domain.userqueue.model/UserQueueAndQueue/getTrackExpenses/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.userqueue.model/-user-queue-and-queue/get-track-expenses.html
+$dokka.location:com.innopolis.innoqueue.domain.userqueue.model/UserQueueAndQueue/getUserId/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.userqueue.model/-user-queue-and-queue/get-user-id.html
+$dokka.location:com.innopolis.innoqueue.domain.userqueue.model/UserQueueId.Companion///PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.userqueue.model/-user-queue-id/-companion/index.html
+$dokka.location:com.innopolis.innoqueue.domain.userqueue.model/UserQueueId.Companion/serialVersionUID/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.userqueue.model/-user-queue-id/-companion/serial-version-u-i-d.html
+$dokka.location:com.innopolis.innoqueue.domain.userqueue.model/UserQueueId///PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.userqueue.model/-user-queue-id/index.html
+$dokka.location:com.innopolis.innoqueue.domain.userqueue.model/UserQueueId/UserQueueId/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.userqueue.model/-user-queue-id/-user-queue-id.html
+$dokka.location:com.innopolis.innoqueue.domain.userqueue.model/UserQueueId/queueId/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.userqueue.model/-user-queue-id/queue-id.html
+$dokka.location:com.innopolis.innoqueue.domain.userqueue.model/UserQueueId/userId/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.userqueue.model/-user-queue-id/user-id.html
+$dokka.location:com.innopolis.innoqueue.domain.userqueue.model/UserQueuesShortForm///PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.userqueue.model/-user-queues-short-form/index.html
+$dokka.location:com.innopolis.innoqueue.domain.userqueue.model/UserQueuesShortForm/getColor/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.userqueue.model/-user-queues-short-form/get-color.html
+$dokka.location:com.innopolis.innoqueue.domain.userqueue.model/UserQueuesShortForm/getDateJoined/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.userqueue.model/-user-queues-short-form/get-date-joined.html
+$dokka.location:com.innopolis.innoqueue.domain.userqueue.model/UserQueuesShortForm/getIsActive/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.userqueue.model/-user-queues-short-form/get-is-active.html
+$dokka.location:com.innopolis.innoqueue.domain.userqueue.model/UserQueuesShortForm/getOnDutyUserName/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.userqueue.model/-user-queues-short-form/get-on-duty-user-name.html
+$dokka.location:com.innopolis.innoqueue.domain.userqueue.model/UserQueuesShortForm/getQueueId/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.userqueue.model/-user-queues-short-form/get-queue-id.html
+$dokka.location:com.innopolis.innoqueue.domain.userqueue.model/UserQueuesShortForm/getQueueName/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.userqueue.model/-user-queues-short-form/get-queue-name.html
 $dokka.location:com.innopolis.innoqueue.rest.v1.dto////PointingToDeclaration/innoqueue/com.innopolis.innoqueue.rest.v1.dto/index.html
+$dokka.location:com.innopolis.innoqueue.rest.v1.dto/ExpensesDto///PointingToDeclaration/innoqueue/com.innopolis.innoqueue.rest.v1.dto/-expenses-dto/index.html
+$dokka.location:com.innopolis.innoqueue.rest.v1.dto/ExpensesDto/ExpensesDto/#kotlin.Long?/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.rest.v1.dto/-expenses-dto/-expenses-dto.html
+$dokka.location:com.innopolis.innoqueue.rest.v1.dto/ExpensesDto/expenses/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.rest.v1.dto/-expenses-dto/expenses.html
 $dokka.location:com.innopolis.innoqueue.rest.v1.dto/NewUserDto///PointingToDeclaration/innoqueue/com.innopolis.innoqueue.rest.v1.dto/-new-user-dto/index.html
 $dokka.location:com.innopolis.innoqueue.rest.v1.dto/NewUserDto/NewUserDto/#kotlin.String#kotlin.String/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.rest.v1.dto/-new-user-dto/-new-user-dto.html
 $dokka.location:com.innopolis.innoqueue.rest.v1.dto/NewUserDto/fcmToken/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.rest.v1.dto/-new-user-dto/fcm-token.html
 $dokka.location:com.innopolis.innoqueue.rest.v1.dto/NewUserDto/userName/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.rest.v1.dto/-new-user-dto/user-name.html
+$dokka.location:com.innopolis.innoqueue.rest.v1.dto/QueueActivityDto///PointingToDeclaration/innoqueue/com.innopolis.innoqueue.rest.v1.dto/-queue-activity-dto/index.html
+$dokka.location:com.innopolis.innoqueue.rest.v1.dto/QueueActivityDto/QueueActivityDto/#kotlin.Boolean/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.rest.v1.dto/-queue-activity-dto/-queue-activity-dto.html
+$dokka.location:com.innopolis.innoqueue.rest.v1.dto/QueueActivityDto/active/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.rest.v1.dto/-queue-activity-dto/active.html
+$dokka.location:com.innopolis.innoqueue.rest.v1.dto/QueueIdDto///PointingToDeclaration/innoqueue/com.innopolis.innoqueue.rest.v1.dto/-queue-id-dto/index.html
+$dokka.location:com.innopolis.innoqueue.rest.v1.dto/QueueIdDto/QueueIdDto/#kotlin.Long/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.rest.v1.dto/-queue-id-dto/-queue-id-dto.html
+$dokka.location:com.innopolis.innoqueue.rest.v1.dto/QueueIdDto/queueId/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.rest.v1.dto/-queue-id-dto/queue-id.html
+$dokka.location:com.innopolis.innoqueue.rest.v1.dto/ToDoTasksListDto///PointingToDeclaration/innoqueue/com.innopolis.innoqueue.rest.v1.dto/-to-do-tasks-list-dto/index.html
+$dokka.location:com.innopolis.innoqueue.rest.v1.dto/ToDoTasksListDto/ToDoTasksListDto/#kotlin.collections.List[com.innopolis.innoqueue.domain.queue.dto.ToDoTaskDto]/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.rest.v1.dto/-to-do-tasks-list-dto/-to-do-tasks-list-dto.html
+$dokka.location:com.innopolis.innoqueue.rest.v1.dto/ToDoTasksListDto/toDoTasks/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.rest.v1.dto/-to-do-tasks-list-dto/to-do-tasks.html
 $dokka.location:com.innopolis.innoqueue.rest.v1////PointingToDeclaration/innoqueue/com.innopolis.innoqueue.rest.v1/index.html
+$dokka.location:com.innopolis.innoqueue.rest.v1/QueueController///PointingToDeclaration/innoqueue/com.innopolis.innoqueue.rest.v1/-queue-controller/index.html
+$dokka.location:com.innopolis.innoqueue.rest.v1/QueueController/QueueController/#com.innopolis.innoqueue.domain.queue.service.QueueService#com.innopolis.innoqueue.domain.queue.service.ToDoTaskService/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.rest.v1/-queue-controller/-queue-controller.html
+$dokka.location:com.innopolis.innoqueue.rest.v1/QueueController/changeQueueActivity/#kotlin.String#kotlin.Long#com.innopolis.innoqueue.rest.v1.dto.QueueActivityDto/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.rest.v1/-queue-controller/change-queue-activity.html
+$dokka.location:com.innopolis.innoqueue.rest.v1/QueueController/completeTask/#kotlin.String#kotlin.Long#com.innopolis.innoqueue.rest.v1.dto.ExpensesDto?/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.rest.v1/-queue-controller/complete-task.html
+$dokka.location:com.innopolis.innoqueue.rest.v1/QueueController/createQueue/#kotlin.String#com.innopolis.innoqueue.domain.queue.dto.NewQueueDto/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.rest.v1/-queue-controller/create-queue.html
+$dokka.location:com.innopolis.innoqueue.rest.v1/QueueController/deleteQueue/#kotlin.String#kotlin.Long/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.rest.v1/-queue-controller/delete-queue.html
+$dokka.location:com.innopolis.innoqueue.rest.v1/QueueController/editQueue/#kotlin.String#kotlin.Long#com.innopolis.innoqueue.domain.queue.dto.EditQueueDto/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.rest.v1/-queue-controller/edit-queue.html
+$dokka.location:com.innopolis.innoqueue.rest.v1/QueueController/getQueueById/#kotlin.String#kotlin.Long/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.rest.v1/-queue-controller/get-queue-by-id.html
+$dokka.location:com.innopolis.innoqueue.rest.v1/QueueController/getQueueInviteCode/#kotlin.String#kotlin.Long/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.rest.v1/-queue-controller/get-queue-invite-code.html
+$dokka.location:com.innopolis.innoqueue.rest.v1/QueueController/getQueues/#kotlin.String#kotlin.String?/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.rest.v1/-queue-controller/get-queues.html
+$dokka.location:com.innopolis.innoqueue.rest.v1/QueueController/getToDoTasks/#kotlin.String/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.rest.v1/-queue-controller/get-to-do-tasks.html
+$dokka.location:com.innopolis.innoqueue.rest.v1/QueueController/handleBadRequest/#java.lang.IllegalArgumentException/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.rest.v1/-queue-controller/handle-bad-request.html
+$dokka.location:com.innopolis.innoqueue.rest.v1/QueueController/handleNotFound/#java.util.NoSuchElementException/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.rest.v1/-queue-controller/handle-not-found.html
+$dokka.location:com.innopolis.innoqueue.rest.v1/QueueController/joinQueue/#kotlin.String#com.innopolis.innoqueue.domain.queue.dto.QueueInviteCodeDto/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.rest.v1/-queue-controller/join-queue.html
+$dokka.location:com.innopolis.innoqueue.rest.v1/QueueController/shakeUser/#kotlin.String#kotlin.Long/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.rest.v1/-queue-controller/shake-user.html
+$dokka.location:com.innopolis.innoqueue.rest.v1/QueueController/skipTask/#kotlin.String#kotlin.Long/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.rest.v1/-queue-controller/skip-task.html
 $dokka.location:com.innopolis.innoqueue.rest.v1/UserController///PointingToDeclaration/innoqueue/com.innopolis.innoqueue.rest.v1/-user-controller/index.html
 $dokka.location:com.innopolis.innoqueue.rest.v1/UserController/UserController/#com.innopolis.innoqueue.domain.user.service.UserService/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.rest.v1/-user-controller/-user-controller.html
 $dokka.location:com.innopolis.innoqueue.rest.v1/UserController/createNewUser/#com.innopolis.innoqueue.rest.v1.dto.NewUserDto/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.rest.v1/-user-controller/create-new-user.html
@@ -90,10 +265,18 @@ com.innopolis.innoqueue
 com.innopolis.innoqueue.domain.fcmtoken.dao
 com.innopolis.innoqueue.domain.fcmtoken.model
 com.innopolis.innoqueue.domain.fcmtoken.service
+com.innopolis.innoqueue.domain.queue.dao
+com.innopolis.innoqueue.domain.queue.dao.specification
+com.innopolis.innoqueue.domain.queue.dto
+com.innopolis.innoqueue.domain.queue.model
+com.innopolis.innoqueue.domain.queue.service
+com.innopolis.innoqueue.domain.queue.util
 com.innopolis.innoqueue.domain.user.dao
 com.innopolis.innoqueue.domain.user.dto
 com.innopolis.innoqueue.domain.user.model
 com.innopolis.innoqueue.domain.user.service
+com.innopolis.innoqueue.domain.userqueue.dao
+com.innopolis.innoqueue.domain.userqueue.model
 com.innopolis.innoqueue.rest.v1
 com.innopolis.innoqueue.rest.v1.dto
 com.innopolis.innoqueue.util
