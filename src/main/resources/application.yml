@@ -15,5 +15,6 @@ spring:
     database: postgresql
   flyway:
     enabled: true
+firebase: ${GOOGLE_CREDENTIALS:null}
 login:
   register: ${REGISTER_OPTION:true}

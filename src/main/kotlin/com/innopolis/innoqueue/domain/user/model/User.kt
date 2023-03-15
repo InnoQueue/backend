@@ -1,5 +1,6 @@
 package com.innopolis.innoqueue.domain.user.model
 
+import com.innopolis.innoqueue.domain.notification.model.Notification
 import javax.persistence.*
 
 /**
@@ -37,4 +38,7 @@ class User {
 
     @Column(name = "your_turn", nullable = false)
     var yourTurn: Boolean? = true
+
+    @OneToMany(mappedBy = "user")
+    var notifications: MutableSet<Notification> = mutableSetOf()
 }

@@ -1,5 +1,7 @@
 package com.innopolis.innoqueue.domain.queue.service
 
+import com.innopolis.innoqueue.domain.notification.enums.NotificationType
+import com.innopolis.innoqueue.domain.notification.service.NotificationService
 import com.innopolis.innoqueue.domain.queue.dao.QueueRepository
 import com.innopolis.innoqueue.domain.queue.dto.*
 import com.innopolis.innoqueue.domain.queue.model.Queue
@@ -27,6 +29,7 @@ private const val QR_CODE_LENGTH: Int = 48
 @Service
 class QueueService(
     private val userService: UserService,
+    private val notificationService: NotificationService,
     private val userQueueRepository: UserQueueRepository,
     private val queueRepository: QueueRepository
 ) {
@@ -205,6 +208,13 @@ class QueueService(
                 if (!userQueue.isActive!!) {
                     userQueue.isActive = true
                     userQueueRepository.save(userQueue)
+                    notificationService.sendNotificationMessage(
+                        NotificationType.UNFROZEN,
+                        user.id!!,
+                        user.name!!,
+                        userQueue.userQueueId?.queueId!!,
+                        queueRepository.findAll().firstOrNull { it.queueId == userQueue.userQueueId?.queueId }!!.name!!
+                    )
                 }
             }
 
@@ -215,6 +225,13 @@ class QueueService(
                     if (queue.currentUserId != user.id) {
                         userQueue.isActive = false
                         userQueueRepository.save(userQueue)
+                        notificationService.sendNotificationMessage(
+                            NotificationType.FROZEN,
+                            user.id!!,
+                            user.name!!,
+                            queue.queueId!!,
+                            queue.name!!,
+                        )
                     }
                 }
             }
@@ -233,17 +250,38 @@ class QueueService(
         // Delete queue
         val queue = queueRepository.findAll().firstOrNull { it.queueId == userQueue.userQueueId?.queueId }!!
         if (queue.creatorId == user.id) {
+            notificationService.sendNotificationMessage(
+                NotificationType.DELETE_QUEUE,
+                user.id!!,
+                user.name!!,
+                queue.queueId!!,
+                queue.name!!
+            )
             queueRepository.delete(queue)
         } // Leave queue
         else {
+            notificationService.sendNotificationMessage(
+                NotificationType.LEFT_QUEUE,
+                user.id!!,
+                user.name!!,
+                queue.queueId!!,
+                queue.name!!
+            )
             userQueue.progress = 0
             // If it's your turn, reassign another user
             if (queue.currentUserId == user.id) {
-                UsersQueueLogic.assignNextUser(
+                val nextUser = UsersQueueLogic.assignNextUser(
                     userQueue,
                     userService,
                     userQueueRepository,
                     queueRepository
+                )
+                notificationService.sendNotificationMessage(
+                    NotificationType.YOUR_TURN,
+                    nextUser.id!!,
+                    nextUser.name!!,
+                    queue.queueId!!,
+                    queue.name!!
                 )
             }
             userQueueRepository.delete(userQueue)
@@ -276,6 +314,13 @@ class QueueService(
                     ?: throw IllegalArgumentException("The pin code for queue is invalid: $pinCode")
 
                 userQueueRepository.save(createUserQueueEntity(user, queueEntity))
+                notificationService.sendNotificationMessage(
+                    NotificationType.JOINED_QUEUE,
+                    user.id!!,
+                    user.name!!,
+                    queueEntity.queueId!!,
+                    queueEntity.name!!
+                )
 
                 return transformQueueToDTO(
                     queue = queueEntity,
@@ -296,6 +341,13 @@ class QueueService(
                 val queueEntity = queueRepository.findAll().firstOrNull { it.queueId == queue.queueId }
                     ?: throw IllegalArgumentException("The QR code for queue is invalid: $qrCode")
                 userQueueRepository.save(createUserQueueEntity(user, queueEntity))
+                notificationService.sendNotificationMessage(
+                    NotificationType.JOINED_QUEUE,
+                    user.id!!,
+                    user.name!!,
+                    queueEntity.queueId!!,
+                    queueEntity.name!!
+                )
                 return transformQueueToDTO(
                     queue = queueEntity,
                     userId = user.id!!
@@ -325,6 +377,13 @@ class QueueService(
         currentUserQueue?.let {
             queue.isImportant = true
             queueRepository.save(queue)
+            notificationService.sendNotificationMessage(
+                NotificationType.SHOOK,
+                it,
+                userService.findUserNameById(it)!!,
+                queue.queueId!!,
+                queue.name!!
+            )
         }
     }
 
