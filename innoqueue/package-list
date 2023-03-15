@@ -1,0 +1,8 @@
+$dokka.format:html-v1
+$dokka.linkExtension:html
+$dokka.location:com.innopolis.innoqueue////PointingToDeclaration/innoqueue/com.innopolis.innoqueue/index.html
+$dokka.location:com.innopolis.innoqueue//main/#kotlin.Array[kotlin.String]/PointingToDeclaration/innoqueue/com.innopolis.innoqueue/main.html
+$dokka.location:com.innopolis.innoqueue/InnoQueueApplication///PointingToDeclaration/innoqueue/com.innopolis.innoqueue/-inno-queue-application/index.html
+$dokka.location:com.innopolis.innoqueue/InnoQueueApplication/InnoQueueApplication/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue/-inno-queue-application/-inno-queue-application.html
+com.innopolis.innoqueue
+
