@@ -1,5 +1,7 @@
 package com.innopolis.innoqueue.domain.queue.service
 
+import com.innopolis.innoqueue.domain.notification.enums.NotificationType
+import com.innopolis.innoqueue.domain.notification.service.NotificationService
 import com.innopolis.innoqueue.domain.queue.dao.QueueRepository
 import com.innopolis.innoqueue.domain.queue.dto.ToDoTaskDto
 import com.innopolis.innoqueue.domain.queue.util.UsersQueueLogic
@@ -16,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional
 class ToDoTaskService(
     private val userService: UserService,
     private val queueService: QueueService,
+    private val notificationService: NotificationService,
     private val queueRepository: QueueRepository,
     private val userQueueRepository: UserQueueRepository,
 ) {
@@ -76,8 +79,15 @@ class ToDoTaskService(
                 else {
                     saveTaskProgress(it, expenses)
                     // Assign the next user in a queue
-                    UsersQueueLogic.assignNextUser(it, userService, userQueueRepository, queueRepository)
-                    queueRepository.findAll().firstOrNull { q -> q.queueId == it.userQueueId?.queueId }!!
+                    val nextUser = UsersQueueLogic.assignNextUser(it, userService, userQueueRepository, queueRepository)
+                    val queue = queueRepository.findAll().firstOrNull { q -> q.queueId == it.userQueueId?.queueId }!!
+                    notificationService.sendNotificationMessage(
+                        NotificationType.YOUR_TURN,
+                        nextUser.id!!,
+                        nextUser.name!!,
+                        queue.queueId!!,
+                        queue.name!!
+                    )
                 }
             }
         }
@@ -98,8 +108,22 @@ class ToDoTaskService(
             userQueue.progress = userQueue.progress?.plus(1)
             userQueue.skips = userQueue.skips?.plus(1)
             userQueueRepository.save(userQueue)
-            queueRepository.findAll().firstOrNull { it.queueId == userQueue.userQueueId?.queueId }!!
-            UsersQueueLogic.assignNextUser(userQueue, userService, userQueueRepository, queueRepository)
+            val queue = queueRepository.findAll().firstOrNull { it.queueId == userQueue.userQueueId?.queueId }!!
+            notificationService.sendNotificationMessage(
+                NotificationType.SKIPPED,
+                user.id!!,
+                user.name!!,
+                queue.queueId!!,
+                queue.name!!
+            )
+            val nextUser = UsersQueueLogic.assignNextUser(userQueue, userService, userQueueRepository, queueRepository)
+            notificationService.sendNotificationMessage(
+                NotificationType.YOUR_TURN,
+                nextUser.id!!,
+                nextUser.name!!,
+                queue.queueId!!,
+                queue.name!!
+            )
         }
     }
 
@@ -117,5 +141,12 @@ class ToDoTaskService(
         queue.isImportant = false
         queueRepository.save(queue)
         userQueueRepository.save(userQueue)
+        notificationService.sendNotificationMessage(
+            NotificationType.COMPLETED,
+            userQueue.userQueueId?.userId!!,
+            userService.findUserNameById(userQueue.userQueueId?.userId!!)!!,
+            queue.queueId!!,
+            queue.name!!
+        )
     }
 }
