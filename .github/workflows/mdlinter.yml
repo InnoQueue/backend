@@ -1,0 +1,16 @@
+name: Run MD Linter
+on: [ pull_request ]
+jobs:
+  lint-readme:
+    name: Lint README file
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Lint readme file
+        uses: Dablup/markdown-lint@v1
+        with:
+          rules: '/lint/rules/changelog.js'
+          config: '/lint/config/changelog.yml'
+          args: './README.md'
