@@ -4,6 +4,9 @@ $dokka.location:com.innopolis.innoqueue.configuration////PointingToDeclaration/
 $dokka.location:com.innopolis.innoqueue.configuration/FirebaseConfiguration///PointingToDeclaration/innoqueue/com.innopolis.innoqueue.configuration/-firebase-configuration/index.html
 $dokka.location:com.innopolis.innoqueue.configuration/FirebaseConfiguration/FirebaseConfiguration/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.configuration/-firebase-configuration/-firebase-configuration.html
 $dokka.location:com.innopolis.innoqueue.configuration/FirebaseConfiguration/provideFirebaseOptions/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.configuration/-firebase-configuration/provide-firebase-options.html
+$dokka.location:com.innopolis.innoqueue.configuration/SwaggerConfiguration///PointingToDeclaration/innoqueue/com.innopolis.innoqueue.configuration/-swagger-configuration/index.html
+$dokka.location:com.innopolis.innoqueue.configuration/SwaggerConfiguration/SwaggerConfiguration/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.configuration/-swagger-configuration/-swagger-configuration.html
+$dokka.location:com.innopolis.innoqueue.configuration/SwaggerConfiguration/openApi/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.configuration/-swagger-configuration/open-api.html
 $dokka.location:com.innopolis.innoqueue.domain.fcmtoken.dao////PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.fcmtoken.dao/index.html
 $dokka.location:com.innopolis.innoqueue.domain.fcmtoken.dao/FcmTokenRepository///PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.fcmtoken.dao/-fcm-token-repository/index.html
 $dokka.location:com.innopolis.innoqueue.domain.fcmtoken.model////PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.fcmtoken.model/index.html
