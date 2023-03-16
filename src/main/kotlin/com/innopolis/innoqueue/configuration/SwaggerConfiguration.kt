@@ -25,6 +25,6 @@ class SwaggerConfiguration {
                             "Check out the [GitHub repository](https://github.com/InnoQueue/Backend)" +
                             "for more information."
                 )
-                .version("v1.0.0"
+                .version("v1.0.0")
         )
 }
