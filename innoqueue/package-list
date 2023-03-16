@@ -7,6 +7,16 @@ $dokka.location:com.innopolis.innoqueue.configuration/FirebaseConfiguration/prov
 $dokka.location:com.innopolis.innoqueue.configuration/SwaggerConfiguration///PointingToDeclaration/innoqueue/com.innopolis.innoqueue.configuration/-swagger-configuration/index.html
 $dokka.location:com.innopolis.innoqueue.configuration/SwaggerConfiguration/SwaggerConfiguration/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.configuration/-swagger-configuration/-swagger-configuration.html
 $dokka.location:com.innopolis.innoqueue.configuration/SwaggerConfiguration/openApi/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.configuration/-swagger-configuration/open-api.html
+$dokka.location:com.innopolis.innoqueue.domain.external.dto////PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.external.dto/index.html
+$dokka.location:com.innopolis.innoqueue.domain.external.dto/HostDto///PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.external.dto/-host-dto/index.html
+$dokka.location:com.innopolis.innoqueue.domain.external.dto/HostDto/HostDto/#kotlin.String#kotlin.String/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.external.dto/-host-dto/-host-dto.html
+$dokka.location:com.innopolis.innoqueue.domain.external.dto/HostDto/dev/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.external.dto/-host-dto/dev.html
+$dokka.location:com.innopolis.innoqueue.domain.external.dto/HostDto/prod/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.external.dto/-host-dto/prod.html
+$dokka.location:com.innopolis.innoqueue.domain.external.service////PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.external.service/index.html
+$dokka.location:com.innopolis.innoqueue.domain.external.service/DatabaseService///PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.external.service/-database-service/index.html
+$dokka.location:com.innopolis.innoqueue.domain.external.service/DatabaseService/DatabaseService/#com.innopolis.innoqueue.domain.queue.dao.QueueRepository#kotlin.String?#kotlin.String?/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.external.service/-database-service/-database-service.html
+$dokka.location:com.innopolis.innoqueue.domain.external.service/DatabaseService/clearExpiredInviteCodes/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.external.service/-database-service/clear-expired-invite-codes.html
+$dokka.location:com.innopolis.innoqueue.domain.external.service/DatabaseService/getHost/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.external.service/-database-service/get-host.html
 $dokka.location:com.innopolis.innoqueue.domain.fcmtoken.dao////PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.fcmtoken.dao/index.html
 $dokka.location:com.innopolis.innoqueue.domain.fcmtoken.dao/FcmTokenRepository///PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.fcmtoken.dao/-fcm-token-repository/index.html
 $dokka.location:com.innopolis.innoqueue.domain.fcmtoken.model////PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.fcmtoken.model/index.html
@@ -309,6 +319,10 @@ $dokka.location:com.innopolis.innoqueue.rest.v1.dto/ToDoTasksListDto///PointingT
 $dokka.location:com.innopolis.innoqueue.rest.v1.dto/ToDoTasksListDto/ToDoTasksListDto/#kotlin.collections.List[com.innopolis.innoqueue.domain.queue.dto.ToDoTaskDto]/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.rest.v1.dto/-to-do-tasks-list-dto/-to-do-tasks-list-dto.html
 $dokka.location:com.innopolis.innoqueue.rest.v1.dto/ToDoTasksListDto/toDoTasks/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.rest.v1.dto/-to-do-tasks-list-dto/to-do-tasks.html
 $dokka.location:com.innopolis.innoqueue.rest.v1////PointingToDeclaration/innoqueue/com.innopolis.innoqueue.rest.v1/index.html
+$dokka.location:com.innopolis.innoqueue.rest.v1/BackendController///PointingToDeclaration/innoqueue/com.innopolis.innoqueue.rest.v1/-backend-controller/index.html
+$dokka.location:com.innopolis.innoqueue.rest.v1/BackendController/BackendController/#com.innopolis.innoqueue.domain.external.service.DatabaseService/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.rest.v1/-backend-controller/-backend-controller.html
+$dokka.location:com.innopolis.innoqueue.rest.v1/BackendController/clearExpiredInviteCodes/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.rest.v1/-backend-controller/clear-expired-invite-codes.html
+$dokka.location:com.innopolis.innoqueue.rest.v1/BackendController/getHost/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.rest.v1/-backend-controller/get-host.html
 $dokka.location:com.innopolis.innoqueue.rest.v1/NotificationsController///PointingToDeclaration/innoqueue/com.innopolis.innoqueue.rest.v1/-notifications-controller/index.html
 $dokka.location:com.innopolis.innoqueue.rest.v1/NotificationsController/NotificationsController/#com.innopolis.innoqueue.domain.notification.service.NotificationService/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.rest.v1/-notifications-controller/-notifications-controller.html
 $dokka.location:com.innopolis.innoqueue.rest.v1/NotificationsController/anyNewNotification/#kotlin.String/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.rest.v1/-notifications-controller/any-new-notification.html
@@ -351,6 +365,8 @@ $dokka.location:com.innopolis.innoqueue/InnoQueueApplication///PointingToDeclara
 $dokka.location:com.innopolis.innoqueue/InnoQueueApplication/InnoQueueApplication/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue/-inno-queue-application/-inno-queue-application.html
 com.innopolis.innoqueue
 com.innopolis.innoqueue.configuration
+com.innopolis.innoqueue.domain.external.dto
+com.innopolis.innoqueue.domain.external.service
 com.innopolis.innoqueue.domain.fcmtoken.dao
 com.innopolis.innoqueue.domain.fcmtoken.model
 com.innopolis.innoqueue.domain.fcmtoken.service
