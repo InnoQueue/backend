@@ -18,3 +18,7 @@ spring:
 firebase: ${GOOGLE_CREDENTIALS:null}
 login:
   register: ${REGISTER_OPTION:true}
+server:
+  host:
+    dev: ${HOST_DEV:https://innoqueue-dev.herokuapp.com}
+    prod: ${HOST_PROD:https://innoqueue.herokuapp.com}
