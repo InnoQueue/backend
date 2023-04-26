@@ -86,7 +86,7 @@ You can also have multiple queues go in parallel and there's no confusion!
   and click on **Generate new private key**.
 - The JSON file's content should be similar to
   [innoqueue-firebase.json](/src/main/resources/innoqueue-firebase.json.origin)
-- Place this JSON file in **Backend** folder.
+- Provide this JSON file for `GOOGLE_CREDENTIALS` credentials in `application.yml`
 - Run application:
 
 ```bash
@@ -94,6 +94,17 @@ GOOGLE_CREDENTIALS=`cat firebase.json` ./gradlew bootRun
 ```
 
 where **firebase.json** is your json credentials file.
+
+#### Deep links
+
+- To support Deep links on Android, you need to proved assertlinks.json file
+- This file can be generated [here](https://developers.google.com/digital-asset-links/tools/generator)
+- Provide file content for `ASSET_LINKS` credentials in `application.yml`
+- Run application:
+
+```bash
+ASSET_LINKS=`cat assertlinks.json` ./gradlew bootRun
+```
 
 ### Docker compose up
 

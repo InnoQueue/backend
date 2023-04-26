@@ -15,7 +15,6 @@ spring:
     database: postgresql
   flyway:
     enabled: true
-firebase: ${GOOGLE_CREDENTIALS:null}
 springdoc:
   use-fqn: true
   api-docs:
@@ -25,6 +24,8 @@ springdoc:
   swagger-ui:
     enabled: true
     path: swagger-ui.html
+firebase: ${GOOGLE_CREDENTIALS:null}
+assetLinks: ${ASSET_LINKS:null}
 login:
   register: ${REGISTER_OPTION:true}
 server:
