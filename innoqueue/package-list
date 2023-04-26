@@ -355,6 +355,10 @@ $dokka.location:com.innopolis.innoqueue.rest.v1/UserController/getUserSettings/#
 $dokka.location:com.innopolis.innoqueue.rest.v1/UserController/handleBadRequest/#java.lang.IllegalArgumentException/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.rest.v1/-user-controller/handle-bad-request.html
 $dokka.location:com.innopolis.innoqueue.rest.v1/UserController/handleNotFound/#java.util.NoSuchElementException/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.rest.v1/-user-controller/handle-not-found.html
 $dokka.location:com.innopolis.innoqueue.rest.v1/UserController/updateUserSettings/#kotlin.String#com.innopolis.innoqueue.domain.user.dto.UpdateUserDto/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.rest.v1/-user-controller/update-user-settings.html
+$dokka.location:com.innopolis.innoqueue.rest////PointingToDeclaration/innoqueue/com.innopolis.innoqueue.rest/index.html
+$dokka.location:com.innopolis.innoqueue.rest/AssetLinksController///PointingToDeclaration/innoqueue/com.innopolis.innoqueue.rest/-asset-links-controller/index.html
+$dokka.location:com.innopolis.innoqueue.rest/AssetLinksController/AssetLinksController/#kotlin.String?/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.rest/-asset-links-controller/-asset-links-controller.html
+$dokka.location:com.innopolis.innoqueue.rest/AssetLinksController/get/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.rest/-asset-links-controller/get.html
 $dokka.location:com.innopolis.innoqueue.util////PointingToDeclaration/innoqueue/com.innopolis.innoqueue.util/index.html
 $dokka.location:com.innopolis.innoqueue.util/StringGenerator///PointingToDeclaration/innoqueue/com.innopolis.innoqueue.util/-string-generator/index.html
 $dokka.location:com.innopolis.innoqueue.util/StringGenerator/StringGenerator/#kotlin.Int#kotlin.collections.List[kotlin.String]/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.util/-string-generator/-string-generator.html
@@ -389,6 +393,7 @@ com.innopolis.innoqueue.domain.user.model
 com.innopolis.innoqueue.domain.user.service
 com.innopolis.innoqueue.domain.userqueue.dao
 com.innopolis.innoqueue.domain.userqueue.model
+com.innopolis.innoqueue.rest
 com.innopolis.innoqueue.rest.v1
 com.innopolis.innoqueue.rest.v1.dto
 com.innopolis.innoqueue.util
