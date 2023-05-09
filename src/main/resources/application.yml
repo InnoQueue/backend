@@ -32,3 +32,8 @@ server:
   host:
     dev: ${HOST_DEV:https://innoqueue-dev.herokuapp.com}
     prod: ${HOST_PROD:https://innoqueue.herokuapp.com}
+logging:
+  level:
+    org:
+      springframework.web: INFO
+      hibernate: ERROR
