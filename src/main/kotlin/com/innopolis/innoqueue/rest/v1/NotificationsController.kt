@@ -6,6 +6,7 @@ import com.innopolis.innoqueue.rest.v1.dto.NewNotificationDto
 import com.innopolis.innoqueue.rest.v1.dto.NotificationIdsDto
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
+import org.slf4j.LoggerFactory
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.*
 class NotificationsController(
     private val notificationService: NotificationService
 ) {
+    private val logger = LoggerFactory.getLogger(javaClass)
 
     /**
      * Exception handler
@@ -50,6 +52,7 @@ class NotificationsController(
     )
     @GetMapping
     fun getNotifications(@RequestHeader("user-token") token: String, page: Int, size: Int): Page<NotificationDto> {
+        logger.info("Get notifications for userToken=$token, page=$page, size=$size")
         validatePaginationArgs(page, size)
         val pageable: Pageable = PageRequest.of(
             page,
