@@ -53,8 +53,9 @@ You can also have multiple queues go in parallel and there's no confusion!
 ## 📌 About
 
 - For the mobile application the Backend REST API was developed.
-- You can read [Swagger](https://innoqueue-dev.herokuapp.com/swagger-ui.html)
+- Here is the REST API in [Swagger](https://innoqueue-dev.herokuapp.com/swagger-ui.html)
 - [Javadoc documentation](https://innoqueue.github.io/backend/)
+- [SonarQube analysis](https://sonarcloud.io/summary/overall?id=InnoQueue_backend)
 
 ## 🔨 How to build
 
