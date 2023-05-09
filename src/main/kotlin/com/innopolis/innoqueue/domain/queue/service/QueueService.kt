@@ -13,6 +13,7 @@ import com.innopolis.innoqueue.domain.userqueue.model.UserQueue
 import com.innopolis.innoqueue.domain.userqueue.model.UserQueueId
 import com.innopolis.innoqueue.domain.userqueue.model.UserQueuesShortForm
 import com.innopolis.innoqueue.util.StringGenerator
+import org.slf4j.LoggerFactory
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -33,13 +34,14 @@ class QueueService(
     private val userQueueRepository: UserQueueRepository,
     private val queueRepository: QueueRepository
 ) {
-
+    private val logger = LoggerFactory.getLogger(javaClass)
     /**
      * Lists all queues for a particular user
      * @param token - user token
      */
     @Transactional
     fun getQueues(token: String, sortOption: String? = null): QueuesListDto {
+        logger.info("Get queues for userToken=$token, sortOption=$sortOption")
         return when (sortOption) {
             null, "queue" -> QueuesListDto(userQueueRepository.findAllUserQueueByToken(token).convertToQueueShortDTO())
             "participant" -> QueuesListDto(
@@ -67,6 +69,7 @@ class QueueService(
      */
     @Transactional
     fun getQueueById(token: String, queueId: Long): QueueDetailsDto {
+        logger.info("Get queue details for userToken=$token, queueId=$queueId")
         val queueOptional = queueRepository.findById(queueId)
         require(queueOptional.isPresent) { "User does not belong to such queue: $queueId" }
         val userQueue = userQueueRepository.findUserQueueByToken(token, queueId)
@@ -95,6 +98,7 @@ class QueueService(
      */
     @Transactional
     fun getQueueInviteCode(token: String, queueId: Long): QueueInviteCodeDto {
+        logger.info("Get queue invite codes for userToken=$token, queueId=$queueId")
         val userQueue = userQueueRepository.findUserQueueByToken(token, queueId)
             ?: throw IllegalArgumentException("User does not belong to such queue: $queueId")
         val queue = queueRepository.findAll().firstOrNull { it.queueId == userQueue.userQueueId?.queueId }!!
@@ -110,6 +114,7 @@ class QueueService(
      */
     @Transactional
     fun createQueue(token: String, queue: NewQueueDto): QueueDetailsDto {
+        logger.info("Create new queue userToken=$token, queue=$queue")
         val user = userService.findUserByToken(token)
         val createdQueue = saveQueueEntity(queue, user)
         saveUserQueueEntity(createdQueue, user)
@@ -135,6 +140,7 @@ class QueueService(
     @Suppress("ThrowsCount")
     @Transactional
     fun editQueue(token: String, queueId: Long, editQueue: EditQueueDto): QueueDetailsDto {
+        logger.info("Edit queue userToken=$token, queue=$queueId, editQueue=$editQueue")
         val user = userService.findUserByToken(token)
         val userQueue = getUserQueueByQueueId(user, queueId)
         require(
@@ -201,6 +207,7 @@ class QueueService(
      */
     @Transactional
     fun freezeUnFreezeQueue(token: String, queueId: Long, status: Boolean) {
+        logger.info("Change queue's activity userToken=$token, queue=$queueId, status=$status")
         val user = userService.findUserByToken(token)
         val userQueue = getUserQueueByQueueId(user, queueId)
         when (status) {
@@ -245,6 +252,7 @@ class QueueService(
      */
     @Transactional
     fun deleteQueue(token: String, queueId: Long) {
+        logger.info("Delete queue userToken=$token, queue=$queueId")
         val user = userService.findUserByToken(token)
         val userQueue = getUserQueueByQueueId(user, queueId)
         // Delete queue
@@ -295,6 +303,7 @@ class QueueService(
     @Suppress("ThrowsCount", "ReturnCount", "LongMethod")
     @Transactional
     fun joinQueue(token: String, queueInviteCodeDTO: QueueInviteCodeDto): QueueDetailsDto {
+        logger.info("Join queue userToken=$token, queueInviteCodeDTO=$queueInviteCodeDTO")
         val user = userService.findUserByToken(token)
 
         require(queueInviteCodeDTO.pinCode != null || queueInviteCodeDTO.qrCode != null) {
@@ -367,6 +376,7 @@ class QueueService(
      */
     @Transactional
     fun shakeUser(token: String, queueId: Long) {
+        logger.info("Shake user userToken=$token, queueId=$queueId")
         val user = userService.findUserByToken(token)
         // Check if user joined this queue
         getUserQueueByQueueId(user, queueId)

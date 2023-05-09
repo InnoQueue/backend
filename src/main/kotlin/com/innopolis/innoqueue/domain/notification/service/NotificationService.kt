@@ -13,6 +13,7 @@ import com.innopolis.innoqueue.domain.userqueue.dao.UserQueueRepository
 import com.innopolis.innoqueue.domain.userqueue.model.UserQueue
 import com.innopolis.innoqueue.rest.v1.dto.EmptyDto
 import com.innopolis.innoqueue.rest.v1.dto.NewNotificationDto
+import org.slf4j.LoggerFactory
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.repository.findByIdOrNull
@@ -38,8 +39,7 @@ class NotificationService(
     private val userQueueRepository: UserQueueRepository,
     private val notificationRepository: NotificationRepository
 ) {
-
-
+    private val logger = LoggerFactory.getLogger(javaClass)
     /**
      * Lists all notifications
      * @param token - user token
@@ -63,6 +63,7 @@ class NotificationService(
      */
     @Transactional
     fun readNotifications(token: String, notificationIds: List<Long>? = null) {
+        logger.info("Read notifications userToken=$token, notificationIds=$notificationIds")
         val unreadNotifications = notificationRepository
             .findAllByToken(token)
             .filter { it.isRead == false }
@@ -87,6 +88,7 @@ class NotificationService(
      */
     @Transactional
     fun deleteNotifications(token: String, notificationIds: List<Long>? = null) {
+        logger.info("Delete notifications userToken=$token, notificationIds=$notificationIds")
         notificationRepository.deleteAll(
             notificationRepository
                 .findAllByToken(token)
@@ -102,6 +104,7 @@ class NotificationService(
      */
     @Transactional
     fun deleteNotificationById(token: String, notificationId: Long) {
+        logger.info("Delete notification userToken=$token, notificationIds=$notificationId")
         notificationRepository
             .findAllByToken(token)
             .firstOrNull { it.id == notificationId }
@@ -121,6 +124,10 @@ class NotificationService(
         queueId: Long,
         queueName: String
     ) {
+        logger.info(
+            "Sending notification: " +
+                    "notificationType=$notificationType notificationType=$notificationType, queueId=$queueId"
+        )
         val notifications = prepareNotificationsListToSend(notificationType, participantId, queueId)
         notificationRepository.saveAll(notifications)
         firebaseMessagingService.sendNotificationsToFirebase(

@@ -7,6 +7,7 @@ import com.innopolis.innoqueue.domain.user.dto.UpdateUserDto
 import com.innopolis.innoqueue.domain.user.dto.UserDto
 import com.innopolis.innoqueue.domain.user.model.User
 import com.innopolis.innoqueue.util.StringGenerator
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
@@ -22,6 +23,7 @@ class UserService(
     private val userRepository: UserRepository,
     private val fcmTokenService: FcmTokenService
 ) {
+    private val logger = LoggerFactory.getLogger(javaClass)
 
     @Value("\${login.register}")
     private val registerOption: Boolean = true
@@ -71,6 +73,7 @@ class UserService(
      */
     @Transactional
     fun updateUserSettings(token: String, settings: UpdateUserDto): UserDto {
+        logger.info("Updating user settings for userToken=$token, $settings")
         val user = this.findUserByToken(token)
         settings.userName?.let {
             require(it.isNotEmpty()) { "Username can't be an empty string" }
@@ -102,18 +105,22 @@ class UserService(
      */
     @Transactional
     fun createNewUser(userName: String, fcmToken: String): TokenDto {
+        logger.info("Creating new user: userName=$userName, fcmToken=$fcmToken")
         validateUserParameters(userName, fcmToken)
         val token = generateUserToken()
         // TODO remove after adding registration option
         return if (registerOption) {
+            logger.info("Creating new user with token=$token")
             val userId = saveUser(token, userName, fcmToken)
             TokenDto(token, userId)
         } else {
             val existingUser = userRepository.findAll().toList().firstOrNull { it.name == userName }
             if (existingUser == null) {
+                logger.info("Creating new user with token=$token")
                 val userId = saveUser(token, userName, fcmToken)
                 TokenDto(token, userId)
             } else {
+                logger.info("Adding new fcmToken to an existing user: userId=${existingUser.id!!}")
                 fcmTokenService.saveFcmToken(existingUser.id!!, fcmToken)
                 TokenDto(existingUser.token!!, existingUser.id!!)
             }

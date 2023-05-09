@@ -5,6 +5,7 @@ import com.innopolis.innoqueue.domain.queue.dao.QueueRepository
 import com.innopolis.innoqueue.domain.queue.dao.specification.QueuePinCodeExpiredSpecification
 import com.innopolis.innoqueue.domain.queue.dao.specification.QueueQrCodeExpiredSpecification
 import com.innopolis.innoqueue.rest.v1.dto.EmptyDto
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -25,11 +26,13 @@ class DatabaseService(
     @Value("\${server.host.prod}")
     private val prodHost: String? = null
 ) {
+    private val logger = LoggerFactory.getLogger(javaClass)
     /**
      * Clear expired invite codes
      */
     @Transactional
     fun clearExpiredInviteCodes(): EmptyDto {
+        logger.info("Clear expited invite codes")
         val currentDateTime = LocalDateTime.now(ZoneOffset.UTC)
         removeExpiredPinCodes(currentDateTime)
         removeExpiredQrCodes(currentDateTime)

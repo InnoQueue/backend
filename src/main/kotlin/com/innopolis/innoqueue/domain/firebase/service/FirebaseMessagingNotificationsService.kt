@@ -7,6 +7,7 @@ import com.google.firebase.messaging.Message
 import com.google.firebase.messaging.Notification
 import com.innopolis.innoqueue.domain.firebase.util.MessagePushNotificationCreator
 import com.innopolis.innoqueue.domain.notification.enums.NotificationType
+import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -18,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional
 class FirebaseMessagingNotificationsService(
     firebaseApp: FirebaseApp?
 ) {
+    private val logger = LoggerFactory.getLogger(javaClass)
     private val firebaseMessaging: FirebaseMessaging? = firebaseApp?.let { FirebaseMessaging.getInstance(it) }
 
     @Suppress("NestedBlockDepth")
@@ -48,9 +50,9 @@ class FirebaseMessagingNotificationsService(
                     dataMap["queue_name"] = queue.second
                     dataMap["participant_name"] = participant.second
                     val res = sendNotification(title, body, it, dataMap)
-                    println("Firebase result: $res")
+                    logger.info("Firebase response: $res")
                 } catch (e: FirebaseMessagingException) {
-                    println("Firebase exception: $e")
+                    logger.info("Firebase exception: $e")
                 }
             }
         }
