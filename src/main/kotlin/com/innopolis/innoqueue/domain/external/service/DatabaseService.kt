@@ -7,6 +7,7 @@ import com.innopolis.innoqueue.domain.queue.dao.specification.QueueQrCodeExpired
 import com.innopolis.innoqueue.rest.v1.dto.EmptyDto
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
@@ -40,6 +41,7 @@ class DatabaseService(
     }
 
     @Transactional
+    @Cacheable("itemCache")
     fun getHost() = HostDto(devHost!!, prodHost!!)
 
     private fun removeExpiredPinCodes(currentDateTime: LocalDateTime) {

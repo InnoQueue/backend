@@ -33,9 +33,12 @@ dependencies {
     val postgresqlVersion: String by project
     val jacksonVersion: String by project
     val logbackVersion: String by project
+    val jedisVersion: String by project
 
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-cache")
+    implementation("org.springframework.boot:spring-boot-starter-data-redis")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")
     implementation("org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion")
@@ -45,6 +48,7 @@ dependencies {
     implementation("org.springdoc:springdoc-openapi-ui:$springdocVersion")
     implementation("org.springdoc:springdoc-openapi-ui:$springdocVersion")
     implementation("ch.qos.logback:logback-core:$logbackVersion")
+    implementation("redis.clients:jedis:$jedisVersion")
 
     runtimeOnly("org.postgresql:postgresql:$postgresqlVersion")
 
