@@ -10,6 +10,7 @@ plugins {
     id("io.gitlab.arturbosch.detekt") version "1.22.0"
     id("jacoco")
     id("org.jetbrains.dokka") version "1.7.20"
+    id("info.solidsoft.pitest") version "1.9.0"
 }
 
 group = "com.innopolis"
@@ -71,6 +72,7 @@ tasks.withType<JacocoReport> {
 }
 
 tasks.withType<JacocoCoverageVerification> {
+    dependsOn("pitest")
     violationRules {
         rule {
             limit {
@@ -103,4 +105,13 @@ tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
         sarif.required.set(true) // standardized SARIF format (https://sarifweb.azurewebsites.net/) to support integrations with Github Code Scanning
         md.required.set(true) // simple Markdown format
     }
+}
+
+pitest {
+    setProperty("junit5PluginVersion", "1.0.0")
+    setProperty("testPlugin", "junit5")
+    setProperty("mutationThreshold", 55)
+    setProperty("targetClasses", listOf("com.innopolis.innoqueue.domain.notification.service.NotificationService*"))
+    setProperty("targetTests", listOf("com.innopolis.innoqueue.domain.notification.service.NotificationServiceTest*"))
+    setProperty("outputFormats", listOf("HTML", "XML"))
 }
