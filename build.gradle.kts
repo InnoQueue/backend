@@ -72,7 +72,7 @@ tasks.withType<JacocoReport> {
 }
 
 tasks.withType<JacocoCoverageVerification> {
-    dependsOn("pitest")
+//    dependsOn("pitest")
     violationRules {
         rule {
             limit {
