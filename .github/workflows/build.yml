@@ -31,19 +31,23 @@ jobs:
         run: ./gradlew build
 
   telegram_fail:
-    name: Send Telegram Build Fail
+    name: Send Telegram Build Info
     timeout-minutes: 5
     needs: [ build ]
     runs-on: ubuntu-latest
     steps:
-      - name: Send telegram message on build fail
-        if: ${{ 'success' != needs.build.result }}
+      - name: Send telegram message on build
         uses: appleboy/telegram-action@master
         with:
           to: ${{ secrets.TELEGRAM_TO }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
+          format: markdown
           message: |
-            Build faild
+            {{#success build.status}}
+            ️Build completed successfully
+            {{else}}
+            Build failed
+            {{/success}}
             ${{ github.actor }} created commit:
             Commit message: ${{ github.event.commits[0].message }}
             
