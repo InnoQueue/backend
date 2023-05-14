@@ -12,6 +12,8 @@ import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
+private const val TOKEN_SHOWN_SYMBOLS_LOGS = 5
+
 /**
  * Service for working with queues for which user is on duty
  */
@@ -48,7 +50,9 @@ class ToDoTaskService(
      */
     @Transactional
     fun completeTask(token: String, taskId: Long, expenses: Long?) {
-        logger.info("Complete task userToken=$token, taskId=$taskId, expenses=$expenses")
+        logger.info(
+            "Complete task userToken=${token.take(TOKEN_SHOWN_SYMBOLS_LOGS)}***, taskId=$taskId, expenses=$expenses"
+        )
         val userQueue = userQueueRepository.findUserQueue(token, taskId)
         // If this queue requires to track expenses it should not be null or negative number
         if (userQueue.getTrackExpenses()) {
@@ -102,7 +106,7 @@ class ToDoTaskService(
      */
     @Transactional
     fun skipTask(token: String, taskId: Long) {
-        logger.info("Skip task userToken=$token, taskId=$taskId")
+        logger.info("Skip task userToken=${token.take(TOKEN_SHOWN_SYMBOLS_LOGS)}***, taskId=$taskId")
         val userQueueAndQueue = userQueueRepository.findUserQueue(token, taskId)
         // User can skip a task if it's his turn
         if (userQueueAndQueue.getUserId() == userQueueAndQueue.getCurrentUserId()) {

@@ -15,6 +15,8 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
+private const val TOKEN_SHOWN_SYMBOLS_LOGS = 5
+
 /**
  * Controller with endpoints to work with notifications
  */
@@ -52,7 +54,9 @@ class NotificationsController(
     )
     @GetMapping
     fun getNotifications(@RequestHeader("user-token") token: String, page: Int, size: Int): Page<NotificationDto> {
-        logger.info("Get notifications for userToken=$token, page=$page, size=$size")
+        logger.info(
+            "Get notifications for userToken=${token.take(TOKEN_SHOWN_SYMBOLS_LOGS)}***, page=$page, size=$size"
+        )
         validatePaginationArgs(page, size)
         val pageable: Pageable = PageRequest.of(
             page,

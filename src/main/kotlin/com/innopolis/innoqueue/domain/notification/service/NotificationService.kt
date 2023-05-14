@@ -25,6 +25,7 @@ import java.time.ZoneOffset
 private const val DELETED_USER_NAME = "Deleted user"
 private const val DELETED_QUEUE_NAME = "Deleted queue"
 private const val CLEAR_RESPONSE = "Old notifications were deleted"
+private const val TOKEN_SHOWN_SYMBOLS_LOGS = 5
 
 /**
  * Service for working with notifications
@@ -63,7 +64,9 @@ class NotificationService(
      */
     @Transactional
     fun readNotifications(token: String, notificationIds: List<Long>? = null) {
-        logger.info("Read notifications userToken=$token, notificationIds=$notificationIds")
+        logger.info(
+            "Read notifications userToken=${token.take(TOKEN_SHOWN_SYMBOLS_LOGS)}***, notificationIds=$notificationIds"
+        )
         val unreadNotifications = notificationRepository
             .findAllByToken(token)
             .filter { it.isRead == false }
@@ -88,7 +91,11 @@ class NotificationService(
      */
     @Transactional
     fun deleteNotifications(token: String, notificationIds: List<Long>? = null) {
-        logger.info("Delete notifications userToken=$token, notificationIds=$notificationIds")
+        logger.info(
+            "Delete notifications " +
+                    "userToken=${token.take(TOKEN_SHOWN_SYMBOLS_LOGS)}***, " +
+                    "notificationIds=$notificationIds"
+        )
         notificationRepository.deleteAll(
             notificationRepository
                 .findAllByToken(token)
@@ -104,7 +111,9 @@ class NotificationService(
      */
     @Transactional
     fun deleteNotificationById(token: String, notificationId: Long) {
-        logger.info("Delete notification userToken=$token, notificationIds=$notificationId")
+        logger.info(
+            "Delete notification userToken=${token.take(TOKEN_SHOWN_SYMBOLS_LOGS)}***, notificationIds=$notificationId"
+        )
         notificationRepository
             .findAllByToken(token)
             .firstOrNull { it.id == notificationId }

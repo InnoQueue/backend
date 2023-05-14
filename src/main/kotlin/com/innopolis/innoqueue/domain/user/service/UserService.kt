@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 private const val TOKEN_LENGTH = 64
+private const val TOKEN_SHOWN_SYMBOLS_LOGS = 5
 
 /**
  * Service for working with the user model
@@ -73,7 +74,7 @@ class UserService(
      */
     @Transactional
     fun updateUserSettings(token: String, settings: UpdateUserDto): UserDto {
-        logger.info("Updating user settings for userToken=$token, $settings")
+        logger.info("Updating user settings for userToken=${token.take(TOKEN_SHOWN_SYMBOLS_LOGS)}***, $settings")
         val user = this.findUserByToken(token)
         settings.userName?.let {
             require(it.isNotEmpty()) { "Username can't be an empty string" }
@@ -105,18 +106,18 @@ class UserService(
      */
     @Transactional
     fun createNewUser(userName: String, fcmToken: String): TokenDto {
-        logger.info("Creating new user: userName=$userName, fcmToken=$fcmToken")
+        logger.info("Creating new user: userName=$userName, fcmToken=${fcmToken.take(TOKEN_SHOWN_SYMBOLS_LOGS)}***")
         validateUserParameters(userName, fcmToken)
         val token = generateUserToken()
         // TODO remove after adding registration option
         return if (registerOption) {
-            logger.info("Creating new user with token=$token")
+            logger.info("Creating new user with token=${token.take(TOKEN_SHOWN_SYMBOLS_LOGS)}***")
             val userId = saveUser(token, userName, fcmToken)
             TokenDto(token, userId)
         } else {
             val existingUser = userRepository.findAll().toList().firstOrNull { it.name == userName }
             if (existingUser == null) {
-                logger.info("Creating new user with token=$token")
+                logger.info("Creating new user with token=${token.take(TOKEN_SHOWN_SYMBOLS_LOGS)}***")
                 val userId = saveUser(token, userName, fcmToken)
                 TokenDto(token, userId)
             } else {
