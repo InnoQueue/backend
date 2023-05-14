@@ -32,7 +32,6 @@ dependencies {
     val testcontainersVersion: String by project
     val postgresqlVersion: String by project
     val jacksonVersion: String by project
-    val logbackVersion: String by project
 
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-web")
@@ -44,7 +43,6 @@ dependencies {
     implementation("org.json:json:$jsonVersion")
     implementation("org.springdoc:springdoc-openapi-ui:$springdocVersion")
     implementation("org.springdoc:springdoc-openapi-ui:$springdocVersion")
-    implementation("ch.qos.logback:logback-core:$logbackVersion")
 
     runtimeOnly("org.postgresql:postgresql:$postgresqlVersion")
 
