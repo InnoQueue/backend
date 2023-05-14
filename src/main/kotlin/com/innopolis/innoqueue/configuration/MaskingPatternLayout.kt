@@ -14,6 +14,7 @@ class MaskingPatternLayout : PatternLayout() {
         maskPatterns.add(maskPattern)
         multilinePattern = Pattern.compile(maskPatterns.stream().collect(Collectors.joining("|")), Pattern.MULTILINE)
     }
+
     override fun doLayout(event: ILoggingEvent): String {
         return maskMessage(super.doLayout(event))
     }
@@ -27,7 +28,8 @@ class MaskingPatternLayout : PatternLayout() {
         while (matcher.find()) {
             IntStream.rangeClosed(1, matcher.groupCount()).forEach { group: Int ->
                 if (matcher.group(group) != null) {
-                    IntStream.range(matcher.start(group), matcher.end(group) ).forEach { i: Int -> sb.setCharAt(i, '*') }
+                    IntStream.range(matcher.start(group) + 7, matcher.end(group))
+                        .forEach { i: Int -> sb.setCharAt(i, '*') }
                 }
             }
         }
