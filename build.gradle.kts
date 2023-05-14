@@ -44,7 +44,7 @@ dependencies {
     implementation("org.json:json:$jsonVersion")
     implementation("org.springdoc:springdoc-openapi-ui:$springdocVersion")
     implementation("org.springdoc:springdoc-openapi-ui:$springdocVersion")
-    implementation("ch.qos.logback:logback-core:$logbackVersion")
+
 
     runtimeOnly("org.postgresql:postgresql:$postgresqlVersion")
 
