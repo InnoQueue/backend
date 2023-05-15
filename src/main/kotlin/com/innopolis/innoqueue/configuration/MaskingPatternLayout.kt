@@ -8,9 +8,11 @@ import java.util.stream.Collectors
 import java.util.stream.IntStream
 
 
+private const val VISIBLE_MASK_OFFSET = 7
+
 class MaskingPatternLayout : PatternLayout() {
     private var multilinePattern: Pattern? = null
-    private val maskPatterns: MutableList<String> = ArrayList()
+    private val maskPatterns = mutableListOf<String>()
     fun addMaskPattern(maskPattern: String) {
         maskPatterns.add(maskPattern)
         multilinePattern = Pattern.compile(maskPatterns.stream().collect(Collectors.joining("|")), Pattern.MULTILINE)
@@ -39,9 +41,5 @@ class MaskingPatternLayout : PatternLayout() {
                     .forEach { i: Int -> sb.setCharAt(i, '*') }
             }
         }
-    }
-
-    companion object {
-        private const val VISIBLE_MASK_OFFSET = 7
     }
 }
