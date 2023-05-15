@@ -4,6 +4,10 @@ $dokka.location:com.innopolis.innoqueue.configuration////PointingToDeclaration/
 $dokka.location:com.innopolis.innoqueue.configuration/FirebaseConfiguration///PointingToDeclaration/innoqueue/com.innopolis.innoqueue.configuration/-firebase-configuration/index.html
 $dokka.location:com.innopolis.innoqueue.configuration/FirebaseConfiguration/FirebaseConfiguration/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.configuration/-firebase-configuration/-firebase-configuration.html
 $dokka.location:com.innopolis.innoqueue.configuration/FirebaseConfiguration/provideFirebaseOptions/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.configuration/-firebase-configuration/provide-firebase-options.html
+$dokka.location:com.innopolis.innoqueue.configuration/MaskingPatternLayout///PointingToDeclaration/innoqueue/com.innopolis.innoqueue.configuration/-masking-pattern-layout/index.html
+$dokka.location:com.innopolis.innoqueue.configuration/MaskingPatternLayout/MaskingPatternLayout/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.configuration/-masking-pattern-layout/-masking-pattern-layout.html
+$dokka.location:com.innopolis.innoqueue.configuration/MaskingPatternLayout/addMaskPattern/#kotlin.String/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.configuration/-masking-pattern-layout/add-mask-pattern.html
+$dokka.location:com.innopolis.innoqueue.configuration/MaskingPatternLayout/doLayout/#ch.qos.logback.classic.spi.ILoggingEvent/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.configuration/-masking-pattern-layout/do-layout.html
 $dokka.location:com.innopolis.innoqueue.configuration/SwaggerConfiguration///PointingToDeclaration/innoqueue/com.innopolis.innoqueue.configuration/-swagger-configuration/index.html
 $dokka.location:com.innopolis.innoqueue.configuration/SwaggerConfiguration/SwaggerConfiguration/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.configuration/-swagger-configuration/-swagger-configuration.html
 $dokka.location:com.innopolis.innoqueue.configuration/SwaggerConfiguration/openApi/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.configuration/-swagger-configuration/open-api.html
