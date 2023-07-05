@@ -48,7 +48,7 @@ class ToDoTaskService(
      */
     @Transactional
     fun completeTask(token: String, taskId: Long, expenses: Long?) {
-        logger.info("Complete task userToken=$token, taskId=$taskId, expenses=$expenses")
+        logger.info("user-token=$token")
         val userQueue = userQueueRepository.findUserQueue(token, taskId)
         // If this queue requires to track expenses it should not be null or negative number
         if (userQueue.getTrackExpenses()) {
@@ -102,7 +102,7 @@ class ToDoTaskService(
      */
     @Transactional
     fun skipTask(token: String, taskId: Long) {
-        logger.info("Skip task userToken=$token, taskId=$taskId")
+        logger.info("user-token=$token")
         val userQueueAndQueue = userQueueRepository.findUserQueue(token, taskId)
         // User can skip a task if it's his turn
         if (userQueueAndQueue.getUserId() == userQueueAndQueue.getCurrentUserId()) {
