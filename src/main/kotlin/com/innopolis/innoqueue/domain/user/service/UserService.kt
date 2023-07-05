@@ -73,7 +73,7 @@ class UserService(
      */
     @Transactional
     fun updateUserSettings(token: String, settings: UpdateUserDto): UserDto {
-        logger.info("Updating user settings for userToken=$token, $settings")
+        logger.info("user-token=$token")
         val user = this.findUserByToken(token)
         settings.userName?.let {
             require(it.isNotEmpty()) { "Username can't be an empty string" }
@@ -110,13 +110,13 @@ class UserService(
         val token = generateUserToken()
         // TODO remove after adding registration option
         return if (registerOption) {
-            logger.info("Creating new user with token=$token")
+            logger.info("user-token=$token")
             val userId = saveUser(token, userName, fcmToken)
             TokenDto(token, userId)
         } else {
             val existingUser = userRepository.findAll().toList().firstOrNull { it.name == userName }
             if (existingUser == null) {
-                logger.info("Creating new user with token=$token")
+                logger.info("user-token=$token")
                 val userId = saveUser(token, userName, fcmToken)
                 TokenDto(token, userId)
             } else {
