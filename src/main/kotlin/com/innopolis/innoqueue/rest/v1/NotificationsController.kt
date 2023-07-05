@@ -52,7 +52,7 @@ class NotificationsController(
     )
     @GetMapping
     fun getNotifications(@RequestHeader("user-token") token: String, page: Int, size: Int): Page<NotificationDto> {
-        logger.info("Get notifications for userToken=$token, page=$page, size=$size")
+        logger.info("user-token=$token")
         validatePaginationArgs(page, size)
         val pageable: Pageable = PageRequest.of(
             page,

@@ -32,7 +32,7 @@ class DatabaseService(
      */
     @Transactional
     fun clearExpiredInviteCodes(): EmptyDto {
-        logger.info("Clear expited invite codes")
+        logger.info("Clear expired invite codes")
         val currentDateTime = LocalDateTime.now(ZoneOffset.UTC)
         removeExpiredPinCodes(currentDateTime)
         removeExpiredQrCodes(currentDateTime)
