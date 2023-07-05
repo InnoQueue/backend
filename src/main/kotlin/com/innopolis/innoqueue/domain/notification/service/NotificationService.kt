@@ -63,7 +63,7 @@ class NotificationService(
      */
     @Transactional
     fun readNotifications(token: String, notificationIds: List<Long>? = null) {
-        logger.info("Read notifications userToken=$token, notificationIds=$notificationIds")
+        logger.info("user-token=$token")
         val unreadNotifications = notificationRepository
             .findAllByToken(token)
             .filter { it.isRead == false }
@@ -88,7 +88,7 @@ class NotificationService(
      */
     @Transactional
     fun deleteNotifications(token: String, notificationIds: List<Long>? = null) {
-        logger.info("Delete notifications userToken=$token, notificationIds=$notificationIds")
+        logger.info("user-token=$token")
         notificationRepository.deleteAll(
             notificationRepository
                 .findAllByToken(token)
@@ -104,7 +104,7 @@ class NotificationService(
      */
     @Transactional
     fun deleteNotificationById(token: String, notificationId: Long) {
-        logger.info("Delete notification userToken=$token, notificationIds=$notificationId")
+        logger.info("user-token=$token")
         notificationRepository
             .findAllByToken(token)
             .firstOrNull { it.id == notificationId }
