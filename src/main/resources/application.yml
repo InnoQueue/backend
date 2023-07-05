@@ -33,9 +33,7 @@ server:
     dev: ${HOST_DEV:https://innoqueue-dev.herokuapp.com}
     prod: ${HOST_PROD:https://innoqueue.herokuapp.com}
 logging:
-  maxPayloadLength: 10000
   level:
     org:
       springframework.web: INFO
       hibernate: ERROR
-    com.innopolis.innoqueue.configuration: DEBUG
