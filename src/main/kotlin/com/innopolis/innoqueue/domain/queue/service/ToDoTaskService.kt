@@ -8,7 +8,6 @@ import com.innopolis.innoqueue.domain.queue.util.UsersQueueLogic
 import com.innopolis.innoqueue.domain.user.service.UserService
 import com.innopolis.innoqueue.domain.userqueue.dao.UserQueueRepository
 import com.innopolis.innoqueue.domain.userqueue.model.UserQueue
-import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -23,7 +22,6 @@ class ToDoTaskService(
     private val queueRepository: QueueRepository,
     private val userQueueRepository: UserQueueRepository,
 ) {
-    private val logger = LoggerFactory.getLogger(javaClass)
     /**
      * Lists user queues for which he is responsible right now
      * @param token - user token
@@ -48,7 +46,6 @@ class ToDoTaskService(
      */
     @Transactional
     fun completeTask(token: String, taskId: Long, expenses: Long?) {
-        logger.info("user-token=$token")
         val userQueue = userQueueRepository.findUserQueue(token, taskId)
         // If this queue requires to track expenses it should not be null or negative number
         if (userQueue.getTrackExpenses()) {
@@ -102,7 +99,6 @@ class ToDoTaskService(
      */
     @Transactional
     fun skipTask(token: String, taskId: Long) {
-        logger.info("user-token=$token")
         val userQueueAndQueue = userQueueRepository.findUserQueue(token, taskId)
         // User can skip a task if it's his turn
         if (userQueueAndQueue.getUserId() == userQueueAndQueue.getCurrentUserId()) {
