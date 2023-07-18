@@ -1,13 +1,15 @@
 <configuration>
-    <appender name="mask" class="ch.qos.logback.core.ConsoleAppender">
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
             <layout class="com.innopolis.innoqueue.configuration.MaskingPatternLayout">
-                <maskPattern>user-token=([^:,\n]*)|fcmToken([^:,\n]*)</maskPattern>
-                <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %highlight(%-5level)  --- [%t] %cyan(%logger{15}) - %msg%n%throwable{full}</pattern>
+                <maskPattern>user-token([^:,\n]*)</maskPattern>
+                <maskPattern>fcmToken([^:,\n]*)</maskPattern>
+                <pattern>${CONSOLE_LOG_PATTERN}</pattern>
             </layout>
         </encoder>
     </appender>
     <root level="info">
-        <appender-ref ref="mask"/>
+        <appender-ref ref="CONSOLE"/>
     </root>
 </configuration>

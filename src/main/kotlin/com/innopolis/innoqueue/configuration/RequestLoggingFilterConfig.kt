@@ -19,6 +19,9 @@ class RequestLoggingFilterConfig {
             setIncludePayload(true)
             setIncludeHeaders(false)
             setAfterMessagePrefix("Request: ")
+            setAfterMessageSuffix("")
             setMaxPayloadLength(maxPayloadLength)
+            setHeaderPredicate { it == "user-token" }
+            setIncludeHeaders(true)
         }
 }

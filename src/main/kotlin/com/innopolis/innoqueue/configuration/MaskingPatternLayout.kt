@@ -31,7 +31,7 @@ class MaskingPatternLayout : PatternLayout() {
         while (matcher.find()) {
             maskGroup(matcher, sb)
         }
-        return sb.toString()
+        return sb.toString().replace("\\*{4,}".toRegex(), "***")
     }
 
     private fun maskGroup(matcher: Matcher, sb: StringBuilder) {
