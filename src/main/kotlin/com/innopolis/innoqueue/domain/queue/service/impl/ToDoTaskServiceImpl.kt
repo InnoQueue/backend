@@ -1,7 +1,7 @@
 package com.innopolis.innoqueue.domain.queue.service.impl
 
-import com.innopolis.innoqueue.domain.notification.enums.NotificationType
-import com.innopolis.innoqueue.domain.notification.service.NotificationService
+import com.innopolis.innoqueue.domain.notification.dto.NotificationMessageDto
+import com.innopolis.innoqueue.domain.notification.service.NotificationSenderService
 import com.innopolis.innoqueue.domain.queue.dao.QueueRepository
 import com.innopolis.innoqueue.domain.queue.dto.ToDoTaskDto
 import com.innopolis.innoqueue.domain.queue.service.QueueService
@@ -16,11 +16,14 @@ import org.springframework.transaction.annotation.Transactional
 /**
  * Service for working with queues for which user is on duty
  */
+@Suppress("LongParameterList")
 @Service
 class ToDoTaskServiceImpl(
     private val userService: UserService,
     private val queueService: QueueService,
-    private val notificationService: NotificationService,
+    private val yourTurnNotificationSenderServiceImpl: NotificationSenderService,
+    private val skipNotificationSenderServiceImpl: NotificationSenderService,
+    private val completeNotificationSenderServiceImpl: NotificationSenderService,
     private val queueRepository: QueueRepository,
     private val userQueueRepository: UserQueueRepository,
 ) : ToDoTaskService {
@@ -82,12 +85,13 @@ class ToDoTaskServiceImpl(
                     // Assign the next user in a queue
                     val nextUser = UsersQueueLogic.assignNextUser(it, userService, userQueueRepository, queueRepository)
                     val queue = queueRepository.findAll().firstOrNull { q -> q.queueId == it.userQueueId?.queueId }!!
-                    notificationService.sendNotificationMessage(
-                        NotificationType.YOUR_TURN,
-                        nextUser.id!!,
-                        nextUser.name!!,
-                        queue.queueId!!,
-                        queue.name!!
+                    yourTurnNotificationSenderServiceImpl.sendNotificationMessage(
+                        NotificationMessageDto(
+                            participantId = nextUser.id!!,
+                            participantName = nextUser.name!!,
+                            queueId = queue.queueId!!,
+                            queueName = queue.name!!
+                        )
                     )
                 }
             }
@@ -110,20 +114,22 @@ class ToDoTaskServiceImpl(
             userQueue.skips = userQueue.skips?.plus(1)
             userQueueRepository.save(userQueue)
             val queue = queueRepository.findAll().firstOrNull { it.queueId == userQueue.userQueueId?.queueId }!!
-            notificationService.sendNotificationMessage(
-                NotificationType.SKIPPED,
-                user.id!!,
-                user.name!!,
-                queue.queueId!!,
-                queue.name!!
+            skipNotificationSenderServiceImpl.sendNotificationMessage(
+                NotificationMessageDto(
+                    participantId = user.id!!,
+                    participantName = user.name!!,
+                    queueId = queue.queueId!!,
+                    queueName = queue.name!!
+                )
             )
             val nextUser = UsersQueueLogic.assignNextUser(userQueue, userService, userQueueRepository, queueRepository)
-            notificationService.sendNotificationMessage(
-                NotificationType.YOUR_TURN,
-                nextUser.id!!,
-                nextUser.name!!,
-                queue.queueId!!,
-                queue.name!!
+            yourTurnNotificationSenderServiceImpl.sendNotificationMessage(
+                NotificationMessageDto(
+                    participantId = nextUser.id!!,
+                    participantName = nextUser.name!!,
+                    queueId = queue.queueId!!,
+                    queueName = queue.name!!
+                )
             )
         }
     }
@@ -142,12 +148,13 @@ class ToDoTaskServiceImpl(
         queue.isImportant = false
         queueRepository.save(queue)
         userQueueRepository.save(userQueue)
-        notificationService.sendNotificationMessage(
-            NotificationType.COMPLETED,
-            userQueue.userQueueId?.userId!!,
-            userService.findUserNameById(userQueue.userQueueId?.userId!!)!!,
-            queue.queueId!!,
-            queue.name!!
+        completeNotificationSenderServiceImpl.sendNotificationMessage(
+            NotificationMessageDto(
+                participantId = userQueue.userQueueId?.userId!!,
+                participantName = userService.findUserNameById(userQueue.userQueueId?.userId!!)!!,
+                queueId = queue.queueId!!,
+                queueName = queue.name!!
+        )
         )
     }
 }

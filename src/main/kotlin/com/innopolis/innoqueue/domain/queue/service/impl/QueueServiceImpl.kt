@@ -1,7 +1,7 @@
 package com.innopolis.innoqueue.domain.queue.service.impl
 
-import com.innopolis.innoqueue.domain.notification.enums.NotificationType
-import com.innopolis.innoqueue.domain.notification.service.NotificationService
+import com.innopolis.innoqueue.domain.notification.dto.NotificationMessageDto
+import com.innopolis.innoqueue.domain.notification.service.NotificationSenderService
 import com.innopolis.innoqueue.domain.queue.dao.QueueRepository
 import com.innopolis.innoqueue.domain.queue.dto.*
 import com.innopolis.innoqueue.domain.queue.model.Queue
@@ -26,11 +26,17 @@ private const val QR_CODE_LENGTH: Int = 48
 /**
  * Service for working with queues
  */
-@Suppress("TooManyFunctions")
+@Suppress("TooManyFunctions", "LongParameterList")
 @Service
 class QueueServiceImpl(
     private val userService: UserService,
-    private val notificationService: NotificationService,
+    private val unfreezeNotificationSenderServiceImpl: NotificationSenderService,
+    private val freezeNotificationSenderServiceImpl: NotificationSenderService,
+    private val deleteQueueNotificationSenderServiceImpl: NotificationSenderService,
+    private val leaveQueueNotificationSenderServiceImpl: NotificationSenderService,
+    private val yourTurnNotificationSenderServiceImpl: NotificationSenderService,
+    private val joinQueueNotificationSenderServiceImpl: NotificationSenderService,
+    private val shakeNotificationSenderServiceImpl: NotificationSenderService,
     private val userQueueRepository: UserQueueRepository,
     private val queueRepository: QueueRepository
 ) : QueueService {
@@ -208,12 +214,14 @@ class QueueServiceImpl(
                 if (!userQueue.isActive!!) {
                     userQueue.isActive = true
                     userQueueRepository.save(userQueue)
-                    notificationService.sendNotificationMessage(
-                        NotificationType.UNFROZEN,
-                        user.id!!,
-                        user.name!!,
-                        userQueue.userQueueId?.queueId!!,
-                        queueRepository.findAll().firstOrNull { it.queueId == userQueue.userQueueId?.queueId }!!.name!!
+                    unfreezeNotificationSenderServiceImpl.sendNotificationMessage(
+                        NotificationMessageDto(
+                            participantId = user.id!!,
+                            participantName = user.name!!,
+                            queueId = userQueue.userQueueId?.queueId!!,
+                            queueName = queueRepository.findAll()
+                                .firstOrNull { it.queueId == userQueue.userQueueId?.queueId }!!.name!!
+                        )
                     )
                 }
             }
@@ -225,12 +233,13 @@ class QueueServiceImpl(
                     if (queue.currentUserId != user.id) {
                         userQueue.isActive = false
                         userQueueRepository.save(userQueue)
-                        notificationService.sendNotificationMessage(
-                            NotificationType.FROZEN,
-                            user.id!!,
-                            user.name!!,
-                            queue.queueId!!,
-                            queue.name!!,
+                        freezeNotificationSenderServiceImpl.sendNotificationMessage(
+                            NotificationMessageDto(
+                                participantId = user.id!!,
+                                participantName = user.name!!,
+                                queueId = queue.queueId!!,
+                                queueName = queue.name!!,
+                            )
                         )
                     }
                 }
@@ -250,22 +259,24 @@ class QueueServiceImpl(
         // Delete queue
         val queue = queueRepository.findAll().firstOrNull { it.queueId == userQueue.userQueueId?.queueId }!!
         if (queue.creatorId == user.id) {
-            notificationService.sendNotificationMessage(
-                NotificationType.DELETE_QUEUE,
-                user.id!!,
-                user.name!!,
-                queue.queueId!!,
-                queue.name!!
+            deleteQueueNotificationSenderServiceImpl.sendNotificationMessage(
+                NotificationMessageDto(
+                    participantId = user.id!!,
+                    participantName = user.name!!,
+                    queueId = queue.queueId!!,
+                    queueName = queue.name!!
+                )
             )
             queueRepository.delete(queue)
         } // Leave queue
         else {
-            notificationService.sendNotificationMessage(
-                NotificationType.LEFT_QUEUE,
-                user.id!!,
-                user.name!!,
-                queue.queueId!!,
-                queue.name!!
+            leaveQueueNotificationSenderServiceImpl.sendNotificationMessage(
+                NotificationMessageDto(
+                    participantId = user.id!!,
+                    participantName = user.name!!,
+                    queueId = queue.queueId!!,
+                    queueName = queue.name!!
+                )
             )
             userQueue.progress = 0
             // If it's your turn, reassign another user
@@ -276,12 +287,13 @@ class QueueServiceImpl(
                     userQueueRepository,
                     queueRepository
                 )
-                notificationService.sendNotificationMessage(
-                    NotificationType.YOUR_TURN,
-                    nextUser.id!!,
-                    nextUser.name!!,
-                    queue.queueId!!,
-                    queue.name!!
+                yourTurnNotificationSenderServiceImpl.sendNotificationMessage(
+                    NotificationMessageDto(
+                        participantId = nextUser.id!!,
+                        participantName = nextUser.name!!,
+                        queueId = queue.queueId!!,
+                        queueName = queue.name!!
+                )
                 )
             }
             userQueueRepository.delete(userQueue)
@@ -314,12 +326,13 @@ class QueueServiceImpl(
                     ?: throw IllegalArgumentException("The pin code for queue is invalid: $pinCode")
 
                 userQueueRepository.save(createUserQueueEntity(user, queueEntity))
-                notificationService.sendNotificationMessage(
-                    NotificationType.JOINED_QUEUE,
-                    user.id!!,
-                    user.name!!,
-                    queueEntity.queueId!!,
-                    queueEntity.name!!
+                joinQueueNotificationSenderServiceImpl.sendNotificationMessage(
+                    NotificationMessageDto(
+                        participantId = user.id!!,
+                        participantName = user.name!!,
+                        queueId = queueEntity.queueId!!,
+                        queueName = queueEntity.name!!
+                    )
                 )
 
                 return transformQueueToDTO(
@@ -341,12 +354,13 @@ class QueueServiceImpl(
                 val queueEntity = queueRepository.findAll().firstOrNull { it.queueId == queue.queueId }
                     ?: throw IllegalArgumentException("The QR code for queue is invalid: $qrCode")
                 userQueueRepository.save(createUserQueueEntity(user, queueEntity))
-                notificationService.sendNotificationMessage(
-                    NotificationType.JOINED_QUEUE,
-                    user.id!!,
-                    user.name!!,
-                    queueEntity.queueId!!,
-                    queueEntity.name!!
+                joinQueueNotificationSenderServiceImpl.sendNotificationMessage(
+                    NotificationMessageDto(
+                        participantId = user.id!!,
+                        participantName = user.name!!,
+                        queueId = queueEntity.queueId!!,
+                        queueName = queueEntity.name!!
+                    )
                 )
                 return transformQueueToDTO(
                     queue = queueEntity,
@@ -377,12 +391,13 @@ class QueueServiceImpl(
         currentUserQueue?.let {
             queue.isImportant = true
             queueRepository.save(queue)
-            notificationService.sendNotificationMessage(
-                NotificationType.SHOOK,
-                it,
-                userService.findUserNameById(it)!!,
-                queue.queueId!!,
-                queue.name!!
+            shakeNotificationSenderServiceImpl.sendNotificationMessage(
+                NotificationMessageDto(
+                    participantId = it,
+                    participantName = userService.findUserNameById(it)!!,
+                    queueId = queue.queueId!!,
+                    queueName = queue.name!!
+                )
             )
         }
     }

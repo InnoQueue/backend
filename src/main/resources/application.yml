@@ -28,6 +28,8 @@ firebase: ${GOOGLE_CREDENTIALS:null}
 assetLinks: ${ASSET_LINKS:null}
 login:
   register: ${REGISTER_OPTION:true}
+user-preferences:
+  obligatory-notifications: [ SHOOK, DELETE_QUEUE, UPDATE, OTHER ]
 server:
   host:
     dev: ${HOST_DEV:https://innoqueue-dev.herokuapp.com}

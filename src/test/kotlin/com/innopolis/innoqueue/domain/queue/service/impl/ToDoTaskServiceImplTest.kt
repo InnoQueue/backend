@@ -1,6 +1,6 @@
 package com.innopolis.innoqueue.domain.queue.service.impl
 
-import com.innopolis.innoqueue.domain.notification.service.NotificationService
+import com.innopolis.innoqueue.domain.notification.service.NotificationSenderService
 import com.innopolis.innoqueue.domain.queue.dao.QueueRepository
 import com.innopolis.innoqueue.domain.queue.service.QueueService
 import com.innopolis.innoqueue.domain.user.service.UserService
@@ -30,11 +30,19 @@ class ToDoTaskServiceImplTest : PostgresTestContainer() {
         val token = "token"
         val userService = mockk<UserService>(relaxed = true)
         val queueService = mockk<QueueService>(relaxed = true)
-        val notificationService = mockk<NotificationService>(relaxed = true)
+        val notificationSenderService = mockk<NotificationSenderService>(relaxed = true)
         val queueRepo = mockk<QueueRepository>(relaxed = true)
         every { queueRepo.findToDoTasks(token) } returns emptyList()
         val userQueueRepo = mockk<UserQueueRepository>(relaxed = true)
-        val service = ToDoTaskServiceImpl(userService, queueService, notificationService, queueRepo, userQueueRepo)
+        val service = ToDoTaskServiceImpl(
+            userService,
+            queueService,
+            notificationSenderService,
+            notificationSenderService,
+            notificationSenderService,
+            queueRepo,
+            userQueueRepo
+        )
 
         // when
         service.getToDoTasks(token)
