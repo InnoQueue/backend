@@ -7,7 +7,6 @@ import com.innopolis.innoqueue.domain.queue.service.QueueService
 import com.innopolis.innoqueue.domain.queue.service.ToDoTaskService
 import com.innopolis.innoqueue.rest.v1.dto.ExpensesDto
 import com.innopolis.innoqueue.rest.v1.dto.QueueActivityDto
-import com.innopolis.innoqueue.rest.v1.QueueController
 import io.mockk.mockk
 import io.mockk.verify
 import org.junit.jupiter.api.Test

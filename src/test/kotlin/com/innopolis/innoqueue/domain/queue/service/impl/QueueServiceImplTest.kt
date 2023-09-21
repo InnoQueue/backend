@@ -1,4 +1,4 @@
-package com.innopolis.innoqueue.domain.queue.service
+package com.innopolis.innoqueue.domain.queue.service.impl
 
 import com.innopolis.innoqueue.domain.notification.service.NotificationService
 import com.innopolis.innoqueue.domain.queue.dao.QueueRepository
@@ -19,10 +19,10 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.jdbc.Sql
 
-class QueueServiceTest : PostgresTestContainer() {
+class QueueServiceImplTest : PostgresTestContainer() {
 
     @Autowired
-    private lateinit var queueService: QueueService
+    private lateinit var queueService: QueueServiceImpl
 
     @Autowired
     private lateinit var queueRepository: QueueRepository
@@ -39,7 +39,7 @@ class QueueServiceTest : PostgresTestContainer() {
         val userQueueRepo = mockk<UserQueueRepository>(relaxed = true)
         every { userQueueRepo.findAllUserQueueByToken(token) } returns emptyList()
         val queueRepo = mockk<QueueRepository>(relaxed = true)
-        val service = QueueService(userService, notificationService, userQueueRepo, queueRepo)
+        val service = QueueServiceImpl(userService, notificationService, userQueueRepo, queueRepo)
 
         // when
         service.getQueues(token)

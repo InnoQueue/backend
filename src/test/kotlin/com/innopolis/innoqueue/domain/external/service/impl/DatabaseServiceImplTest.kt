@@ -1,6 +1,5 @@
-package com.innopolis.innoqueue.domain.queue.service
+package com.innopolis.innoqueue.domain.external.service.impl
 
-import com.innopolis.innoqueue.domain.external.service.DatabaseService
 import com.innopolis.innoqueue.domain.queue.dao.QueueRepository
 import com.innopolis.innoqueue.domain.queue.model.Queue
 import com.innopolis.innoqueue.testcontainer.PostgresTestContainer
@@ -15,10 +14,10 @@ import org.springframework.test.context.jdbc.Sql
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 
-class DatabaseServiceTest : PostgresTestContainer() {
+class DatabaseServiceImplTest : PostgresTestContainer() {
 
     @Autowired
-    private lateinit var databaseService: DatabaseService
+    private lateinit var databaseService: DatabaseServiceImpl
 
     @Autowired
     private lateinit var queueRepository: QueueRepository
@@ -30,7 +29,7 @@ class DatabaseServiceTest : PostgresTestContainer() {
         val queueRepo = mockk<QueueRepository>(relaxed = true)
         every { queueRepo.findAll(any()) } returns queues
 
-        val service = DatabaseService(queueRepo)
+        val service = DatabaseServiceImpl(queueRepo)
 
         // when
         service.clearExpiredInviteCodes()
@@ -41,7 +40,10 @@ class DatabaseServiceTest : PostgresTestContainer() {
     }
 
     @Test
-    @Sql("users.sql", "queues.sql")
+    @Sql(
+        "/com/innopolis/innoqueue/domain/queue/service/impl/users.sql",
+        "/com/innopolis/innoqueue/domain/queue/service/impl/queues.sql"
+    )
     fun `Test clearExpiredInviteCodes`() {
         // given
         val currentDateTime = LocalDateTime.now(ZoneOffset.UTC)

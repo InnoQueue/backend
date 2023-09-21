@@ -1,7 +1,6 @@
 package com.innopolis.innoqueue.rest.v1
 
 import com.innopolis.innoqueue.domain.notification.service.NotificationService
-import com.innopolis.innoqueue.rest.v1.NotificationsController
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify

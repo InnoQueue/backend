@@ -1,4 +1,4 @@
-package com.innopolis.innoqueue.domain.user.service
+package com.innopolis.innoqueue.domain.user.service.impl
 
 import com.innopolis.innoqueue.domain.fcmtoken.dao.FcmTokenRepository
 import com.innopolis.innoqueue.domain.fcmtoken.service.FcmTokenService
@@ -12,14 +12,13 @@ import io.mockk.verify
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.core.env.Environment
 import org.springframework.test.context.jdbc.Sql
 
 @Suppress("LargeClass")
-class UserServiceTest : PostgresTestContainer() {
+class UserServiceImplTest : PostgresTestContainer() {
 
     @Autowired
-    private lateinit var userService: UserService
+    private lateinit var userService: UserServiceImpl
 
     @Autowired
     private lateinit var userRepository: UserRepository
@@ -60,7 +59,7 @@ class UserServiceTest : PostgresTestContainer() {
         every { userRepo.save(any()) } returns User().apply { id = 1L }
         val fcmService = mockk<FcmTokenService>(relaxed = true)
         every { fcmService.saveFcmToken(any(), any()) } returns Unit
-        val service = UserService(userRepo, fcmService)
+        val service = UserServiceImpl(userRepo, fcmService)
 
         // when
         service.createNewUser(userName, fcmToken)
@@ -92,7 +91,7 @@ class UserServiceTest : PostgresTestContainer() {
         every { userRepo.save(any()) } returns User().apply { id = 1L }
         val fcmService = mockk<FcmTokenService>(relaxed = true)
         every { fcmService.saveFcmToken(any(), any()) } returns Unit
-        val service = UserService(userRepo, fcmService)
+        val service = UserServiceImpl(userRepo, fcmService)
 
         // when
         service.createNewUser(userName, fcmToken)
@@ -280,7 +279,7 @@ class UserServiceTest : PostgresTestContainer() {
             id = 1L
             name = "user name"
         }
-        val service = UserService(userRepo, mockk())
+        val service = UserServiceImpl(userRepo, mockk())
 
         // when
         service.updateUserSettings(token, userDTO)
@@ -311,7 +310,7 @@ class UserServiceTest : PostgresTestContainer() {
             id = 1L
             name = "user name"
         }
-        val service = UserService(userRepo, mockk())
+        val service = UserServiceImpl(userRepo, mockk())
 
         // when
         service.updateUserSettings(token, userDTO)

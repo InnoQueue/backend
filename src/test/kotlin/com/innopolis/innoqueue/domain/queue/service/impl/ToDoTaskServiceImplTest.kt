@@ -1,7 +1,8 @@
-package com.innopolis.innoqueue.domain.queue.service
+package com.innopolis.innoqueue.domain.queue.service.impl
 
 import com.innopolis.innoqueue.domain.notification.service.NotificationService
 import com.innopolis.innoqueue.domain.queue.dao.QueueRepository
+import com.innopolis.innoqueue.domain.queue.service.QueueService
 import com.innopolis.innoqueue.domain.user.service.UserService
 import com.innopolis.innoqueue.domain.userqueue.dao.UserQueueRepository
 import com.innopolis.innoqueue.testcontainer.PostgresTestContainer
@@ -15,10 +16,10 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.jdbc.Sql
 
-class ToDoTaskServiceTest : PostgresTestContainer() {
+class ToDoTaskServiceImplTest : PostgresTestContainer() {
 
     @Autowired
-    private lateinit var toDoTaskService: ToDoTaskService
+    private lateinit var toDoTaskService: ToDoTaskServiceImpl
 
     @Autowired
     private lateinit var userQueueRepository: UserQueueRepository
@@ -33,7 +34,7 @@ class ToDoTaskServiceTest : PostgresTestContainer() {
         val queueRepo = mockk<QueueRepository>(relaxed = true)
         every { queueRepo.findToDoTasks(token) } returns emptyList()
         val userQueueRepo = mockk<UserQueueRepository>(relaxed = true)
-        val service = ToDoTaskService(userService, queueService, notificationService, queueRepo, userQueueRepo)
+        val service = ToDoTaskServiceImpl(userService, queueService, notificationService, queueRepo, userQueueRepo)
 
         // when
         service.getToDoTasks(token)
