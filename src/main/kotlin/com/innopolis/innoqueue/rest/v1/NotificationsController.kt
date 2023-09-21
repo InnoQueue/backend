@@ -1,7 +1,7 @@
 package com.innopolis.innoqueue.rest.v1
 
 import com.innopolis.innoqueue.domain.notification.dto.NotificationDto
-import com.innopolis.innoqueue.domain.notification.service.NotificationService
+import com.innopolis.innoqueue.domain.notification.service.NotificationsListService
 import com.innopolis.innoqueue.rest.v1.dto.NewNotificationDto
 import com.innopolis.innoqueue.rest.v1.dto.NotificationIdsDto
 import io.swagger.v3.oas.annotations.Operation
@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/api/v1/notifications")
 @Tag(name = "Notifications")
 class NotificationsController(
-    private val notificationService: NotificationService
+    private val notificationsListService: NotificationsListService
 ) {
     /**
      * Exception handler
@@ -55,7 +55,7 @@ class NotificationsController(
             size,
             Sort.by("is_read").and(Sort.by("date").descending())
         )
-        return notificationService.getNotifications(token, pageable)
+        return notificationsListService.getNotifications(token, pageable)
     }
 
     /**
@@ -72,7 +72,7 @@ class NotificationsController(
     )
     @GetMapping("/new")
     fun anyNewNotification(@RequestHeader("user-token") token: String): NewNotificationDto =
-        notificationService.anyNewNotification(token)
+        notificationsListService.anyNewNotification(token)
 
 //    /**
 //     * GET endpoint for deleting notifications older than 2 weeks
@@ -100,7 +100,7 @@ class NotificationsController(
         @RequestHeader("user-token") token: String,
         @RequestBody notificationIds: NotificationIdsDto?
     ) {
-        notificationService.readNotifications(token, notificationIds?.notificationIds)
+        notificationsListService.readNotifications(token, notificationIds?.notificationIds)
     }
 
     /**
@@ -117,7 +117,7 @@ class NotificationsController(
         @RequestHeader("user-token") token: String,
         @RequestBody notificationIds: NotificationIdsDto?
     ) {
-        notificationService.deleteNotifications(token, notificationIds?.notificationIds)
+        notificationsListService.deleteNotifications(token, notificationIds?.notificationIds)
     }
 
     /**
@@ -132,7 +132,7 @@ class NotificationsController(
         @RequestHeader("user-token") token: String,
         @PathVariable notificationId: Long
     ) {
-        notificationService.deleteNotificationById(token, notificationId)
+        notificationsListService.deleteNotificationById(token, notificationId)
     }
 
     private fun validatePaginationArgs(page: Int, size: Int) {
