@@ -1,6 +1,6 @@
 package com.innopolis.innoqueue.domain.queue.service.impl
 
-import com.innopolis.innoqueue.domain.notification.service.NotificationService
+import com.innopolis.innoqueue.domain.notification.service.NotificationSenderService
 import com.innopolis.innoqueue.domain.queue.dao.QueueRepository
 import com.innopolis.innoqueue.domain.queue.dto.EditQueueDto
 import com.innopolis.innoqueue.domain.queue.dto.NewQueueDto
@@ -35,11 +35,22 @@ class QueueServiceImplTest : PostgresTestContainer() {
         // given
         val token = "token"
         val userService = mockk<UserService>(relaxed = true)
-        val notificationService = mockk<NotificationService>(relaxed = true)
+        val notificationSenderService = mockk<NotificationSenderService>(relaxed = true)
         val userQueueRepo = mockk<UserQueueRepository>(relaxed = true)
         every { userQueueRepo.findAllUserQueueByToken(token) } returns emptyList()
         val queueRepo = mockk<QueueRepository>(relaxed = true)
-        val service = QueueServiceImpl(userService, notificationService, userQueueRepo, queueRepo)
+        val service = QueueServiceImpl(
+            userService,
+            notificationSenderService,
+            notificationSenderService,
+            notificationSenderService,
+            notificationSenderService,
+            notificationSenderService,
+            notificationSenderService,
+            notificationSenderService,
+            userQueueRepo,
+            queueRepo
+        )
 
         // when
         service.getQueues(token)

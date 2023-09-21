@@ -1,6 +1,6 @@
 package com.innopolis.innoqueue.rest.v1
 
-import com.innopolis.innoqueue.domain.notification.service.NotificationService
+import com.innopolis.innoqueue.domain.notification.service.NotificationsListService
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -14,7 +14,7 @@ class NotificationsControllerTest {
     fun `Test getNotifications service called`() {
         // given
         val token = "token"
-        val service = mockk<NotificationService>(relaxed = true)
+        val service = mockk<NotificationsListService>(relaxed = true)
         every { service.getNotifications(token, any()) } returns Page.empty()
         val controller = NotificationsController(service)
 
@@ -29,7 +29,7 @@ class NotificationsControllerTest {
     fun `Test getNotifications throws exception if page is less than 0`() {
         // given
         val token = "token"
-        val service = mockk<NotificationService>(relaxed = true)
+        val service = mockk<NotificationsListService>(relaxed = true)
         every { service.getNotifications(token, any()) } returns Page.empty()
         val controller = NotificationsController(service)
 
@@ -43,7 +43,7 @@ class NotificationsControllerTest {
     fun `Test getNotifications throws exception if size is 0`() {
         // given
         val token = "token"
-        val service = mockk<NotificationService>(relaxed = true)
+        val service = mockk<NotificationsListService>(relaxed = true)
         every { service.getNotifications(token, any()) } returns Page.empty()
         val controller = NotificationsController(service)
 
@@ -57,7 +57,7 @@ class NotificationsControllerTest {
     fun `Test getNotifications throws exception if size is negative`() {
         // given
         val token = "token"
-        val service = mockk<NotificationService>(relaxed = true)
+        val service = mockk<NotificationsListService>(relaxed = true)
         every { service.getNotifications(token, any()) } returns Page.empty()
         val controller = NotificationsController(service)
 
@@ -71,7 +71,7 @@ class NotificationsControllerTest {
     fun `Test anyNewNotification service called`() {
         // given
         val token = "token"
-        val service = mockk<NotificationService>(relaxed = true)
+        val service = mockk<NotificationsListService>(relaxed = true)
         val controller = NotificationsController(service)
 
         // when
