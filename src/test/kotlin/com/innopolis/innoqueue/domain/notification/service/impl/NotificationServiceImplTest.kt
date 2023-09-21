@@ -1,7 +1,7 @@
-package com.innopolis.innoqueue.domain.notification.service
+package com.innopolis.innoqueue.domain.notification.service.impl
 
 import com.innopolis.innoqueue.domain.fcmtoken.service.FcmTokenService
-import com.innopolis.innoqueue.domain.firebase.service.FirebaseMessagingNotificationsService
+import com.innopolis.innoqueue.webclients.firebase.service.FirebaseMessagingNotificationsService
 import com.innopolis.innoqueue.domain.notification.dao.NotificationRepository
 import com.innopolis.innoqueue.domain.notification.enums.NotificationType
 import com.innopolis.innoqueue.domain.notification.model.Notification
@@ -25,10 +25,10 @@ import org.springframework.data.domain.Sort
 import org.springframework.test.context.jdbc.Sql
 import java.time.LocalDateTime
 
-class NotificationServiceTest : PostgresTestContainer() {
+class NotificationServiceImplTest : PostgresTestContainer() {
 
     @Autowired
-    private lateinit var notificationService: NotificationService
+    private lateinit var notificationService: NotificationServiceImpl
 
     @Autowired
     private lateinit var notificationRepository: NotificationRepository
@@ -60,7 +60,7 @@ class NotificationServiceTest : PostgresTestContainer() {
                     queueId = 1
                     date = LocalDateTime.now()
                 })
-        val service = NotificationService(
+        val service = NotificationServiceImpl(
             mockk(),
             mockk(),
             mockk(),
@@ -78,9 +78,9 @@ class NotificationServiceTest : PostgresTestContainer() {
 
     @Test
     @Sql(
-        "/com/innopolis/innoqueue/domain/queue/service/users.sql",
+        "/com/innopolis/innoqueue/domain/queue/service/impl/users.sql",
         "fcm_token.sql",
-        "/com/innopolis/innoqueue/domain/queue/service/queues.sql",
+        "/com/innopolis/innoqueue/domain/queue/service/impl/queues.sql",
         "notification.sql"
     )
     fun `Test getNotifications`() {
@@ -152,9 +152,9 @@ class NotificationServiceTest : PostgresTestContainer() {
 
     @Test
     @Sql(
-        "/com/innopolis/innoqueue/domain/queue/service/users.sql",
+        "/com/innopolis/innoqueue/domain/queue/service/impl/users.sql",
         "fcm_token.sql",
-        "/com/innopolis/innoqueue/domain/queue/service/queues.sql",
+        "/com/innopolis/innoqueue/domain/queue/service/impl/queues.sql",
         "notification.sql"
     )
     fun `Test readNotifications read specified ids`() {
@@ -172,9 +172,9 @@ class NotificationServiceTest : PostgresTestContainer() {
 
     @Test
     @Sql(
-        "/com/innopolis/innoqueue/domain/queue/service/users.sql",
+        "/com/innopolis/innoqueue/domain/queue/service/impl/users.sql",
         "fcm_token.sql",
-        "/com/innopolis/innoqueue/domain/queue/service/queues.sql",
+        "/com/innopolis/innoqueue/domain/queue/service/impl/queues.sql",
         "notification.sql"
     )
     fun `Test readNotifications all read`() {
@@ -200,7 +200,7 @@ class NotificationServiceTest : PostgresTestContainer() {
         val userQueueRepository = mockk<UserQueueRepository>(relaxed = true)
         val notificationRepo = mockk<NotificationRepository>(relaxed = true)
         every { notificationRepo.anyUnreadNotification(token) } returns true
-        val service = NotificationService(
+        val service = NotificationServiceImpl(
             firebaseMessagingService,
             userService,
             fcmService,
@@ -218,9 +218,9 @@ class NotificationServiceTest : PostgresTestContainer() {
 
     @Test
     @Sql(
-        "/com/innopolis/innoqueue/domain/queue/service/users.sql",
+        "/com/innopolis/innoqueue/domain/queue/service/impl/users.sql",
         "fcm_token.sql",
-        "/com/innopolis/innoqueue/domain/queue/service/queues.sql",
+        "/com/innopolis/innoqueue/domain/queue/service/impl/queues.sql",
         "notification.sql"
     )
     fun `Test anyNewNotification unread`() {
@@ -236,9 +236,9 @@ class NotificationServiceTest : PostgresTestContainer() {
 
     @Test
     @Sql(
-        "/com/innopolis/innoqueue/domain/queue/service/users.sql",
+        "/com/innopolis/innoqueue/domain/queue/service/impl/users.sql",
         "fcm_token.sql",
-        "/com/innopolis/innoqueue/domain/queue/service/queues.sql",
+        "/com/innopolis/innoqueue/domain/queue/service/impl/queues.sql",
         "notification.sql"
     )
     fun `Test anyNewNotification read all`() {
@@ -262,7 +262,7 @@ class NotificationServiceTest : PostgresTestContainer() {
         val queueRepository = mockk<QueueRepository>(relaxed = true)
         val userQueueRepository = mockk<UserQueueRepository>(relaxed = true)
         val notificationRepo = mockk<NotificationRepository>(relaxed = true)
-        val service = NotificationService(
+        val service = NotificationServiceImpl(
             firebaseMessagingService,
             userService,
             fcmService,
@@ -281,9 +281,9 @@ class NotificationServiceTest : PostgresTestContainer() {
 
     @Test
     @Sql(
-        "/com/innopolis/innoqueue/domain/queue/service/users.sql",
+        "/com/innopolis/innoqueue/domain/queue/service/impl/users.sql",
         "fcm_token.sql",
-        "/com/innopolis/innoqueue/domain/queue/service/queues.sql",
+        "/com/innopolis/innoqueue/domain/queue/service/impl/queues.sql",
         "notification.sql"
     )
     fun `Test clearOldNotifications`() {
@@ -299,9 +299,9 @@ class NotificationServiceTest : PostgresTestContainer() {
 
     @Test
     @Sql(
-        "/com/innopolis/innoqueue/domain/queue/service/users.sql",
+        "/com/innopolis/innoqueue/domain/queue/service/impl/users.sql",
         "fcm_token.sql",
-        "/com/innopolis/innoqueue/domain/queue/service/queues.sql",
+        "/com/innopolis/innoqueue/domain/queue/service/impl/queues.sql",
         "notification.sql"
     )
     fun `Test deleteNotifications delete specified ids`() {
@@ -319,9 +319,9 @@ class NotificationServiceTest : PostgresTestContainer() {
 
     @Test
     @Sql(
-        "/com/innopolis/innoqueue/domain/queue/service/users.sql",
+        "/com/innopolis/innoqueue/domain/queue/service/impl/users.sql",
         "fcm_token.sql",
-        "/com/innopolis/innoqueue/domain/queue/service/queues.sql",
+        "/com/innopolis/innoqueue/domain/queue/service/impl/queues.sql",
         "notification.sql"
     )
     fun `Test deleteNotifications delete all`() {
@@ -338,9 +338,9 @@ class NotificationServiceTest : PostgresTestContainer() {
 
     @Test
     @Sql(
-        "/com/innopolis/innoqueue/domain/queue/service/users.sql",
+        "/com/innopolis/innoqueue/domain/queue/service/impl/users.sql",
         "fcm_token.sql",
-        "/com/innopolis/innoqueue/domain/queue/service/queues.sql",
+        "/com/innopolis/innoqueue/domain/queue/service/impl/queues.sql",
         "notification.sql"
     )
     fun `Test deleteNotificationById`() {
@@ -358,10 +358,10 @@ class NotificationServiceTest : PostgresTestContainer() {
 
     @Test
     @Sql(
-        "/com/innopolis/innoqueue/domain/queue/service/users.sql",
+        "/com/innopolis/innoqueue/domain/queue/service/impl/users.sql",
         "fcm_token.sql",
-        "/com/innopolis/innoqueue/domain/queue/service/queues.sql",
-        "/com/innopolis/innoqueue/domain/queue/service/user_queue.sql"
+        "/com/innopolis/innoqueue/domain/queue/service/impl/queues.sql",
+        "/com/innopolis/innoqueue/domain/queue/service/impl/user_queue.sql"
     )
     fun `Test sendNotificationMessage YOUR_TURN`() {
         // given
@@ -388,10 +388,10 @@ class NotificationServiceTest : PostgresTestContainer() {
 
     @Test
     @Sql(
-        "/com/innopolis/innoqueue/domain/queue/service/users.sql",
+        "/com/innopolis/innoqueue/domain/queue/service/impl/users.sql",
         "fcm_token.sql",
-        "/com/innopolis/innoqueue/domain/queue/service/queues.sql",
-        "/com/innopolis/innoqueue/domain/queue/service/user_queue.sql"
+        "/com/innopolis/innoqueue/domain/queue/service/impl/queues.sql",
+        "/com/innopolis/innoqueue/domain/queue/service/impl/user_queue.sql"
     )
     fun `Test sendNotificationMessage COMPLETED`() {
         // given
@@ -418,10 +418,10 @@ class NotificationServiceTest : PostgresTestContainer() {
 
     @Test
     @Sql(
-        "/com/innopolis/innoqueue/domain/queue/service/users.sql",
+        "/com/innopolis/innoqueue/domain/queue/service/impl/users.sql",
         "fcm_token.sql",
-        "/com/innopolis/innoqueue/domain/queue/service/queues.sql",
-        "/com/innopolis/innoqueue/domain/queue/service/user_queue.sql"
+        "/com/innopolis/innoqueue/domain/queue/service/impl/queues.sql",
+        "/com/innopolis/innoqueue/domain/queue/service/impl/user_queue.sql"
     )
     fun `Test sendNotificationMessage SKIPPED`() {
         // given
@@ -448,10 +448,10 @@ class NotificationServiceTest : PostgresTestContainer() {
 
     @Test
     @Sql(
-        "/com/innopolis/innoqueue/domain/queue/service/users.sql",
+        "/com/innopolis/innoqueue/domain/queue/service/impl/users.sql",
         "fcm_token.sql",
-        "/com/innopolis/innoqueue/domain/queue/service/queues.sql",
-        "/com/innopolis/innoqueue/domain/queue/service/user_queue.sql"
+        "/com/innopolis/innoqueue/domain/queue/service/impl/queues.sql",
+        "/com/innopolis/innoqueue/domain/queue/service/impl/user_queue.sql"
     )
     fun `Test sendNotificationMessage SHOOK`() {
         // given
@@ -477,10 +477,10 @@ class NotificationServiceTest : PostgresTestContainer() {
 
     @Test
     @Sql(
-        "/com/innopolis/innoqueue/domain/queue/service/users.sql",
+        "/com/innopolis/innoqueue/domain/queue/service/impl/users.sql",
         "fcm_token.sql",
-        "/com/innopolis/innoqueue/domain/queue/service/queues.sql",
-        "/com/innopolis/innoqueue/domain/queue/service/user_queue.sql"
+        "/com/innopolis/innoqueue/domain/queue/service/impl/queues.sql",
+        "/com/innopolis/innoqueue/domain/queue/service/impl/user_queue.sql"
     )
     fun `Test sendNotificationMessage FROZEN`() {
         // given
@@ -507,10 +507,10 @@ class NotificationServiceTest : PostgresTestContainer() {
 
     @Test
     @Sql(
-        "/com/innopolis/innoqueue/domain/queue/service/users.sql",
+        "/com/innopolis/innoqueue/domain/queue/service/impl/users.sql",
         "fcm_token.sql",
-        "/com/innopolis/innoqueue/domain/queue/service/queues.sql",
-        "/com/innopolis/innoqueue/domain/queue/service/user_queue.sql"
+        "/com/innopolis/innoqueue/domain/queue/service/impl/queues.sql",
+        "/com/innopolis/innoqueue/domain/queue/service/impl/user_queue.sql"
     )
     fun `Test sendNotificationMessage UNFROZEN`() {
         // given
@@ -537,10 +537,10 @@ class NotificationServiceTest : PostgresTestContainer() {
 
     @Test
     @Sql(
-        "/com/innopolis/innoqueue/domain/queue/service/users.sql",
+        "/com/innopolis/innoqueue/domain/queue/service/impl/users.sql",
         "fcm_token.sql",
-        "/com/innopolis/innoqueue/domain/queue/service/queues.sql",
-        "/com/innopolis/innoqueue/domain/queue/service/user_queue.sql"
+        "/com/innopolis/innoqueue/domain/queue/service/impl/queues.sql",
+        "/com/innopolis/innoqueue/domain/queue/service/impl/user_queue.sql"
     )
     fun `Test sendNotificationMessage JOINED_QUEUE`() {
         // given
@@ -567,10 +567,10 @@ class NotificationServiceTest : PostgresTestContainer() {
 
     @Test
     @Sql(
-        "/com/innopolis/innoqueue/domain/queue/service/users.sql",
+        "/com/innopolis/innoqueue/domain/queue/service/impl/users.sql",
         "fcm_token.sql",
-        "/com/innopolis/innoqueue/domain/queue/service/queues.sql",
-        "/com/innopolis/innoqueue/domain/queue/service/user_queue.sql"
+        "/com/innopolis/innoqueue/domain/queue/service/impl/queues.sql",
+        "/com/innopolis/innoqueue/domain/queue/service/impl/user_queue.sql"
     )
     fun `Test sendNotificationMessage LEFT_QUEUE`() {
         // given
@@ -597,10 +597,10 @@ class NotificationServiceTest : PostgresTestContainer() {
 
     @Test
     @Sql(
-        "/com/innopolis/innoqueue/domain/queue/service/users.sql",
+        "/com/innopolis/innoqueue/domain/queue/service/impl/users.sql",
         "fcm_token.sql",
-        "/com/innopolis/innoqueue/domain/queue/service/queues.sql",
-        "/com/innopolis/innoqueue/domain/queue/service/user_queue.sql"
+        "/com/innopolis/innoqueue/domain/queue/service/impl/queues.sql",
+        "/com/innopolis/innoqueue/domain/queue/service/impl/user_queue.sql"
     )
     fun `Test sendNotificationMessage DELETE_QUEUE`() {
         // given

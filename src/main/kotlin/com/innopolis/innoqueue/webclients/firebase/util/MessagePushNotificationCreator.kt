@@ -1,4 +1,4 @@
-package com.innopolis.innoqueue.domain.firebase.util
+package com.innopolis.innoqueue.webclients.firebase.util
 
 import com.innopolis.innoqueue.domain.notification.enums.NotificationType
 
