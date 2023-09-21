@@ -19,9 +19,13 @@ $dokka.location:com.innopolis.innoqueue.domain.external.dto/HostDto///PointingTo
 $dokka.location:com.innopolis.innoqueue.domain.external.dto/HostDto/HostDto/#kotlin.String#kotlin.String/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.external.dto/-host-dto/-host-dto.html
 $dokka.location:com.innopolis.innoqueue.domain.external.dto/HostDto/dev/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.external.dto/-host-dto/dev.html
 $dokka.location:com.innopolis.innoqueue.domain.external.dto/HostDto/prod/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.external.dto/-host-dto/prod.html
+$dokka.location:com.innopolis.innoqueue.domain.external.service.impl////PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.external.service.impl/index.html
+$dokka.location:com.innopolis.innoqueue.domain.external.service.impl/DatabaseServiceImpl///PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.external.service.impl/-database-service-impl/index.html
+$dokka.location:com.innopolis.innoqueue.domain.external.service.impl/DatabaseServiceImpl/DatabaseServiceImpl/#com.innopolis.innoqueue.domain.queue.dao.QueueRepository#kotlin.String?#kotlin.String?/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.external.service.impl/-database-service-impl/-database-service-impl.html
+$dokka.location:com.innopolis.innoqueue.domain.external.service.impl/DatabaseServiceImpl/clearExpiredInviteCodes/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.external.service.impl/-database-service-impl/clear-expired-invite-codes.html
+$dokka.location:com.innopolis.innoqueue.domain.external.service.impl/DatabaseServiceImpl/getHost/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.external.service.impl/-database-service-impl/get-host.html
 $dokka.location:com.innopolis.innoqueue.domain.external.service////PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.external.service/index.html
 $dokka.location:com.innopolis.innoqueue.domain.external.service/DatabaseService///PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.external.service/-database-service/index.html
-$dokka.location:com.innopolis.innoqueue.domain.external.service/DatabaseService/DatabaseService/#com.innopolis.innoqueue.domain.queue.dao.QueueRepository#kotlin.String?#kotlin.String?/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.external.service/-database-service/-database-service.html
 $dokka.location:com.innopolis.innoqueue.domain.external.service/DatabaseService/clearExpiredInviteCodes/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.external.service/-database-service/clear-expired-invite-codes.html
 $dokka.location:com.innopolis.innoqueue.domain.external.service/DatabaseService/getHost/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.external.service/-database-service/get-host.html
 $dokka.location:com.innopolis.innoqueue.domain.fcmtoken.dao////PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.fcmtoken.dao/index.html
@@ -37,19 +41,15 @@ $dokka.location:com.innopolis.innoqueue.domain.fcmtoken.model/FcmTokenId///Point
 $dokka.location:com.innopolis.innoqueue.domain.fcmtoken.model/FcmTokenId/FcmTokenId/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.fcmtoken.model/-fcm-token-id/-fcm-token-id.html
 $dokka.location:com.innopolis.innoqueue.domain.fcmtoken.model/FcmTokenId/fcmToken/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.fcmtoken.model/-fcm-token-id/fcm-token.html
 $dokka.location:com.innopolis.innoqueue.domain.fcmtoken.model/FcmTokenId/userId/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.fcmtoken.model/-fcm-token-id/user-id.html
+$dokka.location:com.innopolis.innoqueue.domain.fcmtoken.service.impl////PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.fcmtoken.service.impl/index.html
+$dokka.location:com.innopolis.innoqueue.domain.fcmtoken.service.impl/FcmTokenServiceImpl///PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.fcmtoken.service.impl/-fcm-token-service-impl/index.html
+$dokka.location:com.innopolis.innoqueue.domain.fcmtoken.service.impl/FcmTokenServiceImpl/FcmTokenServiceImpl/#com.innopolis.innoqueue.domain.fcmtoken.dao.FcmTokenRepository/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.fcmtoken.service.impl/-fcm-token-service-impl/-fcm-token-service-impl.html
+$dokka.location:com.innopolis.innoqueue.domain.fcmtoken.service.impl/FcmTokenServiceImpl/findTokensForUser/#kotlin.Long/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.fcmtoken.service.impl/-fcm-token-service-impl/find-tokens-for-user.html
+$dokka.location:com.innopolis.innoqueue.domain.fcmtoken.service.impl/FcmTokenServiceImpl/saveFcmToken/#kotlin.Long#kotlin.String/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.fcmtoken.service.impl/-fcm-token-service-impl/save-fcm-token.html
 $dokka.location:com.innopolis.innoqueue.domain.fcmtoken.service////PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.fcmtoken.service/index.html
 $dokka.location:com.innopolis.innoqueue.domain.fcmtoken.service/FcmTokenService///PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.fcmtoken.service/-fcm-token-service/index.html
-$dokka.location:com.innopolis.innoqueue.domain.fcmtoken.service/FcmTokenService/FcmTokenService/#com.innopolis.innoqueue.domain.fcmtoken.dao.FcmTokenRepository/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.fcmtoken.service/-fcm-token-service/-fcm-token-service.html
 $dokka.location:com.innopolis.innoqueue.domain.fcmtoken.service/FcmTokenService/findTokensForUser/#kotlin.Long/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.fcmtoken.service/-fcm-token-service/find-tokens-for-user.html
 $dokka.location:com.innopolis.innoqueue.domain.fcmtoken.service/FcmTokenService/saveFcmToken/#kotlin.Long#kotlin.String/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.fcmtoken.service/-fcm-token-service/save-fcm-token.html
-$dokka.location:com.innopolis.innoqueue.domain.firebase.service////PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.firebase.service/index.html
-$dokka.location:com.innopolis.innoqueue.domain.firebase.service/FirebaseMessagingNotificationsService///PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.firebase.service/-firebase-messaging-notifications-service/index.html
-$dokka.location:com.innopolis.innoqueue.domain.firebase.service/FirebaseMessagingNotificationsService/FirebaseMessagingNotificationsService/#com.google.firebase.FirebaseApp?/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.firebase.service/-firebase-messaging-notifications-service/-firebase-messaging-notifications-service.html
-$dokka.location:com.innopolis.innoqueue.domain.firebase.service/FirebaseMessagingNotificationsService/sendNotificationsToFirebase/#kotlin.collections.List[kotlin.Pair[kotlin.Long,kotlin.collections.List[kotlin.String]]]#com.innopolis.innoqueue.domain.notification.enums.NotificationType#kotlin.Pair[kotlin.Long,kotlin.String]#kotlin.Pair[kotlin.Long,kotlin.String]/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.firebase.service/-firebase-messaging-notifications-service/send-notifications-to-firebase.html
-$dokka.location:com.innopolis.innoqueue.domain.firebase.util////PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.firebase.util/index.html
-$dokka.location:com.innopolis.innoqueue.domain.firebase.util/MessagePushNotificationCreator///PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.firebase.util/-message-push-notification-creator/index.html
-$dokka.location:com.innopolis.innoqueue.domain.firebase.util/MessagePushNotificationCreator/MessagePushNotificationCreator/#com.innopolis.innoqueue.domain.notification.enums.NotificationType#kotlin.String#kotlin.Boolean#kotlin.String/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.firebase.util/-message-push-notification-creator/-message-push-notification-creator.html
-$dokka.location:com.innopolis.innoqueue.domain.firebase.util/MessagePushNotificationCreator/getTitleAndBodyForMessage/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.firebase.util/-message-push-notification-creator/get-title-and-body-for-message.html
 $dokka.location:com.innopolis.innoqueue.domain.notification.dao////PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.notification.dao/index.html
 $dokka.location:com.innopolis.innoqueue.domain.notification.dao/NotificationRepository///PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.notification.dao/-notification-repository/index.html
 $dokka.location:com.innopolis.innoqueue.domain.notification.dao/NotificationRepository/anyUnreadNotification/#kotlin.String/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.notification.dao/-notification-repository/any-unread-notification.html
@@ -94,9 +94,18 @@ $dokka.location:com.innopolis.innoqueue.domain.notification.model/Notification/m
 $dokka.location:com.innopolis.innoqueue.domain.notification.model/Notification/participantId/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.notification.model/-notification/participant-id.html
 $dokka.location:com.innopolis.innoqueue.domain.notification.model/Notification/queueId/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.notification.model/-notification/queue-id.html
 $dokka.location:com.innopolis.innoqueue.domain.notification.model/Notification/user/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.notification.model/-notification/user.html
+$dokka.location:com.innopolis.innoqueue.domain.notification.service.impl////PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.notification.service.impl/index.html
+$dokka.location:com.innopolis.innoqueue.domain.notification.service.impl/NotificationServiceImpl///PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.notification.service.impl/-notification-service-impl/index.html
+$dokka.location:com.innopolis.innoqueue.domain.notification.service.impl/NotificationServiceImpl/NotificationServiceImpl/#com.innopolis.innoqueue.webclients.firebase.service.FirebaseMessagingNotificationsService#com.innopolis.innoqueue.domain.user.service.UserService#com.innopolis.innoqueue.domain.fcmtoken.service.FcmTokenService#com.innopolis.innoqueue.domain.queue.dao.QueueRepository#com.innopolis.innoqueue.domain.userqueue.dao.UserQueueRepository#com.innopolis.innoqueue.domain.notification.dao.NotificationRepository/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.notification.service.impl/-notification-service-impl/-notification-service-impl.html
+$dokka.location:com.innopolis.innoqueue.domain.notification.service.impl/NotificationServiceImpl/anyNewNotification/#kotlin.String/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.notification.service.impl/-notification-service-impl/any-new-notification.html
+$dokka.location:com.innopolis.innoqueue.domain.notification.service.impl/NotificationServiceImpl/clearOldNotifications/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.notification.service.impl/-notification-service-impl/clear-old-notifications.html
+$dokka.location:com.innopolis.innoqueue.domain.notification.service.impl/NotificationServiceImpl/deleteNotificationById/#kotlin.String#kotlin.Long/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.notification.service.impl/-notification-service-impl/delete-notification-by-id.html
+$dokka.location:com.innopolis.innoqueue.domain.notification.service.impl/NotificationServiceImpl/deleteNotifications/#kotlin.String#kotlin.collections.List[kotlin.Long]?/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.notification.service.impl/-notification-service-impl/delete-notifications.html
+$dokka.location:com.innopolis.innoqueue.domain.notification.service.impl/NotificationServiceImpl/getNotifications/#kotlin.String#org.springframework.data.domain.Pageable/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.notification.service.impl/-notification-service-impl/get-notifications.html
+$dokka.location:com.innopolis.innoqueue.domain.notification.service.impl/NotificationServiceImpl/readNotifications/#kotlin.String#kotlin.collections.List[kotlin.Long]?/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.notification.service.impl/-notification-service-impl/read-notifications.html
+$dokka.location:com.innopolis.innoqueue.domain.notification.service.impl/NotificationServiceImpl/sendNotificationMessage/#com.innopolis.innoqueue.domain.notification.enums.NotificationType#kotlin.Long#kotlin.String#kotlin.Long#kotlin.String/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.notification.service.impl/-notification-service-impl/send-notification-message.html
 $dokka.location:com.innopolis.innoqueue.domain.notification.service////PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.notification.service/index.html
 $dokka.location:com.innopolis.innoqueue.domain.notification.service/NotificationService///PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.notification.service/-notification-service/index.html
-$dokka.location:com.innopolis.innoqueue.domain.notification.service/NotificationService/NotificationService/#com.innopolis.innoqueue.domain.firebase.service.FirebaseMessagingNotificationsService#com.innopolis.innoqueue.domain.user.service.UserService#com.innopolis.innoqueue.domain.fcmtoken.service.FcmTokenService#com.innopolis.innoqueue.domain.queue.dao.QueueRepository#com.innopolis.innoqueue.domain.userqueue.dao.UserQueueRepository#com.innopolis.innoqueue.domain.notification.dao.NotificationRepository/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.notification.service/-notification-service/-notification-service.html
 $dokka.location:com.innopolis.innoqueue.domain.notification.service/NotificationService/anyNewNotification/#kotlin.String/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.notification.service/-notification-service/any-new-notification.html
 $dokka.location:com.innopolis.innoqueue.domain.notification.service/NotificationService/clearOldNotifications/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.notification.service/-notification-service/clear-old-notifications.html
 $dokka.location:com.innopolis.innoqueue.domain.notification.service/NotificationService/deleteNotificationById/#kotlin.String#kotlin.Long/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.notification.service/-notification-service/delete-notification-by-id.html
@@ -184,9 +193,27 @@ $dokka.location:com.innopolis.innoqueue.domain.queue.model/QueueAndUserQueue/get
 $dokka.location:com.innopolis.innoqueue.domain.queue.model/QueueAndUserQueue/getQueueId/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.model/-queue-and-user-queue/get-queue-id.html
 $dokka.location:com.innopolis.innoqueue.domain.queue.model/QueueAndUserQueue/getQueueName/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.model/-queue-and-user-queue/get-queue-name.html
 $dokka.location:com.innopolis.innoqueue.domain.queue.model/QueueAndUserQueue/getTrackExpenses/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.model/-queue-and-user-queue/get-track-expenses.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.service.impl////PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.service.impl/index.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.service.impl/QueueServiceImpl///PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.service.impl/-queue-service-impl/index.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.service.impl/QueueServiceImpl/QueueServiceImpl/#com.innopolis.innoqueue.domain.user.service.UserService#com.innopolis.innoqueue.domain.notification.service.NotificationService#com.innopolis.innoqueue.domain.userqueue.dao.UserQueueRepository#com.innopolis.innoqueue.domain.queue.dao.QueueRepository/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.service.impl/-queue-service-impl/-queue-service-impl.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.service.impl/QueueServiceImpl/createQueue/#kotlin.String#com.innopolis.innoqueue.domain.queue.dto.NewQueueDto/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.service.impl/-queue-service-impl/create-queue.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.service.impl/QueueServiceImpl/deleteQueue/#kotlin.String#kotlin.Long/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.service.impl/-queue-service-impl/delete-queue.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.service.impl/QueueServiceImpl/editQueue/#kotlin.String#kotlin.Long#com.innopolis.innoqueue.domain.queue.dto.EditQueueDto/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.service.impl/-queue-service-impl/edit-queue.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.service.impl/QueueServiceImpl/freezeUnFreezeQueue/#kotlin.String#kotlin.Long#kotlin.Boolean/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.service.impl/-queue-service-impl/freeze-un-freeze-queue.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.service.impl/QueueServiceImpl/getQueueById/#kotlin.String#kotlin.Long/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.service.impl/-queue-service-impl/get-queue-by-id.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.service.impl/QueueServiceImpl/getQueueInviteCode/#kotlin.String#kotlin.Long/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.service.impl/-queue-service-impl/get-queue-invite-code.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.service.impl/QueueServiceImpl/getQueues/#kotlin.String#kotlin.String?/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.service.impl/-queue-service-impl/get-queues.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.service.impl/QueueServiceImpl/getUserQueueByQueueId/#com.innopolis.innoqueue.domain.user.model.User#kotlin.Long/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.service.impl/-queue-service-impl/get-user-queue-by-queue-id.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.service.impl/QueueServiceImpl/joinQueue/#kotlin.String#com.innopolis.innoqueue.domain.queue.dto.QueueInviteCodeDto/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.service.impl/-queue-service-impl/join-queue.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.service.impl/QueueServiceImpl/shakeUser/#kotlin.String#kotlin.Long/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.service.impl/-queue-service-impl/shake-user.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.service.impl/QueueServiceImpl/transformQueueToDTO/#com.innopolis.innoqueue.domain.queue.model.Queue?#kotlin.Long/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.service.impl/-queue-service-impl/transform-queue-to-d-t-o.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.service.impl/ToDoTaskServiceImpl///PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.service.impl/-to-do-task-service-impl/index.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.service.impl/ToDoTaskServiceImpl/ToDoTaskServiceImpl/#com.innopolis.innoqueue.domain.user.service.UserService#com.innopolis.innoqueue.domain.queue.service.QueueService#com.innopolis.innoqueue.domain.notification.service.NotificationService#com.innopolis.innoqueue.domain.queue.dao.QueueRepository#com.innopolis.innoqueue.domain.userqueue.dao.UserQueueRepository/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.service.impl/-to-do-task-service-impl/-to-do-task-service-impl.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.service.impl/ToDoTaskServiceImpl/completeTask/#kotlin.String#kotlin.Long#kotlin.Long?/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.service.impl/-to-do-task-service-impl/complete-task.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.service.impl/ToDoTaskServiceImpl/getToDoTasks/#kotlin.String/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.service.impl/-to-do-task-service-impl/get-to-do-tasks.html
+$dokka.location:com.innopolis.innoqueue.domain.queue.service.impl/ToDoTaskServiceImpl/skipTask/#kotlin.String#kotlin.Long/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.service.impl/-to-do-task-service-impl/skip-task.html
 $dokka.location:com.innopolis.innoqueue.domain.queue.service////PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.service/index.html
 $dokka.location:com.innopolis.innoqueue.domain.queue.service/QueueService///PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.service/-queue-service/index.html
-$dokka.location:com.innopolis.innoqueue.domain.queue.service/QueueService/QueueService/#com.innopolis.innoqueue.domain.user.service.UserService#com.innopolis.innoqueue.domain.notification.service.NotificationService#com.innopolis.innoqueue.domain.userqueue.dao.UserQueueRepository#com.innopolis.innoqueue.domain.queue.dao.QueueRepository/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.service/-queue-service/-queue-service.html
 $dokka.location:com.innopolis.innoqueue.domain.queue.service/QueueService/createQueue/#kotlin.String#com.innopolis.innoqueue.domain.queue.dto.NewQueueDto/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.service/-queue-service/create-queue.html
 $dokka.location:com.innopolis.innoqueue.domain.queue.service/QueueService/deleteQueue/#kotlin.String#kotlin.Long/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.service/-queue-service/delete-queue.html
 $dokka.location:com.innopolis.innoqueue.domain.queue.service/QueueService/editQueue/#kotlin.String#kotlin.Long#com.innopolis.innoqueue.domain.queue.dto.EditQueueDto/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.service/-queue-service/edit-queue.html
@@ -197,9 +224,7 @@ $dokka.location:com.innopolis.innoqueue.domain.queue.service/QueueService/getQue
 $dokka.location:com.innopolis.innoqueue.domain.queue.service/QueueService/getUserQueueByQueueId/#com.innopolis.innoqueue.domain.user.model.User#kotlin.Long/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.service/-queue-service/get-user-queue-by-queue-id.html
 $dokka.location:com.innopolis.innoqueue.domain.queue.service/QueueService/joinQueue/#kotlin.String#com.innopolis.innoqueue.domain.queue.dto.QueueInviteCodeDto/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.service/-queue-service/join-queue.html
 $dokka.location:com.innopolis.innoqueue.domain.queue.service/QueueService/shakeUser/#kotlin.String#kotlin.Long/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.service/-queue-service/shake-user.html
-$dokka.location:com.innopolis.innoqueue.domain.queue.service/QueueService/transformQueueToDTO/#com.innopolis.innoqueue.domain.queue.model.Queue?#kotlin.Long/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.service/-queue-service/transform-queue-to-d-t-o.html
 $dokka.location:com.innopolis.innoqueue.domain.queue.service/ToDoTaskService///PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.service/-to-do-task-service/index.html
-$dokka.location:com.innopolis.innoqueue.domain.queue.service/ToDoTaskService/ToDoTaskService/#com.innopolis.innoqueue.domain.user.service.UserService#com.innopolis.innoqueue.domain.queue.service.QueueService#com.innopolis.innoqueue.domain.notification.service.NotificationService#com.innopolis.innoqueue.domain.queue.dao.QueueRepository#com.innopolis.innoqueue.domain.userqueue.dao.UserQueueRepository/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.service/-to-do-task-service/-to-do-task-service.html
 $dokka.location:com.innopolis.innoqueue.domain.queue.service/ToDoTaskService/completeTask/#kotlin.String#kotlin.Long#kotlin.Long?/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.service/-to-do-task-service/complete-task.html
 $dokka.location:com.innopolis.innoqueue.domain.queue.service/ToDoTaskService/getToDoTasks/#kotlin.String/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.service/-to-do-task-service/get-to-do-tasks.html
 $dokka.location:com.innopolis.innoqueue.domain.queue.service/ToDoTaskService/skipTask/#kotlin.String#kotlin.Long/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.queue.service/-to-do-task-service/skip-task.html
@@ -245,9 +270,17 @@ $dokka.location:com.innopolis.innoqueue.domain.user.model/User/notifications/#/P
 $dokka.location:com.innopolis.innoqueue.domain.user.model/User/skipped/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.user.model/-user/skipped.html
 $dokka.location:com.innopolis.innoqueue.domain.user.model/User/token/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.user.model/-user/token.html
 $dokka.location:com.innopolis.innoqueue.domain.user.model/User/yourTurn/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.user.model/-user/your-turn.html
+$dokka.location:com.innopolis.innoqueue.domain.user.service.impl////PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.user.service.impl/index.html
+$dokka.location:com.innopolis.innoqueue.domain.user.service.impl/UserServiceImpl///PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.user.service.impl/-user-service-impl/index.html
+$dokka.location:com.innopolis.innoqueue.domain.user.service.impl/UserServiceImpl/UserServiceImpl/#com.innopolis.innoqueue.domain.user.dao.UserRepository#com.innopolis.innoqueue.domain.fcmtoken.service.FcmTokenService/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.user.service.impl/-user-service-impl/-user-service-impl.html
+$dokka.location:com.innopolis.innoqueue.domain.user.service.impl/UserServiceImpl/createNewUser/#kotlin.String#kotlin.String/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.user.service.impl/-user-service-impl/create-new-user.html
+$dokka.location:com.innopolis.innoqueue.domain.user.service.impl/UserServiceImpl/findUserById/#kotlin.Long/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.user.service.impl/-user-service-impl/find-user-by-id.html
+$dokka.location:com.innopolis.innoqueue.domain.user.service.impl/UserServiceImpl/findUserByToken/#kotlin.String/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.user.service.impl/-user-service-impl/find-user-by-token.html
+$dokka.location:com.innopolis.innoqueue.domain.user.service.impl/UserServiceImpl/findUserNameById/#kotlin.Long/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.user.service.impl/-user-service-impl/find-user-name-by-id.html
+$dokka.location:com.innopolis.innoqueue.domain.user.service.impl/UserServiceImpl/getUserSettings/#kotlin.String/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.user.service.impl/-user-service-impl/get-user-settings.html
+$dokka.location:com.innopolis.innoqueue.domain.user.service.impl/UserServiceImpl/updateUserSettings/#kotlin.String#com.innopolis.innoqueue.domain.user.dto.UpdateUserDto/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.user.service.impl/-user-service-impl/update-user-settings.html
 $dokka.location:com.innopolis.innoqueue.domain.user.service////PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.user.service/index.html
 $dokka.location:com.innopolis.innoqueue.domain.user.service/UserService///PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.user.service/-user-service/index.html
-$dokka.location:com.innopolis.innoqueue.domain.user.service/UserService/UserService/#com.innopolis.innoqueue.domain.user.dao.UserRepository#com.innopolis.innoqueue.domain.fcmtoken.service.FcmTokenService/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.user.service/-user-service/-user-service.html
 $dokka.location:com.innopolis.innoqueue.domain.user.service/UserService/createNewUser/#kotlin.String#kotlin.String/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.user.service/-user-service/create-new-user.html
 $dokka.location:com.innopolis.innoqueue.domain.user.service/UserService/findUserById/#kotlin.Long/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.user.service/-user-service/find-user-by-id.html
 $dokka.location:com.innopolis.innoqueue.domain.user.service/UserService/findUserByToken/#kotlin.String/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.user.service/-user-service/find-user-by-token.html
@@ -299,6 +332,10 @@ $dokka.location:com.innopolis.innoqueue.domain.userqueue.model/UserQueuesShortFo
 $dokka.location:com.innopolis.innoqueue.domain.userqueue.model/UserQueuesShortForm/getOnDutyUserName/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.userqueue.model/-user-queues-short-form/get-on-duty-user-name.html
 $dokka.location:com.innopolis.innoqueue.domain.userqueue.model/UserQueuesShortForm/getQueueId/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.userqueue.model/-user-queues-short-form/get-queue-id.html
 $dokka.location:com.innopolis.innoqueue.domain.userqueue.model/UserQueuesShortForm/getQueueName/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.userqueue.model/-user-queues-short-form/get-queue-name.html
+$dokka.location:com.innopolis.innoqueue.domain.util////PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.util/index.html
+$dokka.location:com.innopolis.innoqueue.domain.util/StringGenerator///PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.util/-string-generator/index.html
+$dokka.location:com.innopolis.innoqueue.domain.util/StringGenerator/StringGenerator/#kotlin.Int#kotlin.collections.List[kotlin.String]/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.util/-string-generator/-string-generator.html
+$dokka.location:com.innopolis.innoqueue.domain.util/StringGenerator/generateString/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.domain.util/-string-generator/generate-string.html
 $dokka.location:com.innopolis.innoqueue.rest.v1.dto////PointingToDeclaration/innoqueue/com.innopolis.innoqueue.rest.v1.dto/index.html
 $dokka.location:com.innopolis.innoqueue.rest.v1.dto/EmptyDto///PointingToDeclaration/innoqueue/com.innopolis.innoqueue.rest.v1.dto/-empty-dto/index.html
 $dokka.location:com.innopolis.innoqueue.rest.v1.dto/EmptyDto/EmptyDto/#kotlin.String/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.rest.v1.dto/-empty-dto/-empty-dto.html
@@ -366,10 +403,17 @@ $dokka.location:com.innopolis.innoqueue.rest////PointingToDeclaration/innoqueue
 $dokka.location:com.innopolis.innoqueue.rest/AssetLinksController///PointingToDeclaration/innoqueue/com.innopolis.innoqueue.rest/-asset-links-controller/index.html
 $dokka.location:com.innopolis.innoqueue.rest/AssetLinksController/AssetLinksController/#kotlin.String?/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.rest/-asset-links-controller/-asset-links-controller.html
 $dokka.location:com.innopolis.innoqueue.rest/AssetLinksController/get/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.rest/-asset-links-controller/get.html
-$dokka.location:com.innopolis.innoqueue.util////PointingToDeclaration/innoqueue/com.innopolis.innoqueue.util/index.html
-$dokka.location:com.innopolis.innoqueue.util/StringGenerator///PointingToDeclaration/innoqueue/com.innopolis.innoqueue.util/-string-generator/index.html
-$dokka.location:com.innopolis.innoqueue.util/StringGenerator/StringGenerator/#kotlin.Int#kotlin.collections.List[kotlin.String]/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.util/-string-generator/-string-generator.html
-$dokka.location:com.innopolis.innoqueue.util/StringGenerator/generateString/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.util/-string-generator/generate-string.html
+$dokka.location:com.innopolis.innoqueue.webclients.firebase.service.impl////PointingToDeclaration/innoqueue/com.innopolis.innoqueue.webclients.firebase.service.impl/index.html
+$dokka.location:com.innopolis.innoqueue.webclients.firebase.service.impl/FirebaseMessagingNotificationsServiceImpl///PointingToDeclaration/innoqueue/com.innopolis.innoqueue.webclients.firebase.service.impl/-firebase-messaging-notifications-service-impl/index.html
+$dokka.location:com.innopolis.innoqueue.webclients.firebase.service.impl/FirebaseMessagingNotificationsServiceImpl/FirebaseMessagingNotificationsServiceImpl/#com.google.firebase.FirebaseApp?/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.webclients.firebase.service.impl/-firebase-messaging-notifications-service-impl/-firebase-messaging-notifications-service-impl.html
+$dokka.location:com.innopolis.innoqueue.webclients.firebase.service.impl/FirebaseMessagingNotificationsServiceImpl/sendNotificationsToFirebase/#kotlin.collections.List[kotlin.Pair[kotlin.Long,kotlin.collections.List[kotlin.String]]]#com.innopolis.innoqueue.domain.notification.enums.NotificationType#kotlin.Pair[kotlin.Long,kotlin.String]#kotlin.Pair[kotlin.Long,kotlin.String]/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.webclients.firebase.service.impl/-firebase-messaging-notifications-service-impl/send-notifications-to-firebase.html
+$dokka.location:com.innopolis.innoqueue.webclients.firebase.service////PointingToDeclaration/innoqueue/com.innopolis.innoqueue.webclients.firebase.service/index.html
+$dokka.location:com.innopolis.innoqueue.webclients.firebase.service/FirebaseMessagingNotificationsService///PointingToDeclaration/innoqueue/com.innopolis.innoqueue.webclients.firebase.service/-firebase-messaging-notifications-service/index.html
+$dokka.location:com.innopolis.innoqueue.webclients.firebase.service/FirebaseMessagingNotificationsService/sendNotificationsToFirebase/#kotlin.collections.List[kotlin.Pair[kotlin.Long,kotlin.collections.List[kotlin.String]]]#com.innopolis.innoqueue.domain.notification.enums.NotificationType#kotlin.Pair[kotlin.Long,kotlin.String]#kotlin.Pair[kotlin.Long,kotlin.String]/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.webclients.firebase.service/-firebase-messaging-notifications-service/send-notifications-to-firebase.html
+$dokka.location:com.innopolis.innoqueue.webclients.firebase.util////PointingToDeclaration/innoqueue/com.innopolis.innoqueue.webclients.firebase.util/index.html
+$dokka.location:com.innopolis.innoqueue.webclients.firebase.util/MessagePushNotificationCreator///PointingToDeclaration/innoqueue/com.innopolis.innoqueue.webclients.firebase.util/-message-push-notification-creator/index.html
+$dokka.location:com.innopolis.innoqueue.webclients.firebase.util/MessagePushNotificationCreator/MessagePushNotificationCreator/#com.innopolis.innoqueue.domain.notification.enums.NotificationType#kotlin.String#kotlin.Boolean#kotlin.String/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.webclients.firebase.util/-message-push-notification-creator/-message-push-notification-creator.html
+$dokka.location:com.innopolis.innoqueue.webclients.firebase.util/MessagePushNotificationCreator/getTitleAndBodyForMessage/#/PointingToDeclaration/innoqueue/com.innopolis.innoqueue.webclients.firebase.util/-message-push-notification-creator/get-title-and-body-for-message.html
 $dokka.location:com.innopolis.innoqueue////PointingToDeclaration/innoqueue/com.innopolis.innoqueue/index.html
 $dokka.location:com.innopolis.innoqueue//main/#kotlin.Array[kotlin.String]/PointingToDeclaration/innoqueue/com.innopolis.innoqueue/main.html
 $dokka.location:com.innopolis.innoqueue/InnoQueueApplication///PointingToDeclaration/innoqueue/com.innopolis.innoqueue/-inno-queue-application/index.html
@@ -378,30 +422,36 @@ com.innopolis.innoqueue
 com.innopolis.innoqueue.configuration
 com.innopolis.innoqueue.domain.external.dto
 com.innopolis.innoqueue.domain.external.service
+com.innopolis.innoqueue.domain.external.service.impl
 com.innopolis.innoqueue.domain.fcmtoken.dao
 com.innopolis.innoqueue.domain.fcmtoken.model
 com.innopolis.innoqueue.domain.fcmtoken.service
-com.innopolis.innoqueue.domain.firebase.service
-com.innopolis.innoqueue.domain.firebase.util
+com.innopolis.innoqueue.domain.fcmtoken.service.impl
 com.innopolis.innoqueue.domain.notification.dao
 com.innopolis.innoqueue.domain.notification.dto
 com.innopolis.innoqueue.domain.notification.enums
 com.innopolis.innoqueue.domain.notification.model
 com.innopolis.innoqueue.domain.notification.service
+com.innopolis.innoqueue.domain.notification.service.impl
 com.innopolis.innoqueue.domain.queue.dao
 com.innopolis.innoqueue.domain.queue.dao.specification
 com.innopolis.innoqueue.domain.queue.dto
 com.innopolis.innoqueue.domain.queue.model
 com.innopolis.innoqueue.domain.queue.service
+com.innopolis.innoqueue.domain.queue.service.impl
 com.innopolis.innoqueue.domain.queue.util
 com.innopolis.innoqueue.domain.user.dao
 com.innopolis.innoqueue.domain.user.dto
 com.innopolis.innoqueue.domain.user.model
 com.innopolis.innoqueue.domain.user.service
+com.innopolis.innoqueue.domain.user.service.impl
 com.innopolis.innoqueue.domain.userqueue.dao
 com.innopolis.innoqueue.domain.userqueue.model
+com.innopolis.innoqueue.domain.util
 com.innopolis.innoqueue.rest
 com.innopolis.innoqueue.rest.v1
 com.innopolis.innoqueue.rest.v1.dto
-com.innopolis.innoqueue.util
+com.innopolis.innoqueue.webclients.firebase.service
+com.innopolis.innoqueue.webclients.firebase.service.impl
+com.innopolis.innoqueue.webclients.firebase.util
 
