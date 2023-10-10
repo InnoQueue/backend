@@ -9,7 +9,11 @@ import com.innopolis.innoqueue.domain.user.model.User
 import com.innopolis.innoqueue.domain.user.service.UserService
 import com.innopolis.innoqueue.domain.userqueue.dao.UserQueueRepository
 import com.innopolis.innoqueue.domain.userqueue.model.UserQueue
-import com.innopolis.innoqueue.webclients.firebase.service.FirebaseMessagingNotificationsService
+import com.innopolis.innoqueue.webclients.firebase.model.Actor
+import com.innopolis.innoqueue.webclients.firebase.model.FirebaseRecipients
+import com.innopolis.innoqueue.webclients.firebase.model.Queue
+import com.innopolis.innoqueue.webclients.firebase.model.Recipient
+import com.innopolis.innoqueue.webclients.firebase.service.FirebaseMessagingService
 import org.slf4j.LoggerFactory
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
@@ -19,7 +23,7 @@ import java.time.ZoneOffset
  * Service for preparing and sending notification messages
  */
 abstract class NotificationSenderServiceAbstract(
-    private val firebaseMessagingService: FirebaseMessagingNotificationsService,
+    private val firebaseMessagingService: FirebaseMessagingService,
     private val userService: UserService,
     private val fcmTokenService: FcmTokenService,
     private val userQueueRepository: UserQueueRepository,
@@ -44,12 +48,25 @@ abstract class NotificationSenderServiceAbstract(
         val notifications = prepareNotificationsListToSend(notificationMessageDto)
         notificationRepository.saveAll(notifications)
         firebaseMessagingService.sendNotificationsToFirebase(
-            addressees = notifications
-                .mapNotNull { it.user }
-                .map { it.id!! to fcmTokenService.findTokensForUser(it.id!!) },
-            notificationType = notificationType(),
-            participant = notificationMessageDto.participantId to notificationMessageDto.participantName,
-            queue = notificationMessageDto.queueId to notificationMessageDto.queueName,
+            FirebaseRecipients(
+                notificationType = notificationType(),
+                queue = Queue(
+                    id = notificationMessageDto.queueId,
+                    name = notificationMessageDto.queueName
+                ),
+                actor = Actor(
+                    id = notificationMessageDto.participantId,
+                    name = notificationMessageDto.participantName
+                ),
+                recipients = notifications
+                    .mapNotNull { it.user }
+                    .map {
+                        Recipient(
+                            id = it.id!!,
+                            fcmTokens = fcmTokenService.findTokensForUser(it.id!!)
+                        )
+                    }
+            )
         )
     }
 
