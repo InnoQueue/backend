@@ -25,19 +25,17 @@ class FirebaseConfiguration {
      */
     @Bean
     @Throws(IOException::class)
-    fun provideFirebaseOptions(): FirebaseApp? {
-        return if (gservicesConfig == "null") {
-            null
-        } else {
-            val jsonObject = JSONObject(gservicesConfig.toString())
-            val inputStream: InputStream = ByteArrayInputStream(jsonObject.toString().toByteArray())
-            val googleCredentials = GoogleCredentials
-                .fromStream(inputStream)
-            val firebaseOptions = FirebaseOptions
-                .builder()
-                .setCredentials(googleCredentials)
-                .build()
-            FirebaseApp.initializeApp(firebaseOptions, "InnoQueue")
-        }
+    fun provideFirebaseOptions(): FirebaseApp? = if (gservicesConfig == "null") {
+        null
+    } else {
+        val jsonObject = JSONObject(gservicesConfig.toString())
+        val inputStream: InputStream = ByteArrayInputStream(jsonObject.toString().toByteArray())
+        val googleCredentials = GoogleCredentials
+            .fromStream(inputStream)
+        val firebaseOptions = FirebaseOptions
+            .builder()
+            .setCredentials(googleCredentials)
+            .build()
+        FirebaseApp.initializeApp(firebaseOptions, "InnoQueue")
     }
 }

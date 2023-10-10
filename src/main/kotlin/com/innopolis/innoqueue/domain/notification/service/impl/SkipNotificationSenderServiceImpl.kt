@@ -8,7 +8,7 @@ import com.innopolis.innoqueue.domain.notification.service.impl.dto.UserPreferen
 import com.innopolis.innoqueue.domain.user.model.User
 import com.innopolis.innoqueue.domain.user.service.UserService
 import com.innopolis.innoqueue.domain.userqueue.dao.UserQueueRepository
-import com.innopolis.innoqueue.webclients.firebase.service.FirebaseMessagingNotificationsService
+import com.innopolis.innoqueue.webclients.firebase.service.FirebaseMessagingService
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.stereotype.Service
 
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service
 @Service
 @EnableConfigurationProperties(UserPreferencesProperties::class)
 class SkipNotificationSenderServiceImpl(
-    firebaseMessagingService: FirebaseMessagingNotificationsService,
+    firebaseMessagingService: FirebaseMessagingService,
     userService: UserService,
     fcmTokenService: FcmTokenService,
     userQueueRepository: UserQueueRepository,
