@@ -130,7 +130,7 @@ ASSET_LINKS=`cat assertlinks.json` ./gradlew bootRun
 - In order to enable hooks enter the project and use the following command: `git config core.hooksPath .githooks`
 - Hooks checks:
   - branch name: `regex = r"^[A-Z]{1,9}_[0-9]{1,9}"`
-  - commit message: `regex = r"(Add |Created |Fix |Update |Rework)(.+)(?:closes #[1-9])|Minor"`
+  - commit message: `regex = r"(Add |Created |Fix |Update |Rework |Refactor)(.+)(?:closes #[1-9])|Minor"`
 
 ### GitHub Actions
 
