@@ -12,6 +12,7 @@ class Queue {
     @Id
     @SequenceGenerator(name = "queues_generator", sequenceName = "queue_id_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "queues_generator")
+    // TODO try @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "queue_id", nullable = false)
     var queueId: Long? = null
 

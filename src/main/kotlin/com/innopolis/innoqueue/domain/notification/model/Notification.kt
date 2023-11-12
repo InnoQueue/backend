@@ -14,6 +14,7 @@ class Notification {
     @Id
     @SequenceGenerator(name = "notifications_generator", sequenceName = "notification_id_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "notifications_generator")
+    // TODO try @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "notification_id", nullable = false)
     var id: Long? = null
 

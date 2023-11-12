@@ -12,6 +12,7 @@ class User {
     @Id
     @SequenceGenerator(name = "users_generator", sequenceName = "user_id_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_generator")
+    // TODO try @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id", nullable = false)
     var id: Long? = null
 
