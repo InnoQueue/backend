@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html>
+<html class="no-js">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
     <title>innoqueue</title>
     <link href="images/logo-icon.svg" rel="icon" type="image/svg">
     <script>var pathToRoot = "";</script>
+    <script>document.documentElement.classList.replace("no-js","js");</script>
     <script>const storage = localStorage.getItem("dokka-dark-mode")
     if (storage == null) {
         const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
@@ -18,12 +19,13 @@
         }
     }
     </script>
+<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async="async"></script>
 <script type="text/javascript" src="scripts/sourceset_dependencies.js" async="async"></script>
 <link href="styles/style.css" rel="Stylesheet">
-<link href="styles/jetbrains-mono.css" rel="Stylesheet">
 <link href="styles/main.css" rel="Stylesheet">
 <link href="styles/prism.css" rel="Stylesheet">
 <link href="styles/logo-styles.css" rel="Stylesheet">
+<link href="styles/font-jb-sans-auto.css" rel="Stylesheet">
 <script type="text/javascript" src="scripts/clipboard.js" async="async"></script>
 <script type="text/javascript" src="scripts/navigation-loader.js" async="async"></script>
 <script type="text/javascript" src="scripts/platform-content-handler.js" async="async"></script>
@@ -32,25 +34,33 @@
 <script type="text/javascript" src="scripts/symbol-parameters-wrapper_deferred.js" defer="defer"></script>
 </head>
 <body>
-<div class="navigation-wrapper" id="navigation-wrapper">
-    <div id="leftToggler"><span class="icon-toggler"></span></div>
-    <div class="library-name">
-            <a href="index.html">
-                    <span>innoqueue</span>
-            </a>
+    <div class="root">
+<nav class="navigation" id="navigation-wrapper">
+    <div class="navigation--inner">
+        <div class="navigation-title">
+            <button class="menu-toggle" id="menu-toggle" type="button">toggle menu</button>
+            <div class="library-name">
+                    <a class="library-name--link" href="index.html">
+                            innoqueue
+                    </a>
+            </div>
+            <div class="library-version">
+0.0.1-SNAPSHOT            </div>
+        </div>
+        <div class="filter-section" id="filter-section">
+                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":dokkaHtml/main">jvm</button>
+        </div>
     </div>
-    <div>
-0.0.1-SNAPSHOT    </div>
-    <div class="pull-right d-flex">
-        <button id="theme-toggle-button"><span id="theme-toggle"></span></button>
-        <div id="searchBar"></div>
+    <div class="navigation-controls">
+        <button class="navigation-controls--btn navigation-controls--theme" id="theme-toggle-button" type="button">switch theme</button>
+        <div class="navigation-controls--btn navigation-controls--search" id="searchBar" role="button">search in API</div>
     </div>
-</div>
-<div id="container">
-    <div id="leftColumn">
-        <div id="sideMenu"></div>
-    </div>
-    <div id="main">
+</nav>
+        <div id="container">
+            <div class="sidebar" id="leftColumn">
+                <div class="sidebar--inner" id="sideMenu"></div>
+            </div>
+            <div id="main">
 <div class="main-content" id="content" pageIds="innoqueue::////PointingToDeclaration//769193423">
   <div class="breadcrumbs"></div>
   <div class="cover ">
@@ -66,7 +76,11 @@
 <span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1994263939%2FPackages%2F769193423"></span>
                 <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
               </span></span></div>
-          <div class="pull-right"></div>
+          <div class="pull-right">
+            <div class="platform-tags no-gutters">
+              <div class="platform-tag jvm-like">jvm</div>
+            </div>
+          </div>
         </div>
         <div></div>
       </div>
@@ -80,7 +94,11 @@
 <span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-879577781%2FPackages%2F769193423"></span>
                 <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
               </span></span></div>
-          <div class="pull-right"></div>
+          <div class="pull-right">
+            <div class="platform-tags no-gutters">
+              <div class="platform-tag jvm-like">jvm</div>
+            </div>
+          </div>
         </div>
         <div></div>
       </div>
@@ -94,7 +112,11 @@
 <span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-597488581%2FPackages%2F769193423"></span>
                 <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
               </span></span></div>
-          <div class="pull-right"></div>
+          <div class="pull-right">
+            <div class="platform-tags no-gutters">
+              <div class="platform-tag jvm-like">jvm</div>
+            </div>
+          </div>
         </div>
         <div></div>
       </div>
@@ -108,7 +130,11 @@
 <span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1081106287%2FPackages%2F769193423"></span>
                 <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
               </span></span></div>
-          <div class="pull-right"></div>
+          <div class="pull-right">
+            <div class="platform-tags no-gutters">
+              <div class="platform-tag jvm-like">jvm</div>
+            </div>
+          </div>
         </div>
         <div></div>
       </div>
@@ -122,7 +148,11 @@
 <span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-145818527%2FPackages%2F769193423"></span>
                 <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
               </span></span></div>
-          <div class="pull-right"></div>
+          <div class="pull-right">
+            <div class="platform-tags no-gutters">
+              <div class="platform-tag jvm-like">jvm</div>
+            </div>
+          </div>
         </div>
         <div></div>
       </div>
@@ -136,7 +166,11 @@
 <span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1273854836%2FPackages%2F769193423"></span>
                 <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
               </span></span></div>
-          <div class="pull-right"></div>
+          <div class="pull-right">
+            <div class="platform-tags no-gutters">
+              <div class="platform-tag jvm-like">jvm</div>
+            </div>
+          </div>
         </div>
         <div></div>
       </div>
@@ -150,7 +184,11 @@
 <span class="anchor-wrapper"><span class="anchor-icon" pointing-to="455268195%2FPackages%2F769193423"></span>
                 <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
               </span></span></div>
-          <div class="pull-right"></div>
+          <div class="pull-right">
+            <div class="platform-tags no-gutters">
+              <div class="platform-tag jvm-like">jvm</div>
+            </div>
+          </div>
         </div>
         <div></div>
       </div>
@@ -164,7 +202,11 @@
 <span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-489863697%2FPackages%2F769193423"></span>
                 <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
               </span></span></div>
-          <div class="pull-right"></div>
+          <div class="pull-right">
+            <div class="platform-tags no-gutters">
+              <div class="platform-tag jvm-like">jvm</div>
+            </div>
+          </div>
         </div>
         <div></div>
       </div>
@@ -178,7 +220,11 @@
 <span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2110258749%2FPackages%2F769193423"></span>
                 <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
               </span></span></div>
-          <div class="pull-right"></div>
+          <div class="pull-right">
+            <div class="platform-tags no-gutters">
+              <div class="platform-tag jvm-like">jvm</div>
+            </div>
+          </div>
         </div>
         <div></div>
       </div>
@@ -192,7 +238,11 @@
 <span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-428665138%2FPackages%2F769193423"></span>
                 <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
               </span></span></div>
-          <div class="pull-right"></div>
+          <div class="pull-right">
+            <div class="platform-tags no-gutters">
+              <div class="platform-tag jvm-like">jvm</div>
+            </div>
+          </div>
         </div>
         <div></div>
       </div>
@@ -206,7 +256,11 @@
 <span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-973692197%2FPackages%2F769193423"></span>
                 <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
               </span></span></div>
-          <div class="pull-right"></div>
+          <div class="pull-right">
+            <div class="platform-tags no-gutters">
+              <div class="platform-tag jvm-like">jvm</div>
+            </div>
+          </div>
         </div>
         <div></div>
       </div>
@@ -220,7 +274,11 @@
 <span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1707266126%2FPackages%2F769193423"></span>
                 <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
               </span></span></div>
-          <div class="pull-right"></div>
+          <div class="pull-right">
+            <div class="platform-tags no-gutters">
+              <div class="platform-tag jvm-like">jvm</div>
+            </div>
+          </div>
         </div>
         <div></div>
       </div>
@@ -234,7 +292,11 @@
 <span class="anchor-wrapper"><span class="anchor-icon" pointing-to="933749029%2FPackages%2F769193423"></span>
                 <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
               </span></span></div>
-          <div class="pull-right"></div>
+          <div class="pull-right">
+            <div class="platform-tags no-gutters">
+              <div class="platform-tag jvm-like">jvm</div>
+            </div>
+          </div>
         </div>
         <div></div>
       </div>
@@ -248,7 +310,11 @@
 <span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-231282895%2FPackages%2F769193423"></span>
                 <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
               </span></span></div>
-          <div class="pull-right"></div>
+          <div class="pull-right">
+            <div class="platform-tags no-gutters">
+              <div class="platform-tag jvm-like">jvm</div>
+            </div>
+          </div>
         </div>
         <div></div>
       </div>
@@ -262,7 +328,11 @@
 <span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-649406015%2FPackages%2F769193423"></span>
                 <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
               </span></span></div>
-          <div class="pull-right"></div>
+          <div class="pull-right">
+            <div class="platform-tags no-gutters">
+              <div class="platform-tag jvm-like">jvm</div>
+            </div>
+          </div>
         </div>
         <div></div>
       </div>
@@ -276,7 +346,11 @@
 <span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-645200398%2FPackages%2F769193423"></span>
                 <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
               </span></span></div>
-          <div class="pull-right"></div>
+          <div class="pull-right">
+            <div class="platform-tags no-gutters">
+              <div class="platform-tag jvm-like">jvm</div>
+            </div>
+          </div>
         </div>
         <div></div>
       </div>
@@ -290,7 +364,11 @@
 <span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-174624294%2FPackages%2F769193423"></span>
                 <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
               </span></span></div>
-          <div class="pull-right"></div>
+          <div class="pull-right">
+            <div class="platform-tags no-gutters">
+              <div class="platform-tag jvm-like">jvm</div>
+            </div>
+          </div>
         </div>
         <div></div>
       </div>
@@ -304,7 +382,11 @@
 <span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1756636369%2FPackages%2F769193423"></span>
                 <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
               </span></span></div>
-          <div class="pull-right"></div>
+          <div class="pull-right">
+            <div class="platform-tags no-gutters">
+              <div class="platform-tag jvm-like">jvm</div>
+            </div>
+          </div>
         </div>
         <div></div>
       </div>
@@ -318,7 +400,11 @@
 <span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-719651353%2FPackages%2F769193423"></span>
                 <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
               </span></span></div>
-          <div class="pull-right"></div>
+          <div class="pull-right">
+            <div class="platform-tags no-gutters">
+              <div class="platform-tag jvm-like">jvm</div>
+            </div>
+          </div>
         </div>
         <div></div>
       </div>
@@ -332,7 +418,11 @@
 <span class="anchor-wrapper"><span class="anchor-icon" pointing-to="253864241%2FPackages%2F769193423"></span>
                 <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
               </span></span></div>
-          <div class="pull-right"></div>
+          <div class="pull-right">
+            <div class="platform-tags no-gutters">
+              <div class="platform-tag jvm-like">jvm</div>
+            </div>
+          </div>
         </div>
         <div></div>
       </div>
@@ -346,7 +436,11 @@
 <span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-765535171%2FPackages%2F769193423"></span>
                 <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
               </span></span></div>
-          <div class="pull-right"></div>
+          <div class="pull-right">
+            <div class="platform-tags no-gutters">
+              <div class="platform-tag jvm-like">jvm</div>
+            </div>
+          </div>
         </div>
         <div></div>
       </div>
@@ -360,7 +454,11 @@
 <span class="anchor-wrapper"><span class="anchor-icon" pointing-to="558771253%2FPackages%2F769193423"></span>
                 <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
               </span></span></div>
-          <div class="pull-right"></div>
+          <div class="pull-right">
+            <div class="platform-tags no-gutters">
+              <div class="platform-tag jvm-like">jvm</div>
+            </div>
+          </div>
         </div>
         <div></div>
       </div>
@@ -374,7 +472,11 @@
 <span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1519853374%2FPackages%2F769193423"></span>
                 <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
               </span></span></div>
-          <div class="pull-right"></div>
+          <div class="pull-right">
+            <div class="platform-tags no-gutters">
+              <div class="platform-tag jvm-like">jvm</div>
+            </div>
+          </div>
         </div>
         <div></div>
       </div>
@@ -388,7 +490,11 @@
 <span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1248206510%2FPackages%2F769193423"></span>
                 <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
               </span></span></div>
-          <div class="pull-right"></div>
+          <div class="pull-right">
+            <div class="platform-tags no-gutters">
+              <div class="platform-tag jvm-like">jvm</div>
+            </div>
+          </div>
         </div>
         <div></div>
       </div>
@@ -402,7 +508,11 @@
 <span class="anchor-wrapper"><span class="anchor-icon" pointing-to="703179451%2FPackages%2F769193423"></span>
                 <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
               </span></span></div>
-          <div class="pull-right"></div>
+          <div class="pull-right">
+            <div class="platform-tags no-gutters">
+              <div class="platform-tag jvm-like">jvm</div>
+            </div>
+          </div>
         </div>
         <div></div>
       </div>
@@ -416,7 +526,11 @@
 <span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1794666757%2FPackages%2F769193423"></span>
                 <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
               </span></span></div>
-          <div class="pull-right"></div>
+          <div class="pull-right">
+            <div class="platform-tags no-gutters">
+              <div class="platform-tag jvm-like">jvm</div>
+            </div>
+          </div>
         </div>
         <div></div>
       </div>
@@ -430,7 +544,11 @@
 <span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1818034415%2FPackages%2F769193423"></span>
                 <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
               </span></span></div>
-          <div class="pull-right"></div>
+          <div class="pull-right">
+            <div class="platform-tags no-gutters">
+              <div class="platform-tag jvm-like">jvm</div>
+            </div>
+          </div>
         </div>
         <div></div>
       </div>
@@ -444,7 +562,11 @@
 <span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-116216351%2FPackages%2F769193423"></span>
                 <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
               </span></span></div>
-          <div class="pull-right"></div>
+          <div class="pull-right">
+            <div class="platform-tags no-gutters">
+              <div class="platform-tag jvm-like">jvm</div>
+            </div>
+          </div>
         </div>
         <div></div>
       </div>
@@ -458,7 +580,11 @@
 <span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1966694225%2FPackages%2F769193423"></span>
                 <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
               </span></span></div>
-          <div class="pull-right"></div>
+          <div class="pull-right">
+            <div class="platform-tags no-gutters">
+              <div class="platform-tag jvm-like">jvm</div>
+            </div>
+          </div>
         </div>
         <div></div>
       </div>
@@ -472,7 +598,11 @@
 <span class="anchor-wrapper"><span class="anchor-icon" pointing-to="356546246%2FPackages%2F769193423"></span>
                 <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
               </span></span></div>
-          <div class="pull-right"></div>
+          <div class="pull-right">
+            <div class="platform-tags no-gutters">
+              <div class="platform-tag jvm-like">jvm</div>
+            </div>
+          </div>
         </div>
         <div></div>
       </div>
@@ -486,7 +616,11 @@
 <span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1896683391%2FPackages%2F769193423"></span>
                 <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
               </span></span></div>
-          <div class="pull-right"></div>
+          <div class="pull-right">
+            <div class="platform-tags no-gutters">
+              <div class="platform-tag jvm-like">jvm</div>
+            </div>
+          </div>
         </div>
         <div></div>
       </div>
@@ -500,7 +634,11 @@
 <span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-509126813%2FPackages%2F769193423"></span>
                 <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
               </span></span></div>
-          <div class="pull-right"></div>
+          <div class="pull-right">
+            <div class="platform-tags no-gutters">
+              <div class="platform-tag jvm-like">jvm</div>
+            </div>
+          </div>
         </div>
         <div></div>
       </div>
@@ -514,7 +652,11 @@
 <span class="anchor-wrapper"><span class="anchor-icon" pointing-to="873228458%2FPackages%2F769193423"></span>
                 <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
               </span></span></div>
-          <div class="pull-right"></div>
+          <div class="pull-right">
+            <div class="platform-tags no-gutters">
+              <div class="platform-tag jvm-like">jvm</div>
+            </div>
+          </div>
         </div>
         <div></div>
       </div>
@@ -528,7 +670,11 @@
 <span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-911673253%2FPackages%2F769193423"></span>
                 <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
               </span></span></div>
-          <div class="pull-right"></div>
+          <div class="pull-right">
+            <div class="platform-tags no-gutters">
+              <div class="platform-tag jvm-like">jvm</div>
+            </div>
+          </div>
         </div>
         <div></div>
       </div>
@@ -542,7 +688,11 @@
 <span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1255922807%2FPackages%2F769193423"></span>
                 <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
               </span></span></div>
-          <div class="pull-right"></div>
+          <div class="pull-right">
+            <div class="platform-tags no-gutters">
+              <div class="platform-tag jvm-like">jvm</div>
+            </div>
+          </div>
         </div>
         <div></div>
       </div>
@@ -556,7 +706,11 @@
 <span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1841872337%2FPackages%2F769193423"></span>
                 <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
               </span></span></div>
-          <div class="pull-right"></div>
+          <div class="pull-right">
+            <div class="platform-tags no-gutters">
+              <div class="platform-tag jvm-like">jvm</div>
+            </div>
+          </div>
         </div>
         <div></div>
       </div>
@@ -570,7 +724,11 @@
 <span class="anchor-wrapper"><span class="anchor-icon" pointing-to="596855005%2FPackages%2F769193423"></span>
                 <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
               </span></span></div>
-          <div class="pull-right"></div>
+          <div class="pull-right">
+            <div class="platform-tags no-gutters">
+              <div class="platform-tag jvm-like">jvm</div>
+            </div>
+          </div>
         </div>
         <div></div>
       </div>
@@ -584,7 +742,11 @@
 <span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-855333995%2FPackages%2F769193423"></span>
                 <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
               </span></span></div>
-          <div class="pull-right"></div>
+          <div class="pull-right">
+            <div class="platform-tags no-gutters">
+              <div class="platform-tag jvm-like">jvm</div>
+            </div>
+          </div>
         </div>
         <div></div>
       </div>
@@ -596,7 +758,8 @@
                 class="pull-right"><span>Generated by </span><a
                 href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
       </div>
+            </div>
+        </div>
     </div>
-</div>
 </body>
 </html>
