@@ -22,6 +22,6 @@ class UserQueueId : Serializable {
 //    var queue: Queue? = null
 
     companion object {
-        const val serialVersionUID = 2L
+        private const val serialVersionUID: Long = 2L
     }
 }
