@@ -31,7 +31,7 @@ abstract class PostgresTestContainer {
     }
 
     companion object {
-        val postgreSQLContainer: PostgreSQLContainer<*> = PostgreSQLContainer("postgres:15")
+        val postgreSQLContainer: PostgreSQLContainer<*> = PostgreSQLContainer("postgres:16")
             .withDatabaseName("postgres")
             .withUsername("postgres")
             .withPassword("postgres")
