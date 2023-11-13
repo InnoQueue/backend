@@ -2,15 +2,15 @@ val springBootVersion: String by project
 val javaVersion: String by project
 
 plugins {
-    id("org.springframework.boot") version "2.7.8"
-    id("io.spring.dependency-management") version "1.1.0"
-    kotlin("jvm") version "1.8.10"
-    kotlin("plugin.spring") version "1.8.10"
-    kotlin("plugin.jpa") version "1.8.10"
-    id("io.gitlab.arturbosch.detekt") version "1.22.0"
+    id("org.springframework.boot") version "2.7.17"
+    id("io.spring.dependency-management") version "1.1.4"
+    kotlin("jvm") version "1.9.10"
+    kotlin("plugin.spring") version "1.9.10"
+    kotlin("plugin.jpa") version "1.9.10"
+    id("io.gitlab.arturbosch.detekt") version "1.23.3"
     id("jacoco")
-    id("org.jetbrains.dokka") version "1.7.20"
-    id("info.solidsoft.pitest") version "1.9.0"
+    id("org.jetbrains.dokka") version "1.9.10"
+    id("info.solidsoft.pitest") version "1.15.0"
 }
 
 group = "com.innopolis"
