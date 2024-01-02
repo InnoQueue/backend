@@ -24,7 +24,7 @@ springdoc:
   swagger-ui:
     enabled: true
     path: swagger-ui.html
-firebase: ${GOOGLE_CREDENTIALS:null}
+firebase: ${GOOGLE_CREDENTIALS:false}
 assetLinks: ${ASSET_LINKS:null}
 login:
   register: ${REGISTER_OPTION:true}
