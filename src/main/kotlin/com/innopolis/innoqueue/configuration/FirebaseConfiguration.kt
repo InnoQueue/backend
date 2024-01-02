@@ -46,7 +46,5 @@ class FirebaseConfiguration {
      */
     @Bean
     @ConditionalOnBean(FirebaseApp::class)
-    fun firebaseMessaging(firebaseApp: FirebaseApp): FirebaseMessaging {
-        return FirebaseMessaging.getInstance(firebaseApp)
-    }
+    fun firebaseMessaging(firebaseApp: FirebaseApp): FirebaseMessaging = FirebaseMessaging.getInstance(firebaseApp)
 }
