@@ -91,17 +91,32 @@
       </div>
       <div data-togglable="FUNCTION">
         <h2 class="">Functions</h2>
-        <div class="table"><a data-name="-918608159%2FFunctions%2F769193423" anchor-label="provideFirebaseOptions" id="-918608159%2FFunctions%2F769193423" data-filterable-set=":dokkaHtml/main"></a>
+        <div class="table"><a data-name="830787209%2FFunctions%2F769193423" anchor-label="firebaseApp" id="830787209%2FFunctions%2F769193423" data-filterable-set=":dokkaHtml/main"></a>
           <div class="table-row" data-filterable-current=":dokkaHtml/main" data-filterable-set=":dokkaHtml/main">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
-                  <div><a href="provide-firebase-options.html"><span>provide</span><wbr></wbr><span>Firebase</span><wbr></wbr><span><span>Options</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-918608159%2FFunctions%2F769193423"></span>
+                  <div><a href="firebase-app.html"><span>firebase</span><wbr></wbr><span><span>App</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="830787209%2FFunctions%2F769193423"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":dokkaHtml/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.springframework.context.annotation/Bean///PointingToDeclaration/"><span class="token annotation builtin">Bean</span></span></div></div><span class="token keyword"></span><span class="token keyword">fun </span><a href="provide-firebase-options.html"><span class="token function">provideFirebaseOptions</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="com.google.firebase/FirebaseApp///PointingToDeclaration/">FirebaseApp</span><span class="token operator">?</span></div><div class="brief "><p class="paragraph">Bean which injects Firebase options</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":dokkaHtml/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.springframework.context.annotation/Bean///PointingToDeclaration/"><span class="token annotation builtin">Bean</span></span></div><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.springframework.boot.autoconfigure.condition/ConditionalOnProperty///PointingToDeclaration/"><span class="token annotation builtin">ConditionalOnProperty</span></span><span class="token punctuation">(</span><span>name<span class="token operator"> = </span><span class="token punctuation">[</span><span><span class="breakable-word"><span class="token string">&quot;firebase&quot;</span></span></span><wbr></wbr><span class="token punctuation">]</span></span><wbr></wbr><span class="token punctuation">)</span></div></div><span class="token keyword"></span><span class="token keyword">fun </span><a href="firebase-app.html"><span class="token function">firebaseApp</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="com.google.firebase/FirebaseApp///PointingToDeclaration/">FirebaseApp</span></div><div class="brief "><p class="paragraph">Bean which injects Firebase options if GOOGLE_CREDENTIALS property was provided in the application.yml</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-958584031%2FFunctions%2F769193423" anchor-label="firebaseMessaging" id="-958584031%2FFunctions%2F769193423" data-filterable-set=":dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":dokkaHtml/main" data-filterable-set=":dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="firebase-messaging.html"><span>firebase</span><wbr></wbr><span><span>Messaging</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-958584031%2FFunctions%2F769193423"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":dokkaHtml/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.springframework.context.annotation/Bean///PointingToDeclaration/"><span class="token annotation builtin">Bean</span></span></div><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.springframework.boot.autoconfigure.condition/ConditionalOnBean///PointingToDeclaration/"><span class="token annotation builtin">ConditionalOnBean</span></span><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><span class="token punctuation">[</span><span><span data-unresolved-link="com.google.firebase/FirebaseApp///PointingToDeclaration/">FirebaseApp::class</span></span><wbr></wbr><span class="token punctuation">]</span></span><wbr></wbr><span class="token punctuation">)</span></div></div><span class="token keyword"></span><span class="token keyword">fun </span><a href="firebase-messaging.html"><span class="token function">firebaseMessaging</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">firebaseApp<span class="token operator">: </span><span data-unresolved-link="com.google.firebase/FirebaseApp///PointingToDeclaration/">FirebaseApp</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="com.google.firebase.messaging/FirebaseMessaging///PointingToDeclaration/">FirebaseMessaging</span></div><div class="brief "><p class="paragraph">Bean which injects FirebaseMessaging for sending push notifications. It will be created only if GOOGLE_CREDENTIALS property was provided in the application.yml</p></div></div></div>
                 </div>
               </div>
             </div>
@@ -112,7 +127,7 @@
   </div>
 </div>
       <div class="footer">
-        <span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2023 Copyright</span><span
+        <span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2024 Copyright</span><span
                 class="pull-right"><span>Generated by </span><a
                 href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
       </div>
