@@ -1,6 +1,5 @@
 package com.innopolis.innoqueue.domain.notification.service.impl
 
-import com.innopolis.innoqueue.domain.fcmtoken.service.FcmTokenService
 import com.innopolis.innoqueue.domain.notification.dao.NotificationRepository
 import com.innopolis.innoqueue.domain.notification.dto.NotificationMessageDto
 import com.innopolis.innoqueue.domain.notification.enums.NotificationType
@@ -10,8 +9,8 @@ import com.innopolis.innoqueue.domain.notification.service.impl.dto.UserPreferen
 import com.innopolis.innoqueue.domain.user.model.User
 import com.innopolis.innoqueue.domain.user.service.UserService
 import com.innopolis.innoqueue.domain.userqueue.dao.UserQueueRepository
-import com.innopolis.innoqueue.webclients.firebase.service.FirebaseMessagingService
 import org.springframework.boot.context.properties.EnableConfigurationProperties
+import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Service
 
 /**
@@ -20,16 +19,14 @@ import org.springframework.stereotype.Service
 @Service
 @EnableConfigurationProperties(UserPreferencesProperties::class)
 class ShakeNotificationSenderServiceImpl(
-    firebaseMessagingService: FirebaseMessagingService,
+    applicationEventPublisher: ApplicationEventPublisher,
     userService: UserService,
-    fcmTokenService: FcmTokenService,
     userQueueRepository: UserQueueRepository,
     notificationRepository: NotificationRepository,
     userPreferencesProperties: UserPreferencesProperties
 ) : NotificationSenderServiceAbstract(
-    firebaseMessagingService,
+    applicationEventPublisher,
     userService,
-    fcmTokenService,
     userQueueRepository,
     notificationRepository,
     userPreferencesProperties.obligatoryNotifications
