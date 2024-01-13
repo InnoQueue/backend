@@ -39,18 +39,7 @@ class QueueServiceImplTest : PostgresTestContainer() {
         val userQueueRepo = mockk<UserQueueRepository>(relaxed = true)
         every { userQueueRepo.findAllUserQueueByToken(token) } returns emptyList()
         val queueRepo = mockk<QueueRepository>(relaxed = true)
-        val service = QueueServiceImpl(
-            userService,
-            notificationSenderService,
-            notificationSenderService,
-            notificationSenderService,
-            notificationSenderService,
-            notificationSenderService,
-            notificationSenderService,
-            notificationSenderService,
-            userQueueRepo,
-            queueRepo
-        )
+        val service = QueueServiceImpl(userService, notificationSenderService, userQueueRepo, queueRepo)
 
         // when
         service.getQueues(token)

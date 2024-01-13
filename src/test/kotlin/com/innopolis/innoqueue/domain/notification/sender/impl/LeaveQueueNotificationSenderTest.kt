@@ -1,4 +1,4 @@
-package com.innopolis.innoqueue.domain.notification.service.impl
+package com.innopolis.innoqueue.domain.notification.sender.impl
 
 import com.innopolis.innoqueue.domain.notification.dao.NotificationRepository
 import com.innopolis.innoqueue.domain.notification.dto.NotificationMessageDto
@@ -12,10 +12,10 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.jdbc.Sql
 
-class SkipNotificationSenderServiceImplTest : PostgresTestContainer() {
+class LeaveQueueNotificationSenderTest : PostgresTestContainer() {
 
     @Autowired
-    private lateinit var notificationSenderService: SkipNotificationSenderServiceImpl
+    private lateinit var notificationSender: LeaveQueueNotificationSender
 
     @Autowired
     private lateinit var notificationRepository: NotificationRepository
@@ -23,11 +23,11 @@ class SkipNotificationSenderServiceImplTest : PostgresTestContainer() {
     @Test
     @Sql(
         "/com/innopolis/innoqueue/domain/queue/service/impl/users.sql",
-        "fcm_token.sql",
+        "/com/innopolis/innoqueue/domain/notification/service/impl/fcm_token.sql",
         "/com/innopolis/innoqueue/domain/queue/service/impl/queues.sql",
         "/com/innopolis/innoqueue/domain/queue/service/impl/user_queue.sql"
     )
-    fun `Test sendNotificationMessage SKIPPED`() {
+    fun `Test sendNotificationMessage LEFT_QUEUE`() {
         // given
         val participantModel = User().apply {
             id = 1L
@@ -50,7 +50,7 @@ class SkipNotificationSenderServiceImplTest : PostgresTestContainer() {
         }
 
         // when
-        notificationSenderService.sendNotificationMessage(
+        notificationSender.sendNotificationMessage(
             NotificationMessageDto(
                 participantId = participantModel.id!!,
                 participantName = participantModel.name!!,
@@ -62,7 +62,7 @@ class SkipNotificationSenderServiceImplTest : PostgresTestContainer() {
         // then
         val notifications = notificationRepository.findAll().toList()
         assertEquals(4, notifications.size)
-        assertTrue(notifications.all { it.messageType == NotificationType.SKIPPED })
+        assertTrue(notifications.all { it.messageType == NotificationType.LEFT_QUEUE })
         assertTrue(notifications.all { it.participantId == 1L })
         assertTrue(notifications.none { it.user?.id == 4L })
     }

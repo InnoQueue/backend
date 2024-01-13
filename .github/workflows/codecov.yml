@@ -33,12 +33,12 @@ jobs:
       - name: Execute JUnit Tests and Generate Jacoco Report
         run: ./gradlew test jacocoTestReport
 
-      - name: Upload Test Report
-        uses: codecov/codecov-action@v3
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
-          files: build/reports/jacoco/test/jacocoTestReport.xml # optional
-          flags: unittests # optional
-          name: codecov-umbrella # optional
-          fail_ci_if_error: true # optional (default = false)
-          verbose: true # optional (default = false)
+#      - name: Upload Test Report
+#        uses: codecov/codecov-action@v3
+#        with:
+#          token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
+#          files: build/reports/jacoco/test/jacocoTestReport.xml # optional
+#          flags: unittests # optional
+#          name: codecov-umbrella # optional
+#          fail_ci_if_error: true # optional (default = false)
+#          verbose: true # optional (default = false)

@@ -1,6 +1,7 @@
 package com.innopolis.innoqueue.domain.queue.service.impl
 
 import com.innopolis.innoqueue.domain.notification.dto.NotificationMessageDto
+import com.innopolis.innoqueue.domain.notification.enums.NotificationType
 import com.innopolis.innoqueue.domain.notification.service.NotificationSenderService
 import com.innopolis.innoqueue.domain.queue.dao.QueueRepository
 import com.innopolis.innoqueue.domain.queue.dto.ToDoTaskDto
@@ -21,9 +22,7 @@ import org.springframework.transaction.annotation.Transactional
 class ToDoTaskServiceImpl(
     private val userService: UserService,
     private val queueService: QueueService,
-    private val yourTurnNotificationSenderServiceImpl: NotificationSenderService,
-    private val skipNotificationSenderServiceImpl: NotificationSenderService,
-    private val completeNotificationSenderServiceImpl: NotificationSenderService,
+    private val notificationSenderService: NotificationSenderService,
     private val queueRepository: QueueRepository,
     private val userQueueRepository: UserQueueRepository,
 ) : ToDoTaskService {
@@ -85,7 +84,8 @@ class ToDoTaskServiceImpl(
                     // Assign the next user in a queue
                     val nextUser = UsersQueueLogic.assignNextUser(it, userService, userQueueRepository, queueRepository)
                     val queue = queueRepository.findAll().firstOrNull { q -> q.queueId == it.userQueueId?.queueId }!!
-                    yourTurnNotificationSenderServiceImpl.sendNotificationMessage(
+                    notificationSenderService.sendNotificationMessage(
+                        NotificationType.YOUR_TURN,
                         NotificationMessageDto(
                             participantId = nextUser.id!!,
                             participantName = nextUser.name!!,
@@ -114,7 +114,8 @@ class ToDoTaskServiceImpl(
             userQueue.skips = userQueue.skips?.plus(1)
             userQueueRepository.save(userQueue)
             val queue = queueRepository.findAll().firstOrNull { it.queueId == userQueue.userQueueId?.queueId }!!
-            skipNotificationSenderServiceImpl.sendNotificationMessage(
+            notificationSenderService.sendNotificationMessage(
+                NotificationType.SKIPPED,
                 NotificationMessageDto(
                     participantId = user.id!!,
                     participantName = user.name!!,
@@ -123,7 +124,8 @@ class ToDoTaskServiceImpl(
                 )
             )
             val nextUser = UsersQueueLogic.assignNextUser(userQueue, userService, userQueueRepository, queueRepository)
-            yourTurnNotificationSenderServiceImpl.sendNotificationMessage(
+            notificationSenderService.sendNotificationMessage(
+                NotificationType.YOUR_TURN,
                 NotificationMessageDto(
                     participantId = nextUser.id!!,
                     participantName = nextUser.name!!,
@@ -148,7 +150,8 @@ class ToDoTaskServiceImpl(
         queue.isImportant = false
         queueRepository.save(queue)
         userQueueRepository.save(userQueue)
-        completeNotificationSenderServiceImpl.sendNotificationMessage(
+        notificationSenderService.sendNotificationMessage(
+            NotificationType.COMPLETED,
             NotificationMessageDto(
                 participantId = userQueue.userQueueId?.userId!!,
                 participantName = userService.findUserNameById(userQueue.userQueueId?.userId!!)!!,
