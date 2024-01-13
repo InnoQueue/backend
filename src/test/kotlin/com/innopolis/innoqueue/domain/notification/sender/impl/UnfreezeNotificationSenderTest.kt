@@ -1,4 +1,4 @@
-package com.innopolis.innoqueue.domain.notification.service.impl
+package com.innopolis.innoqueue.domain.notification.sender.impl
 
 import com.innopolis.innoqueue.domain.notification.dao.NotificationRepository
 import com.innopolis.innoqueue.domain.notification.dto.NotificationMessageDto
@@ -12,10 +12,10 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.jdbc.Sql
 
-class UnfreezeNotificationSenderServiceImplTest : PostgresTestContainer() {
+class UnfreezeNotificationSenderTest : PostgresTestContainer() {
 
     @Autowired
-    private lateinit var notificationSenderService: UnfreezeNotificationSenderServiceImpl
+    private lateinit var notificationSenderService: UnfreezeNotificationSender
 
     @Autowired
     private lateinit var notificationRepository: NotificationRepository
@@ -23,7 +23,7 @@ class UnfreezeNotificationSenderServiceImplTest : PostgresTestContainer() {
     @Test
     @Sql(
         "/com/innopolis/innoqueue/domain/queue/service/impl/users.sql",
-        "fcm_token.sql",
+        "/com/innopolis/innoqueue/domain/notification/service/impl/fcm_token.sql",
         "/com/innopolis/innoqueue/domain/queue/service/impl/queues.sql",
         "/com/innopolis/innoqueue/domain/queue/service/impl/user_queue.sql"
     )

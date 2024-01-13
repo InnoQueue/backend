@@ -38,8 +38,6 @@ class ToDoTaskServiceImplTest : PostgresTestContainer() {
             userService,
             queueService,
             notificationSenderService,
-            notificationSenderService,
-            notificationSenderService,
             queueRepo,
             userQueueRepo
         )
