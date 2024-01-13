@@ -1,4 +1,4 @@
-package com.innopolis.innoqueue.domain.notification.service.impl
+package com.innopolis.innoqueue.domain.notification.sender.impl
 
 import com.innopolis.innoqueue.domain.notification.dao.NotificationRepository
 import com.innopolis.innoqueue.domain.notification.dto.NotificationMessageDto
@@ -12,10 +12,10 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.jdbc.Sql
 
-class DeleteQueueNotificationSenderServiceImplTest : PostgresTestContainer() {
+class FreezeNotificationSenderTest : PostgresTestContainer() {
 
     @Autowired
-    private lateinit var notificationSenderService: DeleteQueueNotificationSenderServiceImpl
+    private lateinit var notificationSender: FreezeNotificationSender
 
     @Autowired
     private lateinit var notificationRepository: NotificationRepository
@@ -23,11 +23,11 @@ class DeleteQueueNotificationSenderServiceImplTest : PostgresTestContainer() {
     @Test
     @Sql(
         "/com/innopolis/innoqueue/domain/queue/service/impl/users.sql",
-        "fcm_token.sql",
+        "/com/innopolis/innoqueue/domain/notification/service/impl/fcm_token.sql",
         "/com/innopolis/innoqueue/domain/queue/service/impl/queues.sql",
         "/com/innopolis/innoqueue/domain/queue/service/impl/user_queue.sql"
     )
-    fun `Test sendNotificationMessage DELETE_QUEUE`() {
+    fun `Test sendNotificationMessage FROZEN`() {
         // given
         val participantModel = User().apply {
             id = 1L
@@ -50,7 +50,7 @@ class DeleteQueueNotificationSenderServiceImplTest : PostgresTestContainer() {
         }
 
         // when
-        notificationSenderService.sendNotificationMessage(
+        notificationSender.sendNotificationMessage(
             NotificationMessageDto(
                 participantId = participantModel.id!!,
                 participantName = participantModel.name!!,
@@ -61,8 +61,9 @@ class DeleteQueueNotificationSenderServiceImplTest : PostgresTestContainer() {
 
         // then
         val notifications = notificationRepository.findAll().toList()
-        assertEquals(5, notifications.size)
-        assertTrue(notifications.all { it.messageType == NotificationType.DELETE_QUEUE })
+        assertEquals(4, notifications.size)
+        assertTrue(notifications.all { it.messageType == NotificationType.FROZEN })
         assertTrue(notifications.all { it.participantId == 1L })
+        assertTrue(notifications.none { it.user?.id == 4L })
     }
 }

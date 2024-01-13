@@ -1,4 +1,4 @@
-package com.innopolis.innoqueue.domain.notification.service.impl
+package com.innopolis.innoqueue.domain.notification.sender.impl
 
 import com.innopolis.innoqueue.domain.notification.dao.NotificationRepository
 import com.innopolis.innoqueue.domain.notification.dto.NotificationMessageDto
@@ -12,10 +12,10 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.jdbc.Sql
 
-class CompleteNotificationSenderServiceImplTest : PostgresTestContainer() {
+class ShakeNotificationSenderTest : PostgresTestContainer() {
 
     @Autowired
-    private lateinit var notificationSenderService: CompleteNotificationSenderServiceImpl
+    private lateinit var notificationSenderService: ShakeNotificationSender
 
     @Autowired
     private lateinit var notificationRepository: NotificationRepository
@@ -23,11 +23,11 @@ class CompleteNotificationSenderServiceImplTest : PostgresTestContainer() {
     @Test
     @Sql(
         "/com/innopolis/innoqueue/domain/queue/service/impl/users.sql",
-        "fcm_token.sql",
+        "/com/innopolis/innoqueue/domain/notification/service/impl/fcm_token.sql",
         "/com/innopolis/innoqueue/domain/queue/service/impl/queues.sql",
         "/com/innopolis/innoqueue/domain/queue/service/impl/user_queue.sql"
     )
-    fun `Test sendNotificationMessage`() {
+    fun `Test sendNotificationMessage SHOOK`() {
         // given
         val participantModel = User().apply {
             id = 1L
@@ -61,9 +61,8 @@ class CompleteNotificationSenderServiceImplTest : PostgresTestContainer() {
 
         // then
         val notifications = notificationRepository.findAll().toList()
-        assertEquals(4, notifications.size)
-        assertTrue(notifications.all { it.messageType == NotificationType.COMPLETED })
+        assertEquals(1, notifications.size)
+        assertTrue(notifications.all { it.messageType == NotificationType.SHOOK })
         assertTrue(notifications.all { it.participantId == 1L })
-        assertTrue(notifications.none { it.user?.id == 4L })
     }
 }

@@ -1,4 +1,4 @@
-package com.innopolis.innoqueue.domain.notification.service
+package com.innopolis.innoqueue.domain.notification.sender
 
 import com.innopolis.innoqueue.domain.notification.dao.NotificationRepository
 import com.innopolis.innoqueue.domain.notification.dto.NotificationMessageDto
@@ -16,39 +16,18 @@ import java.time.LocalDateTime
 import java.time.ZoneOffset
 
 /**
- * Service for preparing and sending notification messages
+ * Abstract Service for preparing and sending notification messages
  */
-abstract class NotificationSenderServiceAbstract(
+abstract class AbstractNotificationSender(
     private val applicationEventPublisher: ApplicationEventPublisher,
     private val userService: UserService,
     private val userQueueRepository: UserQueueRepository,
     private val notificationRepository: NotificationRepository,
     private val obligatoryNotifications: List<NotificationType>
-) : NotificationSenderService {
+) : NotificationSender {
     private val logger = LoggerFactory.getLogger(javaClass)
 
-    abstract fun notificationType(): NotificationType
-
     abstract fun User.subscribed(): Boolean
-
-    /**
-     * Saves notification in database and sends it via firebase
-     */
-    @Transactional
-    override fun sendNotificationMessage(notificationMessageDto: NotificationMessageDto) {
-        logger.info(
-            "Sending notification: notificationType=${notificationType()}, queueId=${notificationMessageDto.queueId}"
-        )
-        val notifications = prepareNotificationsListToSend(notificationMessageDto)
-        notificationRepository.saveAll(notifications)
-        applicationEventPublisher.publishEvent(
-            SendNotificationEvent(
-                notificationType = notificationType(),
-                notificationMessageDto = notificationMessageDto,
-                notifications = notifications
-            )
-        )
-    }
 
     open fun prepareNotificationsListToSend(notificationMessageDto: NotificationMessageDto): List<Notification> =
         with(notificationMessageDto) {
@@ -76,9 +55,29 @@ abstract class NotificationSenderServiceAbstract(
         date = LocalDateTime.now(ZoneOffset.UTC)
     }
 
+    /**
+     * Saves notification into the database and sends it via firebase
+     */
+    @Transactional
+    override fun sendNotificationMessage(notificationMessageDto: NotificationMessageDto) {
+        logger.info(
+            "Sending notification: notificationType=${notificationType()}, queueId=${notificationMessageDto.queueId}"
+        )
+        val notifications = prepareNotificationsListToSend(notificationMessageDto)
+        notificationRepository.saveAll(notifications)
+        applicationEventPublisher.publishEvent(
+            SendNotificationEvent(
+                notificationType = notificationType(),
+                notificationMessageDto = notificationMessageDto,
+                notifications = notifications
+            )
+        )
+    }
+
     private fun UserQueue.shouldSendMessage(participantId: Long): Boolean =
         if (notificationType() in obligatoryNotifications) true else
             userService
+                // TODO n+1 problem
                 .findUserById(this.userQueueId?.userId!!)!!
                 .isUserSubscribed(participantId)
 

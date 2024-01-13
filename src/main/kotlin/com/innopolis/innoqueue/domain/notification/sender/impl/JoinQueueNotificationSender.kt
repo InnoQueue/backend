@@ -1,28 +1,28 @@
-package com.innopolis.innoqueue.domain.notification.service.impl
+package com.innopolis.innoqueue.domain.notification.sender.impl
 
 import com.innopolis.innoqueue.domain.notification.dao.NotificationRepository
 import com.innopolis.innoqueue.domain.notification.enums.NotificationType
-import com.innopolis.innoqueue.domain.notification.service.NotificationSenderServiceAbstract
-import com.innopolis.innoqueue.domain.notification.service.impl.dto.UserPreferencesProperties
+import com.innopolis.innoqueue.domain.notification.sender.AbstractNotificationSender
+import com.innopolis.innoqueue.domain.notification.sender.property.UserPreferencesProperties
 import com.innopolis.innoqueue.domain.user.model.User
 import com.innopolis.innoqueue.domain.user.service.UserService
 import com.innopolis.innoqueue.domain.userqueue.dao.UserQueueRepository
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.ApplicationEventPublisher
-import org.springframework.stereotype.Service
+import org.springframework.stereotype.Component
 
 /**
- * Service for sending notification messages of type JOIN_QUEUE
+ * Component for sending notification messages of type JOIN_QUEUE
  */
-@Service
+@Component
 @EnableConfigurationProperties(UserPreferencesProperties::class)
-class JoinQueueNotificationSenderServiceImpl(
+class JoinQueueNotificationSender(
     applicationEventPublisher: ApplicationEventPublisher,
     userService: UserService,
     userQueueRepository: UserQueueRepository,
     notificationRepository: NotificationRepository,
     userPreferencesProperties: UserPreferencesProperties
-) : NotificationSenderServiceAbstract(
+) : AbstractNotificationSender(
     applicationEventPublisher,
     userService,
     userQueueRepository,
