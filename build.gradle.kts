@@ -52,24 +52,23 @@ dependencies {
     testImplementation("org.testcontainers:postgresql:$testcontainersVersion")
 }
 
-tasks.withType<Test> {
+tasks.test {
     useJUnitPlatform()
-    finalizedBy("jacocoTestCoverageVerification", "jacocoTestReport")
+    finalizedBy(tasks.jacocoTestCoverageVerification, tasks.jacocoTestReport)
     doLast {
         println("View code coverage at:")
         println("file://$buildDir/reports/jacoco/test/html/index.html")
     }
 }
 
-tasks.withType<JacocoReport> {
+tasks.jacocoTestReport {
+    dependsOn(tasks.test)
     reports {
-        xml.apply {
-            isEnabled = true
-        }
+        xml.required = true
     }
 }
 
-tasks.withType<JacocoCoverageVerification> {
+tasks.jacocoTestCoverageVerification {
 //    dependsOn("pitest")
     violationRules {
         rule {
