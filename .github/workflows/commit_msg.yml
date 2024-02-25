@@ -18,8 +18,8 @@ jobs:
       - name: Check message patterns
         uses: gsactions/commit-message-checker@v2
         with:
-          pattern: '(Add |Create |Fix |Update |Rework |Refactor)(.+)(?:closes #[1-9])|Minor|Merge'
-          error: 'Commit message must start with Add, Create, Fix, Update, Rework, Refactor or Minor.'
+          pattern: '(Add |Create |Fix |Update |Rework |Refactor |Edit)(.+)(?:closes #[1-9])|Minor|Merge'
+          error: 'Commit message must start with Add, Create, Fix, Update, Rework, Refactor, Edit or Minor'
           excludeDescription: 'true'
           excludeTitle: 'true'
           checkAllCommitMessages: 'true'
