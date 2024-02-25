@@ -11,7 +11,7 @@ yellow_color = "\033[1;33m"
 
 commit_msg_filepath = sys.argv[1]
 
-regex = r"(Add |Create |Fix |Update |Rework |Refactor)(.+)(?:closes #[1-9])|Minor"
+regex = r"(Add |Create |Fix |Update |Rework |Refactor |Edit)(.+)(?:closes #[1-9])|Minor|Merge"
 error_msg = "Commit message format must match regex " + regex
 
 with open(commit_msg_filepath, "r+") as file:

@@ -7,7 +7,6 @@
 ![Dcoker publish workflow](https://github.com/InnoQueue/backend/actions/workflows/docker_publish.yml/badge.svg)
 ![Dev deploy workflow](https://github.com/InnoQueue/backend/actions/workflows/heroku_dev.yml/badge.svg)
 ![Prod deploy workflow](https://github.com/InnoQueue/backend/actions/workflows/heroku_prod.yml/badge.svg)
-![Code coverage workflow](https://github.com/InnoQueue/backend/actions/workflows/codecov.yml/badge.svg)
 [![codecov](https://codecov.io/gh/InnoQueue/backend/branch/main/graph/badge.svg?token=9RQU24PHSX)](https://codecov.io/gh/InnoQueue/backend)
 [![Hits-of-Code](https://hitsofcode.com/github/InnoQueue/backend?branch=main)](https://hitsofcode.com/github/InnoQueue/backend/view?branch=main)
 ![Alt](https://repobeats.axiom.co/api/embed/83cc35353a9b2635ff57f87dc01ad35ed9d48e32.svg "Repobeats analytics image")
