@@ -10,7 +10,7 @@ import org.springframework.boot.runApplication
 class InnoQueueApplication
 
 /**
- * main entrypoint method
+ * main entrypoint method test
  */
 fun main(args: Array<String>) {
     @Suppress("SpreadOperator")
